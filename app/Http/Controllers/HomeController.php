@@ -96,6 +96,9 @@ class HomeController extends Controller
             case (5):
                 return $this->presupuesto($sistema_id);
                 break;
+            case (6):
+                return $this->trabajo($sistema_id);
+                break;
             default:
                 return 'Ruta de sistema no establecida';
                 break;
@@ -108,6 +111,12 @@ class HomeController extends Controller
         //return $sistemas;
         return view('home', compact('sistema_id', 'sistemas'));
     }
+
+    public function trabajo($sistema_id)
+    {
+        return view('home', compact('sistema_id'));
+    }
+
 
     public function presupuesto($sistema_id)
     {
