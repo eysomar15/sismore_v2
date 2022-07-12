@@ -72,7 +72,7 @@ class ImporMatriculaController extends Controller
                 foreach ($value as $celda => $row) {
                     if ($celda > 0) break;
                     $cadena =
-                        $row['ugel'] . $row['departamento'] . $row['provincia'] . $row['distrito'] . $row['centro_poblado'] . $row['cod_mod'] . $row['institucion_educativa'] . $row['cod_nivelmod'] . $row['nivel_modalidad'] . $row['cod_ges_dep'] . $row['gestion_dependencia'] . $row['total_estudiantes'] . $row['matricula_definitiva'] . $row['matricula_proceso'] . $row['dni_validado'] . $row['dni_sin_validar'] . $row['registrado_sin_dni'] . $row['total_grados'] . $row['total_secciones'] . $row['nominas_generadas'] . $row['nominas_aprobadas'] . $row['nominas_por_rectificar'] . $row['tres_anios_hombre'] . $row['tres_anios_mujer'] . $row['cuatro_anios_hombre'] . $row['cuatro_anios_mujer'] . $row['cinco_anios_hombre'] . $row['cinco_anios_mujer'] . $row['primero_hombre'] . $row['primero_mujer'] . $row['segundo_hombre'] . $row['segundo_mujer'] . $row['tercero_hombre'] . $row['tercero_mujer'] . $row['cuarto_hombre'] . $row['cuarto_mujer'] . $row['quinto_hombre'] . $row['quinto_mujer'] . $row['sexto_hombre'] . $row['sexto_mujer'] . $row['cero_anios_hombre'] . $row['cero_anios_mujer'] . $row['un_anio_hombre'] . $row['un_anio_mujer'] . $row['dos_anios_hombre'] . $row['dos_anios_mujer'] . $row['mas_cinco_anios_hombre'] . $row['mas_cinco_anios_mujer'];
+                        $row['dre'] . $row['ugel'] . $row['departamento'] . $row['provincia'] . $row['distrito'] . $row['centro_poblado'] . $row['cod_mod'] . $row['institucion_educativa'] . $row['cod_nivelmod'] . $row['nivel_modalidad'] . $row['cod_ges_dep'] . $row['gestion_dependencia'] . $row['total_estudiantes'] . $row['matricula_definitiva'] . $row['matricula_proceso'] . $row['dni_validado'] . $row['dni_sin_validar'] . $row['registrado_sin_dni'] . $row['total_grados'] . $row['total_secciones'] . $row['nominas_generadas'] . $row['nominas_aprobadas'] . $row['nominas_por_rectificar'] . $row['tres_anios_hombre'] . $row['tres_anios_mujer'] . $row['cuatro_anios_hombre'] . $row['cuatro_anios_mujer'] . $row['cinco_anios_hombre'] . $row['cinco_anios_mujer'] . $row['primero_hombre'] . $row['primero_mujer'] . $row['segundo_hombre'] . $row['segundo_mujer'] . $row['tercero_hombre'] . $row['tercero_mujer'] . $row['cuarto_hombre'] . $row['cuarto_mujer'] . $row['quinto_hombre'] . $row['quinto_mujer'] . $row['sexto_hombre'] . $row['sexto_mujer'] . $row['cero_anios_hombre'] . $row['cero_anios_mujer'] . $row['un_anio_hombre'] . $row['un_anio_mujer'] . $row['dos_anios_hombre'] . $row['dos_anios_mujer'] . $row['mas_cinco_anios_hombre'] . $row['mas_cinco_anios_mujer'];
                 }
             }
         } catch (Exception $e) {
@@ -101,6 +101,7 @@ class ImporMatriculaController extends Controller
                 foreach ($value as $row) {
                     $padronWeb = ImporMatricula::Create([
                         'matricula_id' => $matricula->id,
+                        'dre' => $row['dre'],
                         'ugel' => $row['ugel'],
                         'departamento' => $row['departamento'],
                         'provincia' => $row['provincia'],

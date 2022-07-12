@@ -226,7 +226,8 @@
                     <div class="card card-border card-primary">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="tabla1" class="table table-striped table-bordered" style="font-size:11px;">
+                                <table id="tabla1" class="table table-striped table-bordered"
+                                    style="font-size:11px;">
                                     <thead>
                                         <tr class="bg-primary text-white text-center">
                                             <th>TIPO NIVEL</th>
@@ -884,15 +885,40 @@
             </div>
             <!-- end row -->
         @else
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card card-fill bg-danger">
-                        <div class="card-header bg-transparent">
-                            <h3 class="card-title text-white">NO HAY IMPORTACION SUBIDA HASTA EL MOMENTO</h3>
+            @if ($importables['padron_web'])
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-fill bg-danger">
+                            <div class="card-header bg-transparent">
+                                <h3 class="card-title text-white">NO HAY IMPORTACION DE PADRON WEB</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
+            @if ($importables['siagie_matricula'])
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-fill bg-danger">
+                            <div class="card-header bg-transparent">
+                                <h3 class="card-title text-white">NO HAY IMPORTACION DE SIAGIE MATRICULA</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if ($importables['nexus_minedu'])
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card card-fill bg-danger">
+                            <div class="card-header bg-transparent">
+                                <h3 class="card-title text-white">NO HAY IMPORTACION NEXUS MINEDU</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <!-- end row -->
         @endif
 
