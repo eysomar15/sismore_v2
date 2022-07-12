@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => 'GESTION DE GERENCIA'])
+@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => 'GESTION DE OFICINA'])
 
 @section('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
@@ -21,7 +21,7 @@
 
                             <div class="card-body">
                                 <!-- <input type="hidden" id="tipogobierno" name="tipogobierno" value="3"> -->
-                                <div class="row justify-content-between ">
+                                <div class="row justify-content-between">
                                     <div class="col-6">
                                         <div class="row form-group">
                                             <label class="col-md-4 col-form-label">GOBIERNO</label>
@@ -39,22 +39,39 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="col-4 ">
                                         {{-- <div class="row justify-content-end">
                                             <button type="button" class="btn btn-primary" onclick="add_entidad()"><i
                                                     class="fa fa-plus"></i> Nuevo</button>
                                         </div> --}}
-
                                     </div>
-
                                 </div>
-                                <div class="row justify-content-between ">
+                                <div class="row justify-content-between">
                                     <div class="col-6">
                                         <div class="row form-group">
                                             <label class="col-md-4 col-form-label">UNIDAD EJECUTORA</label>
                                             <div class="col-md-8">
                                                 <select class="form-control" name="entidad" id="entidad"
+                                                    onchange="cargargerencia();listarDT();">
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- <div class="col-4 ">
+                                        <div class="row justify-content-end">
+                                            <button type="button" class="btn btn-primary" onclick="add_gerencia()"><i
+                                                    class="fa fa-plus"></i> Nuevo</button>
+                                        </div>
+                                    </div> --}}
+
+                                </div>
+                                <div class="row justify-content-between ">
+                                    <div class="col-6">
+                                        <div class="row form-group">
+                                            <label class="col-md-4 col-form-label">GERENCIA</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control" name="gerencia" id="gerencia"
                                                     onchange="listarDT();">
 
                                                 </select>
@@ -63,12 +80,10 @@
                                     </div>
                                     <div class="col-4 ">
                                         <div class="row justify-content-end">
-                                            <button type="button" class="btn btn-primary" onclick="add_gerencia()"><i
+                                            <button type="button" class="btn btn-primary" onclick="add_oficina()"><i
                                                     class="fa fa-plus"></i> Nuevo</button>
                                         </div>
-
                                     </div>
-
                                 </div>
 
                                 <div class="table-responsive">
@@ -94,7 +109,7 @@
     </div>
 
     <!-- Bootstrap modal -->
-    <div id="modal_form_gerencia" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div id="modal_form_oficina" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -105,14 +120,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" id="form_gerencia" class="form-horizontal" autocomplete="off">
+                    <form action="" id="form_oficina" class="form-horizontal" autocomplete="off">
                         @csrf
-                        <input type="hidden" class="form-control" id="gerencia_id" name="gerencia_id">
+                        <input type="hidden" class="form-control" id="oficina_id" name="oficina_id">
                         <input type="hidden" id="vista" name="vista" value="2">
                         <div class="form-body">
                             <div class="form-group">
                                 <label>Tipo Gobierno <span class="required">*</span></label>
-                                <select id="gerencia_tipogobierno" name="gerencia_tipogobierno" class="form-control"
+                                <select id="oficina_tipogobierno" name="oficina_tipogobierno" class="form-control"
                                     onchange="cargarunidadejecutora2()">
                                     @foreach ($tipogobierno as $item)
                                         <option value="{{ $item->id }}">{{ $item->tipogobierno }}</option>
@@ -122,23 +137,29 @@
                             </div>
                             <div class="form-group">
                                 <label>Unidad Ejecutora <span class="required">*</span></label>
-                                <select id="gerencia_entidad" name="gerencia_entidad" class="form-control"></select>
+                                <select id="oficina_entidad" name="oficina_entidad" class="form-control"
+                                    onchange="cargargerencia2()"></select>
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="form-group">
+                                <label>Gerencia <span class="required">*</span></label>
+                                <select id="oficina_gerencia" name="oficina_gerencia" class="form-control"></select>
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
                                 <label>Codigo <span class="required">*</span></label>
-                                <input type="text" id="gerencia_codigo" name="gerencia_codigo" class="form-control">
+                                <input type="text" id="oficina_codigo" name="oficina_codigo" class="form-control">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label>Unidad Ejecutora <span class="required">*</span></label>
-                                <input id="gerencia_nombre" name="gerencia_nombre" class="form-control" type="text"
+                                <label>Oficina <span class="required">*</span></label>
+                                <input id="oficina_nombre" name="oficina_nombre" class="form-control" type="text"
                                     onkeyup="this.value=this.value.toUpperCase()">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
                                 <label>Abreviatura <span class="required">*</span></label>
-                                <input id="gerencia_abreviado" name="gerencia_abreviado" class="form-control"
+                                <input id="oficina_abreviado" name="oficina_abreviado" class="form-control"
                                     type="text" onkeyup="this.value=this.value.toUpperCase()">
                                 <span class="help-block"></span>
                             </div>
@@ -147,7 +168,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                    <button type="button" id="btnSavegerencia" onclick="savegerencia()"
+                    <button type="button" id="btnSaveoficina" onclick="saveoficina()"
                         class="btn btn-primary">Guardar</button>
                 </div>
             </div><!-- /.modal-content -->
@@ -192,14 +213,15 @@
                 }
             }); */
             cargarunidadejecutora();
+            cargargerencia();
             listarDT();
             //cargar_gerencia('')
         });
 
         function listarDT() {
-            if ($('#entidad').val() > '0') {
+            if ($('#gerencia').val() != '') {
                 table_principal = $('#dtPrincipal').DataTable({
-                    "ajax": "{{ url('/') }}/Entidad/listarGerencia/" + $('#entidad').val(),
+                    "ajax": "{{ url('/') }}/Entidad/listarOficina/" + $('#gerencia').val(),
                     "columns": [{
                             data: 'codigo',
                         },
@@ -251,39 +273,37 @@
             table_principal.ajax.reload(null, false);
         }
 
-        function add_gerencia() {
+        function add_oficina() {
             save_method = 'add';
-            $('#form_gerencia')[0].reset();
-            $('#form_gerencia .form-group').removeClass('has-error');
-            $('#form_gerencia .help-block').empty();
-            $('#gerencia_tipogobierno').val($('#tipogobierno').val());
-            $('#modal_form_gerencia').modal('show');
-            $('#modal_form_gerencia .modal-title').text('Crear Nueva gerencia');
+            $('#form_oficina')[0].reset();
+            $('#form_oficina .form-group').removeClass('has-error');
+            $('#form_oficina .help-block').empty();
+            $('#oficina_tipogobierno').val($('#tipogobierno').val());
+            $('#modal_form_oficina').modal('show');
+            $('#modal_form_oficina .modal-title').text('Crear Nueva oficina');
             cargarunidadejecutora2();
         };
 
         function edit(id) {
             save_method = 'update';
-            $('#form_gerencia')[0].reset();
-            $('#form_gerencia .form-group').removeClass('has-error');
-            $('#form_gerencia .help-block').empty();
-            //$('#gerencia_tipogobierno').val($('#tipogobierno').val());
+            $('#form_oficina')[0].reset();
+            $('#form_oficina .form-group').removeClass('has-error');
+            $('#form_oficina .help-block').empty();
+            //$('#oficina_tipogobierno').val($('#tipogobierno').val());
             $.ajax({
-                url: "{{ url('/') }}/Entidad/ajax_edit_gerencia/" + id,
+                url: "{{ url('/') }}/Entidad/ajax_edit_oficina/" + id,
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
                     console.log(data);
-                    $("#gerencia_id").val(data.gerencia.id);
-                    $("#gerencia_codigo").val(data.gerencia.codigo);
-                    $("#gerencia_tipogobierno").val(data.gerencia.tipogobierno);
-                    //$("#gerencia_entidad").val(data.gerencia.unidadejecutadora_id);
-                    $("#gerencia_nombre").val(data.gerencia.entidad);
-                    $("#gerencia_abreviado").val(data.gerencia.abreviado);
-                    cargarunidadejecutora2(data.gerencia.unidadejecutadora_id);
-
-                    $('#modal_form_gerencia').modal('show');
-                    $('#modal_form_gerencia .modal-title').text('Modificar gerencia');
+                    $("#oficina_id").val(data.oficina.id);
+                    $("#oficina_codigo").val(data.oficina.codigo);
+                    $("#oficina_tipogobierno").val(data.oficina.tipogobierno);
+                    $("#oficina_nombre").val(data.oficina.entidad);
+                    $("#oficina_abreviado").val(data.oficina.abreviado);
+                    cargarunidadejecutora2(data.oficina.unidadejecutadora_id, data.oficina.dependencia);
+                    $('#modal_form_oficina').modal('show');
+                    $('#modal_form_oficina .modal-title').text('Modificar gerencia');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     toastr.error("El registro no se pudo crear verifique las validaciones.", 'Mensaje');
@@ -291,20 +311,20 @@
             });
         };
 
-        function savegerencia() {
-            $('#btnSavegerencia').text('guardando...');
-            $('#btnSavegerencia').attr('disabled', true);
-            var url = save_method == "add" ? "{{ route('entidad.ajax.addgerencia') }}" :
-                "{{ route('entidad.ajax.updategerencia') }}";
+        function saveoficina() {
+            $('#btnSaveoficina').text('guardando...');
+            $('#btnSaveoficina').attr('disabled', true);
+            var url = save_method == "add" ? "{{ route('entidad.ajax.addoficina') }}" :
+                "{{ route('entidad.ajax.updateoficina') }}";
             $.ajax({
                 url: url,
                 type: "POST",
-                data: $('#form_gerencia').serialize(),
+                data: $('#form_oficina').serialize(),
                 dataType: "JSON",
                 success: function(data) {
                     console.log(data);
                     if (data.status) {
-                        $('#modal_form_gerencia').modal('hide');
+                        $('#modal_form_oficina').modal('hide');
                         reload_table_principal();
                         toastr.success("El registro fue creado exitosamente.", 'Mensaje');
                     } else {
@@ -313,13 +333,13 @@
                             $('[name="' + data.inputerror[i] + '"]').next().text(data.error_string[i]);
                         }
                     }
-                    $('#btnSavegerencia').text('Guardar');
-                    $('#btnSavegerencia').attr('disabled', false);
+                    $('#btnSaveoficina').text('Guardar');
+                    $('#btnSaveoficina').attr('disabled', false);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     toastr.error("El registro no se pudo crear verifique las validaciones.", 'Mensaje');
-                    $('#btnSavegerencia').text('Guardar');
-                    $('#btnSavegerencia').attr('disabled', false);
+                    $('#btnSaveoficina').text('Guardar');
+                    $('#btnSaveoficina').attr('disabled', false);
                 }
             });
         };
@@ -345,20 +365,63 @@
             });
         }
 
-        function cargarunidadejecutora2(entidad) {
+        function cargarunidadejecutora2(entidad, gerencia) {
             $.ajax({
-                url: "{{ url('/') }}/Entidad/CargarEntidad/" + $('#gerencia_tipogobierno').val(),
+                url: "{{ url('/') }}/Entidad/CargarEntidad/" + $('#oficina_tipogobierno').val(),
                 type: 'get',
                 success: function(data) {
                     console.log(data);
-                    $('#gerencia_entidad option ').remove();
+                    $('#oficina_entidad option ').remove();
                     var opt = '<option value="">SELECCIONAR</option>';
                     $.each(data.unidadejecutora, function(index, value) {
                         var ss = (entidad == value.id ? "selected" : "");
                         opt += '<option value="' + value.id + '" ' + ss + '>' + value.unidad_ejecutora +
                             '</option>';
                     });
-                    $('#gerencia_entidad').append(opt);
+                    $('#oficina_entidad').append(opt);
+                    cargargerencia2(gerencia);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        }
+
+        function cargargerencia() {
+            $.ajax({
+                url: "{{ url('/') }}/Entidad/CargarGerencia/" + $('#entidad').val(),
+                type: 'get',
+                success: function(data) {
+                    console.log(data);
+                    $('#gerencia option ').remove();
+                    var opt = '<option value="">SELECCIONAR</option>';
+                    $.each(data.gerencias, function(index, value) {
+                        opt += '<option value="' + value.id + '">' + value.entidad +
+                            '</option>';
+                    });
+                    $('#gerencia').append(opt);
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        }
+
+        function cargargerencia2(gerencia) {
+            $.ajax({
+                url: "{{ url('/') }}/Entidad/CargarGerencia/" + $('#oficina_entidad').val(),
+                type: 'get',
+                success: function(data) {
+                    console.log(data);
+                    $('#oficina_gerencia option ').remove();
+                    var opt = '<option value="">SELECCIONAR</option>';
+                    $.each(data.gerencias, function(index, value) {
+                        var ss = (gerencia == value.id ? "selected" : "");
+                        opt += '<option value="' + value.id + '" ' + ss + '>' + value.entidad +
+                            '</option>';
+                    });
+                    $('#oficina_gerencia').append(opt);
 
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -371,7 +434,7 @@
             bootbox.confirm("Seguro desea Eliminar este registro?", function(result) {
                 if (result === true) {
                     $.ajax({
-                        url: "{{ url('/') }}/Entidad/ajax_delete_gerencia/" + id,
+                        url: "{{ url('/') }}/Entidad/ajax_delete_oficina/" + id,
                         type: "GET",
                         dataType: "JSON",
                         success: function(data) {
