@@ -22,6 +22,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Parametro\ClasificadorController;
 use App\Http\Controllers\Presupuesto\ImporGastosController;
 use App\Http\Controllers\Trabajo\AnuarioEstadisticoController;
+use App\Http\Controllers\Trabajo\IndicadorTrabajoController;
 use App\Http\Controllers\Trabajo\ProEmpleoController;
 use App\Http\Controllers\Vivienda\CentroPobladoController;
 use App\Http\Controllers\Vivienda\CentroPobladoDatassController;
@@ -359,16 +360,16 @@ Route::get('/ProEmpleo/Principal', [ProEmpleoController::class, 'Principal'])->n
 Route::get('/ProEmpleo/Importar', [ProEmpleoController::class, 'importar'])->name('ProEmpleo.importar');
 Route::post('/ProEmpleo/Importar', [ProEmpleoController::class, 'guardar'])->name('ProEmpleo.guardar');
 
-// Route::get('/IndicadorTrabajo/Importar', [IndicadorTrabajoController::class, 'importar'])->name('trabajo.indicador');
+Route::get('/IndicadorTrabajo/Importar', [IndicadorTrabajoController::class, 'importar'])->name('trabajo.indicador');
 
-// Route::get('/ProEmpleo/Aprobar/{importacion_id}', [ProEmpleoController::class, 'aprobar'])->name('ProEmpleo.aprobar');
-// Route::post('/ProEmpleo/Aprobar/procesar/{importacion_id}', [ProEmpleoController::class, 'procesar'])->name('ProEmpleo.procesar');
-// Route::get('/ProEmpleo/ListaImportada_DataTable/{importacion_id}', [ProEmpleoController::class, 'ListaImportada_DataTable'])->name('ProEmpleo.ListaImportada_DataTable');
+Route::get('/ProEmpleo/Aprobar/{importacion_id}', [ProEmpleoController::class, 'aprobar'])->name('ProEmpleo.aprobar');
+Route::post('/ProEmpleo/Aprobar/procesar/{importacion_id}', [ProEmpleoController::class, 'procesar'])->name('ProEmpleo.procesar');
+Route::get('/ProEmpleo/ListaImportada_DataTable/{importacion_id}', [ProEmpleoController::class, 'ListaImportada_DataTable'])->name('ProEmpleo.ListaImportada_DataTable');
 
-// Route::post('/ProEmpleo/Grafico_oferta_demanda_colocados/{id}', [ProEmpleoController::class, 'Grafico_oferta_demanda_colocados'])->name('ProEmpleo.Grafico_oferta_demanda_colocados');
-// Route::post('/ProEmpleo/Grafico_Colocados_Hombres_Vs_Mujeres/{id}', [ProEmpleoController::class, 'Grafico_Colocados_Hombres_Vs_Mujeres'])->name('ProEmpleo.Grafico_Colocados_Hombres_Vs_Mujeres');
-// Route::post('/ProEmpleo/Grafico_Colocados_per_Con_Discapacidad/{id}', [ProEmpleoController::class, 'Grafico_Colocados_per_Con_Discapacidad'])->name('ProEmpleo.Grafico_Colocados_per_Con_Discapacidad');
-// Route::post('/ProEmpleo/VariablesMercado/{id}', [ProEmpleoController::class, 'VariablesMercado'])->name('ProEmpleo.VariablesMercado');
+Route::post('/ProEmpleo/Grafico_oferta_demanda_colocados/{id}', [ProEmpleoController::class, 'Grafico_oferta_demanda_colocados'])->name('ProEmpleo.Grafico_oferta_demanda_colocados');
+Route::post('/ProEmpleo/Grafico_Colocados_Hombres_Vs_Mujeres/{id}', [ProEmpleoController::class, 'Grafico_Colocados_Hombres_Vs_Mujeres'])->name('ProEmpleo.Grafico_Colocados_Hombres_Vs_Mujeres');
+Route::post('/ProEmpleo/Grafico_Colocados_per_Con_Discapacidad/{id}', [ProEmpleoController::class, 'Grafico_Colocados_per_Con_Discapacidad'])->name('ProEmpleo.Grafico_Colocados_per_Con_Discapacidad');
+Route::post('/ProEmpleo/VariablesMercado/{id}', [ProEmpleoController::class, 'VariablesMercado'])->name('ProEmpleo.VariablesMercado');
 
 Route::get('/AnuarioEstadistico/Importar', [AnuarioEstadisticoController::class, 'importar'])->name('AnuarioEstadistico.importar');
 Route::post('/AnuarioEstadistico/Importar', [AnuarioEstadisticoController::class, 'guardar'])->name('AnuarioEstadistico.guardar');

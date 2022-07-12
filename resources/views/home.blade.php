@@ -11,6 +11,8 @@
         @include('inicioAdministrador')
         @elseif (session('sistema_id')==5)
         @include('inicioPresupuesto')
+    @elseif (session('sistema_id')==6)
+        @include('inicioTrabajo')    
     @else
         <h5>.....</h5>
     @endif
