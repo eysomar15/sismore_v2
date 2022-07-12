@@ -344,7 +344,7 @@ Route::get('/PRES/Covid/Importar', [ImporGastosController::class, 'importar'])->
 Route::get('/PRES/ingresos/Importar', [ImporGastosController::class, 'importar'])->name('pres.ingresos.importar');
 Route::get('/PRES/Regiones/Importar', [ImporGastosController::class, 'importar'])->name('pres.regiones.importar');
 
-/**************************************** FIN PRESUPUESTO ************************************************/
+/**************************************** FIN PRESUPUESTO ***************************************************/
 
 
 /**************************************** TRABAJO DESDE GAMB ************************************************/
