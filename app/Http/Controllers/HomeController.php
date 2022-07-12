@@ -182,7 +182,7 @@ class HomeController extends Controller
         $imp3 = ImportacionRepositorio::Max_porfuente(2);
         $mat = Matricula::where('importacion_id', $imp2)->first();
         //return MatriculaDetalleRepositorio::estudiantes_matriculadosEBR_EBE();
-        if (count($imp) > 0) {
+        if (count($imp) > 0 && $imp2 != null && $imp3 != null) {
             $importacion_id = $imp['id'];
 
             $info['se'] = PadronWebRepositorio::count_institucioneducativa($imp['id']);
@@ -213,7 +213,10 @@ class HomeController extends Controller
             return  view('home', compact('importacion_id', 'info', 'imp'));
         } else {
             $importacion_id = null;
-            return  view('home', compact('importacion_id'));
+            $importables['padron_web'] = count($imp) == 0;
+            $importables['siagie_matricula'] = $imp2 == null;
+            $importables['nexus_minedu'] = $imp3 == null;
+            return  view('home', compact('importacion_id', 'importables'));
         }
     }
     public function educacionx($sistema_id)
