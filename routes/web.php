@@ -60,6 +60,7 @@ Route::get('/AEI', [HomeController::class, 'AEI_tempo'])->name('AEI_tempo');
 
 
 
+
 /**************************************** EDUCACION ************************************************/
 Route::get('/ImporPadronWeb/Importar', [ImporPadronWebController::class, 'importar'])->name('ImporPadronWeb.importar');
 Route::post('/ImporPadronWeb/Importar', [ImporPadronWebController::class, 'guardar'])->name('ImporPadronWeb.guardar');
@@ -68,6 +69,8 @@ Route::get('/ImporPadronWeb/ListaImportada_DataTable/{importacion_id}', [ImporPa
 Route::get('/ImporPadronWeb/Aprobar/{importacion_id}', [ImporPadronWebController::class, 'aprobar'])->name('ImporPadronWeb.aprobar');
 Route::post('/ImporPadronWeb/Aprobar/procesar/{importacion_id}', [ImporPadronWebController::class, 'procesar'])->name('ImporPadronWeb.procesar');
 Route::get('/ImporPadronWeb/Listar/ImportarDT', [ImporPadronWebController::class, 'ListarDTImportFuenteTodos'])->name('ImporPadronWeb.listar.importados');
+
+Route::get('/FuenteImportacion/cargar/{sistema_id}', [FuenteImportacionController::class, 'cargar']);
 
 Route::get('/ImporMatricula/Importar', [ImporMatriculaController::class, 'importar'])->name('ImporMatricula.importar');
 Route::post('/ImporMatricula/Importar', [ImporMatriculaController::class, 'guardar'])->name('ImporMatricula.guardar');
@@ -177,6 +180,7 @@ Route::get('/Importacion', [ImportacionController::class, 'inicio'])->name('impo
 Route::get('/Importacion/importaciones_DataTable/', [ImportacionController::class, 'importacionesLista_DataTable'])->name('importacion.importacionesLista_DataTable');
 Route::get('/Importacion/Eliminar/{id}', [ImportacionController::class, 'eliminar'])->name('importacion.Eliminar');
 Route::get('/Importacion/GetEliminar/{id}', [ImportacionController::class, 'setEliminar']);
+Route::get('/Importacion/Importados/dt/{fuenteimportacion_id}', [ImportacionController::class, 'ListarImportadosDT'])->name('importacion.listar.importados');
 
 Route::get('/ECE/Importar', [EceController::class, 'importar'])->name('ece.importar');
 Route::get('/ECE/Importar/Aprobar/{importacion_id}', [EceController::class, 'importarAprobar'])->name('ece.importar.aprobar');
@@ -333,12 +337,25 @@ Route::post('/Entidad/ajax_update_entidad/', [EntidadController::class, 'ajax_up
 Route::get('/Entidad/ajax_delete/{perfil_id}', [EntidadController::class, 'ajax_delete_entidad']);
 //Route::get('/Entidad/listar/{unidadejecutora_id}/{dependencia}', [EntidadController::class, 'listarDT']);
 
+Route::get('/Entidad/CargarEntidad/{tipogobierno_id}', [EntidadController::class, 'cargarEntidad']);
+
 Route::get('/Entidad/Gerencia', [EntidadController::class, 'gerencia'])->name('entidad.gerencia');
 Route::get('/Entidad/CargarGerencia/{entidad_id}', [EntidadController::class, 'cargarGerencia']);
 Route::post('/Entidad/ajax_add_gerencia/', [EntidadController::class, 'ajax_add_gerencia'])->name('entidad.ajax.addgerencia');
+Route::post('/Entidad/ajax_update_gerencia/', [EntidadController::class, 'ajax_update_gerencia'])->name('entidad.ajax.updategerencia');
+Route::get('/Entidad/ajax_delete_gerencia/{gerencia_id}', [EntidadController::class, 'ajax_delete_gerencia']);
+Route::get('/Entidad/ajax_edit_gerencia/{gerencia_id}', [EntidadController::class, 'ajax_edit_gerencia']);
+Route::get('/Entidad/listarGerencia/{entidad_id}', [EntidadController::class, 'listarDTgerencia']);
 
+Route::get('/Entidad/Oficina', [EntidadController::class, 'oficina'])->name('entidad.oficina');
 Route::get('/Entidad/CargarOficina/{gerencia_id}', [EntidadController::class, 'cargarOficina']);
 Route::post('/Entidad/ajax_add_oficina/', [EntidadController::class, 'ajax_add_oficina'])->name('entidad.ajax.addoficina');
+Route::post('/Entidad/ajax_update_oficina/', [EntidadController::class, 'ajax_update_oficina'])->name('entidad.ajax.updateoficina');
+Route::get('/Entidad/ajax_delete_oficina/{oficina_id}', [EntidadController::class, 'ajax_delete_oficina']);
+Route::get('/Entidad/ajax_edit_oficina/{oficina_id}', [EntidadController::class, 'ajax_edit_oficina']);
+Route::get('/Entidad/listarOficina/{gerencia_id}', [EntidadController::class, 'listarDToficina']);
+
+Route::get('/Importado/resumen', [ImportacionController::class, 'resumenimportados'])->name('importar.importados');
 /**************************************** FIN ADMINISTRADOR ************************************************/
 
 /**************************************** PRESUPUESTO ************************************************/
