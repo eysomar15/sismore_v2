@@ -181,7 +181,7 @@ class HomeController extends Controller
         $imp2 = ImportacionRepositorio::Max_porfuente(8);
         $imp3 = ImportacionRepositorio::Max_porfuente(2);
         $mat = Matricula::where('importacion_id', $imp2)->first();
-        //return MatriculaDetalleRepositorio::estudiantes_matriculadosEBR_EBE();
+        
         if (count($imp) > 0 && $imp2 != null && $imp3 != null) {
             $importacion_id = $imp['id'];
 
@@ -205,11 +205,7 @@ class HomeController extends Controller
             $info['g9'] = MatriculaDetalleRepositorio::estudiantes_matriculados_segunaugel();
             $info['g10'] = PlazaRepositorio::docentes_segunugel();
 
-            /* $info['dt1'] = PadronWebRepositorio::listar_nivelmodalidadvsugelhombremujer($imp['id']);
-            $info['dt2'] = PadronWebRepositorio::listar_nivelmodalidadvsugeldocentedirectores($imp['id']);
-            $info['dt3'] = PadronWebRepositorio::listar_tipogestionvsprovinciaestudiantesdocente($imp['id']); */
             $info['dt4'] = MatriculaDetalleRepositorio::listar_estudiantesNivelProvinciaDistrito();
-            //return $info['dt4'];
             return  view('home', compact('importacion_id', 'info', 'imp'));
         } else {
             $importacion_id = null;
