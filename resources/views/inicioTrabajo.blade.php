@@ -65,10 +65,10 @@
         
         $(document).ready(function() {
             Grafico_oferta_demanda_colocados();
-            // Grafico_Promedio_Remuneracion();
-            // Grafico_Promedio_Trabajadores();
-            // Grafico_Prestadores_Servicio4ta_Publico();
-            // Grafico_Prestadores_Servicio4ta_Privado();
+            Grafico_Promedio_Remuneracion();
+            Grafico_Promedio_Trabajadores();
+            Grafico_Prestadores_Servicio4ta_Publico();
+            Grafico_Prestadores_Servicio4ta_Privado();
         });
 
         function Grafico_oferta_demanda_colocados() {
