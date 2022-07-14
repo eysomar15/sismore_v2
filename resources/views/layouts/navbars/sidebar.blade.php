@@ -10,7 +10,7 @@
             <div class="user-box">
     
                 <div class="float-left">
-                     <img src="{{ asset('/') }}assets/images/users/avatar-1.jpg" alt="" class="avatar-md rounded-circle"> 
+                     <img src="{{ asset('/') }}public/assets/images/users/avatar-1.jpg" alt="" class="avatar-md rounded-circle"> 
                 </div>
                 
                 <div class="user-info">

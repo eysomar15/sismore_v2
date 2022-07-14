@@ -2,7 +2,7 @@
 
 @section('css')
     <!-- Table datatable css -->
-    <link href="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content') 
@@ -108,10 +108,10 @@
 @endsection 
 @section('js')
 
-  <script src="{{ asset('/') }}assets/libs/datatables/jquery.dataTables.min.js"></script>
-  <script src="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
-  <script src="{{ asset('/') }}assets/libs/datatables/dataTables.responsive.min.js"></script>
-  <script src="{{ asset('/') }}assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+  <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+  <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+  <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
 
   <script>
       $('#grid').DataTable({

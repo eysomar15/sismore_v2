@@ -10,7 +10,7 @@
          <li class="dropdown notification-list">
              <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#"
                  role="button" aria-haspopup="false" aria-expanded="false">
-                 <img src="{{ asset('/') }}assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
+                 <img src="{{ asset('/') }}public/assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
                  {{ Auth::user()->nombre }}
              </a>
              <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -61,24 +61,24 @@
      <div class="logo-box">
          <a href="{{ route('home') }}" class="logo text-center logo-dark">
              <span class="logo-lg">
-                 <!-- <img src="{{ asset('/') }}assets/images/logo-GRU-a1.png" alt="" height="16"> -->
+                 <!-- <img src="{{ asset('/') }}public/assets/images/logo-GRU-a1.png" alt="" height="16"> -->
                  <span class="logo-lg-text-dark">SISMORE</span>
              </span>
              <span class="logo-sm">
                  <span class="logo-lg-text-dark">M</span>
-                 <!-- <img src="{{ asset('/') }}assets/images/logo-GRU-a1.png" alt="" height="25"> -->
+                 <!-- <img src="{{ asset('/') }}public/assets/images/logo-GRU-a1.png" alt="" height="25"> -->
              </span>
          </a>
 
          <a href="{{ route('home') }}" class="logo text-center logo-light">
              <span class="logo-lg">
-                 <img src="{{ asset('/') }}assets/images/logo-light-blanco.png" alt="" height="28">
+                 <img src="{{ asset('/') }}public/assets/images/logo-light-blanco.png" alt="" height="28">
                  {{-- inicial --}}
                  <!-- <span class="logo-lg-text-dark">SISMORE</span> -->
              </span>
              <span class="logo-sm">
                  <!-- <span class="logo-lg-text-dark">M</span> -->
-                 <img src="{{ asset('/') }}assets/images/logo-sm-blanco.png" alt="" height="28">
+                 <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="28">
              </span>
          </a>
      </div>

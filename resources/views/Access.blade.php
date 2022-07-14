@@ -9,19 +9,20 @@
     <meta content="Coderthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('/') }}assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('/') }}public/assets/images/favicon.ico">
 
     <!-- App css -->
-    <link href="{{ asset('/') }}assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"
+    <link href="{{ asset('/') }}public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"
         id="bootstrap-stylesheet" />
-    <link href="{{ asset('/') }}assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/') }}assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
-    <link href="{{ asset('/') }}assets/css/otros/personalizado.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/css/app.min.css" rel="stylesheet" type="text/css"
+        id="app-stylesheet" />
+    <link href="{{ asset('/') }}public/assets/css/otros/personalizado.css" rel="stylesheet" type="text/css" />
 
 </head>
 
 <body class=""
-    style="background-image: url('{{ asset('/') }}/img/fondo1.jpg');background-size: 100% 100%;">
+    style="background-image: url('{{ asset('/') }}public/img/fondo1.jpg');background-size: 100% 100%;">
     <div class="container">
 
         <div class="row"><br> </div>
@@ -36,7 +37,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="">
-                <img style="width:250px;text-align:center" src="{{ asset('img/logoblanco.png') }}">
+                <img style="width:250px;text-align:center" src="{{ asset('public/img/logoblanco.png') }}">
             </div>
         </div>
         <br>
@@ -80,14 +81,12 @@
                     </div>
                     <!-- end card-box-->
                 </div>
-
-
             @endforeach
         </div>
 
         <!-- Bootstrap modal -->
-        <div id="modal_password_usuario" class="modal fade" tabindex="-1" role="dialog"
-            aria-labelledby="myModalLabel" style="overflow:auto">
+        <div id="modal_password_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            style="overflow:auto">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -131,7 +130,7 @@
                                                             <span class="help-block"></span>
                                                         </div>
                                                     </div>
-                                                   {{--  <div class="row">
+                                                    {{-- <div class="row">
                                                         <div class="col-md-6">
 
                                                         </div>
@@ -163,17 +162,17 @@
 
     </div>
     <!-- Vendor js -->
-    <script src="{{ asset('/') }}assets/js/vendor.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/vendor.min.js"></script>
 
-    <script src="{{ asset('/') }}assets/libs/moment/moment.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/jquery-scrollto/jquery.scrollTo.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/moment/moment.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/jquery-scrollto/jquery.scrollTo.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
     <!-- Todo app -->
-    <script src="{{ asset('/') }}assets/js/pages/jquery.todo.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/pages/jquery.todo.js"></script>
 
-    <script src="{{ asset('/') }}assets/libs/toastr/toastr.min.js"></script>
-    <script src="{{ asset('/') }}assets/js/bootbox.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/toastr/toastr.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/bootbox.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -192,7 +191,7 @@
             });
 
             @if (Auth::user()->password == '$2y$10$HnvF5rPk9gvJz.4l8mzar.KTB6F5UKtcMT2qJrnH9D82D.3iGGHRi')
-                editPasswordCambio({{ Auth::user()->id }});//$('#modal_password_usuario').modal('show');
+                editPasswordCambio({{ Auth::user()->id }}); //$('#modal_password_usuario').modal('show');
             @endif
         });
 

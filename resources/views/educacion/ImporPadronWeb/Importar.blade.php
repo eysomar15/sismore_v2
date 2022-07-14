@@ -1,7 +1,7 @@
 @extends('layouts.main',['titlePage'=>'IMPORTAR DATOS - PADRON WEB DE INSTITUCIONES EDUCATIVAS'])
 @section('css')
     <!-- Table datatable css -->
-    <link href="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"> --}}
 @endsection
 @section('content')
@@ -276,12 +276,12 @@
             });
         };
     </script>
-    <script src="{{ asset('/') }}assets/libs/jquery-validation/jquery.validate.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/jquery-validation/jquery.validate.min.js"></script>
     <!-- Validation init js-->
-    <script src="{{ asset('/') }}assets/js/pages/form-validation.init.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/pages/form-validation.init.js"></script>
 
-    <script src="{{ asset('/') }}assets/libs/datatables/jquery.dataTables.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/datatables/dataTables.responsive.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
 @endsection

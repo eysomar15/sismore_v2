@@ -150,28 +150,28 @@
 @endsection
 
 @section('js')
-      <script src="{{ asset('/') }}assets/libs/jquery-validation/jquery.validate.min.js"></script>
+      <script src="{{ asset('/') }}public/assets/libs/jquery-validation/jquery.validate.min.js"></script>
       <!-- Validation init js-->
-      <script src="{{ asset('/') }}assets/js/pages/form-validation.init.js"></script>
+      <script src="{{ asset('/') }}public/assets/js/pages/form-validation.init.js"></script>
 
 
     
 {{--     
     <!-- Plugins Js -->
-    <script src="{{ asset('/') }}assets/libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/switchery/switchery.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/multiselect/jquery.multi-select.js"></script>
-    <script src="{{ asset('/') }}assets/libs/jquery-quicksearch/jquery.quicksearch.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/switchery/switchery.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/multiselect/jquery.multi-select.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/jquery-quicksearch/jquery.quicksearch.min.js"></script>
 
-    <script src="{{ asset('/') }}assets/libs/select2/select2.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/jquery-mask-plugin/jquery.mask.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/moment/moment.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/select2/select2.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/jquery-mask-plugin/jquery.mask.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/moment/moment.min.js"></script>
     <!-- Init js-->
-    <script src="{{ asset('/') }}assets/js/pages/form-advanced.init.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/pages/form-advanced.init.js"></script>
 
     <!-- App js -->
-    <script src="{{ asset('/') }}assets/js/app.min.js"></script> --}}
+    <script src="{{ asset('/') }}public/assets/js/app.min.js"></script> --}}
       
 
 @endsection

@@ -21,7 +21,7 @@
                         <br>
                         <p  class="font-weight-bold">Sistema de Monitoreo Regional</p>
                             
-                        <img style="width:200px;text-align:center" src="{{ asset('img/LogoT02.jpg')}}">
+                        <img style="width:200px;text-align:center" src="{{ asset('public/img/LogoT02.jpg')}}">
                     </h4>
 
                     <h4 class=" text-center mb-0 "  >
