@@ -21,7 +21,7 @@
                                     <thead class="cabecera-dataTable">                                    
                                         <!-- <th>Codigo</th> -->
                                         <th>Fuente</th>
-                                        <!-- <th>Formato</th> -->
+                                        <th>Formato</th> 
                                         <th>Usuario crea</th>
                                         <th>Usuario aprueba</th>
                                         <th>Fecha version</th>
@@ -77,7 +77,7 @@
             "columns":[
                 /* {data:'id'}, */
                 {data:'nombre'},
-                /* {data:'formato'},  */
+                {data:'formato'}, 
                 {data:'unombre'},    
                 {data:'aprueba'},                 
                 {data:'fechaActualizacion'},

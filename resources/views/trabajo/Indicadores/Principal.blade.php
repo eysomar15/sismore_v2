@@ -1,426 +1,261 @@
-@extends('layouts.main',['titlePage'=>'INDICADORES'])
+@extends('layouts.main',['titlePage'=>'INDICADORES DE LA DIRECCION REGIONAL DE TRABAJO SEGÚN EL PLAN DE DESARROLLO REGIONAL CONCERTADO'])
 
 @section('content')
 
 
+{{-- 
 <div class="row">
     <div class="col-md-12 col-xl-12">
-        <div class="alert alert-info"> 
-
-            <div class="row">
-                <div class="col-md-12 col-xl-12">
-                   <div class="card-box">     
-                    <h5 class="mb-0 mt-1 text-truncate">Porcentaje de la PEA ocupada asalariada del sector privado con contrato laboral</h5>
-                 </div>
-                </div>
-            </div>
-           
-            <div class="row">
-
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">64</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2018</span></h6>
-                        </div>
-                    </div>                 
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">67</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2019</span></h6>
-                        </div>
-                    </div>                 
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">54</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2020</span></h6>        
-                        </div>
-                    </div>                  
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">54</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">Ene-Set 2021</span></h6>
-                        </div>
-                    </div>
-                </div>
-            
-            </div> <!-- end row-->
-        </div>
+       <div class="card-box">
+        <h5 class="mb-0 mt-1 text-truncate">INDICADORES DE LA DIRECCION REGIONAL DE TRABAJO SEGÚN EL PLAN DE DESARROLLO REGIONAL CONCERTADO</h5>
+      
+       </div>
     </div>
-</div><!-- end row-->
+</div> --}}
+
+
 
 <div class="row">
+    
     <div class="col-md-12 col-xl-12">
-        <div class="alert alert-primary"> 
+       <div class="card-box">
 
-            <div class="row">
-                <div class="col-md-12 col-xl-12">
-                   <div class="card-box">     
-                    <h5 class="mb-0 mt-1 text-truncate">Porcentaje de la PEA ocupada asalariada del sector privado con afiliacion a algún sistema de pensiones</h5>
-                 </div>
+        <div class="row">
+            <div class="col-md-12 col-xl-12">
+                <div class="card-box">
+                    <h5 class="mb-0 mt-0 text-truncate">FORTALECIMIENTO DE LAS CONDICIONES LABORALES</h5>
+                    <br>
                 </div>
             </div>
-           
-            <div class="row">
+        </div>
 
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">64</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
+            <div class="row">
+           
+                <div class="col-md-6 col-xl-6">
+                    <div class="alert alert-info"> 
+                      
+                        <div class="card card-border card-primary"> 
+                            <div class="card-body">
+                                <h3 class="card-title text-secundary ">Porcentaje de la PEA ocupada asalariada del sector privado con contrato</h3>
+                                <br>
+                                <div class="table-responsive">
+                                    <table style="width: 100%;" border="1px solid #000" >
+                                        <thead>
+                                            <tr>
+                                                <th  class="titulo_tabla">Indicador</th>               
+                                                <th class="titulo_tabla" > Absoluto</th>
+                                                <th class="titulo_tabla" > %</th>                        
+                                            </tr>                    
+                                        </thead>
+
+                                        <tbody>
+                                        
+                                                <tr>                                            
+                                                    <td class="titulo_tabla">Con Contrato</td>                
+                                                    <td class="titulo_tabla">22,810</td>
+                                                    <td class="titulo_tabla">22,4</td>                           
+                                                </tr> 
+                                                
+                                                <tr>                                            
+                                                    <td class="titulo_tabla">Sin Contrato</td>                
+                                                    <td class="titulo_tabla">79,006</td>
+                                                    <td class="titulo_tabla">77,6</td>                           
+                                                </tr> 
+                                        
+                                        </tbody>
+                                        
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2018</span></h6>
-                        </div>
-                    </div>                 
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">67</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2019</span></h6>
-                        </div>
-                    </div>                 
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">54</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2020</span></h6>        
-                        </div>
-                    </div>                  
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">54</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">Ene-Set 2021</span></h6>
-                        </div>
+
                     </div>
                 </div>
-            
-            </div> <!-- end row-->
-        </div>
-    </div>
-</div><!-- end row-->
 
-<div class="row">
-    <div class="col-md-12 col-xl-12">
-        <div class="alert alert-info"> 
+            
+            </div>
+
 
             <div class="row">
-                <div class="col-md-12 col-xl-12">
-                   <div class="card-box">     
-                    <h5 class="mb-0 mt-1 text-truncate">Porcentaje de la PEA ocupada asalariada del sector privado que cuenta con algún seguro de salud</h5>
-                 </div>
+                <div class="col-md-6 col-xl-6">
+                    <div class="alert alert-info"> 
+
+                        <div class="card card-border card-primary"> 
+                            <div class="card-body">
+
+                                <h3 class="card-title text-secundary ">Porcentaje de la PEA ocupada asalariada del sector privado con algún sistema de pensiones</h3>
+                                <br>
+
+                                <div class="table-responsive">
+                                    <table style="width: 100%;" border="1px solid #000" >
+                                        <thead>
+                                            <tr>
+                                                <th  class="titulo_tabla">Indicador</th>               
+                                                <th class="titulo_tabla" > Absoluto</th>
+                                                <th class="titulo_tabla" > %</th>                        
+                                            </tr>                    
+                                        </thead>
+
+                                        <tbody>
+                                        
+                                                <tr>                                            
+                                                    <td class="titulo_tabla">Afiliado</td>                
+                                                    <td class="titulo_tabla">32,132</td>
+                                                    <td class="titulo_tabla">31,6</td>                           
+                                                </tr> 
+                                                
+                                                <tr>                                            
+                                                    <td class="titulo_tabla">No Afiliado</td>                
+                                                    <td class="titulo_tabla">69,684</td>
+                                                    <td class="titulo_tabla">68,4</td>                           
+                                                </tr> 
+                                        
+                                        </tbody>
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-           
-            <div class="row">
 
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">64</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
+
+            <div class="row">
+                <div class="col-md-6 col-xl-6">
+                    <div class="alert alert-info"> 
+
+
+                        <div class="card card-border card-primary"> 
+                            <div class="card-body">
+
+                                <h3 class="card-title text-secundary ">Porcentaje de la PEA ocupada asalariada del sector privado con afiliación a algún seguro de salud</h3>
+                                <br>
+
+                                <div class="table-responsive">
+                                    <table style="width: 100%;" border="1px solid #000" >
+                                        <thead>
+                                            <tr>
+                                                <th  class="titulo_tabla">Indicador</th>               
+                                                <th class="titulo_tabla" > Absoluto</th>
+                                                <th class="titulo_tabla" > %</th>                        
+                                            </tr>                    
+                                        </thead>
+
+                                        <tbody>
+                                        
+                                                <tr>                                            
+                                                    <td class="titulo_tabla">Afiliado</td>                
+                                                    <td class="titulo_tabla">70,277</td>
+                                                    <td class="titulo_tabla">69,0</td>                           
+                                                </tr> 
+                                                
+                                                <tr>                                            
+                                                    <td class="titulo_tabla">No Afiliado</td>                
+                                                    <td class="titulo_tabla">31,539</td>
+                                                    <td class="titulo_tabla">31,0</td>                           
+                                                </tr> 
+                                        
+                                        </tbody>
+                                        
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2018</span></h6>
-                        </div>
-                    </div>                 
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">67</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2019</span></h6>
-                        </div>
-                    </div>                 
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">54</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2020</span></h6>        
-                        </div>
-                    </div>                  
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">54</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">Ene-Set 2021</span></h6>
-                        </div>
+
                     </div>
-                </div>
-            
-            </div> <!-- end row-->
-        </div>
-    </div>
-</div><!-- end row-->
-   {{-- ************************************************************************************--}}
-
-<div class="row">
-    <div class="col-md-12 col-xl-12">
-        <div class="alert alert-primary"> 
-
-            <div class="row">
-                <div class="col-md-12 col-xl-12">
-                   <div class="card-box">     
-                    <h5 class="mb-0 mt-1 text-truncate">Porcentaje de beneficiarios insertados en el mercado formal con un año o mas de tiempo de inserción</h5>
-                 </div>
                 </div>
             </div>
-           
-            <div class="row">
 
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">203</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2018</span></h6>
-                        </div>
-                    </div>                 
+            <div class="form-group row">
+                <div  class="col-md-12">
+                Fuente: INEI - Encuesta Nacional de Hogares sobre Condiciones de Vida y Pobreza        
                 </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">67</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2019</span></h6>
-                        </div>
-                    </div>                 
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">160</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2020</span></h6>        
-                        </div>
-                    </div>                  
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">67</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right"> 2021</span></h6>
-                        </div>
-                    </div>
-                </div>
-            
-            </div> <!-- end row-->
+
+            </div> 
+
         </div>
     </div>
-</div><!-- end row-->
+</div>
 
 
 <div class="row">
     <div class="col-md-12 col-xl-12">
-        <div class="alert alert-info"> 
-
-            <div class="row">
-                <div class="col-md-12 col-xl-12">
-                   <div class="card-box">     
-                    <h5 class="mb-0 mt-1 text-truncate">Porcentaje de beneficiarios con discapacidad insertados en el mercado formal con un año o mas de tiempo de inserción</h5>
-                 </div>
-                </div>
-            </div>
-           
-            <div class="row">
-
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">0</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2018</span></h6>
-                        </div>
-                    </div>                 
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">50</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2019</span></h6>
-                        </div>
-                    </div>                 
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">85</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right">2020</span></h6>        
-                        </div>
-                    </div>                  
-                </div>
-            
-                <div class="col-md-6 col-xl-3">
-                    <div class="card-box">
-                        <div class="media">
-                            <div class="media-body align-self-center">
-                                <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold"><span data-plugin="counterup">90</span></h4> 
-                                    <p class="mb-0 mt-1 text-truncate">%</p>                 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <h6 class="text-uppercase">Año <span class="float-right"> 2021</span></h6>
-                        </div>
-                    </div>
-                </div>
-            
-            </div> <!-- end row-->
+       <div class="card-box">     
+            @include('trabajo.Indicadores.PeaParcial')
         </div>
     </div>
-</div><!-- end row-->
-   {{-- ************************************************************************************--}}
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-12 col-xl-12">
+       <div class="card-box">     
+            @include('trabajo.Indicadores.PeaIPMParcial')
+        </div>
+    </div>
+
+</div>
+@endsection
 
 
 
+
+@section('js')
+
+    <script src="{{ asset('/') }}assets/libs/highcharts/highcharts.js"></script>
+    <script src="{{ asset('/') }}assets/libs/highcharts/highcharts-more.js"></script>
+    <script src="{{ asset('/') }}assets/libs/highcharts-modules/exporting.js"></script>
+    <script src="{{ asset('/') }}assets/libs/highcharts-modules/export-data.js"></script>
+    <script src="{{ asset('/') }}assets/libs/highcharts-modules/accessibility.js"></script>
+
+    <script type="text/javascript"> 
+        
+        $(document).ready(function() {
+            cargar_datos() ;        
+        });
+
+
+        function cargar_datos(){
+            Grafico_PEA();
+            Grafico_PEA_IPM();
+        }
+
+        function Grafico_PEA() {
+            
+            $.ajax({  
+                headers: {
+                     'X-CSRF-TOKEN': $('input[name=_token]').val()
+                },                           
+                url: "{{ url('/') }}/IndicadorTrabajo/Grafico_PEA/" + 0,
+                type: 'post',
+            }).done(function (data) {               
+                $('#Grafico_PEA').html(data);
+            }).fail(function () {
+                alert("Lo sentimos a ocurrido un error");
+            });
+        }
+
+        function Grafico_PEA_IPM() {
+            
+            $.ajax({  
+                headers: {
+                     'X-CSRF-TOKEN': $('input[name=_token]').val()
+                },                           
+                url: "{{ url('/') }}/IndicadorTrabajo/Grafico_PEA_IPM/" + 0,
+                type: 'post',
+            }).done(function (data) {               
+                $('#Grafico_PEA_IPM').html(data);
+            }).fail(function () {
+                alert("Lo sentimos a ocurrido un error");
+            });
+        }
+
+
+       
+       
+    </script>
+    
 @endsection

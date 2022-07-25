@@ -23,6 +23,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Parametro\ClasificadorController;
 use App\Http\Controllers\Parametro\FuenteImportacionController;
 use App\Http\Controllers\Presupuesto\ImporGastosController;
+use App\Http\Controllers\Trabajo\ActividadController;
 use App\Http\Controllers\Trabajo\AnuarioEstadisticoController;
 use App\Http\Controllers\Trabajo\IndicadorTrabajoController;
 use App\Http\Controllers\Trabajo\ProEmpleoController;
@@ -401,6 +402,8 @@ Route::get('/ProEmpleo/Importar', [ProEmpleoController::class, 'importar'])->nam
 Route::post('/ProEmpleo/Importar', [ProEmpleoController::class, 'guardar'])->name('ProEmpleo.guardar');
 
 Route::get('/IndicadorTrabajo/Importar', [IndicadorTrabajoController::class, 'importar'])->name('trabajo.indicador');
+Route::post('/IndicadorTrabajo/Grafico_PEA/{id}', [IndicadorTrabajoController::class, 'Grafico_PEA'])->name('trabajo.Grafico_PEA');
+Route::post('/IndicadorTrabajo/Grafico_PEA_IPM/{id}', [IndicadorTrabajoController::class, 'Grafico_PEA_IPM'])->name('trabajo.Grafico_PEA_IPM');
 
 Route::get('/ProEmpleo/Aprobar/{importacion_id}', [ProEmpleoController::class, 'aprobar'])->name('ProEmpleo.aprobar');
 Route::post('/ProEmpleo/Aprobar/procesar/{importacion_id}', [ProEmpleoController::class, 'procesar'])->name('ProEmpleo.procesar');
@@ -431,7 +434,13 @@ Route::post('/AnuarioEstadistico/Grafico_ranking_promedio_remuneracion_regiones/
 
 
 Route::get('/AnuarioEstadistico/rptTrabajadoresSectorPrivado/', [AnuarioEstadisticoController::class, 'rptTrabajadoresSectorPrivado'])->name('AnuarioEstadistico.rptTrabajadoresSectorPrivado');
-// Route::get('/AnuarioEstadistico/rptPromedioPrestaServ/', [AnuarioEstadisticoController::class, 'rptPromedioPrestaServ'])->name('AnuarioEstadistico.rptPromedioPrestaServ');
+Route::get('/AnuarioEstadistico/rptEmpresasSectorPrivado/', [AnuarioEstadisticoController::class, 'rptEmpresasSectorPrivado'])->name('AnuarioEstadistico.rptEmpresasSectorPrivado');
 
-Route::get('/AnuarioEstadistico/rptPrestadoresServ4taPublico/', [AnuarioEstadisticoController::class, 'rptPrestadoresServ4taPublico'])->name('AnuarioEstadistico.rptPrestadoresServ4taPublico');
-Route::get('/AnuarioEstadistico/rptPrestadoresServ4taPrivado/', [AnuarioEstadisticoController::class, 'rptPrestadoresServ4taPrivado'])->name('AnuarioEstadistico.rptPrestadoresServ4taPrivado');
+Route::get('/AnuarioEstadistico/rptPrestadoresServ4taCategoria/', [AnuarioEstadisticoController::class, 'rptPrestadoresServ4taCategoria'])->name('AnuarioEstadistico.rptPrestadoresServ4taCategoria');
+Route::post('/AnuarioEstadistico/Grafico_ranking_promedio_prestadores_servicio4ta/{id}', [AnuarioEstadisticoController::class, 'Grafico_ranking_promedio_prestadores_servicio4ta'])->name('AnuarioEstadistico.Grafico_ranking_promedio_prestadores_servicio4ta');
+Route::post('/AnuarioEstadistico/Grafico_ranking_empresas_regiones/{id}', [AnuarioEstadisticoController::class, 'Grafico_ranking_empresas_regiones'])->name('AnuarioEstadistico.Grafico_ranking_empresas_regiones');
+Route::post('/AnuarioEstadistico/Grafico_promedio_Empresas_sectorPrivado/{id}', [AnuarioEstadisticoController::class, 'Grafico_promedio_Empresas_sectorPrivado'])->name('AnuarioEstadistico.Grafico_promedio_Empresas_sectorPrivado');
+
+Route::get('/Actividades/Principal', [ActividadController::class, 'Principal'])->name('Actividades.Principal');
+
+// Route::get('/AnuarioEstadistico/rptPrestadoresServ4taPrivado/', [AnuarioEstadisticoController::class, 'rptPrestadoresServ4taPrivado'])->name('AnuarioEstadistico.rptPrestadoresServ4taPrivado');

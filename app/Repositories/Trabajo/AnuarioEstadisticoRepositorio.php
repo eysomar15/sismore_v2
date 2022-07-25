@@ -131,4 +131,40 @@ class AnuarioEstadisticoRepositorio
 
         return $data;
      }
+
+
+     public static function ranking_promedio_prestadores_servicio4ta()
+     {
+        $data = DB::table(
+                    DB::raw( 
+                         "(
+                              select anio,
+                              sum(case when fuenteImportacion_id = 21 then promedio else 0 end) as publico,
+                              sum(case when fuenteImportacion_id = 22 then promedio else 0 end) as privado
+                              from 
+                              (
+                                   select fuenteImportacion_id,anio, 
+                                   (sum(enero + febrero + marzo + abril + mayo + junio + julio + agosto + setiembre + octubre + noviembre + diciembre))/12 as promedio
+                                   from tra_anuario_estadistico as anuE
+                                   inner join par_importacion as imp on anuE.importacion_id = imp.id
+                                   inner join par_anio as anio on anuE.anio_id = anio.id
+                                   where fuenteImportacion_id in (21,22)
+                                   and imp.estado = 'PR' and ubigeo_id = 34
+                                   group by fuenteImportacion_id,anio
+                              )
+                              as datos
+                              group by anio                    
+                         ) as datos"
+                    )
+               )
+
+            ->get([
+               
+                DB::raw('anio'),
+                DB::raw('publico') ,
+                DB::raw('privado')               
+            ]);
+
+        return $data;
+     }
 }

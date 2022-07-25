@@ -65,7 +65,8 @@
                                         <option value=19>Promedio de Remuneración Trabajadores del Sector Privado </option>
                                         <option value=20>Trabajadores del Sector Privado </option>       
                                         <option value=21>Prestadores de Servicio 4ta Categoria - Sector Público </option> 
-                                        <option value=22>Prestadores de Servicio 4ta Categoria - Sector Privado </option>                                                                                       
+                                        <option value=22>Prestadores de Servicio 4ta Categoria - Sector Privado </option>    
+                                        <option value=23>Empresas - Sector Privado </option>                                                                                   
                                     </select>
                                 </div>
                             </div>

@@ -28,11 +28,18 @@ class ImportacionController extends Controller
         //  ->get();
 
         $data = ImportacionRepositorio::Listar_Importaciones(session('sistema_id'));
-
+       
         return  datatables()::of($data)
             ->addColumn('action', function ($data) {
 
-                if ($data->estado == "APROBADO") {
+                if($data->estado=="APROBADO")
+                {   
+                    switch ($data->codigo) {    
+                        default: $acciones = '&nbsp<button type="button" name="hy" class=" btn btn-secondary btn-sm"> <i class="fa fa-check"></i>  </button>';break;
+                    }   
+                }
+                else
+                {
                     switch ($data->codigo) {
                         case('COD01'): $acciones = '<a href="PadronWeb/Aprobar/' . $data->id . '"   class="btn btn-info btn-sm"> <i class="fa fa-check"></i> </a>';break;
                         case('COD02'): $acciones = '<a href="CuadroAsigPersonal/Aprobar/' . $data->id . '"   class="btn btn-info btn-sm"> <i class="fa fa-check"></i> </a>';break;
@@ -43,11 +50,10 @@ class ImportacionController extends Controller
                         case('COD09'): $acciones = '<a href="Tableta/Aprobar/' . $data->id . '"   class="btn btn-info btn-sm"> <i class="fa fa-check"></i> </a>';break;
                         case('COD10'): $acciones = '<a href="Matricula/AprobarConsolidadoAnual/' . $data->id . '"   class="btn btn-info btn-sm"> <i class="fa fa-check"></i> </a>';break; 
                         case('COD11'): $acciones = '<a href="PEmapacopsa/Aprobar/' . $data->id . '"   class="btn btn-info btn-sm"> <i class="fa fa-check"></i> </a>';break;
-    
+
                         case('COD18'): $acciones = '<a href="ProEmpleo/Aprobar/' . $data->id . '"   class="btn btn-info btn-sm"> <i class="fa fa-check"></i> </a>';break;
                         case('COD19'||'COD20'): $acciones = '<a href="AnuarioEstadistico/Aprobar/' . $data->id . '"   class="btn btn-info btn-sm"> <i class="fa fa-check"></i> </a>';break;
                        
-                        
                         default: $acciones = '<a href="PadronWeb/AprobarNN/' . $data->id . '"   class="btn btn-info btn-sm"> <i class="fa fa-check"></i> </a>';break;
                     }   
                 }          
@@ -55,14 +61,15 @@ class ImportacionController extends Controller
                 $acciones .= '&nbsp<button type="button" name="delete" id = "' . $data->id . '" class="delete btn btn-danger btn-sm">  <i class="fa fa-trash"></i> </button>';
                 return $acciones;
             })
-            ->editColumn('fechaActualizacion', function ($data) {
-                return date('d-m-Y', strtotime($data->fechaActualizacion));
+            ->editColumn('fechaActualizacion',function($data){
+                return date('d-m-Y',strtotime($data->fechaActualizacion));
+
             })
             /* ->editColumn('apellidos',function($data){
                 return date('d-m-Y',strtotime($data->fechaActualizacion));
 
             }) */
-            ->rawColumns(['action', 'fechaActualizacion'/* ,'apellidos' */])
+            ->rawColumns(['action','fechaActualizacion'/* ,'apellidos' */])
             ->make(true);
         // ->toJson();
     }
