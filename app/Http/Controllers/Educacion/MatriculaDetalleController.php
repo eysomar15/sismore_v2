@@ -42,7 +42,7 @@ class MatriculaDetalleController extends Controller
         $gestion = $rq->gestion;
         $area = $rq->area;
 
-        $optgestion = $gestion == 0 ? "" : " and v8.id=$gestion ";
+        $optgestion = $gestion == 0 ? "" : " and v8.idx=$gestion ";
         $optarea = $area == 0 ? "" : " and v9.id=$area ";
 
         $error['ano'] = $ano;
