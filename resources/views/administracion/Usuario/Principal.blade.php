@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css">
 
     <!-- Plugins css -->
-    {{-- <link href="{{ asset('/') }}assets/libs/select2/select2.min.css" rel="stylesheet" type="text/css" /> --}}
+    {{-- <link href="{{ asset('/') }}public/assets/libs/select2/select2.min.css" rel="stylesheet" type="text/css" /> --}}
 
     <style>
         .centrarmodal {
@@ -512,7 +512,7 @@
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
-    {{-- <script src="{{ asset('/') }}assets/js/app.min.js"></script> --}}
+    {{-- <script src="{{ asset('/') }}public/assets/js/app.min.js"></script> --}}
     <script>
         /* var id;
                                                                             //.delete nombre con el que se le llamo en el controlador al boton eliminar

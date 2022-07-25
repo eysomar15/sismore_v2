@@ -10,20 +10,20 @@
     <meta content="Coderthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('/') }}assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('/') }}public/assets/images/favicon.ico">
 
     <!-- Plugins css-->
-    <link href="{{ asset('/') }}assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 
     <!-- App css -->
-    <link href="{{ asset('/') }}assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"
+    <link href="{{ asset('/') }}public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"
         id="bootstrap-stylesheet" />
-    <link href="{{ asset('/') }}assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/') }}assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+    <link href="{{ asset('/') }}public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
 
     {{-- {{assets('/')}} --}}
     <!-- estilos personalizados XD-->
-    <link rel="stylesheet" href="{{ asset('/') }}assets/css/otros/personalizado.css" type='text/css'>
+    <link rel="stylesheet" href="{{ asset('/') }}public/assets/css/otros/personalizado.css" type='text/css'>
 </head>
 
 <body>
@@ -84,8 +84,8 @@
         <!-- ============================================================== -->
         <!-- Start Page Content here -->
         <!-- ============================================================== -->
-        <div class="content-page">
-        </div>
+        {{-- <div class="content-page">
+        </div> --}}
         <!-- ============================================================== -->
         <!-- End Page content -->
         <!-- ============================================================== -->
@@ -234,20 +234,20 @@
 
 
     <!-- Vendor js -->
-    <script src="{{ asset('/') }}assets/js/vendor.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/vendor.min.js"></script>
 
-    <script src="{{ asset('/') }}assets/libs/moment/moment.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/jquery-scrollto/jquery.scrollTo.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/moment/moment.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/jquery-scrollto/jquery.scrollTo.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
     <!-- Chat app -->
-    <script src="{{ asset('/') }}assets/js/pages/jquery.chat.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/pages/jquery.chat.js"></script>
 
     <!-- Todo app -->
-    <script src="{{ asset('/') }}assets/js/pages/jquery.todo.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/pages/jquery.todo.js"></script>
 
-    <script src="{{ asset('/') }}assets/libs/toastr/toastr.min.js"></script>
-    <script src="{{ asset('/') }}assets/js/bootbox.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/toastr/toastr.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/bootbox.js"></script>
 
 
     <!-- flot chart -->
@@ -264,7 +264,7 @@
     {{-- <script src="assets/js/pages/dashboard.init.js"></script> --}}
 
     <!-- App js -->
-    <script src="{{ asset('/') }}assets/js/app.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/app.min.js"></script>
     <script>
         var table_language = {
             "lengthMenu": "Mostrar " +

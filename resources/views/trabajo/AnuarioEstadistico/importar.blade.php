@@ -108,8 +108,8 @@
 @endsection
 
 @section('js')
-      <script src="{{ asset('/') }}assets/libs/jquery-validation/jquery.validate.min.js"></script>
+      <script src="{{ asset('/') }}public/assets/libs/jquery-validation/jquery.validate.min.js"></script>
       <!-- Validation init js-->
-      <script src="{{ asset('/') }}assets/js/pages/form-validation.init.js"></script>
+      <script src="{{ asset('/') }}public/assets/js/pages/form-validation.init.js"></script>
 
 @endsection

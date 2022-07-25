@@ -5,7 +5,7 @@
         <script>
           document.write(new Date().getFullYear())
       </script>
-      Derechos Reservados GRU
+      Derechos Reservados GRU-DREU
       </div>
   </div>
 </footer>

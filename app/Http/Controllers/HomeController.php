@@ -182,31 +182,35 @@ class HomeController extends Controller
         $imp3 = ImportacionRepositorio::Max_porfuente(2);
         $mat = Matricula::where('importacion_id', $imp2)->first();
         
+
         if (count($imp) > 0 && $imp2 != null && $imp3 != null) {
             $importacion_id = $imp['id'];
+            $matricula_id = $mat->id;
 
             $info['se'] = PadronWebRepositorio::count_institucioneducativa($imp['id']);
             $info['le'] = PadronWebRepositorio::count_localesescolares($imp['id']);
             $info['tm'] = MatriculaDetalleRepositorio::count_matriculados($mat->id);
             $info['do'] = PlazaRepositorio::count_docente($imp3);
 
-            $info['g1'] = MatriculaDetalleRepositorio::estudiantes_matriculadosEBR_EBE_anual();
+            /* $info['g1'] = MatriculaDetalleRepositorio::estudiantes_matriculadosEBR_EBE_anual();
             $info['g2'] = PlazaRepositorio::docentes_conteo_anual();
 
             $info['g3'] = MatriculaDetalleRepositorio::estudiantes_matriculados_segungenero();
-            $info['g4'] = PlazaRepositorio::docentes_segungenero_anual();
+            $info['g4'] = PlazaRepositorio::docentes_segungenero_anual(); */
 
-            $info['g5'] = MatriculaDetalleRepositorio::estudiantes_matriculados_seguntipogestion();
+            /* $info['g5'] = MatriculaDetalleRepositorio::estudiantes_matriculados_seguntipogestion();
             $info['g6'] = PlazaRepositorio::docentes_seguntipogestion();
 
             $info['g7'] = MatriculaDetalleRepositorio::estudiantes_matriculados_segunareageografica();
             $info['g8'] = PlazaRepositorio::docentes_segunareageograficas();
 
             $info['g9'] = MatriculaDetalleRepositorio::estudiantes_matriculados_segunaugel();
-            $info['g10'] = PlazaRepositorio::docentes_segunugel();
+            $info['g10'] = PlazaRepositorio::docentes_segunugel(); */
 
-            $info['dt4'] = MatriculaDetalleRepositorio::listar_estudiantesNivelProvinciaDistrito();
-            return  view('home', compact('importacion_id', 'info', 'imp'));
+            $info['dt0'] = MatriculaDetalleRepositorio::listar_estudiantesMatriculadosDeEducacionBasicaPorUgel();
+            $info['dt1'] = PadronWebRepositorio::listar_totalServicosLocalesSecciones();
+            /* $info['dt4'] = MatriculaDetalleRepositorio::listar_estudiantesNivelProvinciaDistrito(); */
+            return  view('home', compact('importacion_id', 'info', 'imp', 'matricula_id'));
         } else {
             $importacion_id = null;
             $importables['padron_web'] = count($imp) == 0;
@@ -215,6 +219,38 @@ class HomeController extends Controller
             return  view('home', compact('importacion_id', 'importables'));
         }
     }
+
+    public function homegrafica1()
+    {
+        $info = MatriculaDetalleRepositorio::estudiantes_matriculadosEBR_EBE_anual();
+        return response()->json(compact('info'));
+    }
+    public function homegrafica2()
+    {
+        $info = PlazaRepositorio::docentes_conteo_anual();
+        return response()->json(compact('info'));
+    }
+    public function homegrafica3()
+    {
+        $info = MatriculaDetalleRepositorio::estudiantes_matriculados_segungenero();
+        return response()->json(compact('info'));
+    }
+    public function homegrafica4()
+    {
+        $info = PlazaRepositorio::docentes_segungenero_anual();
+        return response()->json(compact('info'));
+    }
+    public function homegrafica5()
+    {
+        $info = MatriculaDetalleRepositorio::estudiantes_matriculados_segunareageografica();
+        return response()->json(compact('info'));
+    }
+    public function homegrafica6()
+    {
+        $info =  PlazaRepositorio::docentes_segunareageograficas();
+        return response()->json(compact('info'));
+    }
+
     public function educacionx($sistema_id)
     {
         $instituciones_activas = 0;

@@ -58,7 +58,7 @@ class CuadroAsigPersonalController extends Controller
         $array = (new tablaXImport)->toArray($archivo);
 
         //$this->json_output(200, 'aqui tamos', $array);
-        
+
         if (count($array) != 1) {
             $this->json_output(400, 'Error de Hojas, Solo debe tener una HOJA, el LIBRO EXCEL');
         }
@@ -126,7 +126,7 @@ class CuadroAsigPersonalController extends Controller
                 }
             }
         } catch (Exception $e) {
-            $mensaje = "Formato de archivo no reconocido, porfavor verifique si el formato es el correcto y vuelva a importar.<br>". $e;
+            $mensaje = "Formato de archivo no reconocido, porfavor verifique si el formato es el correcto y vuelva a importar.<br>" . $e;
             $this->json_output(403, $mensaje);
         }
 
@@ -200,7 +200,7 @@ class CuadroAsigPersonalController extends Controller
             $importacion->estado = 'EL';
             $importacion->save();
 
-            $mensaje = "Error en la carga de datos, verifique los datos de su archivo y/o comuniquese con el administrador del sistema .<br>". $e;
+            $mensaje = "Error en la carga de datos, verifique los datos de su archivo y/o comuniquese con el administrador del sistema .<br>" . $e;
             $this->json_output(400, $mensaje);
         }
 
@@ -210,7 +210,7 @@ class CuadroAsigPersonalController extends Controller
             $importacion->estado = 'EL';
             $importacion->save();
 
-            $mensaje = "Error al procesar la normalizacion de datos.<br>". $e;
+            $mensaje = "Error al procesar la normalizacion de datos.<br>" . $e;
             $this->json_output(400, $mensaje);
         }
         $mensaje = "Archivo excel subido y Procesado correctamente .";
@@ -222,14 +222,32 @@ class CuadroAsigPersonalController extends Controller
         $data = ImportacionRepositorio::Listar_FuenteTodos('2');
         return datatables()
             ->of($data)
-            ->editColumn('fechaActualizacion', '{{date("d-m-Y",strtotime($fechaActualizacion))}}')
+            ->editColumn('fechaActualizacion', '{{date("d/m/Y",strtotime($fechaActualizacion))}}')
+            ->editColumn('created_at', '{{date("d/m/Y",strtotime($created_at))}}')
             ->editColumn('estado', function ($query) {
                 return $query->estado == "PR" ? "PROCESADO" : ($query->estado == "PE" ? "PENDIENTE" : "ELIMINADO");
             })
             ->addColumn('accion', function ($oo) {
-                return '<button type="button" onclick="geteliminar(' . $oo->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+                if (date('Y-m-d', strtotime($oo->created_at)) == date('Y-m-d') || session('perfil_id') == 3 || session('perfil_id') == 8 || session('perfil_id') == 9 || session('perfil_id') == 10 || session('perfil_id') == 11)
+                    $msn = '<button type="button" onclick="geteliminar(' . $oo->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+                else
+                    $msn = '';
+                return $msn;
             })
-            ->rawColumns(['fechaActualizacion', 'estado', 'accion'])
+            ->addColumn('nombrecompleto', function ($oo) {
+                $nom = '';
+                if (strlen($oo->cnombre) > 0) {
+                    $xx = explode(' ', $oo->cnombre);
+                    $nom = $xx[0];
+                }
+                $ape = '';
+                if (strlen($oo->capellidos) > 0) {
+                    $xx = explode(' ', $oo->capellidos);
+                    $ape = $xx[0];
+                }
+                return $nom . ' ' . $ape;
+            })
+            ->rawColumns(['fechaActualizacion', 'estado', 'accion', 'nombrecompleto'])
             ->toJson();
     }
 

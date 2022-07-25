@@ -1,7 +1,7 @@
-@extends('layouts.main',['titlePage'=>'IMPORTAR DATOS - PADRON WEB DE INSTITUCIONES EDUCATIVAS'])
+@extends('layouts.main',['titlePage'=>'IMPORTAR DATOS - MATRICULAS SIAGIE'])
 @section('css')
     <!-- Table datatable css -->
-    <link href="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"> --}}
 @endsection
 @section('content')
@@ -47,7 +47,7 @@
                                 <div class="form-group row">
                                     <label class="col-md-2 col-form-label">Fuente de datos</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" readonly="readonly" value="SIAGIE">
+                                        <input type="text" class="form-control" readonly="readonly" value="SIAGIE - MATRICULA">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -131,7 +131,7 @@
                                                 <th>N°</th>
                                                 <th>Fecha Version</th>
                                                 <th>Fuente</th>
-                                                <th>Creador</th>
+                                                <th>Usuario</th>
                                                 <th>Registro</th>
                                                 <th>Comentario</th>
                                                 <th>Estado</th>
@@ -173,7 +173,7 @@
                         data: 'fuente'
                     },
                     {
-                        data: 'cnombre'
+                        data: 'nombrecompleto'
                     },
                     {
                         data: 'created_at'
@@ -288,12 +288,12 @@
             });
         };
     </script>
-    <script src="{{ asset('/') }}assets/libs/jquery-validation/jquery.validate.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/jquery-validation/jquery.validate.min.js"></script>
     <!-- Validation init js-->
-    <script src="{{ asset('/') }}assets/js/pages/form-validation.init.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/pages/form-validation.init.js"></script>
 
-    <script src="{{ asset('/') }}assets/libs/datatables/jquery.dataTables.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/datatables/dataTables.responsive.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
 @endsection

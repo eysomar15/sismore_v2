@@ -1,7 +1,8 @@
-@extends('layouts.main',['activePage'=>'importacion','titlePage'=>''])
+@extends('layouts.main', ['activePage' => 'importacion', 'titlePage' => ''])
 
 @section('css')
-    <link href="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
 @endsection
 
 @section('content')
@@ -11,9 +12,10 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-body">
-                        <form action="" name="form_parametros">
-                            <input type="hidden" id="importacion_id" name="importacion_id">
+                    <div class="card-body mb-0 pb-0">
+                        <form action="" name="form_parametros" id="form_parametros" method="POST">
+                            @csrf
+                            {{-- <input type="hidden" id="importacion_id" name="importacion_id"> --}}
                             <div class="row">
                                 <div class="col-md-6">
                                     <p class="titulo_Indicadores  mb-0">REPORTE DE PLAZAS DOCENTES</p>
@@ -23,10 +25,10 @@
                                         <div class="col-md-4"></div>
                                         <label class="col-md-4 col-form-label">Año:</label>
                                         <div class="col-md-4">
-                                            <select id="anio" name="anio" class="form-control" onchange="cargarUltimo();">
+                                            <select id="anio" name="anio" class="form-control"
+                                                onchange="cargardatos();">
                                                 @foreach ($anios as $item)
-                                                    <option value="{{ $item->anio }}"> {{ $item->anio }}
-                                                    </option>
+                                                    <option value="{{ $item->anio }}"> {{ $item->anio }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -34,10 +36,10 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="progress progress-sm m-0">
+                        {{-- <div class="progress progress-sm m-0">
                             <div class="progress-bar bg-info" role="progressbar" aria-valuenow="60" aria-valuemin="0"
                                 aria-valuemax="100" style="width: 100%"></div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -228,14 +230,19 @@
                         <h3 class="card-title text-primary ">TOTAL DE PLAZAS DE CONTRATADOS Y NOMBRADOS
                             {{-- SEGUN UGEL Y --}} NIVEL EDUCATIVO</h3>
                     </div>
-                    <div class="card-body" id="vista1">
+                    <div class="card-body">
+                        <div class="table-responsive" id="vista1">
+                        </div>
+                        <p class="text-muted font-13 m-0 p-0 text-right">
+                            Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span id="fechaActualizacion"></span>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
         {{-- end  row --}}
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -257,7 +264,7 @@
                     </div>
                 </div>
             </div> <!-- End col -->
-        </div> <!-- End row -->
+        </div> <!-- End row --> --}}
 
     </div>
 @endsection
@@ -286,11 +293,146 @@
                     thousandsSep: ","
                 }
             });
-             
-            cargarUltimo();
+
+            cargardatos();
+
         });
 
-        function cargarMes() {
+        function cargardatos() {
+            $.ajax({
+                url: "{{ route('nexus.contratacion.head') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    $('.opt1').html(data.info.opt1.toLocaleString('en-IN'));
+                    $('.opt2').html(data.info.opt2.toLocaleString('en-IN'));
+                    $('.opt3').html(data.info.opt3.toLocaleString('en-IN'));
+                    $('.opt4').html(data.info.opt4.toLocaleString('en-IN'));
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra1') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal1', data.info.v1, '', 'PLAZAS SEGUN UNIDAD DE GESTION EDUCATIVA<br>Fuente:NEXUS', '');
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra2') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal2', data.info.v2, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra3') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal3', data.info.v3, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra4') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal4', data.info.v4, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra5') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal5', data.info.v5, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra6') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal6', data.info.v6, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra7') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal7', data.info.v7, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra8') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal8', data.info.v8, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.dt1') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    $('#vista1').html(data.info.DT.table);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        }
+        /* function cargarMes() {
             $.ajax({
                 url: "{{ url('/') }}/Plaza/Mes/" + $('#anio').val(),
                 type: 'get',
@@ -312,9 +454,9 @@
                     console.log(jqXHR);
                 },
             });
-        }
+        } */
 
-        function cargarUltimo() {
+        /* function cargarUltimo() {
             $.ajax({
                 url: "{{ url('/') }}/Plaza/UltimoImportado/" + $('#anio').val() + "/0",
                 type: 'get',
@@ -329,7 +471,7 @@
                     console.log(jqXHR);
                 },
             });
-        }
+        } */
 
         function getFecha(f) {
             var d = f.getDate() < 10 ? "0" + f.getDate() : f.getDate();
@@ -358,7 +500,8 @@
                     gSimpleColumn('anal5', data.info.v5, '', 'PLAZAS DOCENTE SEGUN SITUACION LABORAL', '');
                     gSimpleColumn('anal6', data.info.v6, '', 'PLAZAS DOCENTE SEGUN REGIMEN LABORAL', '');
                     gSimpleColumn('anal7', data.info.v7, '', 'PLAZAS DOCENTE SEGUN AÑO', '');
-                    gSimpleColumn('anal8', data.info.v8, '', 'PLAZAS DOCENTE '+$('#anio').val()+' POR MES', '');
+                    gSimpleColumn('anal8', data.info.v8, '', 'PLAZAS DOCENTE ' + $('#anio').val() + ' POR MES',
+                        '');
                     $('#vista1').html(data.info.DT.table);
                     /* $('#tabla1').DataTable({
                         "order": false,
@@ -570,14 +713,14 @@
         }
     </script>
 
-    <script src="{{ asset('/') }}assets/libs/highcharts/highcharts.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts/highcharts-more.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts-modules/exporting.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts-modules/export-data.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts-modules/accessibility.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts-more.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/exporting.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/export-data.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/accessibility.js"></script>
 
-    <script src="{{ asset('/') }}assets/libs/datatables/jquery.dataTables.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/datatables/dataTables.responsive.min.js"></script>
-    <script src="{{ asset('/') }}assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
 @endsection

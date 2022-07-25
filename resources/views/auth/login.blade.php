@@ -9,17 +9,17 @@
     <meta content="Coderthemes" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ asset('/') }}assets/images/favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('/') }}public/assets/images/favicon.ico">
 
     <!-- App css -->
-    <link href="{{ asset('/') }}assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
-    <link href="{{ asset('/') }}assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/') }}assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
-    <link href="{{ asset('/') }}assets/css/otros/personalizado.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet" />
+    <link href="{{ asset('/') }}public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+    <link href="{{ asset('/') }}public/assets/css/otros/personalizado.css" rel="stylesheet" type="text/css" />
 
 </head>
 
-<body class="" style="background-image: url('{{asset('/')}}/img/fondo1.jpg');background-size: 100% 100%;">
+<body class="" style="background-image: url('{{asset('/')}}/public/img/fondo1.jpg');background-size: 100% 100%;">
     <div class="container">
             
         <div class="row"><br> </div>
@@ -35,7 +35,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="">
-                <img style="width:250px;text-align:center" src="{{ asset('img/logoblanco.png')}}">
+                <img style="width:250px;text-align:center" src="{{ asset('public/img/logoblanco.png')}}">
             </div>
         </div>
         <br>

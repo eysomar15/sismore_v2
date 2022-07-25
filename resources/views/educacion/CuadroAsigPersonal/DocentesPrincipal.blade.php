@@ -204,11 +204,11 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('/') }}assets/libs/highcharts/highcharts.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts/highcharts-more.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts-modules/exporting.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts-modules/export-data.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts-modules/accessibility.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts-more.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/exporting.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/export-data.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/accessibility.js"></script>
 
     <script type="text/javascript">
         var nombre_mes = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE",

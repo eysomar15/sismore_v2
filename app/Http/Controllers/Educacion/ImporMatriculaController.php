@@ -183,17 +183,36 @@ class ImporMatriculaController extends Controller
 
     public function ListarDTImportFuenteTodos()
     {
+        $permitidos = [3, 8, 9, 10, 11];
         $data = ImportacionRepositorio::Listar_FuenteTodos('8');
         return datatables()
             ->of($data)
-            ->editColumn('fechaActualizacion', '{{date("d-m-Y",strtotime($fechaActualizacion))}}')
+            ->editColumn('fechaActualizacion', '{{date("d/m/Y",strtotime($fechaActualizacion))}}')
+            ->editColumn('created_at', '{{date("d/m/Y",strtotime($created_at))}}')
             ->editColumn('estado', function ($query) {
                 return $query->estado == "PR" ? "PROCESADO" : ($query->estado == "PE" ? "PENDIENTE" : "ELIMINADO");
             })
             ->addColumn('accion', function ($oo) {
-                return '<button type="button" onclick="geteliminar(' . $oo->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+                if (date('Y-m-d', strtotime($oo->created_at)) == date('Y-m-d') || session('perfil_id') == 3 || session('perfil_id') == 8 || session('perfil_id') == 9 || session('perfil_id') == 10 || session('perfil_id') == 11)
+                    $msn = '<button type="button" onclick="geteliminar(' . $oo->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+                else
+                    $msn = '';
+                return $msn;
             })
-            ->rawColumns(['fechaActualizacion', 'estado', 'accion'])
+            ->addColumn('nombrecompleto', function ($oo) {
+                $nom = '';
+                if (strlen($oo->cnombre) > 0) {
+                    $xx = explode(' ', $oo->cnombre);
+                    $nom = $xx[0];
+                }
+                $ape = '';
+                if (strlen($oo->capellidos) > 0) {
+                    $xx = explode(' ', $oo->capellidos);
+                    $ape = $xx[0];
+                }
+                return $nom . ' ' . $ape . '-' . session('perfil_id');
+            })
+            ->rawColumns(['fechaActualizacion', 'estado', 'accion', 'created_at', 'nombrecompleto'])
             ->toJson();
     }
 

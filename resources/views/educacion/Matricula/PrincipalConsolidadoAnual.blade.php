@@ -2,7 +2,7 @@
 
 @section('css')
     
-    <link href="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
 @endsection 
 
@@ -249,15 +249,15 @@
 @section('js')
 
 
-<script src="{{ asset('/') }}assets/libs/isotope/isotope.pkgd.min.js"></script>
-<script src="{{ asset('/') }}assets/libs/magnific-popup/jquery.magnific-popup.min.js"></script>
-<script src="{{ asset('/') }}assets/js/pages/gallery.init.js"></script>
+<script src="{{ asset('/') }}public/assets/libs/isotope/isotope.pkgd.min.js"></script>
+<script src="{{ asset('/') }}public/assets/libs/magnific-popup/jquery.magnific-popup.min.js"></script>
+<script src="{{ asset('/') }}public/assets/js/pages/gallery.init.js"></script>
 
-<script src="{{ asset('/') }}assets/libs/highcharts/highcharts.js"></script>
-<script src="{{ asset('/') }}assets/libs/highcharts/highcharts-more.js"></script>
-<script src="{{ asset('/') }}assets/libs/highcharts-modules/exporting.js"></script>
-<script src="{{ asset('/') }}assets/libs/highcharts-modules/export-data.js"></script>
-<script src="{{ asset('/') }}assets/libs/highcharts-modules/accessibility.js"></script>
+<script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts.js"></script>
+<script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts-more.js"></script>
+<script src="{{ asset('/') }}public/assets/libs/highcharts-modules/exporting.js"></script>
+<script src="{{ asset('/') }}public/assets/libs/highcharts-modules/export-data.js"></script>
+<script src="{{ asset('/') }}public/assets/libs/highcharts-modules/accessibility.js"></script>
 
 
 {{-- https://www.youtube.com/watch?v=HU-hffAZqYw --}}

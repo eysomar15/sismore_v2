@@ -1,4 +1,4 @@
-<div class="table-responsive">
+{{-- <div class="table-responsive"> --}}
     <table id="tabla1" class="table table-striped table-bordered" style="font-size:12px;" width="100%">
         <thead>
             <tr class="bg-primary text-white text-center">
@@ -154,4 +154,4 @@
                 <th>{{ number_format($foot->TOTAL, 0) }}</th>
             </tr>
         </tfoot> --}}
-</div>
+{{-- </div> --}}

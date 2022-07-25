@@ -773,4 +773,86 @@ class PadronWebRepositorio
         }
         return $query;
     }
+
+
+    public static function listar_totalServicosLocalesSecciones()
+    {
+        $fechaMax = DB::table('edu_padronweb as v1')
+            ->join('par_importacion as v3', 'v3.id', '=', 'v1.importacion_id')
+            ->select(DB::raw('max(v3.fechaActualizacion) as fecha'))
+            ->where('v3.estado', 'PR')
+            ->get()->first()->fecha;
+        $tabla = "
+        select 
+            v3.tipo,
+            v3.nombre nivel,
+            v2.codLocal locales,    
+            sum(IF(v5.nombre!='Privada',1,0)) publico_locales,
+            sum(IF(v5.nombre='Privada',1,0)) privado_locales,
+            count(v1.id) servicios,
+            sum(IF(v5.nombre!='Privada',1,0)) publico_servicios,
+            sum(IF(v5.nombre='Privada',1,0)) privado_servicios,
+            sum(v1.total_seccion) secciones,
+            sum(IF(v5.nombre!='Privada',v1.total_seccion,0)) publico_secciones ,
+            sum(IF(v5.nombre='Privada',v1.total_seccion,0)) privado_secciones
+        from edu_padronweb v1
+        inner join edu_institucioneducativa v2 on v2.id=v1.institucioneducativa_id 
+        inner join edu_nivelmodalidad v3 on v3.id=v2.NivelModalidad_id 
+        inner join edu_tipogestion as v4 on v4.id=v2.TipoGestion_id
+        inner join edu_tipogestion as v5 on v5.id=v4.dependencia
+        inner join par_importacion as v6 on v6.id=v1.importacion_id
+        where v6.estado='PR' and v6.fechaActualizacion='$fechaMax'
+        group by v3.tipo, v3.nombre ,v2.codLocal";
+        if ($fechaMax) {
+            $foot = DB::table(DB::raw("(" . $tabla . ") as xx"))
+                ->select(
+                    DB::raw("SUM(publico_locales)+SUM(privado_locales) ttlc"),
+                    DB::raw("SUM(publico_locales) pulc"),
+                    DB::raw("SUM(privado_locales) prlc"),
+                    DB::raw("SUM(publico_servicios)+SUM(privado_servicios) ttsr"),
+                    DB::raw("SUM(publico_servicios) pusr"),
+                    DB::raw("SUM(privado_servicios) prsr"),
+                    DB::raw("SUM(publico_secciones)+SUM(privado_secciones) ttsc"),
+                    DB::raw("SUM(publico_secciones) pusc"),
+                    DB::raw("SUM(privado_secciones) prsc"),
+                )
+                ->get()->first();
+
+            $body = DB::table(DB::raw("(" . $tabla . ") as xx"))
+                ->select(
+                    "tipo",
+                    "nivel",
+                    DB::raw("SUM(publico_locales)+SUM(privado_locales) ttlc"),
+                    DB::raw("SUM(publico_locales) pulc"),
+                    DB::raw("SUM(privado_locales) prlc"),
+                    DB::raw("SUM(publico_servicios)+SUM(privado_servicios) ttsr"),
+                    DB::raw("SUM(publico_servicios) pusr"),
+                    DB::raw("SUM(privado_servicios) prsr"),
+                    DB::raw("SUM(publico_secciones)+SUM(privado_secciones) ttsc"),
+                    DB::raw("SUM(publico_secciones) pusc"),
+                    DB::raw("SUM(privado_secciones) prsc"),
+                )
+                ->groupBy('tipo', 'nivel')
+                ->get();
+            $head = DB::table(DB::raw("(" . $tabla . ") as xx"))
+                ->select(
+                    "tipo",
+                    DB::raw("SUM(publico_locales)+SUM(privado_locales) ttlc"),
+                    DB::raw("SUM(publico_locales) pulc"),
+                    DB::raw("SUM(privado_locales) prlc"),
+                    DB::raw("SUM(publico_servicios)+SUM(privado_servicios) ttsr"),
+                    DB::raw("SUM(publico_servicios) pusr"),
+                    DB::raw("SUM(privado_servicios) prsr"),
+                    DB::raw("SUM(publico_secciones)+SUM(privado_secciones) ttsc"),
+                    DB::raw("SUM(publico_secciones) pusc"),
+                    DB::raw("SUM(privado_secciones) prsc"),
+                )
+                ->groupBy('tipo')
+                ->get();
+
+
+            return ['head' => $head, 'body' => $body, 'foot' => $foot, 'fecha' => date('d/m/Y', strtotime($fechaMax))];
+        }
+        return [];
+    }
 }

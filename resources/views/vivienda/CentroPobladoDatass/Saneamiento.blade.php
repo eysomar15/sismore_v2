@@ -1,11 +1,11 @@
 @extends('layouts.main',['activePage'=>'importacion','titlePage'=>''])
 
 @section('css')
-    <script src="{{ asset('/') }}assets/libs/highcharts/highcharts.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts/highcharts-more.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts/solid-gauge.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts-more.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts/solid-gauge.js"></script>
 
-    <link href="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -124,10 +124,10 @@
 
 @section('js')
     <!-- flot chart -->
-    <script src="{{ asset('/') }}assets/libs/highcharts/highcharts.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts-modules/exporting.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts-modules/export-data.js"></script>
-    <script src="{{ asset('/') }}assets/libs/highcharts-modules/accessibility.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/exporting.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/export-data.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/accessibility.js"></script>
 
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>

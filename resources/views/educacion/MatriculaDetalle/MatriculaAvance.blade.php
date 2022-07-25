@@ -1,13 +1,13 @@
-@extends('layouts.main', ['titlePage' => 'INDICADOR'])
+@extends('layouts.main', ['titlePage' => ''])
 
 @section('content')
     <div class="content">
         <div class="row">
-
             <div class="col-lg-12">
-                <div class="card card-fill bg-primary">
+                <div class="card card-fill bg-primary  mb-0">
                     <div class="card-header bg-transparent">
-                        <h3 class="card-title text-white">{{ $title }}</h3>
+                        <h3 class="card-title text-white text-center">AVANCE MATRICULA SEGÚN SIAGIE- MINEDO ACTUALIZADO AL
+                            18/07/2022</h3>
                     </div>
                 </div>
             </div>
@@ -15,37 +15,34 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <!--div class="card-header">
-                                            <h3 class="card-title">Default Buttons</h3>
-                                        </div-->
                     <div class="card-body">
                         <form id="form_opciones" name="form_opciones" action="POST">
                             @csrf
-                            <input type="hidden" name="nivel" id="nivel" value="{{ $nivel }}">
-                            <div class="form-group row">
-                                <label class="col-md-1 col-form-label">Fecha</label>
-                                <div class="col-md-3">
-                                    <select id="fecha" name="fecha" class="form-control" onchange="historial();">
-                                        @foreach ($ingresos as $item)
-                                            <option value="{{ $item->id }}">
-                                                {{ date('d-m-Y', strtotime($item->fechaActualizacion)) }}</option>
+                            <div class="form-group row mb-0">
+                                <label class="col-md-1 col-form-label">Año</label>
+                                <div class="col-md-2">
+                                    <select id="ano" name="ano" class="form-control" onchange="cargartabla0()">
+                                        @foreach ($anios as $item)
+                                            <option value="{{ $item->id }}">{{ $item->anio }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <label class="col-md-1 col-form-label">Provincia</label>
+                                <label class="col-md-1 col-form-label">Gestion</label>
                                 <div class="col-md-3">
-                                    <select id="provincia" name="provincia" class="form-control"
-                                        onchange="cargardistritos();historial();">
-                                        <option value="0">TODOS</option>
-                                        @foreach ($provincias as $prov)
+                                    <select id="gestion" name="gestion" class="form-control" onchange="cargartabla0()">
+                                        <option value="0">Todos</option>
+                                        @foreach ($gestions as $prov)
+                                            <option value="{{ $prov['id'] }}">{{ $prov['nombre'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <label class="col-md-2 col-form-label">Área Geografica</label>
+                                <div class="col-md-3">
+                                    <select id="area" name="area" class="form-control" onchange="cargartabla0()">
+                                        <option value="0">Todos</option>
+                                        @foreach ($areas as $prov)
                                             <option value="{{ $prov->id }}">{{ $prov->nombre }}</option>
                                         @endforeach
-                                    </select>
-                                </div>
-                                <label class="col-md-1 col-form-label">Distrito</label>
-                                <div class="col-md-3">
-                                    <select id="distrito" name="distrito" class="form-control" onchange="historial();">
-                                        <option value="0">TODOS</option>
                                     </select>
                                 </div>
 
@@ -56,80 +53,43 @@
             </div>
         </div>
         <!-- end row -->
+        {{-- tablaa 0 --}}
         <div class="row">
-            <div class="col-xl-6">
-                <div class="card card-border card-default">
-                    <div class="card-header border-default bg-transparent pb-0">
-                        <h3 class="card-title text-default">{{ $title }}</h3>
+            <div class="col-xl-12">
+                <div class="card card-border">
+                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
+                        <h3 class="card-title">Avance de la matricula de gestion educativa local</h3>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="table-responsive">
-                                    <table class="table mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>Titulado</th>
-                                                <th>Cantidad</th>
-                                                <th>%</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="con1t">
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                        <div class="table-responsive" id="vista0">
                         </div>
+                        {{-- <p class="text-muted font-13 m-0 p-0 text-right">
+                            Fuente: ESCALE - MINEDU – PADRON WEB, ultima actualizacion del 12/07/2022
+                        </p> --}}
                     </div>
                 </div>
             </div>
-            <div class="col-xl-6">
-                <div class="card card-border card-primary">
+        </div>
+        {{-- end  row --}}
 
-                    <div class="card-body">
-                        <div id="con1" style="min-width:400px;height:300px;margin:0 auto;"></div>
-                    </div>
-                </div>
-            </div>
-        </div><!-- End row -->
+        {{-- tablaa 1 --}}
         <div class="row">
-            <div class="col-xl-6">
-                <div class="card card-border card-default">
-                    <div class="card-header border-default bg-transparent pb-0">
-                        <h3 class="card-title text-default">PROFESORES TITULADOS EN
-                            {{ $nivel }}, POR UGEL</h3>
+            <div class="col-xl-12">
+                <div class="card card-border">
+                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
+                        <h3 class="card-title">Avance de la matricula según nivel y modalidad educativa local</h3>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="table-responsive">
-                                    <table class="table mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>Ugel</th>
-                                                <th>Cantidad</th>
-                                                <th>%</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="con2t">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                        <div class="table-responsive" id="vista1">
                         </div>
+                        {{-- <p class="text-muted font-13 m-0 p-0 text-right">
+                            Fuente: ESCALE - MINEDU – PADRON WEB, ultima actualizacion del 12/07/2022
+                        </p> --}}
                     </div>
                 </div>
             </div>
-            <div class="col-xl-6">
-                <div class="card card-border card-primary">
-
-                    <div class="card-body">
-                        <div id="con2" style="min-width:400px;height:300px;margin:0 auto;"></div>
-                    </div>
-                </div>
-            </div>
-        </div><!-- End row -->
+        </div>
+        {{-- end  row --}}
 
     </div>
 @endsection
@@ -142,8 +102,35 @@
     {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/accessibility.js"></script> --}}
     <script type="text/javascript">
         $(document).ready(function() {
-            historial();
+            cargartabla0();
         });
+
+        function cargartabla0() {
+            $.ajax({
+                url: "{{ route('matriculadetalle.avance.tabla0') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista0').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('matriculadetalle.avance.tabla1') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista1').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        }
+
 
         function cargardistritos() {
             $('#distrito').val('0');

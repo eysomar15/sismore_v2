@@ -50,7 +50,7 @@
                                             <th>Menu</th>
                                             <th>Url</th>
                                             <th>Icono</th>
-                                            <th>Parametro</th>
+                                            {{-- <th>Parametro</th> --}}
                                             <th>Posicion</th>
                                             <th>Grupo</th>
                                             <th>Estado</th>
@@ -362,9 +362,9 @@
                     {
                         data: 'icono'
                     },
-                    {
+                    /* {
                         data: 'parametro'
-                    },
+                    }, */
                     {
                         data: 'posicion'
                     },

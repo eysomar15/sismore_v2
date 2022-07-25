@@ -22,36 +22,7 @@ class PLazaController extends Controller
         return view('educacion.Plaza.DocentesPrincipal', compact('anios'));
     }
 
-    public function cargardistritos($provincia)
-    {
-        $distritos = PlazaRepositorio::listar_distrito($provincia);
-        return response()->json(compact('distritos'));
-    }
-
-    public function cargarmes($anio)
-    {
-        $meses = PlazaRepositorio::listar_meses($anio);
-        return response()->json(compact('meses'));
-    }
-
-    public function cargarultimoimportado($anio, $mes)
-    {
-        $importados = PlazaRepositorio::listar_importados($anio, $mes);
-        if (count($importados) > 0)
-            $importado = $importados->first();
-        else $importado = null;
-
-        return response()->json(compact('importado'));
-    }
-
-    public function datoIndicadorPLaza(Request $request)
-    {
-        $dato['tt'] = PlazaRepositorio::listar_profesorestitulados($request->fecha, $request->nivel, $request->provincia, $request->distrito);
-        $dato['tu'] = PlazaRepositorio::listar_profesorestituladougel($request->fecha, $request->nivel, 1);
-        return response()->json(compact('dato'));
-    }
-
-    public function menuDocentes($importacion_id, $anio)
+    public function nemuDocente($importacion_id, $anio)
     {
         //$info['v1'] = PlazaRepositorio::listar_docentesporniveleducativo_grafica($importacion_id);
         //$info['v2'] = PlazaRepositorio::listar_docentesyauxiliaresporugel_grafica($importacion_id);
@@ -71,5 +42,107 @@ class PLazaController extends Controller
         $info['v8'] = PlazaRepositorio::listar_plazadocentesegunmes_grafica($importacion_id, $anio);
         $info['DT'] = PlazaRepositorio::listar_totalplazacontratadoynombradossegunugelyniveleducativo($importacion_id);
         return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalHead(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['opt1'] = PlazaRepositorio::listar_tipotrabajadores($imp, 1)->count();
+        $info['opt2'] = PlazaRepositorio::listar_tipotrabajadores($imp, 2)->count();
+        $info['opt3'] = PlazaRepositorio::listar_tipotrabajadores($imp, 3)->count();
+        $info['opt4'] = PlazaRepositorio::listar_tipotrabajadores($imp, 4)->count();
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalgra1(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['v1'] = PlazaRepositorio::listar_plazasegununidaddegestioneducativa_grafica($imp);
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalgra2(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['v2'] = PlazaRepositorio::listar_plazaseguntipodeniveleducactivo_grafica($imp);
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalgra3(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['v3'] = PlazaRepositorio::listar_plazaseguntipotrabajador_grafica($imp);
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalgra4(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['v4'] = PlazaRepositorio::listar_plazadocenteseguntipodeniveleducactivo_grafica($imp);
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalgra5(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['v5'] = PlazaRepositorio::listar_plazadocentesegunsituacionlaboral_grafica($imp);
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalgra6(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['v6'] = PlazaRepositorio::listar_plazadocentesegunregimenlaboral_grafica($imp);
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalgra7(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['v7'] = PlazaRepositorio::listar_plazadocentesegunano_grafica();
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalgra8(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['v8'] = PlazaRepositorio::listar_plazadocentesegunmes_grafica($imp, $rq->anio);
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalDT1(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['DT'] = PlazaRepositorio::listar_totalplazacontratadoynombradossegunugelyniveleducativo($imp);
+        return response()->json(compact('info'));
+    }
+
+    public function cargardistritos($provincia)
+    {
+        $distritos = PlazaRepositorio::listar_distrito($provincia);
+        return response()->json(compact('distritos'));
+    }
+
+    public function cargarmes($anio)
+    {
+        $meses = PlazaRepositorio::listar_meses($anio);
+        return response()->json(compact('meses'));
+    }
+
+    public function cargarultimoimportado($anio, $mes)
+    {
+        $importados = PlazaRepositorio::listar_importados($anio, $mes);
+        if (count($importados) > 0)
+            $importado = $importados->first();
+        else $importado = null;
+        return $importado;
+        //return response()->json(compact('importado'));
+    }
+
+    public function datoIndicadorPLaza(Request $request)
+    {
+        $dato['tt'] = PlazaRepositorio::listar_profesorestitulados($request->fecha, $request->nivel, $request->provincia, $request->distrito);
+        $dato['tu'] = PlazaRepositorio::listar_profesorestituladougel($request->fecha, $request->nivel, 1);
+        return response()->json(compact('dato'));
     }
 }

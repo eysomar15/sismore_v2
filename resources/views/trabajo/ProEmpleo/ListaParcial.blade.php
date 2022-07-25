@@ -31,10 +31,10 @@
              
 @section('js')
 
- <script src="{{ asset('/') }}assets/libs/datatables/jquery.dataTables.min.js"></script>
- <script src="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
- <script src="{{ asset('/') }}assets/libs/datatables/dataTables.responsive.min.js"></script>
- <script src="{{ asset('/') }}assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
 
  {{-- 'apellidos','sexo','per_Con_Discapacidad','email','telefono1','telefono2',
           'colocado','fuente','observaciones',) --}}

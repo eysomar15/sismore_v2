@@ -29,7 +29,7 @@ class MenuController extends Controller
         return  datatables()::of($data)
             ->addColumn('action', function ($data) {
                 $acciones = '<a href="#" class="btn btn-info btn-sm" onclick="edit(' . $data->id . ')"  title="MODIFICAR"> <i class="fa fa-pen"></i> </a>';
-                
+
                 if ($data->estado == '1') {
                     $acciones .= '&nbsp;<a class="btn btn-sm btn-dark" href="javascript:void(0)" title="Desactivar" onclick="estado(' . $data->id . ',' . $data->estado . ')"><i class="fa fa-power-off"></i></a> ';
                 } else {
@@ -40,10 +40,12 @@ class MenuController extends Controller
             })
             ->editColumn('icono', '<i class="{{$icono}}"></i>')
             ->editColumn('estado', function ($data) {
-                if ($data->estado == 0) return '<span class="badge badge-danger">DESABILITADO</span>';
-                else return '<span class="badge badge-success">ACTIVO</span>';
+                return $data->estado == 0 ? '<span class="badge badge-danger">DESABILITADO</span>' : '<span class="badge badge-success">ACTIVO</span>';
             })
-            ->rawColumns(['action', 'icono', 'estado'])
+            ->editColumn('grupo', function ($oo) {
+                return $oo->grupo == '' ? '_menu' : '_'.$oo->grupo;
+            })
+            ->rawColumns(['action', 'icono', 'estado', 'grupo'])
             ->make(true);
     }
 

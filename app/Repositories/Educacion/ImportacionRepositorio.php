@@ -276,6 +276,9 @@ class ImportacionRepositorio
 
     public static function Max_porfuente($fuente)
     {
-        return Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', $fuente)->where('estado', 'PR')->first()->maximo;
+        $query = Importacion::select('id', 'fechaActualizacion as fecha')->where('fuenteimportacion_id', $fuente)
+            ->where('estado', 'PR')->orderBy('fecha', 'desc')->get();
+        return $query->count() > 0 ? $query->first()->id : 0;
+        //return Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', $fuente)->where('estado', 'PR')->first()->maximo;
     }
 }

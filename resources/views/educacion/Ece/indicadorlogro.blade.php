@@ -233,7 +233,7 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('/') }}assets/libs/chart-js/Chart.bundle.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/chart-js/Chart.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
             satisfactorios();

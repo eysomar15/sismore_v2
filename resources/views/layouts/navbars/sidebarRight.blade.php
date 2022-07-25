@@ -13,7 +13,7 @@
                 <strong>Customize </strong> the overall color scheme, layout, etc.
             </div>
             <div class="mb-2">
-                <img src="{{ asset('/') }}assets/images/layouts/light.png" class="img-fluid img-thumbnail" alt="">
+                <img src="{{ asset('/') }}public/assets/images/layouts/light.png" class="img-fluid img-thumbnail" alt="">
             </div>
             <div class="custom-control custom-switch mb-3">
                 <input type="checkbox" class="custom-control-input theme-choice" id="light-mode-switch" checked />
@@ -21,19 +21,19 @@
             </div>
     
             <div class="mb-2">
-                <img src="{{ asset('/') }}assets/images/layouts/dark.png" class="img-fluid img-thumbnail" alt="">
+                <img src="{{ asset('/') }}public/assets/images/layouts/dark.png" class="img-fluid img-thumbnail" alt="">
             </div>
             <div class="custom-control custom-switch mb-3">
-                <input type="checkbox" class="custom-control-input theme-choice" id="dark-mode-switch" data-bsStyle="{{ asset('/') }}assets/css/bootstrap-dark.min.css" 
-                    data-appStyle="{{ asset('/') }}assets/css/app-dark.min.css" />
+                <input type="checkbox" class="custom-control-input theme-choice" id="dark-mode-switch" data-bsStyle="{{ asset('/') }}public/assets/css/bootstrap-dark.min.css" 
+                    data-appStyle="{{ asset('/') }}public/assets/css/app-dark.min.css" />
                 <label class="custom-control-label" for="dark-mode-switch">Dark Mode</label>
             </div>
     
             <div class="mb-2">
-                <img src="{{ asset('/') }}assets/images/layouts/rtl.png" class="img-fluid img-thumbnail" alt="">
+                <img src="{{ asset('/') }}public/assets/images/layouts/rtl.png" class="img-fluid img-thumbnail" alt="">
             </div>
             <div class="custom-control custom-switch mb-5">
-                <input type="checkbox" class="custom-control-input theme-choice" id="rtl-mode-switch" data-appStyle="{{ asset('/') }}assets/css/app-rtl.min.css" />
+                <input type="checkbox" class="custom-control-input theme-choice" id="rtl-mode-switch" data-appStyle="{{ asset('/') }}public/assets/css/app-rtl.min.css" />
                 <label class="custom-control-label" for="rtl-mode-switch">RTL Mode</label>
             </div>
 

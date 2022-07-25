@@ -2,7 +2,7 @@
 
 @section('css')
     <!-- Table datatable css -->
-    <link href="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content') 
@@ -79,16 +79,16 @@
            
 @section('js')
 
- <script src="{{ asset('/') }}assets/libs/datatables/jquery.dataTables.min.js"></script>
- <script src="{{ asset('/') }}assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
- <script src="{{ asset('/') }}assets/libs/datatables/dataTables.responsive.min.js"></script>
- <script src="{{ asset('/') }}assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
 
- <script src="{{ asset('/') }}assets/libs/highcharts/highcharts.js"></script>
- <script src="{{ asset('/') }}assets/libs/highcharts/highcharts-more.js"></script>
- <script src="{{ asset('/') }}assets/libs/highcharts-modules/exporting.js"></script>
- <script src="{{ asset('/') }}assets/libs/highcharts-modules/export-data.js"></script>
- <script src="{{ asset('/') }}assets/libs/highcharts-modules/accessibility.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts-more.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/exporting.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/export-data.js"></script>
+ <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/accessibility.js"></script>
 
 
  <script type="text/javascript">
