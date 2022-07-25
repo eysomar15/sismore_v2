@@ -309,7 +309,7 @@ class AnuarioEstadisticoController extends Controller
 
         $puntos[] = [ 'name'=> 'promedio' ,'data'=>  $promedio];
       
-        $titulo = 'Promedio Remuneración Mensual - Ucayali Sector Privado';
+        $titulo = 'Promedio Mensual de Remuneración - Ucayali Sector Privado';
         $subTitulo = 'Fuente - MTPE';
         $titulo_y = 'Monto S/';
 
@@ -335,7 +335,7 @@ class AnuarioEstadisticoController extends Controller
         
         $puntos[] = ['name' => 'Regiones del Perú', 'data' =>  $categoria1];
 
-        $titulo = 'Ranking Promedio Remuneración Mensual Por Regiones - Sector Privado' ;
+        $titulo = 'Ranking Promedio  Mensual de Remuneración Por Regiones - Sector Privado' ;
         $subTitulo = 'Fuente: MTPE';
         $titulo_y = 'Monto S/';
 
@@ -343,6 +343,37 @@ class AnuarioEstadisticoController extends Controller
 
         return view('graficos.Barra', ["data" => json_encode($puntos), "categoria_nombres" => json_encode($categoria_nombres)],
                     compact('titulo_y', 'titulo', 'subTitulo', 'nombreGraficoBarra')
+        );
+    }
+
+    public function Grafico_ranking_promedio_prestadores_servicio4ta()
+    {
+        $categoria1 = [];
+        $categoria2 = [];
+        $categoria_nombres = [];
+
+        $datos = AnuarioEstadisticoRepositorio:: ranking_promedio_prestadores_servicio4ta();
+
+        // array_merge concatena los valores del arreglo, mientras recorre el foreach
+        foreach ($datos as $key => $lista) {
+            $categoria1 = array_merge($categoria1, [intval($lista->publico)]);
+            $categoria2 = array_merge($categoria2, [intval($lista->privado)]);
+            $categoria_nombres[] = ($lista->anio);       
+        }
+
+        $puntos[] = ['name' => 'Público', 'data' =>  $categoria1];
+        $puntos[] = ['name' => 'Privado', 'data' => $categoria2];
+
+        $titulo = 'PROMEDIO MENSUAL DE PRESTADORES DE SERVICIO DE 4TA CATEGORIA' ;
+        $subTitulo = 'Fuente: MTPE';
+        $titulo_y = 'Numero de personas';
+
+        $nombreGraficoBarra = 'Grafico_ranking_promedio_prestadores_servicio4ta'; // este nombre va de la mano con el nombre del DIV en la vista
+
+        return view(
+            'graficos.Barra',
+            ["data" => json_encode($puntos), "categoria_nombres" => json_encode($categoria_nombres)],
+            compact('titulo_y', 'titulo', 'subTitulo', 'nombreGraficoBarra')
         );
     }
 
@@ -362,11 +393,79 @@ class AnuarioEstadisticoController extends Controller
         return view('Trabajo.AnuarioEstadistico.rptPromedioPrestaServ');
     }
 
-    public function rptPrestadoresServ4taPublico()
+    public function rptPrestadoresServ4taCategoria()
     {
         // $data = AnuarioEstadisticoRepositorio:: ranking_promedio_remuneracion_regiones(5,19);
-       
-        // return $data;
-        return view('Trabajo.AnuarioEstadistico.rptPrestadoresServ4taPublico');
+        // $datos = AnuarioEstadisticoRepositorio:: ranking_promedio_prestadores_servicio4ta();
+        //  return $datos;
+
+        
+        return view('Trabajo.AnuarioEstadistico.rptPrestadoresServ4taCategoria');
     }
+
+    public function rptEmpresasSectorPrivado()
+    {
+        // $data = AnuarioEstadisticoRepositorio:: ranking_promedio_remuneracion_regiones(5,19);
+        $anios = AnuarioEstadisticoRepositorio::anios_anuarioEstadistico();
+        // return $data;
+        return view('Trabajo.AnuarioEstadistico.rptEmpresasSectorPrivado',compact('anios'));
+    }
+
+    public function Grafico_promedio_Empresas_sectorPrivado ($importacion_id)
+    {
+
+        $categoria1 = [];
+
+        $categoria_nombres = [];
+
+        $datos = AnuarioEstadisticoRepositorio:: Promedio_Remuneracion_trab_sector_privado(23,34);
+
+        // array_merge concatena los valores del arreglo, mientras recorre el foreach
+        foreach ($datos as $key => $lista) {
+            $categoria1 = array_merge($categoria1, [intval($lista->promedioAnual)]);
+            $categoria_nombres[] = $lista->anio;
+        }
+
+        $puntos[] = ['name' => 'REGION DE UCAYALI', 'data' =>  $categoria1];
+
+        $titulo = 'Promedio Mensual de Empresas - Ucayali Sector Privado ' ;
+        $subTitulo = 'Fuente: MTPE';
+        $titulo_y = 'Número promedio de empresas';
+
+        $nombreGraficoBarra = 'Grafico_promedio_Empresas_sectorPrivado'; // este nombre va de la mano con el nombre del DIV en la vista
+
+        return view(
+            'graficos.Barra',
+            ["data" => json_encode($puntos), "categoria_nombres" => json_encode($categoria_nombres)],
+            compact('titulo_y', 'titulo', 'subTitulo', 'nombreGraficoBarra')
+        );
+    }
+
+    public function Grafico_ranking_empresas_regiones($anio_id)
+    {
+        $categoria1 = [];
+        
+        $categoria_nombres = [];
+
+        $datos = AnuarioEstadisticoRepositorio:: ranking_promedio_remuneracion_regiones($anio_id,23); // cambiar el nombre metodo
+
+        // array_merge concatena los valores del arreglo, mientras recorre el foreach
+        foreach ($datos as $key => $lista) {
+            $categoria1 = array_merge($categoria1, [intval($lista->promedio)]);
+            $categoria_nombres[] = $lista->posicion.'-'.$lista->region;
+        }
+        
+        $puntos[] = ['name' => 'Regiones del Perú', 'data' =>  $categoria1];
+
+        $titulo = 'Ranking Promedio Empresas Mensual Por Regiones - Sector Privado' ;
+        $subTitulo = 'Fuente: MTPE';
+        $titulo_y = 'Número Empresas';
+
+        $nombreGraficoBarra = 'Grafico_ranking_empresas_regiones'; // este nombre va de la mano con el nombre del DIV en la vista
+
+        return view('graficos.Barra', ["data" => json_encode($puntos), "categoria_nombres" => json_encode($categoria_nombres)],
+                    compact('titulo_y', 'titulo', 'subTitulo', 'nombreGraficoBarra')
+        );
+    }
+
 }

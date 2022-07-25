@@ -1,3 +1,146 @@
+
+
+
+<div class="row">
+    <div class="col-md-12 col-xl-12">
+        <div class="card-box">
+           
+            <div class="row">    
+   
+                <div class="col-md-3 col-xl-3">
+                    <div class="card-box">
+                        <div class="media">
+                            <div class="avatar-md bg-danger rounded-circle mr-2">
+                                <i class=" ion ion-md-people avatar-title font-26 text-white"></i>
+                            </div>
+                            <div class="media-body align-self-center">
+                                <div class="text-right">
+                                    <h4 class="font-20 my-0 font-weight-bold">
+                                        <span data-plugin="counterup">
+                                            {{ number_format(552, 0) }}
+                                        </span>
+                                    </h4>
+                                    <p class="mb-0 mt-1 text-truncate">Total Colocados ProEmpleo</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h6 class="text-uppercase"> -<span class="float-right">33.45%</span></h6>
+                            <div class="progress progress-sm m-0">
+                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 33.45%">
+                                    <span class="sr-only">33.45% Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-xl-3">
+                    <div class="card-box">
+                        <div class="media">
+                            <div class="avatar-md bg-success rounded-circle mr-2">
+                                <i class=" mdi mdi-account-check avatar-title font-26 text-white"></i>
+                            </div>
+                            <div class="media-body align-self-center">
+                                <div class="text-right">
+                                    <h4 class="font-20 my-0 font-weight-bold">
+                                        <span data-plugin="counterup">
+                                            {{ number_format(846, 0) }}
+                                        </span>
+                                    </h4>
+                                    <p class="mb-0 mt-1 text-truncate">Emprendedores Formalizados </p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h6 class="text-uppercase"> -<span class="float-right">1410 %</span></h6>
+                            <div class="progress progress-sm m-0">
+                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                    <span class="sr-only">1410 % Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-xl-3">
+                    <div class="card-box">
+                        <div class="media">
+                            <div class="avatar-md bg-warning rounded-circle mr-2">
+                                <i class=" mdi mdi-emoticon avatar-title font-26 text-white"></i>
+                            </div>
+                            <div class="media-body align-self-center">
+                                <div class="text-right">
+                                    <h4 class="font-20 my-0 font-weight-bold">
+                                        <span data-plugin="counterup">
+                                            {{ number_format(47, 0) }}
+                                        </span>
+                                    </h4>
+                                    <p class="mb-0 mt-1 text-truncate">Registro de la Micro y Pequeña Empresa </p>
+                                </div>
+                            </div>
+                        
+                        </div>
+
+                        <div class="mt-4">
+                            <h6 class="text-uppercase"> -<span class="float-right">65.27 %</span></h6>
+                            <div class="progress progress-sm m-0">
+                                <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 65%">
+                                    <span class="sr-only">65.27 % Complete</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end card-box-->
+                </div>
+
+                <div class="col-md-3 col-xl-3">
+                    <div class="card-box">
+                        <div class="media">
+                            <div class="avatar-md bg-success rounded-circle mr-2">
+                                <i class=" mdi mdi-emoticon avatar-title font-26 text-white"></i>
+                            </div>
+                            <div class="media-body align-self-center">
+                                <div class="text-right">
+                                    <h4 class="font-20 my-0 font-weight-bold">
+                                        <span data-plugin="counterup">
+                                            {{ number_format(134, 0) }}
+                                        </span>
+                                    </h4>
+                                    <p class="mb-0 mt-1 text-truncate">Acercamiento Empresarial</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h6 class="text-uppercase"> -<span class="float-right">111.66  %</span></h6>
+                            <div class="progress progress-sm m-0">
+                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                    <span class="sr-only">111.66  % Complete</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-12 text-right">
+                <p class="texto_dfuente  mb-0"> Actualizado a junio 2022 </p>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 <div class="row">
     <div class="col-md-12 col-xl-12">
         <div class="alert alert-info">                                                          

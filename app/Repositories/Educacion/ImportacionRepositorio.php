@@ -50,23 +50,47 @@ class ImportacionRepositorio
             ->leftJoin('edu_ece as ece', 'imp.id', '=', 'ece.importacion_id')
             ->leftJoin('par_anio as anioEce', 'ece.anio_id', '=', 'anioEce.id')
 
+            ->leftJoin('tra_proempleo as proEmp', 'imp.id', '=', 'proEmp.importacion_id')
+            ->leftJoin('par_anio as anioProEmp', 'proEmp.anio_id', '=', 'anioProEmp.id')
+
+            ->leftJoin('tra_anuario_estadistico as anuarioEstadictico', 'imp.id', '=', 'anuarioEstadictico.importacion_id')
+            ->leftJoin('par_anio as anioAnuarioEstadictico', 'anuarioEstadictico.anio_id', '=', 'anioAnuarioEstadictico.id')
+
             ->where("imp.estado", "!=", "EL")
             ->where("par_fuenteimportacion.sistema_id", "=", $sistema_id)
             ->orderBy('imp.estado', 'asc')
             ->orderBy('imp.id', 'desc')
+            ->distinct()
             ->get([
                 DB::raw('imp.id'),
                 DB::raw('imp.comentario'),
                 DB::raw('imp.fechaActualizacion'),
                 DB::raw('case when imp.estado = "PE" then "PENDIENTE" else "APROBADO" end as estado'),
                 DB::raw('adm_usuario.usuario'),
-                DB::raw('aprueba.usuario as aprueba'),
+                DB::raw('concat(aprueba.nombre," ", aprueba.apellidos) as aprueba'),
                 DB::raw('par_fuenteimportacion.nombre'),
                 DB::raw('par_fuenteimportacion.codigo'),
-                DB::raw('adm_usuario.nombre as unombre'),
+                DB::raw('concat(adm_usuario.nombre," ", adm_usuario.apellidos) as unombre'),
                 DB::raw('adm_usuario.apellidos as uapellido'),
                 DB::raw('(concat( par_fuenteimportacion.formato ," ",ifnull(anioMatAnu.anio,""),ifnull(anioMat.anio,"") ,
-                                        ifnull(anioCenso.anio,"") ,ifnull(anioTableta.anio,"") ,ifnull(anioEce.anio,"")      )) as formato '),
+                                        ifnull(anioCenso.anio,"") ,ifnull(anioTableta.anio,"") ,ifnull(anioEce.anio,"") ,
+                                                                                
+                                        ifnull(
+                                        case when mes = 1 then " - ENERO " 
+                                            when  mes = 2 then " - FEBRERO " 
+                                            when  mes = 3 then " - MARZO "
+                                            when  mes = 4 then " - ABRIL "
+                                            when  mes = 5 then " - MAYO "
+                                            when  mes = 6 then " - JUNIO "
+                                            when  mes = 7 then " - JULIO "
+                                            when  mes = 8 then " - AGOSTO "
+                                            when  mes = 9 then " - SETIEMBRE "
+                                            when  mes = 10 then " - OCTUBRE "
+                                            when  mes = 11 then " - NOVIEMBRE "
+                                            when  mes = 12 then " - DICIEMBRE " else "" end,""),
+                                            ifnull(anioProEmp.anio,"")   ,ifnull(anioAnuarioEstadictico.anio,"")                                        
+
+                                        )) as formato '),
 
             ]);
 

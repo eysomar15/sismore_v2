@@ -137,6 +137,14 @@
   padding: 0.2em;
 }
 
+.titulo_tabla_izq {
+  text-align: left;
+  border: 1px solid rgb(214, 213, 213);
+  color: #160376;
+  border-collapse: collapse;
+  padding: 0.2em;
+}
+
 .fila_tabla {
  border: 1px solid rgb(226, 224, 224);
  border-collapse: collapse;
