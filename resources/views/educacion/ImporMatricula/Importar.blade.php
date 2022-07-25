@@ -1,4 +1,4 @@
-@extends('layouts.main',['titlePage'=>'IMPORTAR DATOS - PADRON WEB DE INSTITUCIONES EDUCATIVAS'])
+@extends('layouts.main',['titlePage'=>'IMPORTAR DATOS - MATRICULAS SIAGIE'])
 @section('css')
     <!-- Table datatable css -->
     <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -47,7 +47,7 @@
                                 <div class="form-group row">
                                     <label class="col-md-2 col-form-label">Fuente de datos</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" readonly="readonly" value="SIAGIE">
+                                        <input type="text" class="form-control" readonly="readonly" value="SIAGIE - MATRICULA">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -131,7 +131,7 @@
                                                 <th>N°</th>
                                                 <th>Fecha Version</th>
                                                 <th>Fuente</th>
-                                                <th>Creador</th>
+                                                <th>Usuario</th>
                                                 <th>Registro</th>
                                                 <th>Comentario</th>
                                                 <th>Estado</th>
@@ -173,7 +173,7 @@
                         data: 'fuente'
                     },
                     {
-                        data: 'cnombre'
+                        data: 'nombrecompleto'
                     },
                     {
                         data: 'created_at'

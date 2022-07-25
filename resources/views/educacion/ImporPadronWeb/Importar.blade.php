@@ -119,7 +119,7 @@
                                                 <th>N°</th>
                                                 <th>Fecha Version</th>
                                                 <th>Fuente</th>
-                                                <th>Creador</th>
+                                                <th>Usuario</th>
                                                 <th>Registro</th>
                                                 <th>Comentario</th>
                                                 <th>Estado</th>
@@ -161,7 +161,7 @@
                         data: 'fuente'
                     },
                     {
-                        data: 'cnombre'
+                        data: 'nombrecompleto'
                     },
                     {
                         data: 'created_at'

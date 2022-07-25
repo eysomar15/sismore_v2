@@ -529,54 +529,79 @@ class PlazaRepositorio
                 DB::raw('count(v1.id) as TOTAL')
             )
             ->get()->first();
-        $dt['table'] = view('educacion.Plaza.DT_tabla1', compact(/* 'heads', */'bodys', 'foot'))->render();
+        $dt['table'] = view('educacion.Plaza.DocentesPrincipalTabla1', compact(/* 'heads', */'bodys', 'foot'))->render();
         return $dt;
     }
 
     public static function docentes_conteo_anual()
     {
-        $query = DB::table(DB::raw(
-            "(  select v1.documento_identidad as dni,v2.fechaActualizacion as fecha from edu_plaza v1
-                inner join par_importacion v2 on v2.id=v1.importacion_id
-                where v2.estado='PR' and v1.documento_identidad!=''
-                group by v2.fechaActualizacion,v1.documento_identidad
-                ) as tb"
-        ))
+        $impfechas = Importacion::select(
+            DB::raw("year(fechaActualizacion) as ano"),
+            DB::raw("max(fechaActualizacion) as fecha")
+        )
+            ->where('estado', 'PR')->where('fuenteImportacion_id', "2")
+            ->groupBy('ano')
+            ->get();
+        $fechas = [];
+        foreach ($impfechas as $key => $value) {
+            $fechas[] = $value->fecha;
+        }
+        $impfechas = Importacion::select(
+            DB::raw("year(fechaActualizacion) as ano"),
+            'id',
+            DB::raw("fechaActualizacion as fecha")
+        )
+            ->where('estado', 'PR')->where('fuenteImportacion_id', "2")->whereIn('fechaActualizacion', $fechas)
+            ->orderBy('ano', 'asc')
+            ->get();
+        $ids = '';
+        foreach ($impfechas as $key => $value) {
+            if ($key < count($impfechas) - 1)
+                $ids .= $value->id . ',';
+            else $ids .= $value->id;
+        }
+        $query = DB::table(DB::raw("(
+            select v2.fechaActualizacion as fecha,v1.documento_identidad as dni from edu_plaza v1
+            inner join par_importacion v2 on v2.id=v1.importacion_id
+            where v2.estado='PR' and v1.documento_identidad!='' and v2.id in ($ids)
+            group by fecha,dni
+        ) as tb"))
             ->select(
                 DB::raw('year(fecha) as name'),
-                DB::raw('month(fecha) as mes'),
-                DB::raw('day(fecha) as dia'),
                 DB::raw('count(dni) as y')
             )
-            ->groupBy('name', 'mes', 'dia')
-            ->orderBy('name', 'asc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')
+            ->groupBy('name')
+            ->orderBy('name', 'asc')
             ->get();
-        $gra = [];
-        $vista = '[';
-        foreach ($query as $key => $value) {
-            $value->name = strval($value->name);
-            if ($key == 0) {
-                $gra[] = ['name' => $value->name, 'y' => (int)$value->y];
-                $vista .= "{'name':$value->name, 'y':$value->y},";
-            } else {
-                $grabar = true;
-                foreach ($gra as $value2) {
-                    if ($value->name == $value2['name']) {
-                        $grabar = false;
-                    }
-                }
-                if ($grabar) {
-                    $gra[] = ['name' => $value->name, 'y' => (int) $value->y];
-                    $vista .= "{'name':$value->name, 'y':$value->y},";
-                }
-            }
-        }
-        $vista .= ']';
-        return $vista;
+        return $query;
     }
 
     public static function docentes_segungenero_anual()
     {
+        $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '2')->orderBy('fecha', 'desc')->take(1)->get();
+        $id = $imp->first()->id;
+
+        $query = DB::table(DB::raw("(
+        select 
+            v1.documento_identidad as dni,
+            v1.sexo sexo
+        from edu_plaza v1 
+        inner join par_importacion v2 on v2.id=v1.importacion_id 
+        inner join edu_tipotrabajador v3 on v3.id=v1.tipoTrabajador_id
+        inner join edu_tipotrabajador v4 on v4.id=v3.dependencia    
+        inner join edu_institucioneducativa as v5 on v5.id=v1.institucioneducativa_id 
+        inner join edu_area as v6 on v6.id=v5.Area_id  
+        where v2.estado='PR' and v1.documento_identidad!='' and v1.sexo!='' and v4.nombre='DOCENTE' and v3.nombre!='AUXILIAR DE EDUCACION' and v2.id=445
+        group by dni,sexo 
+        ) as tb1"))
+            ->select(
+                DB::raw('sexo as `name`'),
+                DB::raw('count(dni)  as y'),
+                DB::raw('format(count(dni),0) as yx'),
+            )
+            ->groupBy('sexo')
+            ->get();
+        return $query;
         $query = DB::table(DB::raw(
             "(  select v1.documento_identidad as dni,v2.fechaActualizacion as fecha,v1.sexo from edu_plaza v1
                 inner join par_importacion v2 on v2.id=v1.importacion_id
@@ -594,9 +619,7 @@ class PlazaRepositorio
             ->groupBy('anio', 'mes', 'dia')
             ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')
             ->get()->first();
-        $vista = "[{'name':'MASCULINO', 'y':".($query?$query->MASCULINO:0)."},";
-        $vista .= "{'name':'FEMENINO', 'y':".($query?$query->FEMENINO:0)."}]";
-        return ['pts' => $vista, 'anio' => $query?$query->anio:1900];
+        return [['name' => 'MASCULINO', 'y' => $query ? (int)$query->MASCULINO : 0], ['name' => 'FEMENINO', 'y' => $query ? (int)$query->FEMENINO : 0]];
     }
 
     public static function docentes_seguntipogestion()
@@ -621,37 +644,39 @@ class PlazaRepositorio
             ->groupBy('anio', 'mes', 'dia')
             ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')
             ->get()->first();
-
-        $vista = "[{'name':'Pública', 'y':$query->publica},";
+        return [['name' => 'Pública', 'y' => (int)$query->publica], ['name' => 'Privado', 'y' => (int)$query->privada]];
+        /* $vista = "[{'name':'Pública', 'y':$query->publica},";
         $vista .= "{'name':'Privado', 'y':$query->privada}]";
-        return ['pts' => $vista, 'anio' => $query->anio];
+        return ['pts' => $vista, 'anio' => $query->anio]; */
     }
 
     public static function docentes_segunareageograficas()
     {
-        $query = DB::table(DB::raw(
-            "(  select v1.documento_identidad as dni,v2.fechaActualizacion as fecha,v4.id as area from edu_plaza v1 
-                inner join par_importacion v2 on v2.id=v1.importacion_id 
-                inner join edu_institucioneducativa as v3 on v3.id=v1.institucioneducativa_id 
-                inner join edu_area as v4 on v4.id=v3.Area_id   
-                where v2.estado='PR' and v1.documento_identidad!='' 
-                group by fecha,dni,area
-                ) as tb"
-        ))
-            ->select(
-                DB::raw('year(fecha) as anio'),
-                DB::raw('month(fecha) as mes'),
-                DB::raw('day(fecha) as dia'),
-                DB::raw('SUM(if(area=1,1,0)) as rural'),
-                DB::raw('SUM(if(area=2,1,0)) as urbana')
-            )
-            ->groupBy('anio', 'mes', 'dia')
-            ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')
-            ->get()->first();
+        $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '2')->orderBy('fecha', 'desc')->take(1)->get();
+        $id = $imp->first()->id;
 
-        $vista = "[{'name':'Rural', 'y':$query->rural},";
-        $vista .= "{'name':'Urbana', 'y':$query->urbana}]";
-        return ['pts' => $vista, 'anio' => $query->anio];
+        $query = DB::table(DB::raw("(
+        select 
+            v1.documento_identidad as dni,
+            v6.nombre area
+        from edu_plaza v1 
+        inner join par_importacion v2 on v2.id=v1.importacion_id 
+        inner join edu_tipotrabajador v3 on v3.id=v1.tipoTrabajador_id
+        inner join edu_tipotrabajador v4 on v4.id=v3.dependencia    
+        inner join edu_institucioneducativa as v5 on v5.id=v1.institucioneducativa_id 
+        inner join edu_area as v6 on v6.id=v5.Area_id  
+        where v2.estado='PR' and v1.documento_identidad!='' and v4.nombre='DOCENTE' and v3.nombre!='AUXILIAR DE EDUCACION' and v2.id=$id
+        group by dni,area 
+        order by dni desc
+        ) as tb1"))
+            ->select(
+                DB::raw('area as `name`'),
+                DB::raw('count(dni)  as y'),
+                DB::raw('format(count(dni),0) as yx'),
+            )
+            ->groupBy('area')
+            ->get();
+        return $query;
     }
 
     public static function docentes_segunugel()

@@ -165,7 +165,7 @@
                         data: 'fuente'
                     },
                     {
-                        data: 'cnombre'
+                        data: 'nombrecompleto'
                     },
                     {
                         data: 'created_at'
