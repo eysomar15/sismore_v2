@@ -193,7 +193,7 @@
                     title: {
                         text: titulovetical
                     },
-                    /* min:0, */
+                    min:0,
                 },
                 xAxis: {
                     categories: data['cat'],

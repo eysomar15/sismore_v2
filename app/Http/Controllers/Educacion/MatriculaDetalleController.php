@@ -718,7 +718,7 @@ class MatriculaDetalleController extends Controller
             order by mes asc
             ) as xx"))->get();
         $error['base'] = $base;
-        $data['cat'] = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SETIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+        $data['cat'] = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $data['dat'] = [null, null, null, null, null, null, null, null, null, null, null, null];
         foreach ($base as $key => $value) {
             $data['dat'][$value->mes - 1] = (int)$value->y;
