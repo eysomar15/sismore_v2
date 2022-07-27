@@ -98,7 +98,7 @@ class PLazaController extends Controller
 
     public function DocentesPrincipalgra7(Request $rq)
     {
-        $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        //$imp = $this->cargarultimoimportado($rq->anio, 0)->id;
         $info['v7'] = PlazaRepositorio::listar_plazadocentesegunano_grafica();
         return response()->json(compact('info'));
     }

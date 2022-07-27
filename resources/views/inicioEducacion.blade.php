@@ -1,12 +1,12 @@
 @section('css')
     <style>
         .tablex thead th {
-            padding: .5px;
+            padding: 2px;
             text-align: center;
         }
 
         .tablex thead td {
-            padding: .5px;
+            padding: 2px;
             text-align: center;
             vertical-align: middle;
             font-weight: bold;
@@ -16,7 +16,7 @@
         .tablex tbody th,
         .tablex tfoot td,
         .tablex tfoot th {
-            padding: 0px;
+            padding: 2px;
         }
     </style>
 @endsection
@@ -199,7 +199,7 @@
                         <div class="card-header border-primary bg-transparent pb-0 m-0">
                             <h3 class="card-title">Estudiantes Matriculados De Educación Básica Según UGEL</h3>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body pb-0 pt-0">
                             <div class="table-responsive">
                                 <table id="tabla0" class="table table-striped table-bordered mb-0 tablex"
                                     style="font-size:11px;">
@@ -296,7 +296,7 @@
                             <h3 class="card-title">Total servicios educativos, instituciones educativas y secciones
                             </h3>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body pb-0 pt-0">
                             <div class="table-responsive">
                                 <table id="tabla1" class="table table-striped table-bordered mb-0 tablex"
                                     style="font-size:11px;">

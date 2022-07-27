@@ -80,10 +80,10 @@ class MatriculaDetalleRepositorio
             ->select(
                 DB::raw('sum(v1.total_hombres) as hy'),
                 DB::raw('sum(v1.total_mujeres) as my'),
-                DB::raw('sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,0)) as xy'),
+                //DB::raw('sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,0)) as xy'),
                 DB::raw('FORMAT(sum(v1.total_hombres),0) as hyx'),
                 DB::raw('FORMAT(sum(v1.total_mujeres),0) as myx'),
-                DB::raw('FORMAT(sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,0)),0) as xyx'),
+                //DB::raw('FORMAT(sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,0)),0) as xyx'),
             )
             ->where('v3.estado', 'PR')->where('v3.id', $id)
             ->get();
@@ -91,7 +91,7 @@ class MatriculaDetalleRepositorio
         return [
             ["name" => "FEMENINO", "y" => (int)$query->first()->my, "yx" => $query->first()->myx],
             ["name" => "MASCULINO", "y" => (int)$query->first()->hy, "yx" => $query->first()->hyx],
-            ["name" => "NO DEFINIDO", "y" => (int)$query->first()->xy, "yx" => $query->first()->xyx],
+            /* ["name" => "NO DEFINIDO", "y" => (int)$query->first()->xy, "yx" => $query->first()->xyx], */
         ];
     }
 

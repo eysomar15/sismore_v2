@@ -177,6 +177,20 @@ Route::post('/InstEducativa/GraficoBarras_Instituciones_Distrito', [InstEducativ
 Route::get('/MatriculaDetalle/avance/', [MatriculaDetalleController::class, 'avance'])->name('matriculadetalle.avance');
 Route::post('/MatriculaDetalle/avance/tabla0', [MatriculaDetalleController::class, 'cargartabla0'])->name('matriculadetalle.avance.tabla0');
 Route::post('/MatriculaDetalle/avance/tabla1', [MatriculaDetalleController::class, 'cargartabla1'])->name('matriculadetalle.avance.tabla1');
+Route::post('/MatriculaDetalle/avance/grafica1', [MatriculaDetalleController::class, 'cargargrafica1'])->name('matriculadetalle.avance.grafica1');
+
+Route::get('/MatriculaDetalle/EBR/', [MatriculaDetalleController::class, 'basicaregular'])->name('matriculadetalle.basicaregular');
+Route::post('/MatriculaDetalle/EBR/grafica1', [MatriculaDetalleController::class, 'cargarEBRgrafica1'])->name('matriculadetalle.ebr.grafica1');
+Route::post('/MatriculaDetalle/EBR/grafica2', [MatriculaDetalleController::class, 'cargarEBRgrafica2'])->name('matriculadetalle.ebr.grafica2');
+Route::post('/MatriculaDetalle/EBR/grafica3', [MatriculaDetalleController::class, 'cargarEBRgrafica3'])->name('matriculadetalle.ebr.grafica3');
+Route::post('/MatriculaDetalle/EBR/grafica4', [MatriculaDetalleController::class, 'cargarEBRgrafica4'])->name('matriculadetalle.ebr.grafica4');
+
+Route::get('/MatriculaDetalle/EBE/', [MatriculaDetalleController::class, 'basicaespecial'])->name('matriculadetalle.basicaespecial');
+Route::post('/MatriculaDetalle/EBE/grafica1', [MatriculaDetalleController::class, 'cargarEBEgrafica1'])->name('matriculadetalle.ebe.grafica1');
+Route::post('/MatriculaDetalle/EBE/grafica2', [MatriculaDetalleController::class, 'cargarEBEgrafica2'])->name('matriculadetalle.ebe.grafica2');
+Route::post('/MatriculaDetalle/EBE/grafica3', [MatriculaDetalleController::class, 'cargarEBEgrafica3'])->name('matriculadetalle.ebe.grafica3');
+Route::post('/MatriculaDetalle/EBE/grafica4', [MatriculaDetalleController::class, 'cargarEBEgrafica4'])->name('matriculadetalle.ebe.grafica4');
+
 
 
 Route::get('/Tableta/Importar', [TabletaController::class, 'importar'])->name('Tableta.importar');

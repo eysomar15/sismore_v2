@@ -27,7 +27,8 @@
             <div class="col-lg-12">
                 <div class="card card-fill bg-primary  mb-0">
                     <div class="card-header bg-transparent">
-                        <h3 class="card-title text-white text-center">AVANCE MATRICULA SEGÚN SIAGIE- MINEDO ACTUALIZADO AL
+                        <h3 class="card-title text-white text-center">EDUCACION BÁSICA REGULAR (EBR) SEGÚN SIAGIE- MINEDO
+                            ACTUALIZADO AL
                             18/07/2022</h3>
                     </div>
                 </div>
@@ -78,47 +79,10 @@
             </div>
         </div>
         <!-- end row -->
-        {{-- tablaa 0 --}}
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card card-border">
-                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">Avance de la matricula de gestion educativa local</h3>
-                    </div>
-                    <div class="card-body pb-0 pt-0">
-                        <div class="table-responsive" id="vista0">
-                        </div>
-                        {{-- <p class="text-muted font-13 m-0 p-0 text-right">
-                            Fuente: ESCALE - MINEDU – PADRON WEB, ultima actualizacion del 12/07/2022
-                        </p> --}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- end  row --}}
-
-        {{-- tablaa 1 --}}
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card card-border">
-                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">Avance de la matricula según nivel y modalidad educativa local</h3>
-                    </div>
-                    <div class="card-body pb-0 pt-0">
-                        <div class="table-responsive" id="vista1">
-                        </div>
-                        {{-- <p class="text-muted font-13 m-0 p-0 text-right">
-                            Fuente: ESCALE - MINEDU – PADRON WEB, ultima actualizacion del 12/07/2022
-                        </p> --}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- end  row --}}
 
         {{-- grafica 1 --}}
         <div class="row">
-            <div class="col-xl-12">
+            <div class="col-xl-6">
                 <div class="card card-border">
                     <div class="card-header border-primary bg-transparent p-0">
                         <h3 class="card-title"></h3>
@@ -128,9 +92,45 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-xl-6">
+                <div class="card card-border">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title"></h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div id="gra2"></div>
+                    </div>
+                </div>
+            </div>
         </div>
         {{-- end  row --}}
 
+        {{-- grafica 1 --}}
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card card-border">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title"></h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div id="gra3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6">
+                <div class="card card-border">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title"></h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div id="gra4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
     </div>
 @endsection
 
@@ -142,12 +142,13 @@
         });
 
         function cargartabla0() {
+
             $.ajax({
-                url: "{{ route('matriculadetalle.avance.tabla0') }}",
+                url: "{{ route('matriculadetalle.ebe.grafica1') }}",
                 type: "POST",
                 data: $('#form_opciones').serialize(),
                 success: function(data) {
-                    $('#vista0').html(data);
+                    gLineaMultiple('gra1', data, '', 'ESTUDIANTES MATRICULADOS SEGÚN NIVEL', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -155,11 +156,11 @@
             });
 
             $.ajax({
-                url: "{{ route('matriculadetalle.avance.tabla1') }}",
+                url: "{{ route('matriculadetalle.ebe.grafica2') }}",
                 type: "POST",
                 data: $('#form_opciones').serialize(),
                 success: function(data) {
-                    $('#vista1').html(data);
+                    gLineaBasica('gra2', data, '', 'MATRICULA ACUMULADA MENSUAL', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -167,18 +168,28 @@
             });
 
             $.ajax({
-                url: "{{ route('matriculadetalle.avance.grafica1') }}",
+                url: "{{ route('matriculadetalle.ebe.grafica3') }}",
                 type: "POST",
                 data: $('#form_opciones').serialize(),
                 success: function(data) {
-                    gLineaBasica('gra1', data, '', 'MATRICULA ACUMULADA MENSUAL', ''); 
+                    gPie('gra3', data, '', 'MATRICULADOS SEGÚN NIVEL EDUCATIVO', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 },
             });
 
-
+            $.ajax({
+                url: "{{ route('matriculadetalle.ebe.grafica4') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    gPie('gra4', data, '', 'ESTUDIANTES SEGÚN GENERO', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
         }
 
         function gLineaBasica(div, data, titulo, subtitulo, titulovetical) {
@@ -207,19 +218,19 @@
                     verticalAlign: 'middle'
                 }, */
                 plotOptions: {
-                     series: {
+                    series: {
                         dataLabels: {
                             enabled: true,
                         },
-                         /* label: {
-                             connectorAllowed: false
-                         },
-                         pointStart: 2010 */
-                     }
+                        /* label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2010 */
+                    }
                 },
                 series: [{
                     name: 'Matriculados',
-                    showInLegend:false,
+                    showInLegend: false,
                     data: data['dat']
                 }],
                 responsive: {
@@ -238,6 +249,118 @@
                 },
                 credits: false,
 
+            });
+        }
+
+        function gLineaMultiple(div, data, titulo, subtitulo, titulovetical) {
+            Highcharts.chart(div, {
+                title: {
+                    text: titulo
+                },
+                subtitle: {
+                    text: subtitulo
+                },
+                yAxis: {
+                    title: {
+                        text: titulovetical
+                    },
+                    /* min:0, */
+                },
+                xAxis: {
+                    categories: data['cat'],
+                    accessibility: {
+                        rangeDescription: 'Range: 2010 to 2017'
+                    }
+                },
+                /* legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                }, */
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                        },
+                        /* label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2010 */
+                    }
+                },
+                series: data['dat'],
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                },
+                credits: false,
+
+            });
+        }
+
+        function gPie(div, datos, titulo, subtitulo, tituloserie) {
+            Highcharts.chart(div, {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: titulo, //'Browser market shares in January, 2018'
+                },
+                subtitle: {
+                    text: subtitulo,
+                },
+                tooltip: {
+                    //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            //format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            format: '{point.yx} ( {point.percentage:.1f}% )',
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                /* plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            //format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            format: '{point.percentage:.1f}% ({point.y})',
+                            connectorColor: 'silver'
+                        }
+                    }
+                }, */
+                series: [{
+                    showInLegend: true,
+                    //name: 'Share',                    
+                    data: datos,
+                }],
+                credits: false,
             });
         }
     </script>
