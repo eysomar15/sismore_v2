@@ -339,22 +339,19 @@
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $item2->nivel }}
                                                         </td>
-                                                        <th class="table-success text-center">
-                                                            {{ number_format($item2->ttlc, 0) }}
+                                                        <th class="text-center">{{ number_format($item2->ttlc, 0) }}
                                                         </th>
                                                         <td class="text-center">{{ number_format($item2->pulc, 0) }}
                                                         </td>
                                                         <td class="text-center">{{ number_format($item2->prlc, 0) }}
                                                         </td>
-                                                        <th class="table-success text-center">
-                                                            {{ number_format($item2->ttsr, 0) }}
+                                                        <th class="text-center">{{ number_format($item2->ttsr, 0) }}
                                                         </th>
                                                         <td class="text-center">{{ number_format($item2->pusr, 0) }}
                                                         </td>
                                                         <td class="text-center">{{ number_format($item2->prsr, 0) }}
                                                         </td>
-                                                        <th class="table-success text-center">
-                                                            {{ number_format($item2->ttsc, 0) }}
+                                                        <th class="text-center">{{ number_format($item2->ttsc, 0) }}
                                                         </th>
                                                         <td class="text-center">{{ number_format($item2->pusc, 0) }}
                                                         </td>
@@ -621,7 +618,7 @@
                         },
                     }
                 },
-                
+
                 credits: false,
             });
         }

@@ -184,12 +184,23 @@ Route::post('/MatriculaDetalle/EBR/grafica1', [MatriculaDetalleController::class
 Route::post('/MatriculaDetalle/EBR/grafica2', [MatriculaDetalleController::class, 'cargarEBRgrafica2'])->name('matriculadetalle.ebr.grafica2');
 Route::post('/MatriculaDetalle/EBR/grafica3', [MatriculaDetalleController::class, 'cargarEBRgrafica3'])->name('matriculadetalle.ebr.grafica3');
 Route::post('/MatriculaDetalle/EBR/grafica4', [MatriculaDetalleController::class, 'cargarEBRgrafica4'])->name('matriculadetalle.ebr.grafica4');
+Route::post('/MatriculaDetalle/EBR/grafica5', [MatriculaDetalleController::class, 'cargarEBRgrafica5'])->name('matriculadetalle.ebr.grafica5');
+Route::post('/MatriculaDetalle/EBR/grafica6', [MatriculaDetalleController::class, 'cargarEBRgrafica6'])->name('matriculadetalle.ebr.grafica6');
+Route::post('/MatriculaDetalle/EBR/grafica7', [MatriculaDetalleController::class, 'cargarEBRgrafica7'])->name('matriculadetalle.ebr.grafica7');
+Route::post('/MatriculaDetalle/EBR/tabla1', [MatriculaDetalleController::class, 'cargarEBRtabla1'])->name('matriculadetalle.ebr.tabla1');
+Route::post('/MatriculaDetalle/EBR/tabla2', [MatriculaDetalleController::class, 'cargarEBRtabla2'])->name('matriculadetalle.ebr.tabla2');
+Route::post('/MatriculaDetalle/EBR/tabla3', [MatriculaDetalleController::class, 'cargarEBRtabla3'])->name('matriculadetalle.ebr.tabla3');
+Route::post('/MatriculaDetalle/EBR/tabla4', [MatriculaDetalleController::class, 'cargarEBRtabla4'])->name('matriculadetalle.ebr.tabla4');
+Route::post('/MatriculaDetalle/EBR/tabla5', [MatriculaDetalleController::class, 'cargarEBRtabla5'])->name('matriculadetalle.ebr.tabla5');
+Route::post('/MatriculaDetalle/EBR/tabla6', [MatriculaDetalleController::class, 'cargarEBRtabla6'])->name('matriculadetalle.ebr.tabla6');
 
 Route::get('/MatriculaDetalle/EBE/', [MatriculaDetalleController::class, 'basicaespecial'])->name('matriculadetalle.basicaespecial');
 Route::post('/MatriculaDetalle/EBE/grafica1', [MatriculaDetalleController::class, 'cargarEBEgrafica1'])->name('matriculadetalle.ebe.grafica1');
 Route::post('/MatriculaDetalle/EBE/grafica2', [MatriculaDetalleController::class, 'cargarEBEgrafica2'])->name('matriculadetalle.ebe.grafica2');
 Route::post('/MatriculaDetalle/EBE/grafica3', [MatriculaDetalleController::class, 'cargarEBEgrafica3'])->name('matriculadetalle.ebe.grafica3');
 Route::post('/MatriculaDetalle/EBE/grafica4', [MatriculaDetalleController::class, 'cargarEBEgrafica4'])->name('matriculadetalle.ebe.grafica4');
+Route::post('/MatriculaDetalle/EBE/tabla1', [MatriculaDetalleController::class, 'cargarEBEtabla1'])->name('matriculadetalle.ebe.tabla1');
+Route::post('/MatriculaDetalle/EBE/tabla2', [MatriculaDetalleController::class, 'cargarEBEtabla2'])->name('matriculadetalle.ebe.tabla2');
 
 
 

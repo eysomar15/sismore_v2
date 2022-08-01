@@ -132,6 +132,33 @@
         </div>
         {{-- end  row --}}
     </div>
+    <div class="row">
+        <div class="col-xl-12 principal">
+            <div class="card card-border">
+                <div class="card-header border-primary bg-transparent pb-0 mb-0">
+                    <h3 class="card-title"></h3>
+                </div>
+                <div class="card-body pb-0 pt-0">
+                    <div class="table-responsive" id="vista1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 principal">
+            <div class="card card-border">
+                <div class="card-header border-primary bg-transparent pb-0 mb-0">
+                    <h3 class="card-title"></h3>
+                </div>
+                <div class="card-body pb-0 pt-0">
+                    <div class="table-responsive" id="vista2">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('js')
@@ -185,6 +212,29 @@
                 data: $('#form_opciones').serialize(),
                 success: function(data) {
                     gPie('gra4', data, '', 'ESTUDIANTES SEGÚN GENERO', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('matriculadetalle.ebe.tabla1') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista1').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+            $.ajax({
+                url: "{{ route('matriculadetalle.ebe.tabla2') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista2').html(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
