@@ -274,7 +274,8 @@ Route::get('/presupuesto/Principal', [MatriculaDetalleController::class, 'cargar
 
 
 Route::get('/INDICADOR/SINRUTA', function () {
-    return 'Ruta no definida';
+    //return 'Ruta no definida';
+   return view('paginavacio');
 })->name('sinruta');
 /**************************************** FIN EDUCACION ************************************************/
 

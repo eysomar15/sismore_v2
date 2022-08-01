@@ -110,22 +110,23 @@ class ImporPadronWebController extends Controller
                         $row['nlong_ie'] . //no tenia                        
                         $row['cod_tur'] . //cod_tur
                         $row['turno'] . //d_cod_tur                        
+                        $row['cod_estado'] . //estado
+                        $row['estado'] . //d_estado
+
                         $row['talum_hom'] . //talum_hom
                         $row['talum_muj'] . //talum_muj
-
                         $row['talumno'] . //talumno
                         $row['tdocente'] . //tdocente
                         $row['tseccion'] . //tseccion
+
                         $row['fecha_registro'] . //fechareg
                         $row['fecha_act']; //fecha_act
-
+                        
                     //$row['anexo'] .
                     //$row['pagweb'] . //pagweb
                     //$row['referencia'] . //referencia
                     //$row['d_dpto'] . //d_dpto
                     //$row['d_region'] . //d_region
-                    //$row['estado'] . //estado
-                    //$row['d_estado'] . //d_estado
                     //$row['d_fte_dato'] . //d_fte_dato
                     //$row['tipoprog'] . //tipoprog
                     //$row['d_tipoprog'] . //d_tipoprog
@@ -190,6 +191,8 @@ class ImporPadronWebController extends Controller
 
                         'nLong_IE' => $row['nlong_ie'],
                         'cod_Tur' => $row['cod_tur'],
+                        'estado' => $row['cod_estado'],
+                        'd_Estado' => $row['estado'],
                         'D_Cod_Tur' => $row['turno'],
                         'tAlum_Hom' => $row['talum_hom'],
                         'tAlum_Muj' => $row['talum_muj'],
@@ -206,8 +209,7 @@ class ImporPadronWebController extends Controller
                         //'d_Region' => $row['d_region'],
                         //'tipoProg' => is_null($row['tipoprog']) ? '' : $row['tipoprog'],
                         //'d_TipoProg' => is_null($row['d_tipoprog']) ? '' : $row['d_tipoprog'],
-                        //'estado' => $row['estado'],
-                        //'d_Estado' => $row['d_estado'],
+                        
                         //'d_Fte_Dato' => $row['d_fte_dato'],
                     ]);
                 }

@@ -28,8 +28,7 @@
                 <div class="card card-fill bg-primary  mb-0">
                     <div class="card-header bg-transparent">
                         <h3 class="card-title text-white text-center">EDUCACION BÁSICA REGULAR (EBR) SEGÚN SIAGIE- MINEDO
-                            ACTUALIZADO AL
-                            18/07/2022</h3>
+                            ACTUALIZADO AL {{$fecha}}</h3>
                     </div>
                 </div>
             </div>

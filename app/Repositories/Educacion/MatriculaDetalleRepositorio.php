@@ -73,6 +73,7 @@ class MatriculaDetalleRepositorio
     {
         $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '8')->orderBy('fecha', 'desc')->take(1)->get();
         $id = $imp->first()->id;
+        $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
         $query = DB::table('edu_matricula_detalle as v1')
             ->join('edu_matricula as v2', 'v2.id', '=', 'v1.matricula_id')
             ->join('par_importacion as v3', 'v3.id', '=', 'v2.importacion_id')
@@ -88,11 +89,12 @@ class MatriculaDetalleRepositorio
             ->where('v3.estado', 'PR')->where('v3.id', $id)
             ->get();
 
-        return [
+        $data['puntos'] = [
             ["name" => "FEMENINO", "y" => (int)$query->first()->my, "yx" => $query->first()->myx],
             ["name" => "MASCULINO", "y" => (int)$query->first()->hy, "yx" => $query->first()->hyx],
-            /* ["name" => "NO DEFINIDO", "y" => (int)$query->first()->xy, "yx" => $query->first()->xyx], */
         ];
+        $data['fecha'] = $fecha;
+        return $data;
     }
 
     public static function estudiantes_matriculados_seguntipogestion()
@@ -135,6 +137,7 @@ class MatriculaDetalleRepositorio
     {
         $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '8')->orderBy('fecha', 'desc')->take(1)->get();
         $id = $imp->first()->id;
+        $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
         $query = DB::table('edu_matricula_detalle as v1')
             ->join('edu_matricula as v2', 'v2.id', '=', 'v1.matricula_id')
             ->join('par_importacion as v3', 'v3.id', '=', 'v2.importacion_id')
@@ -151,7 +154,9 @@ class MatriculaDetalleRepositorio
         foreach ($query as $key => $value) {
             $value->y = (int)$value->y;
         }
-        return $query;
+        $data['puntos'] = $query;
+        $data['fecha'] = $fecha;
+        return $data;
     }
 
     public static function estudiantes_matriculados_segunaugel()
@@ -376,6 +381,8 @@ class MatriculaDetalleRepositorio
             ->select(DB::raw('max(v3.fechaActualizacion) as fecha'))
             ->where('v3.estado', 'PR')
             ->get()->first()->fecha;
+        /* $id = $fechaMax->first()->id;
+        $fecha = date('d/m/Y', strtotime($fechaMax->first()->fecha)); */
         if ($fechaMax) {
             $foot = DB::table('edu_matricula_detalle as v1')
                 ->join('edu_matricula as v2', 'v2.id', '=', 'v1.matricula_id')

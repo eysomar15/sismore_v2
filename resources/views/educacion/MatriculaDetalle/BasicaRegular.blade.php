@@ -1,7 +1,7 @@
 @extends('layouts.main', ['titlePage' => ''])
 @section('css')
     <!-- Magnific -->
-    <link rel="stylesheet" href="{{ asset('/') }}public/assets/libs/magnific-popup/magnific-popup.css" />
+    {{-- <link rel="stylesheet" href="{{ asset('/') }}public/assets/libs/magnific-popup/magnific-popup.css" /> --}}
     <style>
         .tablex thead th {
             padding: 5px;
@@ -31,8 +31,7 @@
                 <div class="card card-fill bg-primary  mb-0">
                     <div class="card-header bg-transparent">
                         <h3 class="card-title text-white text-center">EDUCACION BÁSICA REGULAR (EBR) SEGÚN SIAGIE- MINEDO
-                            ACTUALIZADO AL
-                            18/07/2022</h3>
+                            ACTUALIZADO AL {{$fecha}}</h3>
                     </div>
                 </div>
             </div>
@@ -87,16 +86,21 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="portfolioFilter">
-                    <a href="#" data-filter=".principal" class="waves-effect waves-light current">PRINCIPAL</a>
+                    <a href="#" class="waves-effect waves-light" id="principal" onclick="principalok()">PRINCIPAL</a>
+                    <a href="#" class="waves-effect waves-light" id="inicial" onclick="inicialok()">INICIAL</a>
+                    <a href="#" class="waves-effect waves-light" id="primaria" onclick="primariaok()">PRIMARIA</a>
+                    <a href="#" class="waves-effect waves-light" id="secundaria" onclick="secundariaok()">SECUNDARIA</a>
+                    <a href="#" class="waves-effect waves-light" id="pronoi" onclick="pronoiok()">PRONOI</a>
+                    {{-- <a href="#" data-filter=".principal" class="waves-effect waves-light current">PRINCIPAL</a>
                     <a href="#" data-filter=".inicial" class="waves-effect waves-light">INICIAL</a>
                     <a href="#" data-filter=".primaria" class="waves-effect waves-light">PRIMARIA</a>
                     <a href="#" data-filter=".secundaria" class="waves-effect waves-light">SECUNDARIA</a>
-                    <a href="#" data-filter=".pronoi" class="waves-effect waves-light">PRONOI</a>
+                    <a href="#" data-filter=".pronoi" class="waves-effect waves-light">PRONOI</a> --}}
                 </div>
             </div>
         </div>
 
-        <div class="port">{{--  mb-3 mt-4 --}}
+        <div class="port">{{-- mb-3 mt-4 --}}
             <div class="portfolioContainer row">
 
                 <div class="col-xl-6 principal">
@@ -131,7 +135,7 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="col-xl-6 principal">
                     <div class="card card-border">
                         <div class="card-header border-primary bg-transparent p-0">
@@ -149,7 +153,7 @@
                             <h3 class="card-title">Matricula educativa por genero según ugel</h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
-                            <div class="table-responsive" id="vista1"  style="height: 215px;">
+                            <div class="table-responsive" id="vista1" style="height: 215px;">
                             </div>
                         </div>
                     </div>
@@ -199,7 +203,8 @@
                 <div class="col-xl-12 secundaria">
                     <div class="card card-border">
                         <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                            <h3 class="card-title">TOTAL MATRICULA NIVEL SECUNDARIA POR CICLO, EDAD Y SEXO SEGÚN UGEL AL</h3>
+                            <h3 class="card-title">TOTAL MATRICULA NIVEL SECUNDARIA POR CICLO, EDAD Y SEXO SEGÚN UGEL AL
+                            </h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
                             <div class="table-responsive" id="vista5">
@@ -238,7 +243,7 @@
                             <h3 class="card-title">total Matricula educativa por genero según ugel</h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
-                            <div class="table-responsive" id="vista6"  style="height: 215px;">
+                            <div class="table-responsive" id="vista6" style="height: 215px;">
                             </div>
                         </div>
                     </div>
@@ -351,9 +356,73 @@
 @section('js')
     <script type="text/javascript">
         $(document).ready(function() {
-
             cargartabla0();
+            principalok();
         });
+
+        function principalok() {
+            $('.principal').show();
+            $('.inicial').hide();
+            $('.primaria').hide();
+            $('.secundaria').hide();
+            $('.pronoi').hide();
+            $('#principal').addClass('current');
+            $('#inicial').removeClass('current');
+            $('#primaria').removeClass('current');
+            $('#secundaria').removeClass('current');
+            $('#pronoi').removeClass('current');
+        }
+
+        function inicialok() {
+            $('.principal').hide();
+            $('.inicial').show();
+            $('.primaria').hide();
+            $('.secundaria').hide();
+            $('.pronoi').hide();
+            $('#principal').removeClass('current');
+            $('#inicial').addClass('current');
+            $('#primaria').removeClass('current');
+            $('#secundaria').removeClass('current');
+            $('#pronoi').removeClass('current');
+        }
+        function primariaok() {
+            $('.principal').hide();
+            $('.inicial').hide();
+            $('.primaria').show();
+            $('.secundaria').hide();
+            $('.pronoi').hide();
+            $('#principal').removeClass('current');
+            $('#inicial').removeClass('current');
+            $('#primaria').addClass('current');
+            $('#secundaria').removeClass('current');
+            $('#pronoi').removeClass('current');
+        }
+
+        function secundariaok() {
+            $('.principal').hide();
+            $('.inicial').hide();
+            $('.primaria').hide();
+            $('.secundaria').show();
+            $('.pronoi').hide();
+            $('#principal').removeClass('current');
+            $('#inicial').removeClass('current');
+            $('#primaria').removeClass('current');
+            $('#secundaria').addClass('current');
+            $('#pronoi').removeClass('current');
+        }
+
+        function pronoiok() {
+            $('.principal').hide();
+            $('.inicial').hide();
+            $('.primaria').hide();
+            $('.secundaria').hide();
+            $('.pronoi').show();
+            $('#principal').removeClass('current');
+            $('#inicial').removeClass('current');
+            $('#primaria').removeClass('current');
+            $('#secundaria').removeClass('current');
+            $('#pronoi').addClass('current');
+        }
 
         function cargartabla0() {
 
@@ -700,12 +769,11 @@
     {{-- <script src="assets/js/vendor.min.js"></script> --}}
 
     <!-- isotope filter plugin -->
-    <script src="{{ asset('/') }}public/assets/libs/isotope/isotope.pkgd.min.js"></script>
+    {{-- <script src="{{ asset('/') }}public/assets/libs/isotope/isotope.pkgd.min.js"></script> --}}
 
     <!-- Magnific -->
-    <script src="{{ asset('/') }}public/assets/libs/magnific-popup/jquery.magnific-popup.min.js"></script>
+    {{-- <script src="{{ asset('/') }}public/assets/libs/magnific-popup/jquery.magnific-popup.min.js"></script> --}}
 
     <!-- Gallery Init-->
-    <script src="{{ asset('/') }}public/assets/js/pages/gallery.init.js"></script>
-
+    {{-- <script src="{{ asset('/') }}public/assets/js/pages/gallery.init.js"></script> --}}
 @endsection

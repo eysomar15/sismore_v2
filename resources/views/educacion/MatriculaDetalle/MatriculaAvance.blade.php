@@ -28,7 +28,7 @@
                 <div class="card card-fill bg-primary  mb-0">
                     <div class="card-header bg-transparent">
                         <h3 class="card-title text-white text-center">AVANCE MATRICULA SEGÚN SIAGIE- MINEDO ACTUALIZADO AL
-                            18/07/2022</h3>
+                            {{ $fecha }}</h3>
                     </div>
                 </div>
             </div>
@@ -39,6 +39,7 @@
                     <div class="card-body">
                         <form id="form_opciones" name="form_opciones" action="POST">
                             @csrf
+                            <input type="hidden" id="importacion" name="importacion" value="{{ $importacion_id }}">
                             <div class="form-group row mb-0">
                                 <label class="col-md-1 col-form-label">Año</label>
                                 <div class="col-md-2">
@@ -171,7 +172,7 @@
                 type: "POST",
                 data: $('#form_opciones').serialize(),
                 success: function(data) {
-                    gLineaBasica('gra1', data, '', 'MATRICULA ACUMULADA MENSUAL', ''); 
+                    gLineaBasica('gra1', data, '', 'MATRICULA ACUMULADA MENSUAL', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -193,7 +194,7 @@
                     title: {
                         text: titulovetical
                     },
-                    min:0,
+                    min: 0,
                 },
                 xAxis: {
                     categories: data['cat'],
@@ -207,19 +208,19 @@
                     verticalAlign: 'middle'
                 }, */
                 plotOptions: {
-                     series: {
+                    series: {
                         dataLabels: {
                             enabled: true,
                         },
-                         /* label: {
-                             connectorAllowed: false
-                         },
-                         pointStart: 2010 */
-                     }
+                        /* label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2010 */
+                    }
                 },
                 series: [{
                     name: 'Matriculados',
-                    showInLegend:false,
+                    showInLegend: false,
                     data: data['dat']
                 }],
                 responsive: {

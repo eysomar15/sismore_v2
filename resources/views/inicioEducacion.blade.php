@@ -18,6 +18,11 @@
         .tablex tfoot th {
             padding: 2px;
         }
+
+        .fuentex {
+            font-size: 10px;
+            font-weight: bold;
+        }
     </style>
 @endsection
 
@@ -491,7 +496,7 @@
                 dataType: "JSON",
                 success: function(data) {
                     gSimpleColumn('anal1', data.info, '',
-                        'Estudiantes Matriculados por Años<br>Fuente:SIAGIE', '');
+                        'Estudiantes Matriculados por Años<br><span class="fuentex">Fuente:SIAGIE'+'</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -505,7 +510,7 @@
                 dataType: "JSON",
                 success: function(data) {
                     gSimpleColumn('anal2', data.info,
-                        '', 'Personal Docente por Años<br>Fuente:NEXUS', '');
+                        '', 'Personal Docente por Años<br><span class="fuentex">Fuente:NEXUS'+'</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 2");
@@ -518,9 +523,10 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    gPie('anal3', data.info,
+                    gPie('anal3', data.info['puntos'],
                         '',
-                        'Estudiantes Matriculados según Genero<br>Fuente:SIAGIE ', '');
+                        'Estudiantes Matriculados según Genero<br><span class="fuentex">Fuente:SIAGIE AL ' + data.info[
+                            'fecha']+'</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -533,12 +539,13 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    gPie('anal4', data.info,
-                        '', 'Personal Docente según Genero<br>Fuente:NEXUS ',
+                    gPie('anal4', data.info['puntos'],
+                        '', 'Personal Docente según Genero<br><span class="fuentex">Fuente:NEXUS AL ' + data.info[
+                        'fecha']+'</span>',
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 2");
+                    console.log("ERROR GRAFICA 4");
                     console.log(jqXHR);
                 },
             });
@@ -548,12 +555,13 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    gPie('anal5', data.info,
+                    gPie('anal5', data.info['puntos'],
                         '',
-                        'Estudiantes Matriculados según Area Geografica<br>Fuente:SIAGIE ', '');
+                        'Estudiantes Matriculados según Area Geografica<br><span class="fuentex">Fuente:SIAGIE AL ' + data
+                        .info['fecha']+'</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 5");
                     console.log(jqXHR);
                 },
             });
@@ -563,12 +571,14 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    gPie('anal6', data.info,
-                        '', 'Personal Docente según Area Geografica<br>Fuente:NEXUS ',
+                    gPie('anal6', data.info['puntos'],
+                        '',
+                        'Personal Docente según Area Geografica<br><span class="fuentex">Fuente:NEXUS AL ' +
+                        data.info['fecha'] + '</span>',
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 2");
+                    console.log("ERROR GRAFICA 6");
                     console.log(jqXHR);
                 },
             });

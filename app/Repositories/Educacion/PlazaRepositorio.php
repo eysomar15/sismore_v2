@@ -431,15 +431,15 @@ class PlazaRepositorio
         } */
     }
     public static function listar_plazadocentesegunmes_grafica($importacion_id, $anio)
-    {        
+    {
         $regs = Importacion::select(DB::raw("month(fechaActualizacion) mes"), DB::raw("max(id) id"))->where("estado", "PR")->where('fuenteImportacion_id', '2')
-            ->where(DB::raw('year(fechaActualizacion)'),$anio)->groupBy('mes')->get();
+            ->where(DB::raw('year(fechaActualizacion)'), $anio)->groupBy('mes')->get();
         $ids = [];
-        
+
         foreach ($regs as $key => $value) {
             $ids[] = $value->id;
         }
-        
+
         $query = DB::table('edu_plaza as v1')
             ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
             ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
@@ -474,7 +474,7 @@ class PlazaRepositorio
             )
             ->orderBy('mes', 'ASC')
             ->get();
-            return $query;
+        return $query;
         foreach ($query as $key => $value) {
             $value->name = "" . $value->name;
             $value->y = (int)$value->y;
@@ -613,6 +613,7 @@ class PlazaRepositorio
     {
         $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '2')->orderBy('fecha', 'desc')->take(1)->get();
         $id = $imp->first()->id;
+        $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
 
         $query = DB::table(DB::raw("(
         select 
@@ -624,7 +625,7 @@ class PlazaRepositorio
         inner join edu_tipotrabajador v4 on v4.id=v3.dependencia    
         inner join edu_institucioneducativa as v5 on v5.id=v1.institucioneducativa_id 
         inner join edu_area as v6 on v6.id=v5.Area_id  
-        where v2.estado='PR' and v1.documento_identidad!='' and v1.sexo!='' and v4.nombre='DOCENTE' and v3.nombre!='AUXILIAR DE EDUCACION' and v2.id=445
+        where v2.estado='PR' and v1.documento_identidad!='' and v1.sexo!='' and v4.nombre='DOCENTE' and v3.nombre!='AUXILIAR DE EDUCACION' and v2.id=$id
         group by dni,sexo 
         ) as tb1"))
             ->select(
@@ -634,25 +635,9 @@ class PlazaRepositorio
             )
             ->groupBy('sexo')
             ->get();
-        return $query;
-        $query = DB::table(DB::raw(
-            "(  select v1.documento_identidad as dni,v2.fechaActualizacion as fecha,v1.sexo from edu_plaza v1
-                inner join par_importacion v2 on v2.id=v1.importacion_id
-                where v2.estado='PR' and v1.documento_identidad!='' and v1.sexo!=''
-                group by v2.fechaActualizacion,v1.documento_identidad,v1.sexo
-                ) as tb"
-        ))
-            ->select(
-                DB::raw('year(fecha) as anio'),
-                DB::raw('month(fecha) as mes'),
-                DB::raw('day(fecha) as dia'),
-                DB::raw('SUM(if(sexo="MASCULINO",1,0)) as MASCULINO'),
-                DB::raw('SUM(if(sexo="FEMENINO",1,0)) as FEMENINO')
-            )
-            ->groupBy('anio', 'mes', 'dia')
-            ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')
-            ->get()->first();
-        return [['name' => 'MASCULINO', 'y' => $query ? (int)$query->MASCULINO : 0], ['name' => 'FEMENINO', 'y' => $query ? (int)$query->FEMENINO : 0]];
+        $data['puntos'] = $query;
+        $data['fecha'] = $fecha;
+        return $data;
     }
 
     public static function docentes_seguntipogestion()
@@ -687,6 +672,7 @@ class PlazaRepositorio
     {
         $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '2')->orderBy('fecha', 'desc')->take(1)->get();
         $id = $imp->first()->id;
+        $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
 
         $query = DB::table(DB::raw("(
         select 
@@ -709,7 +695,9 @@ class PlazaRepositorio
             )
             ->groupBy('area')
             ->get();
-        return $query;
+        $data['puntos'] = $query;
+        $data['fecha'] = $fecha;
+        return $data;
     }
 
     public static function docentes_segunugel()

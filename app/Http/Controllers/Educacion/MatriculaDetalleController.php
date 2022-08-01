@@ -34,7 +34,11 @@ class MatriculaDetalleController extends Controller
         $gestions = [["id" => 2, "nombre" => "Pública"], ["id" => 3, "nombre" => "Privada"]];
         /* area geografica */
         $areas = Area::select('id', 'nombre')->get();
-        return view("educacion.MatriculaDetalle.MatriculaAvance", compact('anios', 'gestions', 'areas'));
+        /* ultimo reg subido */
+        $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '8')->orderBy('fecha', 'desc')->take(1)->get();
+        $importacion_id = $imp->first()->id;
+        $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
+        return view("educacion.MatriculaDetalle.MatriculaAvance", compact('anios', 'gestions', 'areas', 'importacion_id', 'fecha'));
     }
 
     public function cargartabla0(Request $rq)
@@ -557,7 +561,11 @@ class MatriculaDetalleController extends Controller
         $gestions = [["id" => 2, "nombre" => "Pública"], ["id" => 3, "nombre" => "Privada"]];
         /* area geografica */
         $areas = Area::select('id', 'nombre')->get();
-        return view("educacion.MatriculaDetalle.BasicaRegular", compact('anios', 'gestions', 'areas'));
+        /* ultimo reg */
+        $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '8')->orderBy('fecha', 'desc')->take(1)->get();
+        $importacion_id = $imp->first()->id;
+        $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
+        return view("educacion.MatriculaDetalle.BasicaRegular", compact('anios', 'gestions', 'areas', 'importacion_id', 'fecha'));
     }
 
     public function cargarEBRgrafica1(Request $rq)
@@ -1618,7 +1626,11 @@ class MatriculaDetalleController extends Controller
         $gestions = [["id" => 2, "nombre" => "Pública"], ["id" => 3, "nombre" => "Privada"]];
         /* area geografica */
         $areas = Area::select('id', 'nombre')->get();
-        return view("educacion.MatriculaDetalle.BasicaEspecial", compact('anios', 'gestions', 'areas'));
+        /* ultimo reg */
+        $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '8')->orderBy('fecha', 'desc')->take(1)->get();
+        $importacion_id = $imp->first()->id;
+        $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
+        return view("educacion.MatriculaDetalle.BasicaEspecial", compact('anios', 'gestions', 'areas','importacion_id','fecha'));
     }
 
     public function cargarEBEgrafica1(Request $rq)
@@ -1780,7 +1792,8 @@ class MatriculaDetalleController extends Controller
             order by mes asc
             ) as xx"))->get();
         $error['base'] = $base;
-        $data['cat'] = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SETIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+        $data['cat'] = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+        //$data['cat'] = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SETIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
         $data['dat'] = [null, null, null, null, null, null, null, null, null, null, null, null];
         foreach ($base as $key => $value) {
             $data['dat'][$value->mes - 1] = (int)$value->y;
