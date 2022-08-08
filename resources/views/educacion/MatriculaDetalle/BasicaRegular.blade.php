@@ -2,6 +2,7 @@
 @section('css')
     <!-- Magnific -->
     {{-- <link rel="stylesheet" href="{{ asset('/') }}public/assets/libs/magnific-popup/magnific-popup.css" /> --}}
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <style>
         .tablex thead th {
             padding: 5px;
@@ -21,6 +22,17 @@
         .tablex tfoot th {
             padding: 5px;
         }
+
+        .ax {
+            color: #317eeb;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .ax:hover {
+            color: #1259bd;
+            text-decoration: none;
+        }
     </style>
 @endsection
 @section('content')
@@ -31,7 +43,7 @@
                 <div class="card card-fill bg-primary  mb-0">
                     <div class="card-header bg-transparent">
                         <h3 class="card-title text-white text-center">EDUCACION BÁSICA REGULAR (EBR) SEGÚN SIAGIE- MINEDO
-                            ACTUALIZADO AL {{$fecha}}</h3>
+                            ACTUALIZADO AL {{ $fecha }}</h3>
                     </div>
                 </div>
             </div>
@@ -43,6 +55,7 @@
                     <div class="card-body">
                         <form id="form_opciones" name="form_opciones" action="POST">
                             @csrf
+                            <input type="hidden" id="distrito" name="distrito" value="0">
                             <div class="form-group row mb-0">
                                 <label class="col-md-1 col-form-label">Año</label>
                                 <div class="col-md-2">
@@ -89,13 +102,14 @@
                     <a href="#" class="waves-effect waves-light" id="principal" onclick="principalok()">PRINCIPAL</a>
                     <a href="#" class="waves-effect waves-light" id="inicial" onclick="inicialok()">INICIAL</a>
                     <a href="#" class="waves-effect waves-light" id="primaria" onclick="primariaok()">PRIMARIA</a>
-                    <a href="#" class="waves-effect waves-light" id="secundaria" onclick="secundariaok()">SECUNDARIA</a>
-                    <a href="#" class="waves-effect waves-light" id="pronoi" onclick="pronoiok()">PRONOI</a>
+                    <a href="#" class="waves-effect waves-light" id="secundaria"
+                        onclick="secundariaok()">SECUNDARIA</a>
+                    <a href="#" class="waves-effect waves-light" id="pronoi" onclick="pronoiok()">PRONOEI</a>
                     {{-- <a href="#" data-filter=".principal" class="waves-effect waves-light current">PRINCIPAL</a>
                     <a href="#" data-filter=".inicial" class="waves-effect waves-light">INICIAL</a>
                     <a href="#" data-filter=".primaria" class="waves-effect waves-light">PRIMARIA</a>
                     <a href="#" data-filter=".secundaria" class="waves-effect waves-light">SECUNDARIA</a>
-                    <a href="#" data-filter=".pronoi" class="waves-effect waves-light">PRONOI</a> --}}
+                    <a href="#" data-filter=".pronoi" class="waves-effect waves-light">PRONOEI</a> --}}
                 </div>
             </div>
         </div>
@@ -175,7 +189,7 @@
                 <div class="col-xl-12 inicial">
                     <div class="card card-border">
                         <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                            <h3 class="card-title">TOTAL MATRICULA NIVEL INICIAL POR CICLO, EDAD Y SEXO SEGÚN UGEL AL</h3>
+                            <h3 class="card-title">TOTAL MATRICULA NIVEL INICIAL POR CICLO, EDAD Y SEXO SEGÚN UGEL</h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
                             <div class="table-responsive" id="vista3">
@@ -183,6 +197,45 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-xl-12 inicial">
+                    <div class="card card-border">
+                        <div class="card-header border-primary bg-transparent pb-0 mb-0">
+                            <h3 class="card-title">TOTAL MATRICULA NIVEL INICIAL POR CICLO, EDAD Y SEXO SEGÚN DISTRITOS
+                            </h3>
+                        </div>
+                        <div class="card-body pb-0 pt-0">
+                            <div class="table-responsive" id="vista3_1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- <div class="col-xl-12 inicial">
+                    <div class="card card-border">
+                        <div class="card-header border-primary bg-transparent pb-0 mb-0">
+                            <h3 class="card-title">TOTAL MATRICULA NIVEL INICIAL POR CICLO, EDAD Y SEXO SEGÚN CENTRO POBLADO EN EL DISTRITO DE <span id="vista3_3_title"></span></h3>
+                        </div>
+                        <div class="card-body pb-0 pt-0">
+                            <div class="table-responsive" id="vista3_3">
+                            </div>
+                        </div>
+                    </div>
+                </div> --}}
+
+                <div class="col-xl-12 inicial">
+                    <div class="card card-border">
+                        <div class="card-header border-primary bg-transparent pb-0 mb-0">
+                            <h3 class="card-title">TOTAL MATRICULA NIVEL INICIAL POR CICLO, EDAD Y SEXO SEGÚN SERVICIOS
+                                EDUCATIVOS EN EL DISTRITO DE <span id="vista3_2_title"></span></h3>
+                        </div>
+                        <div class="card-body pb-0 pt-0">
+                            <div class="table-responsive" id="vista3_2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- FIN INICIAL --}}
 
                 {{-- PRIMARIA --}}
@@ -385,6 +438,7 @@
             $('#secundaria').removeClass('current');
             $('#pronoi').removeClass('current');
         }
+
         function primariaok() {
             $('.principal').hide();
             $('.inicial').hide();
@@ -513,6 +567,18 @@
             });
 
             $.ajax({
+                url: "{{ route('matriculadetalle.ebr.tabla3_1') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista3_1').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
                 url: "{{ route('matriculadetalle.ebr.tabla4') }}",
                 type: "POST",
                 data: $('#form_opciones').serialize(),
@@ -587,6 +653,56 @@
 
         }
 
+        function cargarvista3_2(distrito) {
+            event.preventDefault();
+            $('#distrito').val(distrito);
+            $.ajax({
+                url: "{{ route('matriculadetalle.ebr.tabla3_2') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista3_2_title').html(data.distrito);
+                    $('#vista3_2').html(data.tabla);
+                    $('#tablaEBR3_2').DataTable({"language": table_language,});
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            /* $.ajax({
+                url: "{{ route('matriculadetalle.ebr.tabla3_3') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista3_3_title').html(data.distrito);
+                    $('#vista3_3').html(data.tabla);
+                    $('#tablaEBR3_3').DataTable({"language": table_language,});
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            }); */
+        }
+
+        /* function cargarvista3_3(distrito) {
+            event.preventDefault();
+            $('#distrito').val(distrito);
+            $.ajax({
+                url: "{{ route('matriculadetalle.ebr.tabla3_3') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista3_3_title').html(data.distrito);
+                    $('#vista3_3').html(data.tabla);
+                    $('#tablaEBR3_3').DataTable({"language": table_language,});
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        } */
+
         function gLineaBasica(div, data, titulo, subtitulo, titulovetical) {
             Highcharts.chart(div, {
                 title: {
@@ -599,7 +715,7 @@
                     title: {
                         text: titulovetical
                     },
-                    /* min:0, */
+                    min: 0
                 },
                 xAxis: {
                     categories: data['cat'],
@@ -659,7 +775,7 @@
                     title: {
                         text: titulovetical
                     },
-                    /* min:0, */
+                    min: 0,
                 },
                 xAxis: {
                     categories: data['cat'],
@@ -764,6 +880,11 @@
     <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/exporting.js"></script>
     {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/export-data.js"></script> --}}
     {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/accessibility.js"></script> --}}
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
 
     <!-- Vendor js -->
     {{-- <script src="assets/js/vendor.min.js"></script> --}}

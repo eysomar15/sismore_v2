@@ -178,18 +178,20 @@ class HomeController extends Controller
     public function educacion($sistema_id)
     {
         $imp = ImportacionRepositorio::Max_yearPadronWeb();
-        $imp2 = ImportacionRepositorio::Max_porfuente(8);
+        $imp2 = ImportacionRepositorio::Max_yearSiagieMatricula();
+        //return $imp2;
+        //$imp2 = ImportacionRepositorio::Max_porfuente(8);
         $imp3 = ImportacionRepositorio::Max_porfuente(2);
-        $mat = Matricula::where('importacion_id', $imp2)->first();
-        
+        //$mat = Matricula::where('importacion_id', $imp2)->first();
 
-        if (count($imp) > 0 && $imp2 != null && $imp3 != null) {
-            $importacion_id = $imp['id'];
-            $matricula_id = $mat->id;
 
-            $info['se'] = PadronWebRepositorio::count_institucioneducativa($imp['id']);
-            $info['le'] = PadronWebRepositorio::count_localesescolares($imp['id']);
-            $info['tm'] = MatriculaDetalleRepositorio::count_matriculados($mat->id);
+        if ($imp->count() > 0 && $imp2->count() > 0 && $imp3 != null) {
+            $importacion_id = $imp->first()->id;
+            $matricula_id = $imp2->first()->mat;
+
+            $info['se'] = PadronWebRepositorio::count_institucioneducativa($imp->first()->id);
+            $info['le'] = PadronWebRepositorio::count_localesescolares($imp->first()->id);
+            $info['tm'] = MatriculaDetalleRepositorio::count_matriculados($imp2->first()->mat);
             $info['do'] = PlazaRepositorio::count_docente($imp3);
 
             /* $info['g1'] = MatriculaDetalleRepositorio::estudiantes_matriculadosEBR_EBE_anual();
@@ -207,14 +209,14 @@ class HomeController extends Controller
             $info['g9'] = MatriculaDetalleRepositorio::estudiantes_matriculados_segunaugel();
             $info['g10'] = PlazaRepositorio::docentes_segunugel(); */
 
-            $info['dt0'] = MatriculaDetalleRepositorio::listar_estudiantesMatriculadosDeEducacionBasicaPorUgel();
-            $info['dt1'] = PadronWebRepositorio::listar_totalServicosLocalesSecciones();
+            $info['dt0'] = MatriculaDetalleRepositorio::listar_estudiantesMatriculadosDeEducacionBasicaPorUgel($imp2);
+            $info['dt1'] = PadronWebRepositorio::listar_totalServicosLocalesSecciones($imp);
             /* $info['dt4'] = MatriculaDetalleRepositorio::listar_estudiantesNivelProvinciaDistrito(); */
             return  view('home', compact('importacion_id', 'info', 'imp', 'matricula_id'));
         } else {
             $importacion_id = null;
-            $importables['padron_web'] = count($imp) == 0;
-            $importables['siagie_matricula'] = $imp2 == null;
+            $importables['padron_web'] = $imp->count() == 0;
+            $importables['siagie_matricula'] = $imp2->count() == 0;
             $importables['nexus_minedu'] = $imp3 == null;
             return  view('home', compact('importacion_id', 'importables'));
         }

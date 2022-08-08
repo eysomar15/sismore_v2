@@ -12,6 +12,7 @@ class PadronWebRepositorio
     {
         $query = DB::table('edu_padronweb as v1')
             ->where('v1.importacion_id', $importacion_id)
+            ->where('v1.estadoinsedu_id', 3)
             ->distinct()
             ->select('v1.institucioneducativa_id')
             ->get();
@@ -19,13 +20,21 @@ class PadronWebRepositorio
     }
     public static function count_localesescolares($importacion_id)
     {
-        $query = DB::table('edu_padronweb as v1')
+        /* $query = DB::table('edu_padronweb as v1')
             ->join('edu_institucioneducativa as v2', 'v2.id', '=', 'v1.institucioneducativa_id')
             ->where('v1.importacion_id', $importacion_id)
+            ->where('v1.estadoinsedu_id', '3')
             ->distinct()
             ->select('v2.codLocal')
             ->get();
-        return $query->count();
+        return $query->count(); */
+        $query = DB::table(DB::raw("(
+            select distinct `v2`.`codLocal` 
+            from `edu_padronweb` as `v1` 
+            inner join `edu_institucioneducativa` as `v2` on `v2`.`id` = `v1`.`institucioneducativa_id` 
+            where `v1`.`importacion_id` = $importacion_id and `v1`.`estadoinsedu_id` = 3
+        ) as tb"))->select(DB::raw('count(codLocal) conteo'))->get();
+        return $query->first()->conteo;
     }
     public static function count_matriculados($importacion_id)
     {
@@ -775,20 +784,16 @@ class PadronWebRepositorio
     }
 
 
-    public static function listar_totalServicosLocalesSecciones()
+    public static function listar_totalServicosLocalesSecciones($importacion)
     {
-        $fechaMax = DB::table('edu_padronweb as v1')
-            ->join('par_importacion as v3', 'v3.id', '=', 'v1.importacion_id')
-            ->select(DB::raw('max(v3.fechaActualizacion) as fecha'))
-            ->where('v3.estado', 'PR')
-            ->get()->first()->fecha;
+        $ids = $importacion->first()->id;
         $tabla = "
         select 
             v3.tipo,
             v3.nombre nivel,
             v2.codLocal locales,    
-            sum(IF(v5.nombre!='Privada',1,0)) publico_locales,
-            sum(IF(v5.nombre='Privada',1,0)) privado_locales,
+            sum(IF(v5.nombre!='Privada' and v2.codLocal,1,0)) publico_locales,
+            sum(IF(v5.nombre='Privada' and v2.codLocal,1,0)) privado_locales,
             count(v1.id) servicios,
             sum(IF(v5.nombre!='Privada',1,0)) publico_servicios,
             sum(IF(v5.nombre='Privada',1,0)) privado_servicios,
@@ -801,9 +806,9 @@ class PadronWebRepositorio
         inner join edu_tipogestion as v4 on v4.id=v2.TipoGestion_id
         inner join edu_tipogestion as v5 on v5.id=v4.dependencia
         inner join par_importacion as v6 on v6.id=v1.importacion_id
-        where v6.estado='PR' and v6.fechaActualizacion='$fechaMax'
+        where v6.estado='PR' and v6.id=$ids and v1.estadoinsedu_id=3
         group by v3.tipo, v3.nombre ,v2.codLocal";
-        if ($fechaMax) {
+        if ($importacion->count() > 0) {
             $foot = DB::table(DB::raw("(" . $tabla . ") as xx"))
                 ->select(
                     DB::raw("SUM(publico_locales)+SUM(privado_locales) ttlc"),
@@ -851,7 +856,7 @@ class PadronWebRepositorio
                 ->get();
 
 
-            return ['head' => $head, 'body' => $body, 'foot' => $foot, 'fecha' => date('d/m/Y', strtotime($fechaMax))];
+            return ['head' => $head, 'body' => $body, 'foot' => $foot, 'fecha' => date('d/m/Y', strtotime($importacion->first()->fecha))];
         }
         return [];
     }

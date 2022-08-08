@@ -27,10 +27,12 @@ class MatriculaDetalleRepositorio
             ->where('estado', 'PR')->where('fuenteImportacion_id', "8")
             ->groupBy('ano')
             ->get();
+
         $fechas = [];
         foreach ($impfechas as $key => $value) {
             $fechas[] = $value->fecha;
         }
+
         $impfechas = Importacion::select(
             DB::raw("year(fechaActualizacion) as ano"),
             'id',
@@ -39,6 +41,7 @@ class MatriculaDetalleRepositorio
             ->where('estado', 'PR')->where('fuenteImportacion_id', "8")->whereIn('fechaActualizacion', $fechas)
             ->orderBy('ano', 'asc')
             ->get();
+
         $ids = '';
         foreach ($impfechas as $key => $value) {
             if ($key < count($impfechas) - 1)
@@ -373,17 +376,9 @@ class MatriculaDetalleRepositorio
         return [];
     }
 
-    public static function listar_estudiantesMatriculadosDeEducacionBasicaPorUgel()
+    public static function listar_estudiantesMatriculadosDeEducacionBasicaPorUgel($matricula)
     {
-        $fechaMax = DB::table('edu_matricula_detalle as v1')
-            ->join('edu_matricula as v2', 'v2.id', '=', 'v1.matricula_id')
-            ->join('par_importacion as v3', 'v3.id', '=', 'v2.importacion_id')
-            ->select(DB::raw('max(v3.fechaActualizacion) as fecha'))
-            ->where('v3.estado', 'PR')
-            ->get()->first()->fecha;
-        /* $id = $fechaMax->first()->id;
-        $fecha = date('d/m/Y', strtotime($fechaMax->first()->fecha)); */
-        if ($fechaMax) {
+        if ($matricula->count() > 0) {
             $foot = DB::table('edu_matricula_detalle as v1')
                 ->join('edu_matricula as v2', 'v2.id', '=', 'v1.matricula_id')
                 ->join('par_importacion as v3', 'v3.id', '=', 'v2.importacion_id')
@@ -404,7 +399,7 @@ class MatriculaDetalleRepositorio
                     DB::raw("SUM(IF(v8.nombre!='Privada',IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) pu_t"),
                     DB::raw("SUM(IF(v8.nombre='Privada',IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) pr_t"),
                 )
-                ->where('v3.estado', 'PR')->where('v3.fechaActualizacion', $fechaMax)->whereIn('v5.tipo', ['EBR', 'EBE'])
+                ->where('v3.estado', 'PR')->where('v3.id', $matricula->first()->imp)->whereIn('v5.tipo', ['EBR', 'EBE'])
                 ->get()->first();
             $body = DB::table('edu_matricula_detalle as v1')
                 ->join('edu_matricula as v2', 'v2.id', '=', 'v1.matricula_id')
@@ -427,12 +422,12 @@ class MatriculaDetalleRepositorio
                     DB::raw("SUM(IF(v8.nombre!='Privada',IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) pu_t"),
                     DB::raw("SUM(IF(v8.nombre='Privada',IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) pr_t"),
                 )
-                ->where('v3.estado', 'PR')->where('v3.fechaActualizacion', $fechaMax)->whereIn('v5.tipo', ['EBR', 'EBE'])
+                ->where('v3.estado', 'PR')->where('v3.id', $matricula->first()->imp)->whereIn('v5.tipo', ['EBR', 'EBE'])
                 ->groupBy('ugel')
                 //->orderBy('provincia', 'asc')->orderBy('distrito', 'asc')
                 ->get();
 
-            return ['head' => [], 'body' => $body, 'foot' => $foot, 'fecha' => date('d/m/Y', strtotime($fechaMax))];
+            return ['head' => [], 'body' => $body, 'foot' => $foot, 'fecha' => date('d/m/Y', strtotime($matricula->first()->fecha))];
         }
         return [];
     }

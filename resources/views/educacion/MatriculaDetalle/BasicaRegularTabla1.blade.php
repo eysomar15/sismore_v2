@@ -28,12 +28,12 @@
                 <td>{{ number_format($item->ptt, 1) }}%</td>
                 <td>{{ number_format($item->th, 0) }}</td>
                 <td>{{ number_format($item->tm, 0) }}</td>
-                <td>{{ number_format($item->sh, 0) }}</td>
-                <td>{{ number_format($item->sm, 0) }}</td>
-                <td>{{ number_format($item->ph, 0) }}</td>
-                <td>{{ number_format($item->pm, 0) }}</td>
                 <td>{{ number_format($item->ih, 0) }}</td>
                 <td>{{ number_format($item->im, 0) }}</td>
+                <td>{{ number_format($item->ph, 0) }}</td>
+                <td>{{ number_format($item->pm, 0) }}</td>
+                <td>{{ number_format($item->sh, 0) }}</td>
+                <td>{{ number_format($item->sm, 0) }}</td>
             </tr>
         @endforeach
     </tbody>
@@ -44,12 +44,12 @@
             <td>{{ number_format($foot->ptt, 1) }}%</td>
             <th>{{ number_format($foot->th, 0) }}</th>
             <th>{{ number_format($foot->tm, 0) }}</th>
-            <th>{{ number_format($foot->sh, 0) }}</th>
-            <th>{{ number_format($foot->sm, 0) }}</th>
-            <th>{{ number_format($foot->ph, 0) }}</th>
-            <th>{{ number_format($foot->pm, 0) }}</th>
             <th>{{ number_format($foot->ih, 0) }}</th>
             <th>{{ number_format($foot->im, 0) }}</th>
+            <th>{{ number_format($foot->ph, 0) }}</th>
+            <th>{{ number_format($foot->pm, 0) }}</th>
+            <th>{{ number_format($foot->sh, 0) }}</th>
+            <th>{{ number_format($foot->sm, 0) }}</th>
         </tr>
     </tfoot>
 </table>

@@ -190,6 +190,9 @@ Route::post('/MatriculaDetalle/EBR/grafica7', [MatriculaDetalleController::class
 Route::post('/MatriculaDetalle/EBR/tabla1', [MatriculaDetalleController::class, 'cargarEBRtabla1'])->name('matriculadetalle.ebr.tabla1');
 Route::post('/MatriculaDetalle/EBR/tabla2', [MatriculaDetalleController::class, 'cargarEBRtabla2'])->name('matriculadetalle.ebr.tabla2');
 Route::post('/MatriculaDetalle/EBR/tabla3', [MatriculaDetalleController::class, 'cargarEBRtabla3'])->name('matriculadetalle.ebr.tabla3');
+Route::post('/MatriculaDetalle/EBR/tabla3_1', [MatriculaDetalleController::class, 'cargarEBRtabla3_1'])->name('matriculadetalle.ebr.tabla3_1');
+Route::post('/MatriculaDetalle/EBR/tabla3_2', [MatriculaDetalleController::class, 'cargarEBRtabla3_2'])->name('matriculadetalle.ebr.tabla3_2');
+Route::post('/MatriculaDetalle/EBR/tabla3_3', [MatriculaDetalleController::class, 'cargarEBRtabla3_3'])->name('matriculadetalle.ebr.tabla3_3');
 Route::post('/MatriculaDetalle/EBR/tabla4', [MatriculaDetalleController::class, 'cargarEBRtabla4'])->name('matriculadetalle.ebr.tabla4');
 Route::post('/MatriculaDetalle/EBR/tabla5', [MatriculaDetalleController::class, 'cargarEBRtabla5'])->name('matriculadetalle.ebr.tabla5');
 Route::post('/MatriculaDetalle/EBR/tabla6', [MatriculaDetalleController::class, 'cargarEBRtabla6'])->name('matriculadetalle.ebr.tabla6');

@@ -253,25 +253,14 @@ class ImportacionRepositorio
     }
     public static function Max_yearPadronWeb()
     {
-        $anio = (array) DB::table('par_importacion as v1')
+        $query = /* (array) */  DB::table('par_importacion as v1')
             ->join('edu_padronweb as v2', 'v2.importacion_id', '=', 'v1.id')
             ->where('v1.estado', "PR")
             ->orderBy('v1.fechaActualizacion', 'desc')
-            ->distinct()
-            ->select('v1.id', 'v1.fechaActualizacion', DB::raw('YEAR(v1.fechaActualizacion) as anio'))
-            ->first();
-        /* $anio = DB::table('par_importacion as v1')
-            ->join('edu_padronweb as v2', 'v2.importacion_id', '=', 'v1.id')
-            ->where('v1.estado', "PR")
-            ->orderBy('v1.fechaActualizacion', 'desc')
-            ->distinct()
-            ->select('v1.id', 'v1.fechaActualizacion', DB::raw('YEAR(v1.fechaActualizacion) as anio'))
-            ->first(); */
-        return $anio;
-        /* if ($anio->count() > 0) {
-            return $anio->first()->toArray(); //->first()->anio;
-        } else
-            return 0; */
+            ->distinct()->select('v1.id', 'v1.fechaActualizacion as fecha', DB::raw('YEAR(v1.fechaActualizacion) as anio'))
+            ->take(1)
+            ->get();
+        return $query;
     }
 
     public static function Max_porfuente($fuente)
@@ -280,5 +269,24 @@ class ImportacionRepositorio
             ->where('estado', 'PR')->orderBy('fecha', 'desc')->get();
         return $query->count() > 0 ? $query->first()->id : 0;
         //return Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', $fuente)->where('estado', 'PR')->first()->maximo;
+    }
+
+    public static function Max_yearSiagieMatricula()
+    {
+        $query =  DB::table('par_importacion as v1')
+            ->join('edu_matricula as v2', 'v2.importacion_id', '=', 'v1.id')
+            ->join('edu_matricula_detalle as v3', 'v3.matricula_id', '=', 'v2.id')
+            ->where('v1.estado', "PR")
+            ->orderBy('v1.fechaActualizacion', 'desc')
+            ->distinct()->select(
+                'v1.id as imp',
+                'v1.fechaActualizacion as fecha',
+                DB::raw('YEAR(v1.fechaActualizacion) as anio'),
+                'v2.id as mat',
+                'v2.anio_id'
+            )
+            ->take(1)
+            ->get();
+        return $query;
     }
 }
