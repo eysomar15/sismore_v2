@@ -1,4 +1,4 @@
-<table id="tabla0" class="table table-striped table-bordered tablex" style="font-size:11px;">
+<table id="tablaEBR5_2" class="table table-striped table-bordered tablex" style="font-size:11px;">
     <thead>
         <tr class="bg-primary text-white text-center">
             <td rowspan="4">UGEL</td>
@@ -35,7 +35,7 @@
     <tbody>
         @foreach ($base as $item)
             <tr class="text-center">
-                <td class="text-left"><a href="#guiaEBR5_1" class="">{{ $item->ugel }}</a></td>
+                <td class="text-left"><a href="#" class="">{{ $item->iiee }}</a></td>
                 <th>{{ number_format($item->tts, 0) }}</th>
                 <td>{{ number_format($item->ttsh, 0) }}</td>
                 <td>{{ number_format($item->ttsm, 0) }}</td>

@@ -37,9 +37,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($base as $item)
-            <tr class="text-center">
-                <td class="text-left"><a href="#guiaEBR4_1" class="">{{ $item->ugel }}</a></td>
+        @foreach ($head as $item)
+            <tr class="text-center table-warning">
+                <td class="text-left"><a href="javascript:void(0)" class="">{{ $item->ugel }}</a></td>
                 <th>{{ number_format($item->ttp, 0) }}</th>
                 <td>{{ number_format($item->ttph, 0) }}</td>
                 <td>{{ number_format($item->ttpm, 0) }}</td>
@@ -56,6 +56,28 @@
                 <td>{{ number_format($item->ICV6H, 0) }}</td>
                 <td>{{ number_format($item->ICV6M, 0) }}</td>
             </tr>
+            @foreach ($base as $item2)
+                @if ($item->ugel == $item2->ugel)
+                    <tr class="text-center">
+                        <td class="text-left"><a href="#guiaEBR4_2" onclick="cargarvista4_2({{$item2->id}})">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $item2->distrito }}</a></td>
+                        <th>{{ number_format($item2->ttp, 0) }}</th>
+                        <td>{{ number_format($item2->ttph, 0) }}</td>
+                        <td>{{ number_format($item2->ttpm, 0) }}</td>
+                        <td>{{ number_format($item2->ICIII1H, 0) }}</td>
+                        <td>{{ number_format($item2->ICIII1M, 0) }}</td>
+                        <td>{{ number_format($item2->ICIII2H, 0) }}</td>
+                        <td>{{ number_format($item2->ICIII2M, 0) }}</td>
+                        <td>{{ number_format($item2->ICIV3H, 0) }}</td>
+                        <td>{{ number_format($item2->ICIV3M, 0) }}</td>
+                        <td>{{ number_format($item2->ICIV4H, 0) }}</td>
+                        <td>{{ number_format($item2->ICIV4M, 0) }}</td>
+                        <td>{{ number_format($item2->ICV5H, 0) }}</td>
+                        <td>{{ number_format($item2->ICV5M, 0) }}</td>
+                        <td>{{ number_format($item2->ICV6H, 0) }}</td>
+                        <td>{{ number_format($item2->ICV6M, 0) }}</td>
+                    </tr>
+                @endif
+            @endforeach
         @endforeach
     </tbody>
     <tfoot>

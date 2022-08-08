@@ -36,9 +36,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($base as $item)
+        @foreach ($base as $key => $item)
             <tr class="text-center">
-                <td class="text-left"><a href="#" class="">{{ $item->ugel }}</a></td>
+                <td class="text-left"><a href="#guiaEBR3_1{{ $key }}" class="">{{ $item->ugel }}</a></td>
                 <th>{{ number_format($item->tti, 0) }}</th>
                 <td>{{ number_format($item->ttih, 0) }}</td>
                 <td>{{ number_format($item->ttim, 0) }}</td>

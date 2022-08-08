@@ -36,9 +36,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($head as $item)
+        @foreach ($head as $key => $item)
             <tr class="text-center table-warning">
-                <td class="text-left"><a href="" class=""></a>{{ $item->ugel }}</td>
+                <td class="text-left"><a href="javascript:void(0)" id="guiaEBR3_1{{$key}}"></a>{{ $item->ugel }}</td>
                 <th>{{ number_format($item->tti, 0) }}</th>
                 <td>{{ number_format($item->ttih, 0) }}</td>
                 <td>{{ number_format($item->ttim, 0) }}</td>
@@ -58,7 +58,8 @@
             @foreach ($base as $item2)
                 @if ($item2->ugel == $item->ugel)
                     <tr class="text-center">
-                        <td class="text-left"><a href="#" class="" onclick="cargarvista3_2({{$item2->id}});">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $item2->distrito }}</a>
+                        <td class="text-left"><a href="#guiaEBR3_2" class=""
+                                onclick="cargarvista3_2({{ $item2->id }});">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $item2->distrito }}</a>
                         </td>
                         <th>{{ number_format($item2->tti, 0) }}</th>
                         <td>{{ number_format($item2->ttih, 0) }}</td>

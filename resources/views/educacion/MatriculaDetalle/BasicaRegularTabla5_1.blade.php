@@ -33,9 +33,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($base as $item)
-            <tr class="text-center">
-                <td class="text-left"><a href="#guiaEBR5_1" class="">{{ $item->ugel }}</a></td>
+        @foreach ($head as $item)
+            <tr class="text-center table-warning">
+                <td class="text-left"><a href="javascript:void(0)" class="">{{ $item->ugel }}</a></td>
                 <th>{{ number_format($item->tts, 0) }}</th>
                 <td>{{ number_format($item->ttsh, 0) }}</td>
                 <td>{{ number_format($item->ttsm, 0) }}</td>
@@ -50,6 +50,26 @@
                 <td>{{ number_format($item->ICVII5H, 0) }}</td>
                 <td>{{ number_format($item->ICVII5M, 0) }}</td>
             </tr>
+            @foreach ($base as $item2)
+                @if ($item->ugel == $item2->ugel)
+                    <tr class="text-center">
+                        <td class="text-left"><a href="#guiaEBR5_2" onclick="cargarvista5_2({{$item2->id}})">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $item2->distrito }}</a></td>
+                        <th>{{ number_format($item2->tts, 0) }}</th>
+                        <td>{{ number_format($item2->ttsh, 0) }}</td>
+                        <td>{{ number_format($item2->ttsm, 0) }}</td>
+                        <td>{{ number_format($item2->ICVI1H, 0) }}</td>
+                        <td>{{ number_format($item2->ICVI1M, 0) }}</td>
+                        <td>{{ number_format($item2->ICVI2H, 0) }}</td>
+                        <td>{{ number_format($item2->ICVI2M, 0) }}</td>
+                        <td>{{ number_format($item2->ICVII3H, 0) }}</td>
+                        <td>{{ number_format($item2->ICVII3M, 0) }}</td>
+                        <td>{{ number_format($item2->ICVII4H, 0) }}</td>
+                        <td>{{ number_format($item2->ICVII4M, 0) }}</td>
+                        <td>{{ number_format($item2->ICVII5H, 0) }}</td>
+                        <td>{{ number_format($item2->ICVII5M, 0) }}</td>
+                    </tr>
+                @endif
+            @endforeach
         @endforeach
     </tbody>
     <tfoot>

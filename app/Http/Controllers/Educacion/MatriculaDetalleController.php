@@ -70,20 +70,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes asc
                 ) as xx"))->get();
 
@@ -107,14 +107,14 @@ class MatriculaDetalleController extends Controller
         $error['anoF'] = $anoF;
 
         $baseA = DB::table(DB::raw("(
-        select 
+        select
             v6.nombre ugel,
             sum(IF(month(v3.fechaActualizacion)=12,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) dic
-        from edu_matricula_detalle as v1 
+        from edu_matricula_detalle as v1
         inner join edu_matricula as v2 on v2.id=v1.matricula_id
         inner join par_importacion as v3 on v3.id=v2.importacion_id
         inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-        inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+        inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
         inner join edu_ugel as v6 on v6.id=v4.Ugel_id
         inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
         inner join edu_tipogestion as v8 on v8.id=v7.dependencia
@@ -131,7 +131,7 @@ class MatriculaDetalleController extends Controller
 
         $base = DB::table(DB::raw("(
             select
-                v6.id, 
+                v6.id,
                 v6.nombre ugel,
                 sum(IF(month(v3.fechaActualizacion)= 1,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) ene,
                 sum(IF(month(v3.fechaActualizacion)= 2,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
@@ -157,14 +157,14 @@ class MatriculaDetalleController extends Controller
                 sum(IF(month(v3.fechaActualizacion)=12,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
                 sum(IF(month(v3.fechaActualizacion)=11,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) dic,
                 sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) total
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
             where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea
             group by id,ugel
@@ -234,20 +234,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes asc
                 ) as xx"))->get();
 
@@ -272,21 +272,21 @@ class MatriculaDetalleController extends Controller
 
         $baseA = DB::table(DB::raw("(
         select
-            v5.id, 
+            v5.id,
             v5.tipo,
             v5.nombre nivel,
             sum(IF(month(v3.fechaActualizacion)=12,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) dic
-        from edu_matricula_detalle as v1 
+        from edu_matricula_detalle as v1
         inner join edu_matricula as v2 on v2.id=v1.matricula_id
         inner join par_importacion as v3 on v3.id=v2.importacion_id
         inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-        inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+        inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
         inner join edu_ugel as v6 on v6.id=v4.Ugel_id
         inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
         inner join edu_tipogestion as v8 on v8.id=v7.dependencia
         inner join edu_area as v9 on v9.id=v4.Area_id
         where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$anoA and month(v3.fechaActualizacion)=12 $optgestion $optarea
-        group by id,tipo,nivel        
+        group by id,tipo,nivel
             ) as xx"))->get();
         if (count($baseA) == 0) {
             $baseA = NivelModalidad::whereIn('tipo', ['EBR', 'EBE'])->select('id', 'tipo', DB::raw('0 as dic'))->get();
@@ -296,8 +296,8 @@ class MatriculaDetalleController extends Controller
 
         $base = DB::table(DB::raw("(
             select
-                v5.id, 
-                v5.tipo, 
+                v5.id,
+                v5.tipo,
                 v5.nombre nivel,
                 sum(IF(month(v3.fechaActualizacion)= 1,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) ene,
                 sum(IF(month(v3.fechaActualizacion)= 2,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
@@ -323,14 +323,14 @@ class MatriculaDetalleController extends Controller
                 sum(IF(month(v3.fechaActualizacion)=12,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
                 sum(IF(month(v3.fechaActualizacion)=11,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) dic,
                 sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) total
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
             where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea
             group by id,tipo,nivel
@@ -373,17 +373,17 @@ class MatriculaDetalleController extends Controller
             select
                 v5.tipo,
                 sum(IF(month(v3.fechaActualizacion)=12,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) dic
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
             inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
             where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$anoA and month(v3.fechaActualizacion)=12 $optgestion $optarea
-            group by tipo        
+            group by tipo
                 ) as xx"))->get();
         if (count($headA) == 0) {
             $headA = NivelModalidad::whereIn('tipo', ['EBR', 'EBE'])->distinct()->select('tipo', DB::raw('0 as dic'))->get();
@@ -392,7 +392,7 @@ class MatriculaDetalleController extends Controller
 
         $head = DB::table(DB::raw("(
             select
-                v5.tipo, 
+                v5.tipo,
                 sum(IF(month(v3.fechaActualizacion)= 1,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) ene,
                 sum(IF(month(v3.fechaActualizacion)= 2,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
                 sum(IF(month(v3.fechaActualizacion)= 1,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) feb,
@@ -417,14 +417,14 @@ class MatriculaDetalleController extends Controller
                 sum(IF(month(v3.fechaActualizacion)=12,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
                 sum(IF(month(v3.fechaActualizacion)=11,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) dic,
                 sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) total
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
             where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea
             group by tipo
@@ -436,7 +436,7 @@ class MatriculaDetalleController extends Controller
 
                 if ($bA->tipo == $bb->tipo)
                     $bb->tregA = $bA->dic;
-                //else 
+                //else
             }
             $bb->avance = $bb->tregA > 0 ? $bb->treg / $bb->tregA : 1;
         }
@@ -473,20 +473,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes asc
                 ) as xx"))->get();
 
@@ -511,31 +511,31 @@ class MatriculaDetalleController extends Controller
         $base = DB::table(DB::raw("(
             select
                 month(v3.fechaActualizacion) mes,
-                case month(v3.fechaActualizacion) 
-                    WHEN 1 THEN 'ENERO' 
-                    WHEN 2 THEN 'FEBRERO' 
-                    WHEN 3 THEN 'MARZO' 
-                    WHEN 4 THEN 'ABRIL' 
-                    WHEN 5 THEN 'MAYO' 
-                    WHEN 6 THEN 'JUNIO' 
-                    WHEN 7 THEN 'JULIO' 
-                    WHEN 8 THEN 'AGOSTO' 
-                    WHEN 9 THEN 'SETIEMBRE' 
-                    WHEN 10 THEN 'OCTUBRE' 
-                    WHEN 11 THEN 'NOVIEMBRE' 
-                    WHEN 12 THEN 'DICIEMBRE'  
+                case month(v3.fechaActualizacion)
+                    WHEN 1 THEN 'ENERO'
+                    WHEN 2 THEN 'FEBRERO'
+                    WHEN 3 THEN 'MARZO'
+                    WHEN 4 THEN 'ABRIL'
+                    WHEN 5 THEN 'MAYO'
+                    WHEN 6 THEN 'JUNIO'
+                    WHEN 7 THEN 'JULIO'
+                    WHEN 8 THEN 'AGOSTO'
+                    WHEN 9 THEN 'SETIEMBRE'
+                    WHEN 10 THEN 'OCTUBRE'
+                    WHEN 11 THEN 'NOVIEMBRE'
+                    WHEN 12 THEN 'DICIEMBRE'
                 END AS name,
             sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) y
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea
             group by mes,name
             order by mes asc
             ) as xx"))->get();
@@ -600,20 +600,20 @@ class MatriculaDetalleController extends Controller
         }
 
         $query = DB::table(DB::raw("(
-            select 
-				case v5.nombre 
-					when 'Secundaria' then v5.nombre 
+            select
+				case v5.nombre
+					when 'Secundaria' then v5.nombre
                     when 'Primaria' then v5.nombre
                     else 'Inicial'
-				end as nivel,      
+				end as nivel,
                 year(v3.fechaActualizacion) as ano,
-                SUM(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) as conteo 
-            from edu_matricula_detalle as v1 
+                SUM(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) as conteo
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
-            where v3.estado='PR' and v5.tipo in ('EBR') and v3.id in ($ids) 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            where v3.estado='PR' and v5.tipo in ('EBR') and v3.id in ($ids)
             group by nivel,ano
             ) as tb"))
             ->get();
@@ -675,20 +675,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes asc
                 ) as xx"))->get();
 
@@ -714,16 +714,16 @@ class MatriculaDetalleController extends Controller
             select
                 month(v3.fechaActualizacion) mes,
                 sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) y
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea
             group by mes
             order by mes asc
             ) as xx"))->get();
@@ -747,20 +747,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -768,23 +768,23 @@ class MatriculaDetalleController extends Controller
 
         $base = DB::table(DB::raw("(
             select
-                case v5.nombre 
-                    when 'Secundaria' then v5.nombre 
+                case v5.nombre
+                    when 'Secundaria' then v5.nombre
                     when 'Primaria' then v5.nombre
                     else 'Inicial'
                 end as name,
                 sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) y,
                 FORMAT(sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)),0) yx
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             group by name
             ) as xx"))->get();
         /* $error['base'] = $base; */
@@ -805,41 +805,41 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
         $fx = $fechas->first()->fecha;
 
         $base = DB::table(DB::raw("(
-            select                
+            select
                 sum(v1.total_hombres) hy,
                 sum(v1.total_mujeres) my,
                 FORMAT(sum(v1.total_hombres),0) hyx,
                 FORMAT(sum(v1.total_mujeres),0) myx
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             ) as xx"))->get();
         $query = $base->first();
         $data[] = ['name' => 'MASCULINO', 'y' => (int)$query->hy, 'yx' => $query->hyx];
@@ -878,15 +878,15 @@ class MatriculaDetalleController extends Controller
         }
 
         $query = DB::table(DB::raw("(
-            select 
+            select
                 'Inicial' as nivel,
                 year(v3.fechaActualizacion) as ano,
-                SUM(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) as conteo 
-            from edu_matricula_detalle as v1 
+                SUM(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) as conteo
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             where v3.estado='PR' and v5.tipo in ('EBR') and v3.id in ($ids) and v5.id=14
             group by nivel,ano
             ) as tb"))
@@ -930,20 +930,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes asc
                 ) as xx"))->get();
 
@@ -969,14 +969,14 @@ class MatriculaDetalleController extends Controller
             select
                 month(v3.fechaActualizacion) mes,
                 sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) y
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
             where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea and v5.id=14
             group by mes
@@ -1002,39 +1002,39 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
         $fx = $fechas->first()->fecha;
 
         $base = DB::table(DB::raw("(
-            select                
+            select
                 sum(v1.total_hombres) hy,
                 sum(v1.total_mujeres) my,
                 FORMAT(sum(v1.total_hombres),0) hyx,
                 FORMAT(sum(v1.total_mujeres),0) myx
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
             where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea and v5.id=14
             ) as xx"))->get();
@@ -1055,20 +1055,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -1080,22 +1080,22 @@ class MatriculaDetalleController extends Controller
                 sum(v1.total_hombres+v1.total_mujeres) tt,
                 sum(v1.total_hombres) th,
                 sum(v1.total_mujeres) tm,
-                sum(IF(v5.nombre='Secundaria',v1.total_hombres,0)) sh,	
+                sum(IF(v5.nombre='Secundaria',v1.total_hombres,0)) sh,
                 sum(IF(v5.nombre='Secundaria',v1.total_mujeres,0)) sm,
                 sum(IF(v5.nombre='Primaria',v1.total_hombres,0)) ph,
                 sum(IF(v5.nombre='Primaria',v1.total_mujeres,0)) pm,
                 sum(IF(v5.nombre like 'Inicial%',v1.total_hombres,0)) ih,
                 sum(IF(v5.nombre like 'Inicial%',v1.total_mujeres,0)) im
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             group by ugel
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -1103,22 +1103,22 @@ class MatriculaDetalleController extends Controller
                     sum(v1.total_hombres+v1.total_mujeres) tt,
                     sum(v1.total_hombres) th,
                     sum(v1.total_mujeres) tm,
-                    sum(IF(v5.nombre='Secundaria',v1.total_hombres,0)) sh,	
+                    sum(IF(v5.nombre='Secundaria',v1.total_hombres,0)) sh,
                     sum(IF(v5.nombre='Secundaria',v1.total_mujeres,0)) sm,
                     sum(IF(v5.nombre='Primaria',v1.total_hombres,0)) ph,
                     sum(IF(v5.nombre='Primaria',v1.total_mujeres,0)) pm,
                     sum(IF(v5.nombre like 'Inicial%',v1.total_hombres,0)) ih,
                     sum(IF(v5.nombre like 'Inicial%',v1.total_mujeres,0)) im
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
                 ) as xx"))->get()->first();
         $vv = 0;
         foreach ($base as $key => $value) {
@@ -1143,20 +1143,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -1169,37 +1169,37 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.cero_anios_hombre+v1.cero_anios_mujer,0)) +
                 sum(IF(v5.nombre like 'Inicial%',v1.un_anio_hombre+v1.un_anio_mujer,0)) +
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre+v1.dos_anios_mujer,0)) ICI,
-                
+
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre+v1.tres_anios_mujer,0)) +
                 sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre+v1.cuatro_anios_mujer,0)) +
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre+v1.cinco_anios_mujer,0)) +
                 sum(IF(v5.nombre like 'Inicial%',v1.mas_cinco_anios_hombre+v1.mas_cinco_anios_mujer,0)) ICII,
-                
+
                 sum(IF(v5.nombre='Primaria',v1.primero_hombre+v1.primero_mujer,0)) +
                 sum(IF(v5.nombre='Primaria',v1.segundo_hombre+v1.segundo_mujer,0)) ICIII,
-                
+
                 sum(IF(v5.nombre='Primaria',v1.tercero_hombre+v1.tercero_mujer,0)) +
                 sum(IF(v5.nombre='Primaria',v1.cuarto_hombre+v1.cuarto_mujer,0)) ICIV,
-                
+
                 sum(IF(v5.nombre='Primaria',v1.quinto_hombre+v1.quinto_mujer,0)) +
                 sum(IF(v5.nombre='Primaria',v1.sexto_hombre+v1.sexto_mujer,0)) ICV,
-                
+
                 sum(IF(v5.nombre='Secundaria',v1.primero_hombre+v1.primero_mujer,0)) +
                 sum(IF(v5.nombre='Secundaria',v1.segundo_hombre+v1.segundo_mujer,0)) ICVI,
-                
+
                 sum(IF(v5.nombre='Secundaria',v1.tercero_hombre+v1.tercero_mujer,0)) +
                 sum(IF(v5.nombre='Secundaria',v1.cuarto_hombre+v1.cuarto_mujer,0)) +
-                sum(IF(v5.nombre='Secundaria',v1.quinto_hombre+v1.quinto_mujer,0)) ICVII   
-            from edu_matricula_detalle as v1 
+                sum(IF(v5.nombre='Secundaria',v1.quinto_hombre+v1.quinto_mujer,0)) ICVII
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             group by ugel
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -1208,37 +1208,37 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Inicial%',v1.cero_anios_hombre+v1.cero_anios_mujer,0)) +
                     sum(IF(v5.nombre like 'Inicial%',v1.un_anio_hombre+v1.un_anio_mujer,0)) +
                     sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre+v1.dos_anios_mujer,0)) ICI,
-                    
+
                     sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre+v1.tres_anios_mujer,0)) +
                     sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre+v1.cuatro_anios_mujer,0)) +
                     sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre+v1.cinco_anios_mujer,0)) +
                     sum(IF(v5.nombre like 'Inicial%',v1.mas_cinco_anios_hombre+v1.mas_cinco_anios_mujer,0)) ICII,
-                    
+
                     sum(IF(v5.nombre='Primaria',v1.primero_hombre+v1.primero_mujer,0)) +
                     sum(IF(v5.nombre='Primaria',v1.segundo_hombre+v1.segundo_mujer,0)) ICIII,
-                    
+
                     sum(IF(v5.nombre='Primaria',v1.tercero_hombre+v1.tercero_mujer,0)) +
                     sum(IF(v5.nombre='Primaria',v1.cuarto_hombre+v1.cuarto_mujer,0)) ICIV,
-                    
+
                     sum(IF(v5.nombre='Primaria',v1.quinto_hombre+v1.quinto_mujer,0)) +
                     sum(IF(v5.nombre='Primaria',v1.sexto_hombre+v1.sexto_mujer,0)) ICV,
-                    
+
                     sum(IF(v5.nombre='Secundaria',v1.primero_hombre+v1.primero_mujer,0)) +
                     sum(IF(v5.nombre='Secundaria',v1.segundo_hombre+v1.segundo_mujer,0)) ICVI,
-                    
+
                     sum(IF(v5.nombre='Secundaria',v1.tercero_hombre+v1.tercero_mujer,0)) +
                     sum(IF(v5.nombre='Secundaria',v1.cuarto_hombre+v1.cuarto_mujer,0)) +
-                    sum(IF(v5.nombre='Secundaria',v1.quinto_hombre+v1.quinto_mujer,0)) ICVII   
-                from edu_matricula_detalle as v1 
+                    sum(IF(v5.nombre='Secundaria',v1.quinto_hombre+v1.quinto_mujer,0)) ICVII
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
                 ) as xx"))->get()->first();
         $vv = 0;
         foreach ($base as $key => $value) {
@@ -1263,20 +1263,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -1296,7 +1296,7 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.un_anio_mujer,0)) ICI1M,
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre,0)) ICI2H,
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_mujer,0)) ICI2M,
-                
+
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre,0)) ICII3H,
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_mujer,0)) ICII3M,
                 sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
@@ -1304,16 +1304,16 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_mujer,0)) ICII5M
 
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             group by ugel
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -1328,7 +1328,7 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Inicial%',v1.un_anio_mujer,0)) ICI1M,
                     sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre,0)) ICI2H,
                     sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_mujer,0)) ICI2M,
-                    
+
                     sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre,0)) ICII3H,
                     sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_mujer,0)) ICII3M,
                     sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
@@ -1336,16 +1336,16 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
                     sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_mujer,0)) ICII5M
 
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
                 ) as xx"))->get()->first();
 
         /* $data['body'] = $base;
@@ -1365,20 +1365,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -1397,7 +1397,7 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.un_anio_mujer,0)) ICI1M,
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre,0)) ICI2H,
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_mujer,0)) ICI2M,
-                
+
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre,0)) ICII3H,
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_mujer,0)) ICII3M,
                 sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
@@ -1405,20 +1405,20 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_mujer,0)) ICII5M
 
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id 
+            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
-            group by ugel 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            group by ugel
             ) as xx"))->get();
 
         $base = DB::table(DB::raw("(
@@ -1436,7 +1436,7 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.un_anio_mujer,0)) ICI1M,
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre,0)) ICI2H,
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_mujer,0)) ICI2M,
-                
+
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre,0)) ICII3H,
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_mujer,0)) ICII3M,
                 sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
@@ -1444,20 +1444,20 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_mujer,0)) ICII5M
 
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id 
+            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
-            group by ugel,id,distrito 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            group by ugel,id,distrito
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
                 select
@@ -1471,7 +1471,7 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Inicial%',v1.un_anio_mujer,0)) ICI1M,
                     sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre,0)) ICI2H,
                     sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_mujer,0)) ICI2M,
-                    
+
                     sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre,0)) ICII3H,
                     sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_mujer,0)) ICII3M,
                     sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
@@ -1479,16 +1479,16 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
                     sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_mujer,0)) ICII5M
 
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
                 ) as xx"))->get()->first();
 
         /* $data['body'] = $base;
@@ -1512,20 +1512,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -1533,7 +1533,7 @@ class MatriculaDetalleController extends Controller
 
         $base = DB::table(DB::raw("(
             select
-                v4.nombreInstEduc iiee,    
+                v4.nombreInstEduc iiee,
                 sum(IF(v5.nombre like 'Inicial%',v1.total_hombres+v1.total_mujeres,0)) tti,
                 sum(IF(v5.nombre like 'Inicial%',v1.total_hombres,0)) ttih,
                 sum(IF(v5.nombre like 'Inicial%',v1.total_mujeres,0)) ttim,
@@ -1544,7 +1544,7 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.un_anio_mujer,0)) ICI1M,
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre,0)) ICI2H,
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_mujer,0)) ICI2M,
-                
+
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre,0)) ICII3H,
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_mujer,0)) ICII3M,
                 sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
@@ -1552,19 +1552,19 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_mujer,0)) ICII5M
 
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id 
+            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
             group by iiee order by tti desc
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -1579,7 +1579,7 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Inicial%',v1.un_anio_mujer,0)) ICI1M,
                     sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre,0)) ICI2H,
                     sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_mujer,0)) ICI2M,
-                    
+
                     sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre,0)) ICII3H,
                     sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_mujer,0)) ICII3M,
                     sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
@@ -1587,19 +1587,19 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
                     sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_mujer,0)) ICII5M
 
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id 
+                inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
                 inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
                 inner join par_ubigeo as vC on vC.id=vB.dependencia
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea 
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
                 ) as xx"))->get()->first();
         /* $data['body'] = $base;
         $data['foot'] = $foot;
@@ -1622,20 +1622,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -1643,7 +1643,7 @@ class MatriculaDetalleController extends Controller
 
         $base = DB::table(DB::raw("(
             select
-                vA.nombre centro_poblado,    
+                vA.nombre centro_poblado,
                 sum(IF(v5.nombre like 'Inicial%',v1.total_hombres+v1.total_mujeres,0)) tti,
                 sum(IF(v5.nombre like 'Inicial%',v1.total_hombres,0)) ttih,
                 sum(IF(v5.nombre like 'Inicial%',v1.total_mujeres,0)) ttim,
@@ -1654,7 +1654,7 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.un_anio_mujer,0)) ICI1M,
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre,0)) ICI2H,
                 sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_mujer,0)) ICI2M,
-                
+
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre,0)) ICII3H,
                 sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_mujer,0)) ICII3M,
                 sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
@@ -1662,19 +1662,19 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
                 sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_mujer,0)) ICII5M
 
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id 
+            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
             group by centro_poblado order by tti desc
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -1689,7 +1689,7 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Inicial%',v1.un_anio_mujer,0)) ICI1M,
                     sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_hombre,0)) ICI2H,
                     sum(IF(v5.nombre like 'Inicial%',v1.dos_anios_mujer,0)) ICI2M,
-                    
+
                     sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_hombre,0)) ICII3H,
                     sum(IF(v5.nombre like 'Inicial%',v1.tres_anios_mujer,0)) ICII3M,
                     sum(IF(v5.nombre like 'Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
@@ -1697,19 +1697,19 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
                     sum(IF(v5.nombre like 'Inicial%',v1.cinco_anios_mujer,0)) ICII5M
 
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id 
+                inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
                 inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
                 inner join par_ubigeo as vC on vC.id=vB.dependencia
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea 
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
                 ) as xx"))->get()->first();
        /*  $data['body'] = $base;
         $data['foot'] = $foot;
@@ -1728,20 +1728,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -1758,23 +1758,23 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Primaria',v1.segundo_hombre,0)) ICIII2H,
                 sum(IF(v5.nombre like 'Primaria',v1.segundo_mujer,0))  ICIII2M,
                 sum(IF(v5.nombre like 'Primaria',v1.tercero_hombre,0)) ICIV3H,
-                sum(IF(v5.nombre like 'Primaria',v1.tercero_mujer,0))  ICIV3M,                
+                sum(IF(v5.nombre like 'Primaria',v1.tercero_mujer,0))  ICIV3M,
                 sum(IF(v5.nombre like 'Primaria',v1.cuarto_hombre,0))  ICIV4H,
                 sum(IF(v5.nombre like 'Primaria',v1.cuarto_mujer,0))   ICIV4M,
                 sum(IF(v5.nombre like 'Primaria',v1.quinto_hombre,0))  ICV5H,
                 sum(IF(v5.nombre like 'Primaria',v1.quinto_mujer,0))   ICV5M,
                 sum(IF(v5.nombre like 'Primaria',v1.sexto_hombre,0))   ICV6H,
                 sum(IF(v5.nombre like 'Primaria',v1.sexto_mujer,0))    ICV6M
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             group by ugel
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -1787,29 +1787,268 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Primaria',v1.segundo_hombre,0)) ICIII2H,
                     sum(IF(v5.nombre like 'Primaria',v1.segundo_mujer,0))  ICIII2M,
                     sum(IF(v5.nombre like 'Primaria',v1.tercero_hombre,0)) ICIV3H,
-                    sum(IF(v5.nombre like 'Primaria',v1.tercero_mujer,0))  ICIV3M,                
+                    sum(IF(v5.nombre like 'Primaria',v1.tercero_mujer,0))  ICIV3M,
                     sum(IF(v5.nombre like 'Primaria',v1.cuarto_hombre,0))  ICIV4H,
                     sum(IF(v5.nombre like 'Primaria',v1.cuarto_mujer,0))   ICIV4M,
                     sum(IF(v5.nombre like 'Primaria',v1.quinto_hombre,0))  ICV5H,
                     sum(IF(v5.nombre like 'Primaria',v1.quinto_mujer,0))   ICV5M,
                     sum(IF(v5.nombre like 'Primaria',v1.sexto_hombre,0))   ICV6H,
                     sum(IF(v5.nombre like 'Primaria',v1.sexto_mujer,0))    ICV6M
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
                 ) as xx"))->get()->first();
 
         /* $data['body'] = $base;
         $data['foot'] = $foot;
         return $data; */
         return view("educacion.MatriculaDetalle.BasicaRegularTabla4", compact('rq', 'base', 'foot'));
+    }
+
+    public function cargarEBRtabla4_1(Request $rq)
+    {
+        $ano = $rq->ano;
+        $gestion = $rq->gestion;
+        $area = $rq->area;
+
+        $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
+        $optarea = $area == 0 ? "" : " and v9.id=$area ";
+
+        $fechas = DB::table(DB::raw("(
+            select mes, max(fecha) fecha from (
+                select
+                    distinct
+                    v3.fechaActualizacion fecha,
+                    year(v3.fechaActualizacion) ano,
+                    month(v3.fechaActualizacion) mes,
+                    day(v3.fechaActualizacion) dia
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join par_anio as v4 on v4.id=v2.anio_id
+                where v3.estado='PR' and v2.anio_id=$ano
+                order by fecha desc
+            ) as xx
+            group by mes
+            order by mes desc
+                ) as xx"))->take(1)->get();
+
+        $fx = $fechas->first()->fecha;
+
+        $head = DB::table(DB::raw("(
+            select
+                v6.nombre ugel,
+                sum(IF(v5.nombre like 'Primaria',v1.total_hombres+v1.total_mujeres,0)) ttp,
+                sum(IF(v5.nombre like 'Primaria',v1.total_hombres,0)) ttph,
+                sum(IF(v5.nombre like 'Primaria',v1.total_mujeres,0)) ttpm,
+                sum(IF(v5.nombre like 'Primaria',v1.primero_hombre,0)) ICIII1H,
+                sum(IF(v5.nombre like 'Primaria',v1.primero_mujer,0))  ICIII1M,
+                sum(IF(v5.nombre like 'Primaria',v1.segundo_hombre,0)) ICIII2H,
+                sum(IF(v5.nombre like 'Primaria',v1.segundo_mujer,0))  ICIII2M,
+                sum(IF(v5.nombre like 'Primaria',v1.tercero_hombre,0)) ICIV3H,
+                sum(IF(v5.nombre like 'Primaria',v1.tercero_mujer,0))  ICIV3M,
+                sum(IF(v5.nombre like 'Primaria',v1.cuarto_hombre,0))  ICIV4H,
+                sum(IF(v5.nombre like 'Primaria',v1.cuarto_mujer,0))   ICIV4M,
+                sum(IF(v5.nombre like 'Primaria',v1.quinto_hombre,0))  ICV5H,
+                sum(IF(v5.nombre like 'Primaria',v1.quinto_mujer,0))   ICV5M,
+                sum(IF(v5.nombre like 'Primaria',v1.sexto_hombre,0))   ICV6H,
+                sum(IF(v5.nombre like 'Primaria',v1.sexto_mujer,0))    ICV6M
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
+            inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
+            inner join par_ubigeo as vC on vC.id=vB.dependencia
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            group by ugel
+            ) as xx"))->get();
+
+        $base = DB::table(DB::raw("(
+            select
+                v6.nombre ugel,
+                vB.id,
+                vB.nombre distrito,
+                sum(IF(v5.nombre like 'Primaria',v1.total_hombres+v1.total_mujeres,0)) ttp,
+                sum(IF(v5.nombre like 'Primaria',v1.total_hombres,0)) ttph,
+                sum(IF(v5.nombre like 'Primaria',v1.total_mujeres,0)) ttpm,
+                sum(IF(v5.nombre like 'Primaria',v1.primero_hombre,0)) ICIII1H,
+                sum(IF(v5.nombre like 'Primaria',v1.primero_mujer,0))  ICIII1M,
+                sum(IF(v5.nombre like 'Primaria',v1.segundo_hombre,0)) ICIII2H,
+                sum(IF(v5.nombre like 'Primaria',v1.segundo_mujer,0))  ICIII2M,
+                sum(IF(v5.nombre like 'Primaria',v1.tercero_hombre,0)) ICIV3H,
+                sum(IF(v5.nombre like 'Primaria',v1.tercero_mujer,0))  ICIV3M,
+                sum(IF(v5.nombre like 'Primaria',v1.cuarto_hombre,0))  ICIV4H,
+                sum(IF(v5.nombre like 'Primaria',v1.cuarto_mujer,0))   ICIV4M,
+                sum(IF(v5.nombre like 'Primaria',v1.quinto_hombre,0))  ICV5H,
+                sum(IF(v5.nombre like 'Primaria',v1.quinto_mujer,0))   ICV5M,
+                sum(IF(v5.nombre like 'Primaria',v1.sexto_hombre,0))   ICV6H,
+                sum(IF(v5.nombre like 'Primaria',v1.sexto_mujer,0))    ICV6M
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
+            inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
+            inner join par_ubigeo as vC on vC.id=vB.dependencia
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            group by ugel,id,distrito
+            ) as xx"))->get();
+        $foot = DB::table(DB::raw("(
+                select
+                    sum(IF(v5.nombre like 'Primaria',v1.total_hombres+v1.total_mujeres,0)) ttp,
+                    sum(IF(v5.nombre like 'Primaria',v1.total_hombres,0)) ttph,
+                    sum(IF(v5.nombre like 'Primaria',v1.total_mujeres,0)) ttpm,
+                    sum(IF(v5.nombre like 'Primaria',v1.primero_hombre,0)) ICIII1H,
+                    sum(IF(v5.nombre like 'Primaria',v1.primero_mujer,0))  ICIII1M,
+                    sum(IF(v5.nombre like 'Primaria',v1.segundo_hombre,0)) ICIII2H,
+                    sum(IF(v5.nombre like 'Primaria',v1.segundo_mujer,0))  ICIII2M,
+                    sum(IF(v5.nombre like 'Primaria',v1.tercero_hombre,0)) ICIV3H,
+                    sum(IF(v5.nombre like 'Primaria',v1.tercero_mujer,0))  ICIV3M,
+                    sum(IF(v5.nombre like 'Primaria',v1.cuarto_hombre,0))  ICIV4H,
+                    sum(IF(v5.nombre like 'Primaria',v1.cuarto_mujer,0))   ICIV4M,
+                    sum(IF(v5.nombre like 'Primaria',v1.quinto_hombre,0))  ICV5H,
+                    sum(IF(v5.nombre like 'Primaria',v1.quinto_mujer,0))   ICV5M,
+                    sum(IF(v5.nombre like 'Primaria',v1.sexto_hombre,0))   ICV6H,
+                    sum(IF(v5.nombre like 'Primaria',v1.sexto_mujer,0))    ICV6M
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+                inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+                inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+                inner join edu_area as v9 on v9.id=v4.Area_id
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+                ) as xx"))->get()->first();
+
+        /* $data['head'] = $head;
+        $data['body'] = $base;
+        $data['foot'] = $foot;
+        return $data; */
+        return view("educacion.MatriculaDetalle.BasicaRegularTabla4_1", compact('rq', 'base', 'foot', 'head'));
+    }
+
+    public function cargarEBRtabla4_2(Request $rq)
+    {
+        $ano = $rq->ano;
+        $gestion = $rq->gestion;
+        $area = $rq->area;
+        $distrito = $rq->distrito;
+
+        $ndistrito = Ubigeo::find($distrito)->nombre;
+
+        $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
+        $optarea = $area == 0 ? "" : " and v9.id=$area ";
+
+
+        $fechas = DB::table(DB::raw("(
+            select mes, max(fecha) fecha from (
+                select
+                    distinct
+                    v3.fechaActualizacion fecha,
+                    year(v3.fechaActualizacion) ano,
+                    month(v3.fechaActualizacion) mes,
+                    day(v3.fechaActualizacion) dia
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join par_anio as v4 on v4.id=v2.anio_id
+                where v3.estado='PR' and v2.anio_id=$ano
+                order by fecha desc
+            ) as xx
+            group by mes
+            order by mes desc
+                ) as xx"))->take(1)->get();
+
+        $fx = $fechas->first()->fecha;
+
+        $base = DB::table(DB::raw("(
+            select
+                v4.nombreInstEduc iiee,
+                sum(IF(v5.nombre like 'Primaria',v1.total_hombres+v1.total_mujeres,0)) ttp,
+                    sum(IF(v5.nombre like 'Primaria',v1.total_hombres,0)) ttph,
+                    sum(IF(v5.nombre like 'Primaria',v1.total_mujeres,0)) ttpm,
+                    sum(IF(v5.nombre like 'Primaria',v1.primero_hombre,0)) ICIII1H,
+                    sum(IF(v5.nombre like 'Primaria',v1.primero_mujer,0))  ICIII1M,
+                    sum(IF(v5.nombre like 'Primaria',v1.segundo_hombre,0)) ICIII2H,
+                    sum(IF(v5.nombre like 'Primaria',v1.segundo_mujer,0))  ICIII2M,
+                    sum(IF(v5.nombre like 'Primaria',v1.tercero_hombre,0)) ICIV3H,
+                    sum(IF(v5.nombre like 'Primaria',v1.tercero_mujer,0))  ICIV3M,
+                    sum(IF(v5.nombre like 'Primaria',v1.cuarto_hombre,0))  ICIV4H,
+                    sum(IF(v5.nombre like 'Primaria',v1.cuarto_mujer,0))   ICIV4M,
+                    sum(IF(v5.nombre like 'Primaria',v1.quinto_hombre,0))  ICV5H,
+                    sum(IF(v5.nombre like 'Primaria',v1.quinto_mujer,0))   ICV5M,
+                    sum(IF(v5.nombre like 'Primaria',v1.sexto_hombre,0))   ICV6H,
+                    sum(IF(v5.nombre like 'Primaria',v1.sexto_mujer,0))    ICV6M
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
+            inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
+            inner join par_ubigeo as vC on vC.id=vB.dependencia
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
+            group by iiee order by iiee asc
+            ) as xx"))->get();
+        $foot = DB::table(DB::raw("(
+                select
+                    sum(IF(v5.nombre like 'Primaria',v1.total_hombres+v1.total_mujeres,0)) ttp,
+                    sum(IF(v5.nombre like 'Primaria',v1.total_hombres,0)) ttph,
+                    sum(IF(v5.nombre like 'Primaria',v1.total_mujeres,0)) ttpm,
+                    sum(IF(v5.nombre like 'Primaria',v1.primero_hombre,0)) ICIII1H,
+                    sum(IF(v5.nombre like 'Primaria',v1.primero_mujer,0))  ICIII1M,
+                    sum(IF(v5.nombre like 'Primaria',v1.segundo_hombre,0)) ICIII2H,
+                    sum(IF(v5.nombre like 'Primaria',v1.segundo_mujer,0))  ICIII2M,
+                    sum(IF(v5.nombre like 'Primaria',v1.tercero_hombre,0)) ICIV3H,
+                    sum(IF(v5.nombre like 'Primaria',v1.tercero_mujer,0))  ICIV3M,
+                    sum(IF(v5.nombre like 'Primaria',v1.cuarto_hombre,0))  ICIV4H,
+                    sum(IF(v5.nombre like 'Primaria',v1.cuarto_mujer,0))   ICIV4M,
+                    sum(IF(v5.nombre like 'Primaria',v1.quinto_hombre,0))  ICV5H,
+                    sum(IF(v5.nombre like 'Primaria',v1.quinto_mujer,0))   ICV5M,
+                    sum(IF(v5.nombre like 'Primaria',v1.sexto_hombre,0))   ICV6H,
+                    sum(IF(v5.nombre like 'Primaria',v1.sexto_mujer,0))    ICV6M
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+                inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+                inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+                inner join edu_area as v9 on v9.id=v4.Area_id
+                inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
+                inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
+                inner join par_ubigeo as vC on vC.id=vB.dependencia
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
+                ) as xx"))->get()->first();
+       /*  $data['body'] = $base;
+        $data['foot'] = $foot;
+        return $data; */
+        return ["tabla" => view("educacion.MatriculaDetalle.BasicaRegularTabla4_2", compact('rq', 'base', 'foot'))->render(), "distrito" => $ndistrito];
     }
 
     public function cargarEBRtabla5(Request $rq)
@@ -1823,20 +2062,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -1853,23 +2092,23 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre like 'Secundaria',v1.segundo_hombre,0)) ICVI2H,
                 sum(IF(v5.nombre like 'Secundaria',v1.segundo_mujer,0))  ICVI2M,
                 sum(IF(v5.nombre like 'Secundaria',v1.tercero_hombre,0)) ICVII3H,
-                sum(IF(v5.nombre like 'Secundaria',v1.tercero_mujer,0))  ICVII3M,                
+                sum(IF(v5.nombre like 'Secundaria',v1.tercero_mujer,0))  ICVII3M,
                 sum(IF(v5.nombre like 'Secundaria',v1.cuarto_hombre,0))  ICVII4H,
                 sum(IF(v5.nombre like 'Secundaria',v1.cuarto_mujer,0))   ICVII4M,
                 sum(IF(v5.nombre like 'Secundaria',v1.quinto_hombre,0))  ICVII5H,
                 sum(IF(v5.nombre like 'Secundaria',v1.quinto_mujer,0))   ICVII5M,
                 sum(IF(v5.nombre like 'Secundaria',v1.sexto_hombre,0))   ICV6H,
                 sum(IF(v5.nombre like 'Secundaria',v1.sexto_mujer,0))    ICV6M
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             group by ugel
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -1882,27 +2121,266 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre like 'Secundaria',v1.segundo_hombre,0)) ICVI2H,
                     sum(IF(v5.nombre like 'Secundaria',v1.segundo_mujer,0))  ICVI2M,
                     sum(IF(v5.nombre like 'Secundaria',v1.tercero_hombre,0)) ICVII3H,
-                    sum(IF(v5.nombre like 'Secundaria',v1.tercero_mujer,0))  ICVII3M,                
+                    sum(IF(v5.nombre like 'Secundaria',v1.tercero_mujer,0))  ICVII3M,
                     sum(IF(v5.nombre like 'Secundaria',v1.cuarto_hombre,0))  ICVII4H,
                     sum(IF(v5.nombre like 'Secundaria',v1.cuarto_mujer,0))   ICVII4M,
                     sum(IF(v5.nombre like 'Secundaria',v1.quinto_hombre,0))  ICVII5H,
                     sum(IF(v5.nombre like 'Secundaria',v1.quinto_mujer,0))   ICVII5M
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
                 ) as xx"))->get()->first();
 
         /* $data['body'] = $base;
         $data['foot'] = $foot;
         return $data; */
         return view("educacion.MatriculaDetalle.BasicaRegularTabla5", compact('rq', 'base', 'foot'));
+    }
+
+    public function cargarEBRtabla5_1(Request $rq)
+    {
+        $ano = $rq->ano;
+        $gestion = $rq->gestion;
+        $area = $rq->area;
+
+        $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
+        $optarea = $area == 0 ? "" : " and v9.id=$area ";
+
+        $fechas = DB::table(DB::raw("(
+            select mes, max(fecha) fecha from (
+                select
+                    distinct
+                    v3.fechaActualizacion fecha,
+                    year(v3.fechaActualizacion) ano,
+                    month(v3.fechaActualizacion) mes,
+                    day(v3.fechaActualizacion) dia
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join par_anio as v4 on v4.id=v2.anio_id
+                where v3.estado='PR' and v2.anio_id=$ano
+                order by fecha desc
+            ) as xx
+            group by mes
+            order by mes desc
+                ) as xx"))->take(1)->get();
+
+        $fx = $fechas->first()->fecha;
+
+        $head = DB::table(DB::raw("(
+            select
+                v6.nombre ugel,
+                sum(IF(v5.nombre like 'Secundaria',v1.total_hombres+v1.total_mujeres,0)) tts,
+                sum(IF(v5.nombre like 'Secundaria',v1.total_hombres,0)) ttsh,
+                sum(IF(v5.nombre like 'Secundaria',v1.total_mujeres,0)) ttsm,
+                sum(IF(v5.nombre like 'Secundaria',v1.primero_hombre,0)) ICVI1H,
+                sum(IF(v5.nombre like 'Secundaria',v1.primero_mujer,0))  ICVI1M,
+                sum(IF(v5.nombre like 'Secundaria',v1.segundo_hombre,0)) ICVI2H,
+                sum(IF(v5.nombre like 'Secundaria',v1.segundo_mujer,0))  ICVI2M,
+                sum(IF(v5.nombre like 'Secundaria',v1.tercero_hombre,0)) ICVII3H,
+                sum(IF(v5.nombre like 'Secundaria',v1.tercero_mujer,0))  ICVII3M,
+                sum(IF(v5.nombre like 'Secundaria',v1.cuarto_hombre,0))  ICVII4H,
+                sum(IF(v5.nombre like 'Secundaria',v1.cuarto_mujer,0))   ICVII4M,
+                sum(IF(v5.nombre like 'Secundaria',v1.quinto_hombre,0))  ICVII5H,
+                sum(IF(v5.nombre like 'Secundaria',v1.quinto_mujer,0))   ICVII5M,
+                sum(IF(v5.nombre like 'Secundaria',v1.sexto_hombre,0))   ICV6H,
+                sum(IF(v5.nombre like 'Secundaria',v1.sexto_mujer,0))    ICV6M
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
+            inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
+            inner join par_ubigeo as vC on vC.id=vB.dependencia
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            group by ugel
+            ) as xx"))->get();
+
+        $base = DB::table(DB::raw("(
+            select
+                v6.nombre ugel,
+                vB.id,
+                vB.nombre distrito,
+                sum(IF(v5.nombre like 'Secundaria',v1.total_hombres+v1.total_mujeres,0)) tts,
+                sum(IF(v5.nombre like 'Secundaria',v1.total_hombres,0)) ttsh,
+                sum(IF(v5.nombre like 'Secundaria',v1.total_mujeres,0)) ttsm,
+                sum(IF(v5.nombre like 'Secundaria',v1.primero_hombre,0)) ICVI1H,
+                sum(IF(v5.nombre like 'Secundaria',v1.primero_mujer,0))  ICVI1M,
+                sum(IF(v5.nombre like 'Secundaria',v1.segundo_hombre,0)) ICVI2H,
+                sum(IF(v5.nombre like 'Secundaria',v1.segundo_mujer,0))  ICVI2M,
+                sum(IF(v5.nombre like 'Secundaria',v1.tercero_hombre,0)) ICVII3H,
+                sum(IF(v5.nombre like 'Secundaria',v1.tercero_mujer,0))  ICVII3M,
+                sum(IF(v5.nombre like 'Secundaria',v1.cuarto_hombre,0))  ICVII4H,
+                sum(IF(v5.nombre like 'Secundaria',v1.cuarto_mujer,0))   ICVII4M,
+                sum(IF(v5.nombre like 'Secundaria',v1.quinto_hombre,0))  ICVII5H,
+                sum(IF(v5.nombre like 'Secundaria',v1.quinto_mujer,0))   ICVII5M,
+                sum(IF(v5.nombre like 'Secundaria',v1.sexto_hombre,0))   ICV6H,
+                sum(IF(v5.nombre like 'Secundaria',v1.sexto_mujer,0))    ICV6M
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
+            inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
+            inner join par_ubigeo as vC on vC.id=vB.dependencia
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            group by ugel,id,distrito
+            ) as xx"))->get();
+        $foot = DB::table(DB::raw("(
+                select
+                    sum(IF(v5.nombre like 'Secundaria',v1.total_hombres+v1.total_mujeres,0)) tts,
+                    sum(IF(v5.nombre like 'Secundaria',v1.total_hombres,0)) ttsh,
+                    sum(IF(v5.nombre like 'Secundaria',v1.total_mujeres,0)) ttsm,
+                    sum(IF(v5.nombre like 'Secundaria',v1.primero_hombre,0)) ICVI1H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.primero_mujer,0))  ICVI1M,
+                    sum(IF(v5.nombre like 'Secundaria',v1.segundo_hombre,0)) ICVI2H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.segundo_mujer,0))  ICVI2M,
+                    sum(IF(v5.nombre like 'Secundaria',v1.tercero_hombre,0)) ICVII3H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.tercero_mujer,0))  ICVII3M,
+                    sum(IF(v5.nombre like 'Secundaria',v1.cuarto_hombre,0))  ICVII4H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.cuarto_mujer,0))   ICVII4M,
+                    sum(IF(v5.nombre like 'Secundaria',v1.quinto_hombre,0))  ICVII5H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.quinto_mujer,0))   ICVII5M,
+                    sum(IF(v5.nombre like 'Secundaria',v1.sexto_hombre,0))   ICV6H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.sexto_mujer,0))    ICV6M
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+                inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+                inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+                inner join edu_area as v9 on v9.id=v4.Area_id
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+                ) as xx"))->get()->first();
+
+        /* $data['head'] = $head;
+        $data['body'] = $base;
+        $data['foot'] = $foot;
+        return $data; */
+        return view("educacion.MatriculaDetalle.BasicaRegularTabla5_1", compact('rq', 'base', 'foot', 'head'));
+    }
+
+    public function cargarEBRtabla5_2(Request $rq)
+    {
+        $ano = $rq->ano;
+        $gestion = $rq->gestion;
+        $area = $rq->area;
+        $distrito = $rq->distrito;
+
+        $ndistrito = Ubigeo::find($distrito)->nombre;
+
+        $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
+        $optarea = $area == 0 ? "" : " and v9.id=$area ";
+
+
+        $fechas = DB::table(DB::raw("(
+            select mes, max(fecha) fecha from (
+                select
+                    distinct
+                    v3.fechaActualizacion fecha,
+                    year(v3.fechaActualizacion) ano,
+                    month(v3.fechaActualizacion) mes,
+                    day(v3.fechaActualizacion) dia
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join par_anio as v4 on v4.id=v2.anio_id
+                where v3.estado='PR' and v2.anio_id=$ano
+                order by fecha desc
+            ) as xx
+            group by mes
+            order by mes desc
+                ) as xx"))->take(1)->get();
+
+        $fx = $fechas->first()->fecha;
+
+        $base = DB::table(DB::raw("(
+            select
+                v4.nombreInstEduc iiee,
+                sum(IF(v5.nombre like 'Secundaria',v1.total_hombres+v1.total_mujeres,0)) tts,
+                sum(IF(v5.nombre like 'Secundaria',v1.total_hombres,0)) ttsh,
+                sum(IF(v5.nombre like 'Secundaria',v1.total_mujeres,0)) ttsm,
+                sum(IF(v5.nombre like 'Secundaria',v1.primero_hombre,0)) ICVI1H,
+                sum(IF(v5.nombre like 'Secundaria',v1.primero_mujer,0))  ICVI1M,
+                sum(IF(v5.nombre like 'Secundaria',v1.segundo_hombre,0)) ICVI2H,
+                sum(IF(v5.nombre like 'Secundaria',v1.segundo_mujer,0))  ICVI2M,
+                sum(IF(v5.nombre like 'Secundaria',v1.tercero_hombre,0)) ICVII3H,
+                sum(IF(v5.nombre like 'Secundaria',v1.tercero_mujer,0))  ICVII3M,
+                sum(IF(v5.nombre like 'Secundaria',v1.cuarto_hombre,0))  ICVII4H,
+                sum(IF(v5.nombre like 'Secundaria',v1.cuarto_mujer,0))   ICVII4M,
+                sum(IF(v5.nombre like 'Secundaria',v1.quinto_hombre,0))  ICVII5H,
+                sum(IF(v5.nombre like 'Secundaria',v1.quinto_mujer,0))   ICVII5M,
+                sum(IF(v5.nombre like 'Secundaria',v1.sexto_hombre,0))   ICV6H,
+                sum(IF(v5.nombre like 'Secundaria',v1.sexto_mujer,0))    ICV6M
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
+            inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
+            inner join par_ubigeo as vC on vC.id=vB.dependencia
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
+            group by iiee order by iiee asc
+            ) as xx"))->get();
+        $foot = DB::table(DB::raw("(
+                select
+                    sum(IF(v5.nombre like 'Secundaria',v1.total_hombres+v1.total_mujeres,0)) tts,
+                    sum(IF(v5.nombre like 'Secundaria',v1.total_hombres,0)) ttsh,
+                    sum(IF(v5.nombre like 'Secundaria',v1.total_mujeres,0)) ttsm,
+                    sum(IF(v5.nombre like 'Secundaria',v1.primero_hombre,0)) ICVI1H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.primero_mujer,0))  ICVI1M,
+                    sum(IF(v5.nombre like 'Secundaria',v1.segundo_hombre,0)) ICVI2H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.segundo_mujer,0))  ICVI2M,
+                    sum(IF(v5.nombre like 'Secundaria',v1.tercero_hombre,0)) ICVII3H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.tercero_mujer,0))  ICVII3M,
+                    sum(IF(v5.nombre like 'Secundaria',v1.cuarto_hombre,0))  ICVII4H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.cuarto_mujer,0))   ICVII4M,
+                    sum(IF(v5.nombre like 'Secundaria',v1.quinto_hombre,0))  ICVII5H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.quinto_mujer,0))   ICVII5M,
+                    sum(IF(v5.nombre like 'Secundaria',v1.sexto_hombre,0))   ICV6H,
+                    sum(IF(v5.nombre like 'Secundaria',v1.sexto_mujer,0))    ICV6M
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+                inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+                inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+                inner join edu_area as v9 on v9.id=v4.Area_id
+                inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
+                inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
+                inner join par_ubigeo as vC on vC.id=vB.dependencia
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
+                ) as xx"))->get()->first();
+       /*  $data['body'] = $base;
+        $data['foot'] = $foot;
+        return $data; */
+        return ["tabla" => view("educacion.MatriculaDetalle.BasicaRegularTabla5_2", compact('rq', 'base', 'foot'))->render(), "distrito" => $ndistrito];
     }
 
     public function cargarEBRtabla6(Request $rq)
@@ -1916,20 +2394,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -1940,15 +2418,15 @@ class MatriculaDetalleController extends Controller
                 v6.nombre ugel,
                 sum(v1.total_hombres+v1.total_mujeres) tt,
                 sum(v1.total_hombres) tth,
-                sum(v1.total_mujeres) ttm                
-            from edu_matricula_detalle as v1 
+                sum(v1.total_mujeres) ttm
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
             where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea and v5.id=14
             group by ugel
@@ -1957,15 +2435,15 @@ class MatriculaDetalleController extends Controller
                 select
                     sum(v1.total_hombres+v1.total_mujeres) tt,
                     sum(v1.total_hombres) tth,
-                    sum(v1.total_mujeres) ttm  
-                from edu_matricula_detalle as v1 
+                    sum(v1.total_mujeres) ttm
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
                 where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea and v5.id=14
                 ) as xx"))->get()->first();
@@ -2029,21 +2507,21 @@ class MatriculaDetalleController extends Controller
         }
 
         $query = DB::table(DB::raw("(
-            select 
-				case v5.nombre_matricula  
-					when 'Básica Especial-Inicial' then 'Inicial' 
+            select
+				case v5.nombre_matricula
+					when 'Básica Especial-Inicial' then 'Inicial'
                     when 'Básica Especial-Primaria' then 'Primaria'
                     when 'Básica Especial - PRITE' then 'Prite'
                     else 'Sin Definir'
-				end as nivel,      
+				end as nivel,
                 year(v3.fechaActualizacion) as ano,
-                SUM(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) as conteo 
-            from edu_matricula_detalle as v1 
+                SUM(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) as conteo
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
-            where v3.estado='PR' and v5.tipo in ('EBE') and v3.id in ($ids) 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            where v3.estado='PR' and v5.tipo in ('EBE') and v3.id in ($ids)
             group by nivel,ano
             ) as tb"))
             ->get();
@@ -2104,20 +2582,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes asc
                 ) as xx"))->get();
 
@@ -2143,16 +2621,16 @@ class MatriculaDetalleController extends Controller
             select
                 month(v3.fechaActualizacion) mes,
                 sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) y
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea
             group by mes
             order by mes asc
             ) as xx"))->get();
@@ -2177,20 +2655,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -2198,24 +2676,24 @@ class MatriculaDetalleController extends Controller
 
         $base = DB::table(DB::raw("(
             select
-                case v5.nombre_matricula  
-                    when 'Básica Especial-Inicial' then 'Inicial' 
+                case v5.nombre_matricula
+                    when 'Básica Especial-Inicial' then 'Inicial'
                     when 'Básica Especial-Primaria' then 'Primaria'
                     when 'Básica Especial - PRITE' then 'Prite'
                     else 'Sin Definir'
-                end as name,      
+                end as name,
                 sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) y,
                 FORMAT(sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)),0) yx
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             group by name
             ) as xx"))->get();
         /* $error['base'] = $base; */
@@ -2236,41 +2714,41 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
         $fx = $fechas->first()->fecha;
 
         $base = DB::table(DB::raw("(
-            select                
+            select
                 sum(v1.total_hombres) hy,
                 sum(v1.total_mujeres) my,
                 FORMAT(sum(v1.total_hombres),0) hyx,
                 FORMAT(sum(v1.total_mujeres),0) myx
-            from edu_matricula_detalle as v1 
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             ) as xx"))->get();
         $query = $base->first();
         $data[] = ['name' => 'MASCULINO', 'y' => (int)$query->hy, 'yx' => $query->hyx];
@@ -2289,20 +2767,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -2322,26 +2800,26 @@ class MatriculaDetalleController extends Controller
                 sum(IF(v5.nombre_matricula like '%Inicial%',v1.cinco_anios_mujer,0)) ICII5M,
                 sum(IF(v5.nombre_matricula like '%Primaria%',v1.primero_hombre,0)) ICIII1H,
                 sum(IF(v5.nombre_matricula like '%Primaria%',v1.primero_mujer,0)) ICIII1M,
-                sum(IF(v5.nombre_matricula like '%Primaria%',v1.segundo_hombre,0)) ICIII2H,      
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.segundo_hombre,0)) ICIII2H,
                 sum(IF(v5.nombre_matricula like '%Primaria%',v1.segundo_mujer,0)) ICIII2M,
                 sum(IF(v5.nombre_matricula like '%Primaria%',v1.tercero_hombre,0)) ICIV3H,
                 sum(IF(v5.nombre_matricula like '%Primaria%',v1.tercero_mujer,0)) ICIV3M,
                 sum(IF(v5.nombre_matricula like '%Primaria%',v1.cuarto_hombre,0)) ICIV4H,
                 sum(IF(v5.nombre_matricula like '%Primaria%',v1.cuarto_mujer,0)) ICIV4M,
-                sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_hombre,0)) ICV5H,  
-                sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_mujer,0)) ICV5M, 
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_hombre,0)) ICV5H,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_mujer,0)) ICV5M,
                 sum(IF(v5.nombre_matricula like '%Primaria%',v1.sexto_hombre,0)) ICV6H,
-                sum(IF(v5.nombre_matricula like '%Primaria%',v1.sexto_mujer,0)) ICV6M 
-            from edu_matricula_detalle as v1 
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.sexto_mujer,0)) ICV6M
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             group by ugel
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -2357,26 +2835,26 @@ class MatriculaDetalleController extends Controller
                     sum(IF(v5.nombre_matricula like '%Inicial%',v1.cinco_anios_mujer,0)) ICII5M,
                     sum(IF(v5.nombre_matricula like '%Primaria%',v1.primero_hombre,0)) ICIII1H,
                     sum(IF(v5.nombre_matricula like '%Primaria%',v1.primero_mujer,0)) ICIII1M,
-                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.segundo_hombre,0)) ICIII2H,      
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.segundo_hombre,0)) ICIII2H,
                     sum(IF(v5.nombre_matricula like '%Primaria%',v1.segundo_mujer,0)) ICIII2M,
                     sum(IF(v5.nombre_matricula like '%Primaria%',v1.tercero_hombre,0)) ICIV3H,
                     sum(IF(v5.nombre_matricula like '%Primaria%',v1.tercero_mujer,0)) ICIV3M,
                     sum(IF(v5.nombre_matricula like '%Primaria%',v1.cuarto_hombre,0)) ICIV4H,
                     sum(IF(v5.nombre_matricula like '%Primaria%',v1.cuarto_mujer,0)) ICIV4M,
-                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_hombre,0)) ICV5H,  
-                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_mujer,0)) ICV5M, 
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_hombre,0)) ICV5H,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_mujer,0)) ICV5M,
                     sum(IF(v5.nombre_matricula like '%Primaria%',v1.sexto_hombre,0)) ICV6H,
-                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.sexto_mujer,0)) ICV6M 
-                from edu_matricula_detalle as v1 
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.sexto_mujer,0)) ICV6M
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+                where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
                 ) as xx"))->get()->first();
         /* $vv = 0;
         foreach ($base as $key => $value) {
@@ -2401,20 +2879,20 @@ class MatriculaDetalleController extends Controller
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
-                select 	
+                select
                     distinct
                     v3.fechaActualizacion fecha,
                     year(v3.fechaActualizacion) ano,
                     month(v3.fechaActualizacion) mes,
                     day(v3.fechaActualizacion) dia
-                from edu_matricula_detalle as v1 
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join par_anio as v4 on v4.id=v2.anio_id
                 where v3.estado='PR' and v2.anio_id=$ano
                 order by fecha desc
-            ) as xx 
-            group by mes 
+            ) as xx
+            group by mes
             order by mes desc
                 ) as xx"))->take(1)->get();
 
@@ -2426,17 +2904,17 @@ class MatriculaDetalleController extends Controller
                 sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) tt,
                 sum(IF(v5.nombre_matricula like '%Inicial%',v1.total_hombres+v1.total_mujeres,0)) inc,
                 sum(IF(v5.nombre_matricula like '%Primaria%',v1.total_hombres+v1.total_mujeres,0)) prm,
-                sum(IF(v5.nombre_matricula like '%PRITE%',IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) prt 
-            from edu_matricula_detalle as v1 
+                sum(IF(v5.nombre_matricula like '%PRITE%',IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) prt
+            from edu_matricula_detalle as v1
             inner join edu_matricula as v2 on v2.id=v1.matricula_id
             inner join par_importacion as v3 on v3.id=v2.importacion_id
             inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
             inner join edu_ugel as v6 on v6.id=v4.Ugel_id
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+            where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
             group by ugel
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -2444,17 +2922,17 @@ class MatriculaDetalleController extends Controller
                 sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) tt,
                     sum(IF(v5.nombre_matricula like '%Inicial%',v1.total_hombres+v1.total_mujeres,0)) inc,
                     sum(IF(v5.nombre_matricula like '%Primaria%',v1.total_hombres+v1.total_mujeres,0)) prm,
-                    sum(IF(v5.nombre_matricula like '%PRITE%',IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) prt 
-                from edu_matricula_detalle as v1 
+                    sum(IF(v5.nombre_matricula like '%PRITE%',IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) prt
+                from edu_matricula_detalle as v1
                 inner join edu_matricula as v2 on v2.id=v1.matricula_id
                 inner join par_importacion as v3 on v3.id=v2.importacion_id
                 inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id 
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
                 inner join edu_ugel as v6 on v6.id=v4.Ugel_id
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-                inner join edu_tipogestion as v8 on v8.id=v7.dependencia 
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea 
+                where v3.estado='PR' and v5.tipo in ('EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
                 ) as xx"))->get()->first();
         /* $data['body'] = $base;
         $data['foot'] = $foot;
