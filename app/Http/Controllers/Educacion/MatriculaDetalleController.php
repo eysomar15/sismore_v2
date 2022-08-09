@@ -1284,6 +1284,7 @@ class MatriculaDetalleController extends Controller
 
         $base = DB::table(DB::raw("(
             select
+                v6.id,
                 v6.nombre ugel,
 
                 sum(IF(v5.nombre like 'Inicial%',v1.total_hombres+v1.total_mujeres,0)) tti,
@@ -1314,7 +1315,7 @@ class MatriculaDetalleController extends Controller
             inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
             where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
-            group by ugel
+            group by id,ugel
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
                 select
@@ -1359,9 +1360,11 @@ class MatriculaDetalleController extends Controller
         $ano = $rq->ano;
         $gestion = $rq->gestion;
         $area = $rq->area;
+        $ugel = $rq->provincia;
 
         $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
         $optarea = $area == 0 ? "" : " and v9.id=$area ";
+        $optugel = $ugel == 0 ? "" : " and v6.id=$ugel";
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
@@ -1417,7 +1420,7 @@ class MatriculaDetalleController extends Controller
             inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optugel $optgestion $optarea
             group by ugel
             ) as xx"))->get();
 
@@ -1456,7 +1459,7 @@ class MatriculaDetalleController extends Controller
             inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optugel $optgestion $optarea
             group by ugel,id,distrito
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -1488,10 +1491,11 @@ class MatriculaDetalleController extends Controller
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
                 inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optugel $optgestion $optarea
                 ) as xx"))->get()->first();
 
-        /* $data['body'] = $base;
+        /* $data['head'] = $head;
+        $data['body'] = $base;
         $data['foot'] = $foot;
         return $data; */
         return view("educacion.MatriculaDetalle.BasicaRegularTabla3_1", compact('rq', 'base', 'foot', 'head'));
@@ -1504,10 +1508,11 @@ class MatriculaDetalleController extends Controller
         $area = $rq->area;
         $distrito = $rq->distrito;
 
-        $ndistrito = Ubigeo::find($distrito)->nombre;
+        $ndistrito = $distrito == 0 ? 'EN GENERAL' : 'DE ' . Ubigeo::find($distrito)->nombre;
 
         $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
         $optarea = $area == 0 ? "" : " and v9.id=$area ";
+        $optdistrito = $distrito == 0 ? "" : " and vB.id=$distrito";
 
 
         $fechas = DB::table(DB::raw("(
@@ -1564,8 +1569,8 @@ class MatriculaDetalleController extends Controller
             inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
-            group by iiee order by tti desc
+            where v3.estado='PR' and v5.tipo in ('EBR') and v5.nombre like '%Inicial%' and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optdistrito $optgestion $optarea
+            group by iiee
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
                 select
@@ -1599,7 +1604,7 @@ class MatriculaDetalleController extends Controller
                 inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
                 inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
                 inner join par_ubigeo as vC on vC.id=vB.dependencia
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
+                where v3.estado='PR' and v5.tipo in ('EBR') and v5.nombre like '%Inicial%' and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optdistrito $optgestion $optarea
                 ) as xx"))->get()->first();
         /* $data['body'] = $base;
         $data['foot'] = $foot;
@@ -1711,7 +1716,7 @@ class MatriculaDetalleController extends Controller
                 inner join par_ubigeo as vC on vC.id=vB.dependencia
                 where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
                 ) as xx"))->get()->first();
-       /*  $data['body'] = $base;
+        /*  $data['body'] = $base;
         $data['foot'] = $foot;
         return $data; */
         return ["tabla" => view("educacion.MatriculaDetalle.BasicaRegularTabla3_3", compact('rq', 'base', 'foot'))->render(), "distrito" => $ndistrito];
@@ -1749,6 +1754,7 @@ class MatriculaDetalleController extends Controller
 
         $base = DB::table(DB::raw("(
             select
+                v6.id,
                 v6.nombre ugel,
                 sum(IF(v5.nombre like 'Primaria',v1.total_hombres+v1.total_mujeres,0)) ttp,
                 sum(IF(v5.nombre like 'Primaria',v1.total_hombres,0)) ttph,
@@ -1775,7 +1781,7 @@ class MatriculaDetalleController extends Controller
             inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
             where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
-            group by ugel
+            group by id,ugel
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
                 select
@@ -1817,9 +1823,11 @@ class MatriculaDetalleController extends Controller
         $ano = $rq->ano;
         $gestion = $rq->gestion;
         $area = $rq->area;
+        $ugel = $rq->provincia;
 
         $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
         $optarea = $area == 0 ? "" : " and v9.id=$area ";
+        $optugel = $ugel == 0 ? "" : " and v6.id=$ugel";
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
@@ -1872,7 +1880,7 @@ class MatriculaDetalleController extends Controller
             inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optugel $optgestion $optarea
             group by ugel
             ) as xx"))->get();
 
@@ -1908,7 +1916,7 @@ class MatriculaDetalleController extends Controller
             inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optugel $optgestion $optarea
             group by ugel,id,distrito
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -1937,7 +1945,7 @@ class MatriculaDetalleController extends Controller
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
                 inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optugel $optgestion $optarea
                 ) as xx"))->get()->first();
 
         /* $data['head'] = $head;
@@ -1954,10 +1962,11 @@ class MatriculaDetalleController extends Controller
         $area = $rq->area;
         $distrito = $rq->distrito;
 
-        $ndistrito = Ubigeo::find($distrito)->nombre;
+        $ndistrito = $distrito == 0 ? 'EN GENERAL' : 'DE ' . Ubigeo::find($distrito)->nombre;
 
         $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
         $optarea = $area == 0 ? "" : " and v9.id=$area ";
+        $optdistrito = $distrito == 0 ? "" : " and vB.id=$distrito";
 
 
         $fechas = DB::table(DB::raw("(
@@ -2011,7 +2020,7 @@ class MatriculaDetalleController extends Controller
             inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
+            where v3.estado='PR' and v5.tipo in ('EBR') and v5.nombre like '%Primaria%' and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optdistrito $optgestion $optarea
             group by iiee order by iiee asc
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -2043,9 +2052,9 @@ class MatriculaDetalleController extends Controller
                 inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
                 inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
                 inner join par_ubigeo as vC on vC.id=vB.dependencia
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
+                where v3.estado='PR' and v5.tipo in ('EBR') and v5.nombre like '%Primaria%' and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optdistrito $optgestion $optarea
                 ) as xx"))->get()->first();
-       /*  $data['body'] = $base;
+        /*  $data['body'] = $base;
         $data['foot'] = $foot;
         return $data; */
         return ["tabla" => view("educacion.MatriculaDetalle.BasicaRegularTabla4_2", compact('rq', 'base', 'foot'))->render(), "distrito" => $ndistrito];
@@ -2083,6 +2092,7 @@ class MatriculaDetalleController extends Controller
 
         $base = DB::table(DB::raw("(
             select
+                v6.id,
                 v6.nombre ugel,
                 sum(IF(v5.nombre like 'Secundaria',v1.total_hombres+v1.total_mujeres,0)) tts,
                 sum(IF(v5.nombre like 'Secundaria',v1.total_hombres,0)) ttsh,
@@ -2109,7 +2119,7 @@ class MatriculaDetalleController extends Controller
             inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
             where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
-            group by ugel
+            group by id,ugel
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
                 select
@@ -2149,9 +2159,11 @@ class MatriculaDetalleController extends Controller
         $ano = $rq->ano;
         $gestion = $rq->gestion;
         $area = $rq->area;
+        $ugel = $rq->provincia;
 
         $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
         $optarea = $area == 0 ? "" : " and v9.id=$area ";
+        $optugel = $ugel == 0 ? "" : " and v6.id=$ugel";
 
         $fechas = DB::table(DB::raw("(
             select mes, max(fecha) fecha from (
@@ -2204,7 +2216,7 @@ class MatriculaDetalleController extends Controller
             inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optugel $optgestion $optarea
             group by ugel
             ) as xx"))->get();
 
@@ -2240,7 +2252,7 @@ class MatriculaDetalleController extends Controller
             inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optugel $optgestion $optarea
             group by ugel,id,distrito
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -2269,7 +2281,7 @@ class MatriculaDetalleController extends Controller
                 inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
                 inner join edu_tipogestion as v8 on v8.id=v7.dependencia
                 inner join edu_area as v9 on v9.id=v4.Area_id
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optugel $optgestion $optarea
                 ) as xx"))->get()->first();
 
         /* $data['head'] = $head;
@@ -2286,10 +2298,11 @@ class MatriculaDetalleController extends Controller
         $area = $rq->area;
         $distrito = $rq->distrito;
 
-        $ndistrito = Ubigeo::find($distrito)->nombre;
+        $ndistrito = $distrito == 0 ? 'EN GENERAL' : 'DE ' . Ubigeo::find($distrito)->nombre;
 
         $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
         $optarea = $area == 0 ? "" : " and v9.id=$area ";
+        $optdistrito = $distrito == 0 ? "" : " and vB.id=$distrito";
 
 
         $fechas = DB::table(DB::raw("(
@@ -2343,7 +2356,7 @@ class MatriculaDetalleController extends Controller
             inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
             inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
             inner join par_ubigeo as vC on vC.id=vB.dependencia
-            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
+            where v3.estado='PR' and v5.tipo in ('EBR') and v5.nombre like '%Secundaria%' and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optdistrito $optgestion $optarea
             group by iiee order by iiee asc
             ) as xx"))->get();
         $foot = DB::table(DB::raw("(
@@ -2375,9 +2388,9 @@ class MatriculaDetalleController extends Controller
                 inner join par_centropoblado as vA on vA.id=v4.CentroPoblado_id
                 inner join par_ubigeo as vB on vB.id=vA.Ubigeo_id
                 inner join par_ubigeo as vC on vC.id=vB.dependencia
-                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') and vB.id=$distrito $optgestion $optarea
+                where v3.estado='PR' and v5.tipo in ('EBR') and v5.nombre like '%Secundaria%' and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optdistrito $optgestion $optarea
                 ) as xx"))->get()->first();
-       /*  $data['body'] = $base;
+        /*  $data['body'] = $base;
         $data['foot'] = $foot;
         return $data; */
         return ["tabla" => view("educacion.MatriculaDetalle.BasicaRegularTabla5_2", compact('rq', 'base', 'foot'))->render(), "distrito" => $ndistrito];

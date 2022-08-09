@@ -39,7 +39,7 @@
     <tbody>
         @foreach ($head as $item)
             <tr class="text-center table-warning">
-                <td class="text-left"><a href="javascript:void(0)" class="">{{ $item->ugel }}</a></td>
+                <td class="text-left"><a href="javascript:void(0)">{{ $item->ugel }}</a></td>
                 <th>{{ number_format($item->ttp, 0) }}</th>
                 <td>{{ number_format($item->ttph, 0) }}</td>
                 <td>{{ number_format($item->ttpm, 0) }}</td>

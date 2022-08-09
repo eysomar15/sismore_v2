@@ -7,7 +7,7 @@
             <th colspan="12">MATRICULA POR EDAD Y SEXO</th>
         </tr>
         <tr class="bg-primary text-white text-center">
-            
+
             <td rowspan="3">TOTAL</td>
             <td rowspan="3">HOMBRE</td>
             <td rowspan="3">MUJER</td>
@@ -41,9 +41,7 @@
         @foreach ($base as $key => $item2)
             <tr class="text-center">
                 <th>{{ $key+1 }}</th>
-                <td class="text-left">
-                    <a href="#" onclick="">{{ $item2->iiee }}</a>
-                </td>
+                <td class="text-left"><a href="#" onclick="">{{ $item2->iiee }}</a></td>
                 <th>{{ number_format($item2->tti, 0) }}</th>
                 <td>{{ number_format($item2->ttih, 0) }}</td>
                 <td>{{ number_format($item2->ttim, 0) }}</td>

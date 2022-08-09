@@ -1,6 +1,7 @@
 <table id="tablaEBR4_2" class="table table-striped table-bordered tablex" style="font-size:11px;">
     <thead>
         <tr class="bg-primary text-white text-center">
+            <td rowspan="4"></td>
             <td rowspan="4">UGEL</td>
             <td colspan="3">TOTAL</td>
             <th colspan="12">MATRICULA POR GRADO Y SEXO</th>
@@ -39,6 +40,7 @@
     <tbody>
         @foreach ($base as $item)
             <tr class="text-center">
+                <th>{{ $key+1 }}</th>
                 <td class="text-left"><a href="#" class="">{{ $item->iiee }}</a></td>
                 <th>{{ number_format($item->ttp, 0) }}</th>
                 <td>{{ number_format($item->ttph, 0) }}</td>

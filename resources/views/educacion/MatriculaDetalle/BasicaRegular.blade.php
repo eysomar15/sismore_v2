@@ -57,6 +57,7 @@
                         <form id="form_opciones" name="form_opciones" action="POST">
                             @csrf
                             <input type="hidden" id="distrito" name="distrito" value="0">
+                            <input type="hidden" id="provincia" name="provincia" value="0">
                             <div class="form-group row mb-0">
                                 <label class="col-md-1 col-form-label">Año</label>
                                 <div class="col-md-2">
@@ -203,6 +204,8 @@
                     <div class="card card-border">
                         <div class="card-header border-primary bg-transparent pb-0 mb-0">
                             <h3 class="card-title">TOTAL MATRICULA NIVEL INICIAL POR CICLO, EDAD Y SEXO SEGÚN DISTRITOS
+                                <a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="cargarvista3_1(0);" title="MOSTRAR TODO"><i
+                                    class="fa fa-redo"></i></a>
                             </h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
@@ -224,11 +227,12 @@
                     </div>
                 </div> --}}
 
-                <div class="col-xl-12 inicial"  id="guiaEBR3_2">
+                <div class="col-xl-12 inicial" id="guiaEBR3_2">
                     <div class="card card-border">
                         <div class="card-header border-primary bg-transparent pb-0 mb-0">
                             <h3 class="card-title">TOTAL MATRICULA NIVEL INICIAL POR CICLO, EDAD Y SEXO SEGÚN SERVICIOS
-                                EDUCATIVOS EN EL DISTRITO DE <span id="vista3_2_title"></span></h3>
+                                EDUCATIVOS EN EL DISTRITO <span id="vista3_2_title"></span> <a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="cargarvista3_2(0);" title="MOSTRAR TODO"><i
+                                    class="fa fa-redo"></i></a></h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
                             <div class="table-responsive" id="vista3_2">
@@ -257,6 +261,8 @@
                     <div class="card card-border">
                         <div class="card-header border-primary bg-transparent pb-0 mb-0">
                             <h3 class="card-title">TOTAL MATRICULA NIVEL PRIMARIA POR CICLO, EDAD Y SEXO SEGÚN DISTRITOS
+                                <a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="cargarvista4_1(0);" title="MOSTRAR TODO"><i
+                                    class="fa fa-redo"></i></a>
                             </h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
@@ -278,11 +284,12 @@
                     </div>
                 </div> --}}
 
-                <div class="col-xl-12 primaria"  id="guiaEBR4_2">
+                <div class="col-xl-12 primaria" id="guiaEBR4_2">
                     <div class="card card-border">
                         <div class="card-header border-primary bg-transparent pb-0 mb-0">
                             <h3 class="card-title">TOTAL MATRICULA NIVEL PRIMARIA POR CICLO, EDAD Y SEXO SEGÚN SERVICIOS
-                                EDUCATIVOS EN EL DISTRITO DE <span id="vista4_2_title"></span></h3>
+                                EDUCATIVOS EN EL DISTRITO <span id="vista4_2_title"></span><a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="cargarvista4_2(0);" title="MOSTRAR TODO"><i
+                                    class="fa fa-redo"></i></a></h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
                             <div class="table-responsive" id="vista4_2">
@@ -311,6 +318,8 @@
                     <div class="card card-border">
                         <div class="card-header border-primary bg-transparent pb-0 mb-0">
                             <h3 class="card-title">TOTAL MATRICULA NIVEL SECUNDARIA POR CICLO, EDAD Y SEXO SEGÚN DISTRITOS
+                                <a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="cargarvista5_1(0);" title="MOSTRAR TODO"><i
+                                    class="fa fa-redo"></i></a>
                             </h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
@@ -336,7 +345,8 @@
                     <div class="card card-border">
                         <div class="card-header border-primary bg-transparent pb-0 mb-0">
                             <h3 class="card-title">TOTAL MATRICULA NIVEL SECUNDARIA POR CICLO, EDAD Y SEXO SEGÚN SERVICIOS
-                                EDUCATIVOS EN EL DISTRITO DE <span id="vista5_2_title"></span></h3>
+                                EDUCATIVOS EN EL DISTRITO <span id="vista5_2_title"></span><a href="javascript:void(0)" class="btn btn-primary btn-xs" onclick="cargarvista5_2(0);" title="MOSTRAR TODO"><i
+                                    class="fa fa-redo"></i></a></h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
                             <div class="table-responsive" id="vista5_2">
@@ -490,6 +500,12 @@
         $(document).ready(function() {
             cargartabla0();
             principalok();
+            cargarvista3_1(0);
+            cargarvista3_2(0);
+            cargarvista4_1(0);
+            cargarvista4_2(0);
+            cargarvista5_1(0);
+            cargarvista5_2(0);
         });
 
         function principalok() {
@@ -645,7 +661,7 @@
                 },
             });
 
-            $.ajax({
+            /* $.ajax({
                 url: "{{ route('matriculadetalle.ebr.tabla3_1') }}",
                 type: "POST",
                 data: $('#form_opciones').serialize(),
@@ -655,7 +671,7 @@
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 },
-            });
+            }); */
 
             $.ajax({
                 url: "{{ route('matriculadetalle.ebr.tabla4') }}",
@@ -669,7 +685,7 @@
                 },
             });
 
-            $.ajax({
+            /* $.ajax({
                 url: "{{ route('matriculadetalle.ebr.tabla4_1') }}",
                 type: "POST",
                 data: $('#form_opciones').serialize(),
@@ -679,7 +695,7 @@
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 },
-            });
+            }); */
 
             $.ajax({
                 url: "{{ route('matriculadetalle.ebr.tabla5') }}",
@@ -693,7 +709,7 @@
                 },
             });
 
-            $.ajax({
+            /* $.ajax({
                 url: "{{ route('matriculadetalle.ebr.tabla5_1') }}",
                 type: "POST",
                 data: $('#form_opciones').serialize(),
@@ -703,7 +719,7 @@
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 },
-            });
+            }); */
 
             $.ajax({
                 url: "{{ route('matriculadetalle.ebr.grafica5') }}",
@@ -756,6 +772,21 @@
 
         }
 
+        function cargarvista3_1(provincia){
+            $('#provincia').val(provincia);
+            $.ajax({
+                url: "{{ route('matriculadetalle.ebr.tabla3_1') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista3_1').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        }
+
         function cargarvista3_2(distrito) {
             //event.preventDefault();
             $('#distrito').val(distrito);
@@ -793,6 +824,20 @@
                 },
             });
         } */
+        function cargarvista4_1(provincia){
+            $('#provincia').val(provincia);
+            $.ajax({
+                url: "{{ route('matriculadetalle.ebr.tabla4_1') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista4_1').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        }
 
         function cargarvista4_2(distrito) {
             $('#distrito').val(distrito);
@@ -801,7 +846,7 @@
                 type: "POST",
                 data: $('#form_opciones').serialize(),
                 success: function(data) {
-                    $('#vista4_2').html(data);
+                    $('#vista4_2_title').html(data.distrito);
                     $('#vista4_2').html(data.tabla);
                     $('#tablaEBR4_2').DataTable({
                         "language": table_language,
@@ -813,6 +858,20 @@
             });
         }
 
+        function cargarvista5_1(provincia){
+            $('#provincia').val(provincia);
+            $.ajax({
+                url: "{{ route('matriculadetalle.ebr.tabla5_1') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista5_1').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        }
         function cargarvista5_2(distrito) {
             $('#distrito').val(distrito);
             $.ajax({
@@ -820,7 +879,7 @@
                 type: "POST",
                 data: $('#form_opciones').serialize(),
                 success: function(data) {
-                    $('#vista5_2').html(data);
+                    $('#vista5_2_title').html(data.distrito);
                     $('#vista5_2').html(data.tabla);
                     $('#tablaEBR5_2').DataTable({
                         "language": table_language,

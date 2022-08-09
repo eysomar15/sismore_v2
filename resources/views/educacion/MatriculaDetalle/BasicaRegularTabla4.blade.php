@@ -39,7 +39,7 @@
     <tbody>
         @foreach ($base as $item)
             <tr class="text-center">
-                <td class="text-left"><a href="#guiaEBR4_1" class="">{{ $item->ugel }}</a></td>
+                <td class="text-left"><a href="#guiaEBR4_1" onclick="cargarvista4_1({{$item->id}});">{{ $item->ugel }}</a></td>
                 <th>{{ number_format($item->ttp, 0) }}</th>
                 <td>{{ number_format($item->ttph, 0) }}</td>
                 <td>{{ number_format($item->ttpm, 0) }}</td>
