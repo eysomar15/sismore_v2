@@ -95,7 +95,7 @@ function avance($monto)
     if ($monto < 51) {
         return '<span class="badge badge-pill badge-danger" style="font-size:85%;">' . round($monto, 1) . '%</span>';
     } elseif ($monto < 100) {
-        return '<span class="badge badge-pill badge-warning" style="font-size:85%;">' . round($monto, 1) . '%</span>';
+        return '<span class="badge badge-pill badge-warning" style="font-size:85%;background-color:#eb960d;">' . round($monto, 1) . '%</span>';
     } else {
         return '<span class="badge badge-pill badge-success" style="font-size:85%;">' . round($monto, 1) . '%</span>';
     }

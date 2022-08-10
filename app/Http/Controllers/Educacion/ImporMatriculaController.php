@@ -210,7 +210,7 @@ class ImporMatriculaController extends Controller
                     $xx = explode(' ', $oo->capellidos);
                     $ape = $xx[0];
                 }
-                return $nom . ' ' . $ape . '-' . session('perfil_id');
+                return $nom . ' ' . $ape ;
             })
             ->rawColumns(['fechaActualizacion', 'estado', 'accion', 'created_at', 'nombrecompleto'])
             ->toJson();
@@ -218,7 +218,7 @@ class ImporMatriculaController extends Controller
 
     public function ListaImportada($importacion_id)
     {
-        //$padronWebLista = PadronWeb::all();                
+        //$padronWebLista = PadronWeb::all();
         //return view('ImportarEducacion.PadronWebList',compact('padronWebLista'));
 
         return view('Educacion.ImporMatricula.ListaImportada', compact('importacion_id'));
@@ -234,7 +234,7 @@ class ImporMatriculaController extends Controller
     public function aprobar($importacion_id)
     {
         $importacion = ImportacionRepositorio::ImportacionPor_Id($importacion_id);
-        //Importacion::where('id',$importacion_id)->first();  
+        //Importacion::where('id',$importacion_id)->first();
 
         return view('educacion.ImporMatricula.Aprobar', compact('importacion_id', 'importacion'));
     }
