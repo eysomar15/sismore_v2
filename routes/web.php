@@ -15,6 +15,7 @@ use App\Http\Controllers\Educacion\MatriculaController;
 use App\Http\Controllers\Educacion\PadronEIBController;
 use App\Http\Controllers\Educacion\ImporPadronWebController;
 use App\Http\Controllers\Educacion\ImporMatriculaController;
+use App\Http\Controllers\Educacion\ImporPadronEibController;
 use App\Http\Controllers\Educacion\MatriculaDetalleController;
 use App\Http\Controllers\Educacion\PLazaController;
 use App\Http\Controllers\Educacion\TabletaController;
@@ -86,16 +87,21 @@ Route::get('/FuenteImportacion/cargar/{sistema_id}', [FuenteImportacionControlle
 
 Route::get('/ImporMatricula/Importar', [ImporMatriculaController::class, 'importar'])->name('ImporMatricula.importar');
 Route::post('/ImporMatricula/Importar', [ImporMatriculaController::class, 'guardar'])->name('ImporMatricula.guardar');
-Route::get('/ImporMatricula/ListaImportada/{importacion_id}', [ImporMatriculaController::class, 'ListaImportada'])->name('ImporMatricula.PadronWeb_Lista');
+Route::post('/ImporMatricula/ListaImportada/{importacion_id}', [ImporMatriculaController::class, 'ListaImportada'])->name('ImporMatricula.listarimportados');
 Route::get('/ImporMatricula/ListaImportada_DataTable/{importacion_id}', [ImporMatriculaController::class, 'ListaImportada_DataTable'])->name('ImporMatricula.ListaImportada_DataTable');
-Route::get('/ImporMatricula/Aprobar/{importacion_id}', [ImporMatriculaController::class, 'aprobar'])->name('ImporMatricula.aprobar');
-Route::post('/ImporMatricula/Aprobar/procesar/{importacion_id}', [ImporMatriculaController::class, 'procesar'])->name('ImporMatricula.procesar');
+//Route::get('/ImporMatricula/Aprobar/{importacion_id}', [ImporMatriculaController::class, 'aprobar'])->name('ImporMatricula.aprobar');
+//Route::post('/ImporMatricula/Aprobar/procesar/{importacion_id}', [ImporMatriculaController::class, 'procesar'])->name('ImporMatricula.procesar');
 Route::get('/ImporMatricula/Listar/ImportarDT', [ImporMatriculaController::class, 'ListarDTImportFuenteTodos'])->name('ImporMatricula.listar.importados');
 Route::get('/ImporMatricula/eliminar/{id}', [ImporMatriculaController::class, 'eliminar']);
 
-Route::get('/PadronEIB/Importar', [PadronEIBController::class, 'importar'])->name('PadronEIB.importar');
+/* Route::get('/PadronEIB/Importar', [PadronEIBController::class, 'importar'])->name('PadronEIB.importar');
 Route::post('/PadronEIB/Importar', [PadronEIBController::class, 'guardar'])->name('PadronEIB.guardar');
-Route::get('/PadronEIB/Listar/ImportarDT', [PadronEIBController::class, 'ListarDTImportFuenteTodos'])->name('PadronEIB.listar.importados');
+Route::get('/PadronEIB/Listar/ImportarDT', [PadronEIBController::class, 'ListarDTImportFuenteTodos'])->name('PadronEIB.listar.importados'); */
+Route::get('/ImporPadronEIB/Importar', [ImporPadronEibController::class, 'importar'])->name('PadronEIB.importar');
+Route::post('/ImporPadronEIB/Importar', [ImporPadronEibController::class, 'guardar'])->name('imporpadroneib.guardar');
+Route::get('/ImporPadronEIB/Listar/ImportarDT', [ImporPadronEibController::class, 'ListarDTImportFuenteTodos'])->name('imporpadroneib.listar.importados');
+Route::post('/ImporPadronEIB/ListaImportada/{importacion_id}', [ImporPadronEibController::class, 'ListaImportada'])->name('imporpadroneib.listarimportados');
+Route::get('/ImporPadronEIB/eliminar/{id}', [ImporPadronEibController::class, 'eliminar']);
 
 Route::get('/TextosEscolares/Importar', [TextosEscolaresController::class, 'importar'])->name('TextosEscolares.importar');
 Route::post('/TextosEscolares/Importar', [TextosEscolaresController::class, 'guardar'])->name('TextosEscolares.guardar');
@@ -105,7 +111,7 @@ Route::post('/TextosEscolares/ReporteUgel/{importacion_id}', [TextosEscolaresCon
 
 Route::get('/CuadroAsigPersonal/Importar', [CuadroAsigPersonalController::class, 'importar'])->name('CuadroAsigPersonal.importar');
 Route::post('/CuadroAsigPersonal/Importar', [CuadroAsigPersonalController::class, 'guardar'])->name('CuadroAsigPersonal.guardar');
-Route::get('/CuadroAsigPersonal/ListaImportada/{importacion_id}', [CuadroAsigPersonalController::class, 'ListaImportada'])->name('CuadroAsigPersonal.CuadroAsigPersonal_Lista');
+Route::post('/CuadroAsigPersonal/ListaImportada/{importacion_id}', [CuadroAsigPersonalController::class, 'ListaImportada'])->name('CuadroAsigPersonal.listarimportados');
 Route::get('/CuadroAsigPersonal/ListaImportada_DataTable/{importacion_id}', [CuadroAsigPersonalController::class, 'ListaImportada_DataTable'])->name('CuadroAsigPersonal.ListaImportada_DataTable');
 Route::get('/CuadroAsigPersonal/Aprobar/{importacion_id}', [CuadroAsigPersonalController::class, 'aprobar'])->name('CuadroAsigPersonal.aprobar');
 Route::post('/CuadroAsigPersonal/Aprobar/procesar/{importacion_id}', [CuadroAsigPersonalController::class, 'procesar'])->name('CuadroAsigPersonal.procesar');

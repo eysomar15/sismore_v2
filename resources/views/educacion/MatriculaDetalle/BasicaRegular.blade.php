@@ -768,8 +768,6 @@
                     console.log(jqXHR);
                 },
             });
-
-
         }
 
         function cargarvista3_1(provincia){

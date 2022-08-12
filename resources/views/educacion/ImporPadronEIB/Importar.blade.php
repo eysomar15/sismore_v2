@@ -4,7 +4,6 @@
     <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
         type="text/css" />
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"> --}}
-
 @endsection
 @section('content')
     <div class="content">
@@ -50,7 +49,7 @@
                                     <label class="col-md-2 col-form-label">Fuente de datos</label>
                                     <div class="col-md-10">
                                         <input type="text" class="form-control" readonly="readonly"
-                                            value="SIAGIE - MATRICULA">
+                                            value="REGISTRO NACIONAL EIB - PADRON EIB">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -166,74 +165,25 @@
                     </div>
                     <div class="modal-body">
                         <div class="table-responsive">
-                            <table id="siagie-matricula" class="table table-striped table-bordered"
-                                style="font-size:12px">
+                            <table id="siagie-matricula" class="table table-striped table-bordered" style="font-size:12px">
                                 {{-- width:7200px; --}}
                                 <thead class="text-primary">
-                                    <th> DRE </th>
-                                    <th> UGEL </th>
-                                    <th> DEPARTAMENTO </th>
-                                    <th> PROVINCIA </th>
-                                    <th> DISTRITO </th>
-
-                                    <th> CENTRO_POBLADO </th>
-                                    <th> COD_MOD </th>
-                                    <th> INSTITUCION_EDUCATIVA </th>
-                                    <th> COD_NIVELMOD </th>
-                                    <th> NIVEL_MODALIDAD </th>
-
-                                    <th> TIPO_MODALIDAD </th>
-                                    <th> COD_GES_DEP </th>
-                                    <th> GESTION_DEPENDENCIA </th>
-                                    <th> TIPO_GESTION </th>
-                                    <th> TOTAL_ESTUDIANTES </th>
-
-                                    <th> MATRICULA_DEFINITIVA </th>
-                                    <th> MATRICULA_PROCESO </th>
-                                    <th> DNI_VALIDADO </th>
-                                    <th> DNI_SIN_VALIDAR </th>
-                                    <th> REGISTRADO_SIN_DNI </th>
-
-                                    <th> TOTAL_GRADOS </th>
-                                    <th> TOTAL_SECCIONES </th>
-                                    <th> NOMINAS_GENERADAS </th>
-                                    <th> NOMINAS_APROBADAS </th>
-                                    <th> NOMINAS_POR_RECTIFICAR </th>
-
-                                    <th> TRES_ANIOS_HOMBRE </th>
-                                    <th> TRES_ANIOS_MUJER </th>
-                                    <th> CUATRO_ANIOS_HOMBRE </th>
-                                    <th> CUATRO_ANIOS_MUJER </th>
-                                    <th> CINCO_ANIOS_HOMBRE </th>
-
-                                    <th> CINCO_ANIOS_MUJER </th>
-                                    <th> PRIMERO_HOMBRE </th>
-                                    <th> PRIMERO_MUJER </th>
-                                    <th> SEGUNDO_HOMBRE </th>
-                                    <th> SEGUNDO_MUJER </th>
-
-                                    <th> TERCERO_HOMBRE </th>
-                                    <th> TERCERO_MUJER </th>
-                                    <th> CUARTO_HOMBRE </th>
-                                    <th> CUARTO_MUJER </th>
-                                    <th> QUINTO_HOMBRE </th>
-
-                                    <th> QUINTO_MUJER </th>
-                                    <th> SEXTO_HOMBRE </th>
-                                    <th> SEXTO_MUJER </th>
-                                    <th> CERO_ANIOS_HOMBRE </th>
-                                    <th> CERO_ANIOS_MUJER </th>
-
-                                    <th> UN_ANIO_HOMBRE </th>
-                                    <th> UN_ANIO_MUJER </th>
-                                    <th> DOS_ANIOS_HOMBRE </th>
-                                    <th> DOS_ANIOS_MUJER </th>
-                                    <th> MAS_CINCO_ANIOS_HOMBRE </th>
-
-                                    <th> MAS_CINCO_ANIOS_MUJER </th>
-                                    {{-- <th> TOTAL MUJERES </th>
-                                    <th> TOTAL HOMBRES </th> --}}
-
+                                    <th>dre</th>
+                                    <th>ugel</th>
+                                    <th>departamento</th>
+                                    <th>provincia</th>
+                                    <th>distrito</th>
+                                    <th>centro_poblado</th>
+                                    <th>cod_mod</th>
+                                    <th>cod_local</th>
+                                    <th>institucion_educativa</th>
+                                    <th>cod_nivelmod</th>
+                                    <th>nivel_modalidad</th>
+                                    <th>forma_atencion</th>
+                                    <th>cod_lengua</th>
+                                    <th>lengua_uno</th>
+                                    <th>lengua_dos</th>
+                                    <th>lengua_3</th>
                                 </thead>
                                 <tbody>
 
@@ -264,7 +214,7 @@
                 autoWidth: false,
                 order: true,
                 language: table_language,
-                ajax: "{{ route('ImporMatricula.listar.importados') }}",
+                ajax: "{{ route('imporpadroneib.listar.importados') }}",
                 type: "POST",
             });
         });
@@ -296,7 +246,7 @@
                     return xhr;
                 },
                 type: "POST",
-                url: "{{ route('ImporMatricula.guardar') }}",
+                url: "{{ route('imporpadroneib.guardar') }}",
                 dataType: "json",
                 contentType: false,
                 processData: false,
@@ -336,7 +286,7 @@
             bootbox.confirm("Seguro desea Eliminar este IMPORTACION?", function(result) {
                 if (result === true) {
                     $.ajax({
-                        url: "{{ url('/') }}/ImporMatricula/eliminar/" + id,
+                        url: "{{ url('/') }}/ImporPadronEIB/eliminar/" + id,
                         type: "GET",
                         dataType: "JSON",
                         success: function(data) {
@@ -355,7 +305,7 @@
         };
 
         function monitor(id) {
-            var url = "{{ route('ImporMatricula.listarimportados', 55555) }}";
+            var url = "{{ route('imporpadroneib.listarimportados', 55555) }}";
             url = url.replace('55555', id);
             $('#siagie-matricula').DataTable({
                     "processing": true,
@@ -374,170 +324,54 @@
                         "dataType": 'JSON',
                     },
                     "columns": [{
-                            data: 'dre',
-                            name: 'dre'
-                        }, {
-                            data: 'ugel',
-                            name: 'ugel'
-                        }, {
-                            data: 'departamento',
-                            name: 'departamento'
-                        }, {
-                            data: 'provincia',
-                            name: 'provincia'
-                        }, {
-                            data: 'distrito',
-                            name: 'distrito' /*  */
-                        }, {
-                            data: 'centropoblado',
-                            name: 'centropoblado'
-                        }, {
-                            data: 'modular',
-                            name: 'modular'
-                        }, {
-                            data: 'iiee',
-                            name: 'iiee'
-                        }, {
-                            data: 'codnivel',
-                            name: 'codnivel'
-                        }, {
-                            data: 'nivel',
-                            name: 'nivel' /*  */
-                        }, {
-                            data: 'tiponivel',
-                            name: 'tiponivel'
-                        }, {
-                            data: 'codgestion',
-                            name: 'codgestion'
-                        }, {
-                            data: 'gestiondependencia',
-                            name: 'gestiondependencia'
-                        },
-                        /* {
-                                                   data: 'codtipogestion'
-                                               },  */
-                        {
-                            data: 'tipogestion',
-                            name: 'tipogestion'
-                        }, {
-                            data: 'total_estudiantes',
-                            name: 'total_estudiantes' /*  */
-                        }, {
-                            data: 'matricula_definitiva',
-                            name: 'matricula_definitiva'
-                        }, {
-                            data: 'matricula_proceso',
-                            name: 'matricula_proceso'
-                        }, {
-                            data: 'dni_validado',
-                            name: 'dni_validado'
-                        }, {
-                            data: 'dni_sin_validar',
-                            name: 'dni_sin_validar'
-                        }, {
-                            data: 'registrado_sin_dni',
-                            name: 'registrado_sin_dni' /*  */
-                        }, {
-                            data: 'total_grados',
-                            name: 'total_grados'
-                        }, {
-                            data: 'total_secciones',
-                            name: 'total_secciones'
-                        }, {
-                            data: 'nominas_generadas',
-                            name: 'nominas_generadas'
-                        }, {
-                            data: 'nominas_aprobadas',
-                            name: 'nominas_aprobadas'
-                        }, {
-                            data: 'nominas_por_rectificar',
-                            name: 'nominas_por_rectificar' /*  */
-                        }, {
-                            data: 'tres_anios_hombre',
-                            name: 'tres_anios_hombre'
-                        }, {
-                            data: 'tres_anios_mujer',
-                            name: 'tres_anios_mujer'
-                        }, {
-                            data: 'cuatro_anios_hombre',
-                            name: 'cuatro_anios_hombre'
-                        }, {
-                            data: 'cuatro_anios_mujer',
-                            name: 'cuatro_anios_mujer'
-                        }, {
-                            data: 'cinco_anios_hombre',
-                            name: 'cinco_anios_hombre' /*  */
-                        }, {
-                            data: 'cinco_anios_mujer',
-                            name: 'cinco_anios_mujer'
-                        }, {
-                            data: 'primero_hombre',
-                            name: 'primero_hombre'
-                        }, {
-                            data: 'primero_mujer',
-                            name: 'primero_mujer'
-                        }, {
-                            data: 'segundo_hombre',
-                            name: 'segundo_hombre'
-                        }, {
-                            data: 'segundo_mujer',
-                            name: 'segundo_mujer' /*  */
-                        }, {
-                            data: 'tercero_hombre',
-                            name: 'tercero_hombre'
-                        }, {
-                            data: 'tercero_mujer',
-                            name: 'tercero_mujer'
-                        }, {
-                            data: 'cuarto_hombre',
-                            name: 'cuarto_hombre'
-                        }, {
-                            data: 'cuarto_mujer',
-                            name: 'cuarto_mujer'
-                        }, {
-                            data: 'quinto_hombre',
-                            name: 'quinto_hombre' /*  */
-                        }, {
-                            data: 'quinto_mujer',
-                            name: 'quinto_mujer'
-                        }, {
-                            data: 'sexto_hombre',
-                            name: 'sexto_hombre'
-                        }, {
-                            data: 'sexto_mujer',
-                            name: 'sexto_mujer'
-                        }, {
-                            data: 'cero_anios_hombre',
-                            name: 'cero_anios_hombre'
-                        }, {
-                            data: 'cero_anios_mujer',
-                            name: 'cero_anios_mujer' /*  */
-                        }, {
-                            data: 'un_anio_hombre',
-                            name: 'un_anio_hombre'
-                        }, {
-                            data: 'un_anio_mujer',
-                            name: 'un_anio_mujer'
-                        }, {
-                            data: 'dos_anios_hombre',
-                            name: 'dos_anios_hombre'
-                        }, {
-                            data: 'dos_anios_mujer',
-                            name: 'dos_anios_mujer'
-                        }, {
-                            data: 'mas_cinco_anios_hombre',
-                            name: 'mas_cinco_anios_hombre' /*  */
-                        }, {
-                            data: 'mas_cinco_anios_mujer',
-                            name: 'mas_cinco_anios_mujer'
-                        },
-                        /* {
-                                               data: 'total_hombres'
-                                           }, */
-                        /*  {
-                                                data: 'total_mujer'
-                                            }, */
-                    ],
+                        data: 'dre',
+                        name: 'dre'
+                    }, {
+                        data: 'ugel',
+                        name: 'ugel'
+                    }, {
+                        data: 'departamento',
+                        name: 'departamento'
+                    }, {
+                        data: 'provincia',
+                        name: 'provincia'
+                    }, {
+                        data: 'distrito',
+                        name: 'distrito' /*  */
+                    }, {
+                        data: 'centro_poblado',
+                        name: 'centro_poblado'
+                    }, {
+                        data: 'cod_mod',
+                        name: 'cod_mod'
+                    }, {
+                        data: 'cod_local',
+                        name: 'cod_local'
+                    }, {
+                        data: 'institucion_educativa',
+                        name: 'institucion_educativa'
+                    }, {
+                        data: 'cod_nivelmod',
+                        name: 'cod_nivelmod' /*  */
+                    }, {
+                        data: 'nivel_modalidad',
+                        name: 'nivel_modalidad'
+                    }, {
+                        data: 'forma_atencion',
+                        name: 'forma_atencion'
+                    }, {
+                        data: 'cod_lengua',
+                        name: 'cod_lengua'
+                    }, {
+                        data: 'lengua_uno',
+                        name: 'lengua_uno'
+                    }, {
+                        data: 'lengua_dos',
+                        name: 'lengua_dos' /*  */
+                    }, {
+                        data: 'lengua_3',
+                        name: 'lengua_3'
+                    }, ],
                 }
 
             );
@@ -554,5 +388,4 @@
     <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
-
 @endsection

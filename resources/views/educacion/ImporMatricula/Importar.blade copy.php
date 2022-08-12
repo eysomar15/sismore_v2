@@ -1,4 +1,4 @@
-@extends('layouts.main',['titlePage'=>'IMPORTAR DATOS - PADRON WEB DE INSTITUCIONES EDUCATIVAS'])
+@extends('layouts.main',['titlePage'=>'IMPORTAR DATOS - MATRICULAS SIAGIE'])
 @section('css')
     <!-- Table datatable css -->
     <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -35,7 +35,8 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Datos de importación</h3>
+                        <h3 class="card-title">Datos de importación
+                        </h3>
                     </div>
 
                     <div class="card-body">
@@ -46,7 +47,18 @@
                                 <div class="form-group row">
                                     <label class="col-md-2 col-form-label">Fuente de datos</label>
                                     <div class="col-md-10">
-                                        <input type="text" class="form-control" readonly="readonly" value="ESCALE">
+                                        <input type="text" class="form-control" readonly="readonly" value="SIAGIE - MATRICULA">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 col-form-label">Año Matricula</label>
+                                    
+                                    <div class="col-md-10">
+                                        <select id="anio" name="anio" class="form-control">
+                                            @foreach ($anios as $item)
+                                                <option value="{{ $item->id }}"> {{ $item->anio }} </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
 
@@ -107,13 +119,13 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">HISTORIAL DE IMPORTACION </h3>
+                        <h3 class="card-title">HISTORIAL DE IMPORTACION</h3>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="font-size: 12px">
+                                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap">
                                         <thead class="text-primary">
                                             <tr>
                                                 <th>N°</th>
@@ -150,16 +162,7 @@
             $('.upload_file').on('submit', upload);
 
             table_principal = $('#datatable').DataTable({
-                responsive: true,
-                autoWidth: false,
-                order: true,
-                language: table_language,
-                ajax: "{{ route('ImporPadronWeb.listar.importados') }}",
-                type: "POST",
-            });
-
-            /* table_principal = $('#datatable').DataTable({
-                "ajax": "{{ route('ImporPadronWeb.listar.importados') }}", //ece.listar.importados
+                "ajax": "{{ route('ImporMatricula.listar.importados') }}", //ece.listar.importados
                 "columns": [{
                         data: 'fechaActualizacion'
                     },
@@ -197,7 +200,7 @@
                 }).nodes().each(function(cell, i) {
                     cell.innerHTML = i + 1;
                 });
-            }).draw(); */
+            }).draw();
         });
 
         function upload(e) {
@@ -227,7 +230,7 @@
                     return xhr;
                 },
                 type: "POST",
-                url: "{{ route('ImporPadronWeb.guardar') }}",
+                url: "{{ route('ImporMatricula.guardar') }}",
                 dataType: "json",
                 contentType: false,
                 processData: false,
@@ -267,7 +270,7 @@
             bootbox.confirm("Seguro desea Eliminar este IMPORTACION?", function(result) {
                 if (result === true) {
                     $.ajax({
-                        url: "{{ url('/') }}/Importacion/GetEliminar/" + id,
+                        url: "{{ url('/') }}/ImporMatricula/eliminar/" + id,
                         type: "GET",
                         dataType: "JSON",
                         success: function(data) {

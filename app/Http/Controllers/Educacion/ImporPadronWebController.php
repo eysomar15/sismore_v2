@@ -71,7 +71,7 @@ class ImporPadronWebController extends Controller
                 foreach ($value as $celda => $row) {
                     if ($celda > 0) break;
                     $cadena =
-                        $row['cod_mod'] . //cod_mod                        
+                        $row['cod_mod'] . //cod_mod
                         $row['cod_local'] . //codlocal
                         $row['institucion_educativa'] . //cen_edu
                         $row['cod_nivelmod'] . //niv_mod
@@ -90,8 +90,8 @@ class ImporPadronWebController extends Controller
                         $row['director'] . //director
 
                         $row['telefono'] . //telefono
-                        $row['email'] . //email                        
-                        $row['direccion_centro_educativo'] . //dir_cen                        
+                        $row['email'] . //email
+                        $row['direccion_centro_educativo'] . //dir_cen
                         $row['localidad'] . //localidad
                         $row['codcp_inei'] . //codcp_inei
 
@@ -102,14 +102,14 @@ class ImporPadronWebController extends Controller
                         $row['codgeo'] . //codgeo
 
                         $row['provincia'] . //d_prov
-                        $row['distrito'] . //d_dist                        
+                        $row['distrito'] . //d_dist
                         $row['codooii'] . //codooii
                         $row['ugel'] . //d_dreugel
                         $row['nlat_ie'] . //no tenia
 
-                        $row['nlong_ie'] . //no tenia                        
+                        $row['nlong_ie'] . //no tenia
                         $row['cod_tur'] . //cod_tur
-                        $row['turno'] . //d_cod_tur                        
+                        $row['turno'] . //d_cod_tur
                         $row['cod_estado'] . //estado
                         $row['estado'] . //d_estado
 
@@ -121,7 +121,7 @@ class ImporPadronWebController extends Controller
 
                         $row['fecha_registro'] . //fechareg
                         $row['fecha_act']; //fecha_act
-                        
+
                     //$row['anexo'] .
                     //$row['pagweb'] . //pagweb
                     //$row['referencia'] . //referencia
@@ -209,7 +209,7 @@ class ImporPadronWebController extends Controller
                         //'d_Region' => $row['d_region'],
                         //'tipoProg' => is_null($row['tipoprog']) ? '' : $row['tipoprog'],
                         //'d_TipoProg' => is_null($row['d_tipoprog']) ? '' : $row['d_tipoprog'],
-                        
+
                         //'d_Fte_Dato' => $row['d_fte_dato'],
                     ]);
                 }
@@ -242,7 +242,53 @@ class ImporPadronWebController extends Controller
         $this->json_output(200, $mensaje, '');
     }
 
-    public function ListarDTImportFuenteTodos()
+    public function ListarDTImportFuenteTodos(Request $rq)
+    {
+        $draw = intval($rq->draw);
+        $start = intval($rq->start);
+        $length = intval($rq->length);
+
+        $query = ImportacionRepositorio::Listar_FuenteTodos('1');
+        $data = [];
+        foreach ($query as $key => $value) {
+            $nom = '';
+            if (strlen($value->cnombre) > 0) {
+                $xx = explode(' ', $value->cnombre);
+                $nom = $xx[0];
+            }
+            $ape = '';
+            if (strlen($value->capellidos) > 0) {
+                $xx = explode(' ', $value->capellidos);
+                $ape = $xx[0];
+            }
+
+            if (date('Y-m-d', strtotime($value->created_at)) == date('Y-m-d') || session('perfil_id') == 3 || session('perfil_id') == 8 || session('perfil_id') == 9 || session('perfil_id') == 10 || session('perfil_id') == 11)
+                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+            else
+                $boton = '';
+            $boton2 = '<button type="button" onclick="monitor(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
+            $data[] = array(
+                $key + 1,
+                date("d/m/Y", strtotime($value->fechaActualizacion)),
+                $value->fuente . $value->id,
+                $nom . ' ' . $ape,
+                date("d/m/Y", strtotime($value->created_at)),
+                $value->comentario,
+                $value->estado == "PR" ? "PROCESADO" : ($value->estado == "PE" ? "PENDIENTE" : "ELIMINADO"),
+                $boton /* . '&nbsp;' . $boton2, */
+            );
+        }
+        $result = array(
+            "draw" => $draw,
+            "recordsTotal" => $start,
+            "recordsFiltered" => $length,
+            "data" => $data
+        );
+        return response()->json($result);
+    }
+
+
+    public function ListarDTImportFuenteTodosx()
     {
         $data = ImportacionRepositorio::Listar_FuenteTodos('1');
         return datatables()
@@ -352,12 +398,12 @@ class ImporPadronWebController extends Controller
 
         return redirect()->route('PadronWeb.PadronWeb_Lista', $importacion->id);
         //$importacion_id = $importacion->id;
-        //return view('ImportarEducacion.PadronWebLista_importada',compact('importacion_id'));  
+        //return view('ImportarEducacion.PadronWebLista_importada',compact('importacion_id'));
     }
 
     public function ListaImportada($importacion_id)
     {
-        //$padronWebLista = PadronWeb::all();                
+        //$padronWebLista = PadronWeb::all();
         //return view('ImportarEducacion.PadronWebList',compact('padronWebLista'));
 
         return view('Educacion.ImporPadronWeb.ListaImportada', compact('importacion_id'));
@@ -373,7 +419,7 @@ class ImporPadronWebController extends Controller
     public function aprobar($importacion_id)
     {
         $importacion = ImportacionRepositorio::ImportacionPor_Id($importacion_id);
-        //Importacion::where('id',$importacion_id)->first();  
+        //Importacion::where('id',$importacion_id)->first();
 
         return view('educacion.ImporPadronWeb.Aprobar', compact('importacion_id', 'importacion'));
     }

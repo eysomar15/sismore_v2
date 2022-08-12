@@ -10,6 +10,81 @@ use Illuminate\Support\Facades\DB;
 
 class PlazaRepositorio
 {
+    public static function listaImportada($id)
+    {
+        $query = DB::table(DB::raw("(
+            select
+                v1.id,
+                v5.nombre dre,
+                v4.nombre ugel,
+                'UCAYALI' departamento,
+                v8.nombre provincia,
+                v7.nombre distrito,
+                v6.nombre centropoblado,
+                v3.codModular modular,
+                v3.nombreInstEduc iiee,
+                v9.codigo codnivel,
+                v9.nombre nivel,
+                v9.tipo tiponivel,
+                v10.codigo codgestion,
+                v10.nombre gestiondependencia,
+                v11.codigo codtipogestion,
+                v11.nombre tipogestion,
+                v1.total_estudiantes,
+                v1.matricula_definitiva,
+                v1.matricula_proceso,
+                v1.dni_validado,
+                v1.dni_sin_validar,
+                v1.registrado_sin_dni,
+                v1.total_grados,
+                v1.total_secciones,
+                v1.nominas_generadas,
+                v1.nominas_aprobadas,
+                v1.nominas_por_rectificar,
+                v1.tres_anios_hombre,
+                v1.tres_anios_mujer,
+                v1.cuatro_anios_hombre,
+                v1.cuatro_anios_mujer,
+                v1.cinco_anios_hombre,
+                v1.cinco_anios_mujer,
+                v1.primero_hombre,
+                v1.primero_mujer,
+                v1.segundo_hombre,
+                v1.segundo_mujer,
+                v1.tercero_hombre,
+                v1.tercero_mujer,
+                v1.cuarto_hombre,
+                v1.cuarto_mujer,
+                v1.quinto_hombre,
+                v1.quinto_mujer,
+                v1.sexto_hombre,
+                v1.sexto_mujer,
+                v1.cero_anios_hombre,
+                v1.cero_anios_mujer,
+                v1.un_anio_hombre,
+                v1.un_anio_mujer,
+                v1.dos_anios_hombre,
+                v1.dos_anios_mujer,
+                v1.mas_cinco_anios_hombre,
+                v1.mas_cinco_anios_mujer,
+                v1.total_hombres,
+                v1.total_mujeres
+            from edu_matricula_detalle v1
+            inner join edu_matricula v2 on v2.id=v1.matricula_id
+            inner join edu_institucioneducativa v3 on v3.id=v1.institucioneducativa_id
+            inner join edu_ugel v4 on v4.id=v3.Ugel_id
+            inner join edu_ugel v5 on v5.id=v4.dependencia
+            inner join par_centropoblado v6 on v6.id=v3.CentroPoblado_id
+            inner join par_ubigeo v7 on v7.id=v6.Ubigeo_id
+            inner join par_ubigeo v8 on v8.id=v7.dependencia
+            inner join edu_nivelmodalidad v9 on v9.id=v3.NivelModalidad_id
+            inner join edu_tipogestion v10 on v10.id=v3.TipoGestion_id
+            inner join edu_tipogestion v11 on v11.id=v10.dependencia
+            where v2.importacion_id=$id
+        ) astb"))->get();
+        return $query;
+    }
+
     public static function listar_provincia()
     {
         $query = PLaza::select('v3.id', 'v3.nombre')
@@ -34,8 +109,8 @@ class PlazaRepositorio
     public static function count_docente($importacion_id)
     {
         $query = DB::table(
-            DB::raw("(select documento_identidad from edu_plaza 
-                        where importacion_id=$importacion_id and documento_identidad!='' 
+            DB::raw("(select documento_identidad from edu_plaza
+                        where importacion_id=$importacion_id and documento_identidad!=''
                         group by documento_identidad ) as tb")
         )
             ->select(DB::raw('count(documento_identidad) as conteo'))
@@ -50,10 +125,10 @@ class PlazaRepositorio
         if ($provincia > 0 && $distrito > 0) $ubicacion = ' and v4.id=' . $distrito;
         else if ($provincia > 0 && $distrito == 0) $ubicacion = ' and v4.dependencia=' . $provincia;
         $query =  DB::table(DB::raw('(select if(v1.esTitulado=1,"SI","NO") as titulado,count(v1.esTitulado) as conteo from edu_plaza as v1
-        inner join par_importacion as v2 on v2.id=v1.importacion_id 
-        inner join edu_tipotrabajador as v3 on v3.id=v1.tipoTrabajador_id 
-        inner join par_ubigeo as v4 on v4.id=v1.ubigeo_id 
-        where tipoTrabajador_id in (13,6) and v1.situacion="AC" and v1.importacion_id=' . $importacion_id . ' and v1.nivelModalidad_id in (' . $nivelxx . ')' . $ubicacion . ' 
+        inner join par_importacion as v2 on v2.id=v1.importacion_id
+        inner join edu_tipotrabajador as v3 on v3.id=v1.tipoTrabajador_id
+        inner join par_ubigeo as v4 on v4.id=v1.ubigeo_id
+        where tipoTrabajador_id in (13,6) and v1.situacion="AC" and v1.importacion_id=' . $importacion_id . ' and v1.nivelModalidad_id in (' . $nivelxx . ')' . $ubicacion . '
         group by v1.esTitulado) as tb'))
             ->select('titulado as name', 'conteo as y')
             ->orderBy('titulado', 'desc')
@@ -65,11 +140,11 @@ class PlazaRepositorio
     {
         $nivelxx = $nivel == 'SECUNDARIA' ? '8' : ($nivel == 'PRIMARIA' ? '7' : '1,2,14');
         $query = DB::table(DB::raw('(select v5.nombre as ugel,count(v5.nombre) as conteo from edu_plaza as v1
-        inner join par_importacion as v2 on v2.id=v1.importacion_id 
-        inner join edu_tipotrabajador as v3 on v3.id=v1.tipoTrabajador_id 
-        inner join par_ubigeo as v4 on v4.id=v1.ubigeo_id 
-        inner join edu_ugel as v5 on v5.id=v1.ugel_id 
-        where tipoTrabajador_id in (13,6) and v1.situacion="AC" and v1.esTitulado=' . $titulado . ' and 
+        inner join par_importacion as v2 on v2.id=v1.importacion_id
+        inner join edu_tipotrabajador as v3 on v3.id=v1.tipoTrabajador_id
+        inner join par_ubigeo as v4 on v4.id=v1.ubigeo_id
+        inner join edu_ugel as v5 on v5.id=v1.ugel_id
+        where tipoTrabajador_id in (13,6) and v1.situacion="AC" and v1.esTitulado=' . $titulado . ' and
               v1.importacion_id=' . $importacion_id . ' and v1.nivelModalidad_id in (' . $nivelxx . ')
         group by v5.nombre) as tb'))
             ->select('ugel as name', 'conteo as y')
@@ -418,8 +493,8 @@ class PlazaRepositorio
             ->select(
                 DB::raw('YEAR(v6.fechaActualizacion) as name'),
                 DB::raw('SUM(IF(v1.importacion_id=(
-                    select max(xx.id)  from par_importacion as xx 
-                    where xx.estado="PR" and xx.fuenteImportacion_id=2 and year(xx.fechaActualizacion)=year(v6.fechaActualizacion) 
+                    select max(xx.id)  from par_importacion as xx
+                    where xx.estado="PR" and xx.fuenteImportacion_id=2 and year(xx.fechaActualizacion)=year(v6.fechaActualizacion)
                     group by year(xx.fechaActualizacion)
                     ),1,0)) as y')
             )
@@ -456,19 +531,19 @@ class PlazaRepositorio
             ->groupBy('mes', 'name')
             ->select(
                 DB::raw('month(`v6`.`fechaActualizacion`) as mes'),
-                DB::raw('CASE 
-                WHEN month(`v6`.`fechaActualizacion`)=1 THEN "ENE"  
-                WHEN month(`v6`.`fechaActualizacion`)=2 THEN "FEB"  
-                WHEN month(`v6`.`fechaActualizacion`)=3 THEN "MAR"  
-                WHEN month(`v6`.`fechaActualizacion`)=4 THEN "ABR"  
-                WHEN month(`v6`.`fechaActualizacion`)=5 THEN "MAY"  
-                WHEN month(`v6`.`fechaActualizacion`)=6 THEN "JUN"  
-                WHEN month(`v6`.`fechaActualizacion`)=7 THEN "JUL"  
-                WHEN month(`v6`.`fechaActualizacion`)=8 THEN "AGO"  
-                WHEN month(`v6`.`fechaActualizacion`)=9 THEN "SET"  
-                WHEN month(`v6`.`fechaActualizacion`)=10 THEN "OCT"  
-                WHEN month(`v6`.`fechaActualizacion`)=11 THEN "NOV"  
-                WHEN month(`v6`.`fechaActualizacion`)=12 THEN "DIC"  
+                DB::raw('CASE
+                WHEN month(`v6`.`fechaActualizacion`)=1 THEN "ENE"
+                WHEN month(`v6`.`fechaActualizacion`)=2 THEN "FEB"
+                WHEN month(`v6`.`fechaActualizacion`)=3 THEN "MAR"
+                WHEN month(`v6`.`fechaActualizacion`)=4 THEN "ABR"
+                WHEN month(`v6`.`fechaActualizacion`)=5 THEN "MAY"
+                WHEN month(`v6`.`fechaActualizacion`)=6 THEN "JUN"
+                WHEN month(`v6`.`fechaActualizacion`)=7 THEN "JUL"
+                WHEN month(`v6`.`fechaActualizacion`)=8 THEN "AGO"
+                WHEN month(`v6`.`fechaActualizacion`)=9 THEN "SET"
+                WHEN month(`v6`.`fechaActualizacion`)=10 THEN "OCT"
+                WHEN month(`v6`.`fechaActualizacion`)=11 THEN "NOV"
+                WHEN month(`v6`.`fechaActualizacion`)=12 THEN "DIC"
                 ELSE "" END as `name`'),
                 DB::raw('count(v1.id) as y ')
             )
@@ -616,17 +691,17 @@ class PlazaRepositorio
         $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
 
         $query = DB::table(DB::raw("(
-        select 
+        select
             v1.documento_identidad as dni,
             v1.sexo sexo
-        from edu_plaza v1 
-        inner join par_importacion v2 on v2.id=v1.importacion_id 
+        from edu_plaza v1
+        inner join par_importacion v2 on v2.id=v1.importacion_id
         inner join edu_tipotrabajador v3 on v3.id=v1.tipoTrabajador_id
-        inner join edu_tipotrabajador v4 on v4.id=v3.dependencia    
-        inner join edu_institucioneducativa as v5 on v5.id=v1.institucioneducativa_id 
-        inner join edu_area as v6 on v6.id=v5.Area_id  
+        inner join edu_tipotrabajador v4 on v4.id=v3.dependencia
+        inner join edu_institucioneducativa as v5 on v5.id=v1.institucioneducativa_id
+        inner join edu_area as v6 on v6.id=v5.Area_id
         where v2.estado='PR' and v1.documento_identidad!='' and v1.sexo!='' and v4.nombre='DOCENTE' and v3.nombre!='AUXILIAR DE EDUCACION' and v2.id=$id
-        group by dni,sexo 
+        group by dni,sexo
         ) as tb1"))
             ->select(
                 DB::raw('sexo as `name`'),
@@ -643,12 +718,12 @@ class PlazaRepositorio
     public static function docentes_seguntipogestion()
     {
         $query = DB::table(DB::raw(
-            "(  select v1.documento_identidad as dni,v2.fechaActualizacion as fecha,v5.id as gestion from edu_plaza v1 
-                inner join par_importacion v2 on v2.id=v1.importacion_id 
-                inner join edu_institucioneducativa as v3 on v3.id=v1.institucioneducativa_id 
-                inner join edu_tipogestion as v4 on v4.id=v3.TipoGestion_id 
-                inner join edu_tipogestion as v5 on v5.id=v4.dependencia 
-                where v2.estado='PR' and v1.documento_identidad!='' 
+            "(  select v1.documento_identidad as dni,v2.fechaActualizacion as fecha,v5.id as gestion from edu_plaza v1
+                inner join par_importacion v2 on v2.id=v1.importacion_id
+                inner join edu_institucioneducativa as v3 on v3.id=v1.institucioneducativa_id
+                inner join edu_tipogestion as v4 on v4.id=v3.TipoGestion_id
+                inner join edu_tipogestion as v5 on v5.id=v4.dependencia
+                where v2.estado='PR' and v1.documento_identidad!=''
                 group by v2.fechaActualizacion,v1.documento_identidad,gestion
                 ) as tb"
         ))
@@ -675,17 +750,17 @@ class PlazaRepositorio
         $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
 
         $query = DB::table(DB::raw("(
-        select 
+        select
             v1.documento_identidad as dni,
             v6.nombre area
-        from edu_plaza v1 
-        inner join par_importacion v2 on v2.id=v1.importacion_id 
+        from edu_plaza v1
+        inner join par_importacion v2 on v2.id=v1.importacion_id
         inner join edu_tipotrabajador v3 on v3.id=v1.tipoTrabajador_id
-        inner join edu_tipotrabajador v4 on v4.id=v3.dependencia    
-        inner join edu_institucioneducativa as v5 on v5.id=v1.institucioneducativa_id 
-        inner join edu_area as v6 on v6.id=v5.Area_id  
+        inner join edu_tipotrabajador v4 on v4.id=v3.dependencia
+        inner join edu_institucioneducativa as v5 on v5.id=v1.institucioneducativa_id
+        inner join edu_area as v6 on v6.id=v5.Area_id
         where v2.estado='PR' and v1.documento_identidad!='' and v4.nombre='DOCENTE' and v3.nombre!='AUXILIAR DE EDUCACION' and v2.id=$id
-        group by dni,area 
+        group by dni,area
         order by dni desc
         ) as tb1"))
             ->select(
@@ -711,11 +786,11 @@ class PlazaRepositorio
             ->first()->fecha;
         if ($fechaMax) {
             $query = DB::table(DB::raw(
-                "(  select v1.documento_identidad as dni,v2.fechaActualizacion as fecha,v4.nombre as ugel from edu_plaza v1 
-                    inner join par_importacion v2 on v2.id=v1.importacion_id 
-                    inner join edu_institucioneducativa as v3 on v3.id=v1.institucioneducativa_id 
-                    inner join edu_ugel as v4 on v4.id=v3.Ugel_id   
-                    where v2.estado='PR' and v1.documento_identidad!='' 
+                "(  select v1.documento_identidad as dni,v2.fechaActualizacion as fecha,v4.nombre as ugel from edu_plaza v1
+                    inner join par_importacion v2 on v2.id=v1.importacion_id
+                    inner join edu_institucioneducativa as v3 on v3.id=v1.institucioneducativa_id
+                    inner join edu_ugel as v4 on v4.id=v3.Ugel_id
+                    where v2.estado='PR' and v1.documento_identidad!=''
                     group by fecha,dni,ugel
                     ) as tb"
             ))

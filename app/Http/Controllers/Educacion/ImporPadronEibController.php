@@ -4,13 +4,11 @@ namespace App\Http\Controllers\Educacion;
 
 use App\Http\Controllers\Controller;
 use App\Imports\tablaXImport;
-use App\Models\Educacion\ImporMatricula;
+use App\Models\Educacion\ImporPadronEib;
 use App\Models\Educacion\Importacion;
-use App\Models\Educacion\Matricula;
 use App\Models\Parametro\Anio;
-use App\Repositories\Educacion\ImporMatriculaRepositorio;
 use App\Repositories\Educacion\ImportacionRepositorio;
-use App\Repositories\Educacion\MatriculaDetalleRepositorio;
+use App\Repositories\Educacion\PadronEIBRepositorio;
 use App\Utilities\Utilitario;
 use Carbon\Carbon;
 use Exception;
@@ -20,7 +18,7 @@ use Yajra\DataTables\DataTables;
 
 use function PHPUnit\Framework\isNull;
 
-class ImporMatriculaController extends Controller
+class ImporPadronEibController extends Controller
 {
     public function __construct()
     {
@@ -29,11 +27,9 @@ class ImporMatriculaController extends Controller
 
     public function importar()
     {
-        /* $matricula = Matricula::where('importacion_id', 416)->first();
-        return $matricula; */
         $mensaje = "";
         $anios = Anio::orderBy('anio', 'desc')->get();
-        return view('educacion.ImporMatricula.Importar', compact('mensaje', 'anios'));
+        return view('educacion.ImporPadronEIB.Importar', compact('mensaje', 'anios'));
     }
 
     function json_output($status = 200, $msg = 'OK!!', $data = null)
@@ -49,13 +45,13 @@ class ImporMatriculaController extends Controller
 
     public function guardar(Request $request)
     {
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 1);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 12);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos prendientes de aprobar para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);
         }
 
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 1);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 12);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos procesados para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);
@@ -74,18 +70,31 @@ class ImporMatriculaController extends Controller
                 foreach ($value as $celda => $row) {
                     if ($celda > 0) break;
                     $cadena =
-                        $row['dre'] . $row['ugel'] . $row['departamento'] . $row['provincia'] . $row['distrito'] . $row['centro_poblado'] . $row['cod_mod'] . $row['institucion_educativa'] . $row['cod_nivelmod'] . $row['nivel_modalidad'] . $row['cod_ges_dep'] . $row['gestion_dependencia'] . $row['total_estudiantes'] . $row['matricula_definitiva'] . $row['matricula_proceso'] . $row['dni_validado'] . $row['dni_sin_validar'] . $row['registrado_sin_dni'] . $row['total_grados'] . $row['total_secciones'] . $row['nominas_generadas'] . $row['nominas_aprobadas'] . $row['nominas_por_rectificar'] . $row['tres_anios_hombre'] . $row['tres_anios_mujer'] . $row['cuatro_anios_hombre'] . $row['cuatro_anios_mujer'] . $row['cinco_anios_hombre'] . $row['cinco_anios_mujer'] . $row['primero_hombre'] . $row['primero_mujer'] . $row['segundo_hombre'] . $row['segundo_mujer'] . $row['tercero_hombre'] . $row['tercero_mujer'] . $row['cuarto_hombre'] . $row['cuarto_mujer'] . $row['quinto_hombre'] . $row['quinto_mujer'] . $row['sexto_hombre'] . $row['sexto_mujer'] . $row['cero_anios_hombre'] . $row['cero_anios_mujer'] . $row['un_anio_hombre'] . $row['un_anio_mujer'] . $row['dos_anios_hombre'] . $row['dos_anios_mujer'] . $row['mas_cinco_anios_hombre'] . $row['mas_cinco_anios_mujer'];
+                        $row['dre'] .
+                        $row['ugel'] .
+                        $row['departamento'] .
+                        $row['provincia'] .
+                        $row['distrito'] .
+                        $row['centro_poblado'] .
+                        $row['cod_mod'] .
+                        $row['cod_local'] .
+                        $row['institucion_educativa'] .
+                        $row['cod_nivelmod'] .
+                        $row['nivel_modalidad'] .
+                        $row['forma_atencion'] .
+                        $row['cod_lengua'] .
+                        $row['lengua_uno'] .
+                        $row['lengua_dos'] .
+                        $row['lengua_3'];
                 }
             }
         } catch (Exception $e) {
             $mensaje = "Formato de archivo no reconocido, porfavor verifique si el formato es el correcto";
             $this->json_output(403, $mensaje);
         }
-        /* $mensaje = "Archivo excel subido y Procesado correctamente .";
-        $this->json_output(200, $mensaje, $array ); */
         try {
             $importacion = Importacion::Create([
-                'fuenteImportacion_id' => 8, // valor predeterminado
+                'fuenteImportacion_id' => 12, // valor predeterminado
                 'usuarioId_Crea' => auth()->user()->id,
                 'usuarioId_Aprueba' => null,
                 'fechaActualizacion' => $request['fechaActualizacion'],
@@ -93,16 +102,11 @@ class ImporMatriculaController extends Controller
                 'estado' => 'PE'
             ]);
 
-            $matricula = Matricula::Create([
-                'importacion_id' => $importacion->id,
-                'anio_id' => $request['anio'],
-                'estado' => 'PE'
-            ]);
-
             foreach ($array as $key => $value) {
                 foreach ($value as $row) {
-                    $padronWeb = ImporMatricula::Create([
-                        'matricula_id' => $matricula->id,
+                    $padronEIB = ImporPadronEib::Create([
+                        'importacion_id' => $importacion->id,
+                        'anio_id' => $request['anio'],
                         'dre' => $row['dre'],
                         'ugel' => $row['ugel'],
                         'departamento' => $row['departamento'],
@@ -110,55 +114,19 @@ class ImporMatriculaController extends Controller
                         'distrito' => $row['distrito'],
                         'centro_poblado' => $row['centro_poblado'],
                         'cod_mod' => $row['cod_mod'],
+                        'cod_local' => $row['cod_local'],
                         'institucion_educativa' => $row['institucion_educativa'],
                         'cod_nivelmod' => $row['cod_nivelmod'],
                         'nivel_modalidad' => $row['nivel_modalidad'],
-                        'cod_ges_dep' => $row['cod_ges_dep'],
-                        'gestion_dependencia' => $row['gestion_dependencia'],
-                        'total_estudiantes' => $row['total_estudiantes'],
-                        'matricula_definitiva' => $row['matricula_definitiva'],
-                        'matricula_proceso' => $row['matricula_proceso'],
-                        'dni_validado' => $row['dni_validado'],
-                        'dni_sin_validar' => $row['dni_sin_validar'],
-                        'registrado_sin_dni' => $row['registrado_sin_dni'],
-                        'total_grados' => $row['total_grados'],
-                        'total_secciones' => $row['total_secciones'],
-                        'nominas_generadas' => $row['nominas_generadas'],
-                        'nominas_aprobadas' => $row['nominas_aprobadas'],
-                        'nominas_por_rectificar' => $row['nominas_por_rectificar'],
-                        'tres_anios_hombre' => $row['tres_anios_hombre'],
-                        'tres_anios_mujer' => $row['tres_anios_mujer'],
-                        'cuatro_anios_hombre' => $row['cuatro_anios_hombre'],
-                        'cuatro_anios_mujer' => $row['cuatro_anios_mujer'],
-                        'cinco_anios_hombre' => $row['cinco_anios_hombre'],
-                        'cinco_anios_mujer' => $row['cinco_anios_mujer'],
-                        'primero_hombre' => $row['primero_hombre'],
-                        'primero_mujer' => $row['primero_mujer'],
-                        'segundo_hombre' => $row['segundo_hombre'],
-                        'segundo_mujer' => $row['segundo_mujer'],
-                        'tercero_hombre' => $row['tercero_hombre'],
-                        'tercero_mujer' => $row['tercero_mujer'],
-                        'cuarto_hombre' => $row['cuarto_hombre'],
-                        'cuarto_mujer' => $row['cuarto_mujer'],
-                        'quinto_hombre' => $row['quinto_hombre'],
-                        'quinto_mujer' => $row['quinto_mujer'],
-                        'sexto_hombre' => $row['sexto_hombre'],
-                        'sexto_mujer' => $row['sexto_mujer'],
-                        'cero_anios_hombre' => $row['cero_anios_hombre'],
-                        'cero_anios_mujer' => $row['cero_anios_mujer'],
-                        'un_anio_hombre' => $row['un_anio_hombre'],
-                        'un_anio_mujer' => $row['un_anio_mujer'],
-                        'dos_anios_hombre' => $row['dos_anios_hombre'],
-                        'dos_anios_mujer' => $row['dos_anios_mujer'],
-                        'mas_cinco_anios_hombre' => $row['mas_cinco_anios_hombre'],
-                        'mas_cinco_anios_mujer' => $row['mas_cinco_anios_mujer'],
+                        'forma_atencion' => $row['forma_atencion'],
+                        'cod_lengua' => $row['cod_lengua'],
+                        'lengua_uno' => $row['lengua_uno'],
+                        'lengua_dos' => $row['lengua_dos'],
+                        'lengua_3' => $row['lengua_3'],/*  */
                     ]);
                 }
             }
         } catch (Exception $e) {
-            $matricula->estado = 'EL';
-            $matricula->save();
-
             $importacion->estado = 'EL';
             $importacion->save();
 
@@ -167,28 +135,25 @@ class ImporMatriculaController extends Controller
         }
 
         try {
-            $procesar = DB::select('call edu_pa_procesarImporMatricula(?,?)', [$matricula->id, $importacion->usuarioId_Crea]);
+            $procesar = DB::select('call edu_pa_procesarPadronEIB(?,?)', [$importacion->id, $importacion->usuarioId_Crea]);
         } catch (Exception $e) {
-            $matricula->estado = 'EL';
-            $matricula->save();
-
             $importacion->estado = 'EL';
             $importacion->save();
 
             $mensaje = "Error al procesar la normalizacion de datos." . $e;
-            $tipo = 'danger';
             $this->json_output(400, $mensaje);
         }
         $mensaje = "Archivo excel subido y Procesado correctamente .";
         $this->json_output(200, $mensaje, '');
     }
+
     public function ListarDTImportFuenteTodos(Request $rq)
     {
         $draw = intval($rq->draw);
         $start = intval($rq->start);
         $length = intval($rq->length);
 
-        $query = ImportacionRepositorio::Listar_FuenteTodos('8');
+        $query = ImportacionRepositorio::Listar_FuenteTodos('12');
         $data = [];
         foreach ($query as $key => $value) {
             $nom = '';
@@ -210,7 +175,7 @@ class ImporMatriculaController extends Controller
             $data[] = array(
                 $key + 1,
                 date("d/m/Y", strtotime($value->fechaActualizacion)),
-                $value->fuente . $value->id,
+                $value->fuente,
                 $nom . ' ' . $ape,
                 date("d/m/Y", strtotime($value->created_at)),
                 $value->comentario,
@@ -226,6 +191,7 @@ class ImporMatriculaController extends Controller
         );
         return response()->json($result);
     }
+
     public function ListarDTImportFuenteTodosx()
     {
         $permitidos = [3, 8, 9, 10, 11];
@@ -263,30 +229,8 @@ class ImporMatriculaController extends Controller
 
     public function ListaImportada(Request $request, $importacion_id) //(Request $request, $importacion_id)
     {
-        $data = MatriculaDetalleRepositorio::listaImportada($importacion_id);
-        //return response()->json($data);
+        $data = PadronEIBRepositorio::listaImportada($importacion_id);
         return DataTables::of($data)->make(true);
-    }
-
-    public function ListaImportada_DataTable($importacion_id)
-    {
-        $padronWebLista = ImporMatriculaRepositorio::Listar_Por_Importacion_id($importacion_id);
-
-        return  datatables()->of($padronWebLista)->toJson();;
-    }
-
-    public function aprobar($importacion_id)
-    {
-        $importacion = ImportacionRepositorio::ImportacionPor_Id($importacion_id);
-        //Importacion::where('id',$importacion_id)->first();
-
-        return view('educacion.ImporMatricula.Aprobar', compact('importacion_id', 'importacion'));
-    }
-
-    public function procesar($importacion_id)
-    {
-        $procesar = DB::select('call edu_pa_procesarPadronWeb(?)', [$importacion_id]);
-        return view('correcto');
     }
 
     public function eliminar($id)
@@ -294,10 +238,6 @@ class ImporMatriculaController extends Controller
         $entidad = Importacion::find($id);
         $entidad->estado = 'EL';
         $entidad->save();
-
-        $matricula = Matricula::where('importacion_id', $entidad->id)->first();
-        $matricula->estado = 'EL';
-        $matricula->save();
 
         return response()->json(array('status' => true));
     }
