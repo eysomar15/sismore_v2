@@ -29,7 +29,8 @@ class PadronEIBRepositorio
                 v1.cod_lengua,
                 v1.lengua_uno,
                 v1.lengua_dos,
-                v1.lengua_3
+                v1.lengua_3,
+                v1.ingreso
             from edu_padron_eib v1
             join par_anio v2 on v2.id=v1.anio_id
             join edu_institucioneducativa v3 on v3.id=v1.institucioneducativa_id

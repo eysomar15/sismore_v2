@@ -2953,7 +2953,481 @@ class MatriculaDetalleController extends Controller
         return view("educacion.MatriculaDetalle.BasicaEspecialTabla2", compact('rq', 'base', 'foot'));
     }
 
+    public function interculturalbilingue()
+    {
+        /* anos */
+        $anios = MatriculaRepositorio::matriculas_anio();
+        /* gestion */
+        $gestions = [["id" => 2, "nombre" => "Pública"], ["id" => 3, "nombre" => "Privada"]];
+        /* area geografica */
+        $areas = Area::select('id', 'nombre')->get();
+        /* ultimo reg */
+        $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '8')->orderBy('fecha', 'desc')->take(1)->get();
+        $importacion_id = $imp->first()->id;
+        $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
+        return view("educacion.MatriculaDetalle.InterculturalBilingue", compact('anios', 'gestions', 'areas', 'importacion_id', 'fecha'));
+    }
 
+    public function cargarEIBgrafica1(Request $rq)
+    {
+        $impfechas = Importacion::select(
+            DB::raw("year(fechaActualizacion) as ano"),
+            DB::raw("max(fechaActualizacion) as fecha")
+        )
+            ->where('estado', 'PR')->where('fuenteImportacion_id', "8")
+            ->groupBy('ano')
+            ->get();
+        $fechas = [];
+        $cat = [];
+        foreach ($impfechas as $key => $value) {
+            $fechas[] = $value->fecha;
+            $cat[] = $value->ano;
+        }
+        $impfechas = Importacion::select(
+            DB::raw("year(fechaActualizacion) as ano"),
+            'id',
+            DB::raw("fechaActualizacion as fecha")
+        )
+            ->where('estado', 'PR')->where('fuenteImportacion_id', "8")->whereIn('fechaActualizacion', $fechas)
+            ->orderBy('ano', 'asc')
+            ->get();
+        $ids = '';
+        foreach ($impfechas as $key => $value) {
+            if ($key < count($impfechas) - 1)
+                $ids .= $value->id . ',';
+            else $ids .= $value->id;
+        }
+
+        $query = DB::table(DB::raw("(
+            select
+				case v5.nombre_matricula
+					when 'Primaria' then 'Primaria'
+                    when 'Secundaria' then 'Secundaria'
+                    else 'Inicial'
+				end as nivel,
+                year(v3.fechaActualizacion) as ano,
+                SUM(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) as conteo
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id and v4.es_eib='SI'
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            where v3.estado='PR' and v5.tipo in ('EBR') and v3.id in ($ids)
+            group by nivel,ano
+            ) as tb"))
+            ->get();
+        $data['cat'] = $cat;
+        $xx = [];
+        foreach ($query as $key1 => $value) {
+            if ($value->nivel == 'Inicial')
+                foreach ($cat as $key2 => $value2) {
+                    if ($value2 == $value->ano)
+                        $xx[] = (int)$value->conteo;
+                }
+        }
+        $data['dat'][] = ['name' => 'Inicial', 'data' => $xx];
+        $xx = [];
+        foreach ($query as $key1 => $value) {
+            if ($value->nivel == 'Primaria')
+                foreach ($cat as $key2 => $value2) {
+                    if ($value2 == $value->ano)
+                        $xx[] = (int)$value->conteo;
+                }
+        }
+        $data['dat'][] = ['name' => 'Primaria', 'data' => $xx];
+        $xx = [];
+        foreach ($query as $key1 => $value) {
+            if ($value->nivel == 'Secundaria')
+                foreach ($cat as $key2 => $value2) {
+                    if ($value2 == $value->ano)
+                        $xx[] = (int)$value->conteo;
+                }
+        }
+        $data['dat'][] = ['name' => 'Secundaria', 'data' => $xx];
+        return $data;
+    }
+
+    public function cargarEIBgrafica2(Request $rq)
+    {
+        $ano = $rq->ano;
+        $gestion = $rq->gestion;
+        $area = $rq->area;
+
+        $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
+        $optarea = $area == 0 ? "" : " and v9.id=$area ";
+
+        $error['ano'] = $ano;
+        $error['gestion'] = $gestion;
+        $error['area'] = $area;
+
+        $anios = Anio::orderBy('anio', 'desc')->get();
+        $anonro = 0;
+        $anoA = 0;
+        foreach ($anios as $key => $value) {
+            if ($value->id == $ano) $anonro = $value->anio - 1;
+            if ($value->anio == $anonro) $anoA = $value->id;
+        }
+        $error['anios'] = $anios;
+        $error['anonro'] = $anonro;
+        $error['anoA'] = $anoA;
+
+        $fechas = DB::table(DB::raw("(
+            select mes, max(fecha) fecha from (
+                select
+                    distinct
+                    v3.fechaActualizacion fecha,
+                    year(v3.fechaActualizacion) ano,
+                    month(v3.fechaActualizacion) mes,
+                    day(v3.fechaActualizacion) dia
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join par_anio as v4 on v4.id=v2.anio_id
+                where v3.estado='PR' and v2.anio_id=$ano
+                order by fecha desc
+            ) as xx
+            group by mes
+            order by mes asc
+                ) as xx"))->get();
+
+        $error['fechas'] = $fechas;
+
+        $fx = '';
+        $anoI = 0;
+        $anoF = 0;
+        foreach ($fechas as $key => $value) {
+            if ($key < count($fechas) - 1)
+                $fx .= "'$value->fecha',";
+            else
+                $fx .= "'$value->fecha'";
+            if ($key == 0) $anoI = $value->mes;
+            if ($key == (count($fechas) - 1)) $anoF = $value->mes + 1;
+        }
+
+        $error['fx'] = $fx;
+        $error['anoI'] = $anoI;
+        $error['anoF'] = $anoF;
+
+        $base = DB::table(DB::raw("(
+            select
+                month(v3.fechaActualizacion) mes,
+                sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) y
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id and v4.es_eib='SI'
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea
+            group by mes
+            order by mes asc
+            ) as xx"))->get();
+        $error['base'] = $base;
+        $data['cat'] = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+        //$data['cat'] = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SETIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+        $data['dat'] = [null, null, null, null, null, null, null, null, null, null, null, null];
+        foreach ($base as $key => $value) {
+            $data['dat'][$value->mes - 1] = (int)$value->y;
+        }
+        return $data;
+    }
+
+    public function cargarEIBgrafica3(Request $rq)
+    {
+        $ano = $rq->ano;
+        $gestion = $rq->gestion;
+        $area = $rq->area;
+
+        $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
+        $optarea = $area == 0 ? "" : " and v9.id=$area ";
+
+        $fechas = DB::table(DB::raw("(
+            select mes, max(fecha) fecha from (
+                select
+                    distinct
+                    v3.fechaActualizacion fecha,
+                    year(v3.fechaActualizacion) ano,
+                    month(v3.fechaActualizacion) mes,
+                    day(v3.fechaActualizacion) dia
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join par_anio as v4 on v4.id=v2.anio_id
+                where v3.estado='PR' and v2.anio_id=$ano
+                order by fecha desc
+            ) as xx
+            group by mes
+            order by mes desc
+                ) as xx"))->take(1)->get();
+
+        $fx = $fechas->first()->fecha;
+
+        $base = DB::table(DB::raw("(
+            select
+                case v5.nombre_matricula
+                    when 'Primaria' then 'Primaria'
+                    when 'Secundaria' then 'Secundaria'
+                    else 'Inicial'
+                end as name,
+                sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) y,
+                FORMAT(sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)),0) yx
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id and v4.es_eib='SI'
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            group by name
+            ) as xx"))->get();
+        /* $error['base'] = $base; */
+        foreach ($base as $key => $value) {
+            $value->y = (int)$value->y;
+        }
+        return $base;
+    }
+    public function cargarEIBgrafica4(Request $rq)
+    {
+        $ano = $rq->ano;
+        $gestion = $rq->gestion;
+        $area = $rq->area;
+
+        $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
+        $optarea = $area == 0 ? "" : " and v9.id=$area ";
+
+        $fechas = DB::table(DB::raw("(
+            select mes, max(fecha) fecha from (
+                select
+                    distinct
+                    v3.fechaActualizacion fecha,
+                    year(v3.fechaActualizacion) ano,
+                    month(v3.fechaActualizacion) mes,
+                    day(v3.fechaActualizacion) dia
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join par_anio as v4 on v4.id=v2.anio_id
+                where v3.estado='PR' and v2.anio_id=$ano
+                order by fecha desc
+            ) as xx
+            group by mes
+            order by mes desc
+                ) as xx"))->take(1)->get();
+
+        $fx = $fechas->first()->fecha;
+
+        $base = DB::table(DB::raw("(
+            select
+                sum(v1.total_hombres) hy,
+                sum(v1.total_mujeres) my,
+                FORMAT(sum(v1.total_hombres),0) hyx,
+                FORMAT(sum(v1.total_mujeres),0) myx
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id and v4.es_eib='SI'
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            ) as xx"))->get();
+        $query = $base->first();
+        $data[] = ['name' => 'MASCULINO', 'y' => (int)$query->hy, 'yx' => $query->hyx];
+        $data[] = ['name' => 'FEMENINO', 'y' => (int)$query->my, 'yx' => $query->myx];
+        return $data;
+    }
+
+    public function cargarEIBtabla1(Request $rq)
+    {
+        $ano = $rq->ano;
+        $gestion = $rq->gestion;
+        $area = $rq->area;
+
+        $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
+        $optarea = $area == 0 ? "" : " and v9.id=$area ";
+
+        $fechas = DB::table(DB::raw("(
+            select mes, max(fecha) fecha from (
+                select
+                    distinct
+                    v3.fechaActualizacion fecha,
+                    year(v3.fechaActualizacion) ano,
+                    month(v3.fechaActualizacion) mes,
+                    day(v3.fechaActualizacion) dia
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join par_anio as v4 on v4.id=v2.anio_id
+                where v3.estado='PR' and v2.anio_id=$ano
+                order by fecha desc
+            ) as xx
+            group by mes
+            order by mes desc
+                ) as xx"))->take(1)->get();
+
+        $fx = $fechas->first()->fecha;
+
+        $base = DB::table(DB::raw("(
+            select
+                v6.nombre ugel,
+                sum(v1.total_hombres+v1.total_mujeres) tt,
+                sum(v1.total_hombres) tth,
+                sum(v1.total_mujeres) ttm,
+                sum(IF(v5.nombre_matricula like '%Inicial%',v1.tres_anios_hombre,0)) ICII3H,
+                sum(IF(v5.nombre_matricula like '%Inicial%',v1.tres_anios_mujer,0)) ICII3M,
+                sum(IF(v5.nombre_matricula like '%Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
+                sum(IF(v5.nombre_matricula like '%Inicial%',v1.cuatro_anios_mujer,0)) ICII4M,
+                sum(IF(v5.nombre_matricula like '%Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
+                sum(IF(v5.nombre_matricula like '%Inicial%',v1.cinco_anios_mujer,0)) ICII5M,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.primero_hombre,0)) ICIII1H,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.primero_mujer,0)) ICIII1M,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.segundo_hombre,0)) ICIII2H,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.segundo_mujer,0)) ICIII2M,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.tercero_hombre,0)) ICIV3H,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.tercero_mujer,0)) ICIV3M,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.cuarto_hombre,0)) ICIV4H,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.cuarto_mujer,0)) ICIV4M,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_hombre,0)) ICV5H,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_mujer,0)) ICV5M,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.sexto_hombre,0)) ICV6H,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.sexto_mujer,0)) ICV6M
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id and v4.es_eib='SI'
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            group by ugel
+            ) as xx"))->get();
+        $foot = DB::table(DB::raw("(
+                select
+                    sum(v1.total_hombres+v1.total_mujeres) tt,
+                    sum(v1.total_hombres) tth,
+                    sum(v1.total_mujeres) ttm,
+                    sum(IF(v5.nombre_matricula like '%Inicial%',v1.tres_anios_hombre,0)) ICII3H,
+                    sum(IF(v5.nombre_matricula like '%Inicial%',v1.tres_anios_mujer,0)) ICII3M,
+                    sum(IF(v5.nombre_matricula like '%Inicial%',v1.cuatro_anios_hombre,0)) ICII4H,
+                    sum(IF(v5.nombre_matricula like '%Inicial%',v1.cuatro_anios_mujer,0)) ICII4M,
+                    sum(IF(v5.nombre_matricula like '%Inicial%',v1.cinco_anios_hombre,0)) ICII5H,
+                    sum(IF(v5.nombre_matricula like '%Inicial%',v1.cinco_anios_mujer,0)) ICII5M,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.primero_hombre,0)) ICIII1H,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.primero_mujer,0)) ICIII1M,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.segundo_hombre,0)) ICIII2H,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.segundo_mujer,0)) ICIII2M,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.tercero_hombre,0)) ICIV3H,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.tercero_mujer,0)) ICIV3M,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.cuarto_hombre,0)) ICIV4H,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.cuarto_mujer,0)) ICIV4M,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_hombre,0)) ICV5H,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.quinto_mujer,0)) ICV5M,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.sexto_hombre,0)) ICV6H,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.sexto_mujer,0)) ICV6M
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id and v4.es_eib='SI'
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+                inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+                inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+                inner join edu_area as v9 on v9.id=v4.Area_id
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+                ) as xx"))->get()->first();
+        /* $vv = 0;
+        foreach ($base as $key => $value) {
+            $value->ptt = 100 * $value->tt / $foot->tt;
+            $vv += $value->ptt;
+        }
+        $foot->ptt = $vv; */
+        /* $data['body'] = $base;
+        $data['foot'] = $foot;
+        return $data; */
+        return view("educacion.MatriculaDetalle.interculturalbilingueTabla1", compact('rq', 'base', 'foot'));
+    }
+
+    public function cargarEIBtabla2(Request $rq)
+    {
+        $ano = $rq->ano;
+        $gestion = $rq->gestion;
+        $area = $rq->area;
+
+        $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
+        $optarea = $area == 0 ? "" : " and v9.id=$area ";
+
+        $fechas = DB::table(DB::raw("(
+            select mes, max(fecha) fecha from (
+                select
+                    distinct
+                    v3.fechaActualizacion fecha,
+                    year(v3.fechaActualizacion) ano,
+                    month(v3.fechaActualizacion) mes,
+                    day(v3.fechaActualizacion) dia
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join par_anio as v4 on v4.id=v2.anio_id
+                where v3.estado='PR' and v2.anio_id=$ano
+                order by fecha desc
+            ) as xx
+            group by mes
+            order by mes desc
+                ) as xx"))->take(1)->get();
+
+        $fx = $fechas->first()->fecha;
+
+        $base = DB::table(DB::raw("(
+            select
+                v6.nombre ugel,
+                sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) tt,
+                sum(IF(v5.nombre_matricula like '%Inicial%',v1.total_hombres+v1.total_mujeres,0)) inc,
+                sum(IF(v5.nombre_matricula like '%Primaria%',v1.total_hombres+v1.total_mujeres,0)) prm,
+                sum(IF(v5.nombre_matricula like '%PRITE%',IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) prt
+            from edu_matricula_detalle as v1
+            inner join edu_matricula as v2 on v2.id=v1.matricula_id
+            inner join par_importacion as v3 on v3.id=v2.importacion_id
+            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id and v4.es_eib='SI'
+            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+            inner join edu_area as v9 on v9.id=v4.Area_id
+            where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+            group by ugel
+            ) as xx"))->get();
+        $foot = DB::table(DB::raw("(
+                select
+                sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) tt,
+                    sum(IF(v5.nombre_matricula like '%Inicial%',v1.total_hombres+v1.total_mujeres,0)) inc,
+                    sum(IF(v5.nombre_matricula like '%Primaria%',v1.total_hombres+v1.total_mujeres,0)) prm,
+                    sum(IF(v5.nombre_matricula like '%PRITE%',IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) prt
+                from edu_matricula_detalle as v1
+                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id and v4.es_eib='SI'
+                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+                inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+                inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+                inner join edu_area as v9 on v9.id=v4.Area_id
+                where v3.estado='PR' and v5.tipo in ('EBR') and v2.anio_id=$ano and v3.fechaActualizacion in ('$fx') $optgestion $optarea
+                ) as xx"))->get()->first();
+        /* $data['body'] = $base;
+        $data['foot'] = $foot;
+        return $data; */
+        return view("educacion.MatriculaDetalle.interculturalbilingueTabla2", compact('rq', 'base', 'foot'));
+    }
 
     public function cargarpresupuestoxxx()
     {

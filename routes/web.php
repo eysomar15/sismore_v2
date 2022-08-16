@@ -17,6 +17,7 @@ use App\Http\Controllers\Educacion\ImporPadronWebController;
 use App\Http\Controllers\Educacion\ImporMatriculaController;
 use App\Http\Controllers\Educacion\ImporPadronEibController;
 use App\Http\Controllers\Educacion\MatriculaDetalleController;
+use App\Http\Controllers\Educacion\PadronWebController;
 use App\Http\Controllers\Educacion\PLazaController;
 use App\Http\Controllers\Educacion\TabletaController;
 use App\Http\Controllers\Educacion\TextosEscolaresController;
@@ -83,6 +84,8 @@ Route::get('/ImporPadronWeb/Aprobar/{importacion_id}', [ImporPadronWebController
 Route::post('/ImporPadronWeb/Aprobar/procesar/{importacion_id}', [ImporPadronWebController::class, 'procesar'])->name('ImporPadronWeb.procesar');
 Route::get('/ImporPadronWeb/Listar/ImportarDT', [ImporPadronWebController::class, 'ListarDTImportFuenteTodos'])->name('ImporPadronWeb.listar.importados');
 
+Route::get('/PadronWeb/codigo_modular/{codigo_modular}', [PadronWebController::class, 'buscariiee']);
+
 Route::get('/FuenteImportacion/cargar/{sistema_id}', [FuenteImportacionController::class, 'cargar']);
 
 Route::get('/ImporMatricula/Importar', [ImporMatriculaController::class, 'importar'])->name('ImporMatricula.importar');
@@ -97,6 +100,12 @@ Route::get('/ImporMatricula/eliminar/{id}', [ImporMatriculaController::class, 'e
 /* Route::get('/PadronEIB/Importar', [PadronEIBController::class, 'importar'])->name('PadronEIB.importar');
 Route::post('/PadronEIB/Importar', [PadronEIBController::class, 'guardar'])->name('PadronEIB.guardar');
 Route::get('/PadronEIB/Listar/ImportarDT', [PadronEIBController::class, 'ListarDTImportFuenteTodos'])->name('PadronEIB.listar.importados'); */
+
+Route::post('/PadronEIB/ajax_add_opt1/', [PadronEIBController::class, 'ajax_add_opt1'])->name('padroneib.ajax.add.opt1');
+Route::get('/PadronEIB/ajax_delete_opt1/{idpadroneib}', [PadronEIBController::class, 'ajax_delete_opt1']); //->name('padroneib.ajax.delete.opt1');
+
+
+
 Route::get('/ImporPadronEIB/Importar', [ImporPadronEibController::class, 'importar'])->name('PadronEIB.importar');
 Route::post('/ImporPadronEIB/Importar', [ImporPadronEibController::class, 'guardar'])->name('imporpadroneib.guardar');
 Route::get('/ImporPadronEIB/Listar/ImportarDT', [ImporPadronEibController::class, 'ListarDTImportFuenteTodos'])->name('imporpadroneib.listar.importados');
@@ -216,6 +225,14 @@ Route::post('/MatriculaDetalle/EBE/grafica3', [MatriculaDetalleController::class
 Route::post('/MatriculaDetalle/EBE/grafica4', [MatriculaDetalleController::class, 'cargarEBEgrafica4'])->name('matriculadetalle.ebe.grafica4');
 Route::post('/MatriculaDetalle/EBE/tabla1', [MatriculaDetalleController::class, 'cargarEBEtabla1'])->name('matriculadetalle.ebe.tabla1');
 Route::post('/MatriculaDetalle/EBE/tabla2', [MatriculaDetalleController::class, 'cargarEBEtabla2'])->name('matriculadetalle.ebe.tabla2');
+
+Route::get('/MatriculaDetalle/EIB/', [MatriculaDetalleController::class, 'interculturalbilingue'])->name('matriculadetalle.interculturalbilingue');
+Route::post('/MatriculaDetalle/EIB/grafica1', [MatriculaDetalleController::class, 'cargarEIBgrafica1'])->name('matriculadetalle.eib.grafica1');
+Route::post('/MatriculaDetalle/EIB/grafica2', [MatriculaDetalleController::class, 'cargarEIBgrafica2'])->name('matriculadetalle.eib.grafica2');
+Route::post('/MatriculaDetalle/EIB/grafica3', [MatriculaDetalleController::class, 'cargarEIBgrafica3'])->name('matriculadetalle.eib.grafica3');
+Route::post('/MatriculaDetalle/EIB/grafica4', [MatriculaDetalleController::class, 'cargarEIBgrafica4'])->name('matriculadetalle.eib.grafica4');
+Route::post('/MatriculaDetalle/EIB/tabla1', [MatriculaDetalleController::class, 'cargarEIBtabla1'])->name('matriculadetalle.eib.tabla1');
+Route::post('/MatriculaDetalle/EIB/tabla2', [MatriculaDetalleController::class, 'cargarEIBtabla2'])->name('matriculadetalle.eib.tabla2');
 
 
 

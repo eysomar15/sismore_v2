@@ -9,14 +9,14 @@
 
 @section('content')
     <div class="content">
-  
+
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             {{-- <div class="card-header card-header-primary">
-                            <h4 class="card-title">Relacion de Usuarios </h4>                            
+                            <h4 class="card-title">Relacion de Usuarios </h4>
                         </div> --}}
 
                             <div class="card-body">
@@ -170,7 +170,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -376,12 +376,12 @@
                     },
                     {
                         data: 'action',
-                        orderable: false
+                        /* orderable: false */
                     }
                 ],
                 responsive: true,
                 autoWidth: false,
-                order: false,
+                order: true,
                 destroy: true,
                 language: {
                     "lengthMenu": "Mostrar " +

@@ -37,6 +37,13 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Datos de importación
+                            <div class="float-right">
+                                <a href="javascript:void(0)" onclick="addpadronweb()" class="btn btn-primary btn-sm"
+                                    title="Agregar Servicio Educativo"><i class="fa fa-plus"></i> Padron Web</a>
+                            </div>
+
+                            {{-- <a href="javascript:void(0)" onclick="addnuevo()" class="btn btn-primary btn-sm"
+                                title="Agregar Servicio Educativo">Nuevo <i class="fa fa-plus"></i></a> --}}
                         </h3>
                     </div>
 
@@ -126,7 +133,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="font-size: 12px">
+                                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap"
+                                        style="font-size: 12px">
                                         <thead class="text-primary">
                                             <tr>
                                                 <th>N°</th>
@@ -165,7 +173,8 @@
                     </div>
                     <div class="modal-body">
                         <div class="table-responsive">
-                            <table id="siagie-matricula" class="table table-striped table-bordered" style="font-size:12px">
+                            <table id="siagie-matricula" class="table table-striped table-bordered"
+                                style="font-size:12px">
                                 {{-- width:7200px; --}}
                                 <thead class="text-primary">
                                     <th>dre</th>
@@ -184,6 +193,7 @@
                                     <th>lengua_uno</th>
                                     <th>lengua_dos</th>
                                     <th>lengua_3</th>
+                                    <th>Accion</th>
                                 </thead>
                                 <tbody>
 
@@ -200,13 +210,208 @@
         </div><!-- /.modal -->
         <!-- End Bootstrap modal -->
 
+
+        <!-- Bootstrap modal -->
+        <div id="modal_padronweb" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" id="form_padronweb" class="form-horizontal" autocomplete="off">
+                            @csrf
+                            <input type="hidden" id="idiiee_padronweb" name="idiiee_padronweb" value="">
+                            <input type="hidden" id="estado_padronweb" name="estado_padronweb" value="">
+                            <div class="form-body">
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        {{-- <div class="col-md-6">
+                                            <label>Codigo Modular<span class="required">*</span></label>
+                                            <input type="text" id="entidad_codigo" name="entidad_codigo"
+                                                class="form-control">
+                                            <span class="help-block"></span>
+                                        </div> --}}
+                                        <div class="col-md-6">
+                                            <label>Codigo Modular<span class="required">*</span></label>
+                                            <div class="input-group">
+
+                                                <input type="number" id="codigomodular_padronweb"
+                                                    name="codigomodular_padronweb" class="form-control"
+                                                    placeholder="Codigo Modular">
+                                                <span class="help-block"></span>
+                                                <span class="input-group-append">
+                                                    <button type="button"
+                                                        class="btn waves-effect waves-light btn-primary"
+                                                        onclick="buscarcodmodular();" id="buscar_padronweb"
+                                                        data-loading-text="<i class='fa fa-spinner fa-spin'></i>">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                        {{-- <div class="col-md-6">
+                                            <label>Codigo <span class="required">*</span></label>
+                                            <input type="text" id="entidad_codigo" name="entidad_codigo"
+                                                class="form-control">
+                                            <span class="help-block"></span>
+                                        </div> --}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Provincia <span class="required">*</span></label>
+                                            <input id="provincia_padronweb" name="provincia_padronweb"
+                                                class="form-control" type="text"
+                                                onkeyup="this.value=this.value.toUpperCase()" value="" readonly>
+                                            <span class="help-block"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Distrito <span class="required">*</span></label>
+                                            <input id="distrito_padronweb" name="distrito_padronweb" class="form-control"
+                                                type="text" onkeyup="this.value=this.value.toUpperCase()"
+                                                value="" readonly>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Centro Poblado <span class="required">*</span></label>
+                                            <input id="centropoblado_padronweb" name="centropoblado_padronweb"
+                                                class="form-control" type="text"
+                                                onkeyup="this.value=this.value.toUpperCase()" value="" readonly>
+                                            <span class="help-block"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Codigo Local <span class="required">*</span></label>
+                                            <input id="codigolocal_padronweb" name="codigolocal_padronweb"
+                                                class="form-control" type="text"
+                                                onkeyup="this.value=this.value.toUpperCase()" value="" readonly>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Nombre IIEE<span class="required">*</span></label>
+                                            <input id="iiee_padronweb" name="iiee_padronweb" class="form-control"
+                                                type="text" onkeyup="this.value=this.value.toUpperCase()"
+                                                value="" readonly>
+                                            <span class="help-block"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Codigo Nivel<span class="required">*</span></label>
+                                            <input id="codigonivel_padronweb" name="nivelmodalidad_padronweb"
+                                                class="form-control" type="text"
+                                                onkeyup="this.value=this.value.toUpperCase()" value="" readonly>
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Nivel Modalidad<span class="required">*</span></label>
+                                            <input id="nivelmodalidad_padronweb" name="nivelmodalidad_padronweb"
+                                                class="form-control" type="text"
+                                                onkeyup="this.value=this.value.toUpperCase()" value="" readonly>
+                                            <span class="help-block"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Forma de Atencion<span class="required">*</span></label>
+                                            <input id="formaatencion_padronweb" name="formaatencion_padronweb"
+                                                class="form-control" type="text"
+                                                onkeyup="this.value=this.value.toUpperCase()" value="">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Codigo Lengua<span class="required">*</span></label>
+                                            <input id="codigolengua_padronweb" name="codigolengua_padronweb"
+                                                class="form-control" type="text"
+                                                onkeyup="this.value=this.value.toUpperCase()" value="">
+                                            <span class="help-block"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Lengua uno<span class="required">*</span></label>
+                                            <input id="lenguauno_padronweb" name="lenguauno_padronweb"
+                                                class="form-control" type="text"
+                                                onkeyup="this.value=this.value.toUpperCase()" value="">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label>Lengua dos<span class="required">*</span></label>
+                                            <input id="lenguados_padronweb" name="lenguados_padronweb"
+                                                class="form-control" type="text"
+                                                onkeyup="this.value=this.value.toUpperCase()" value="">
+                                            <span class="help-block"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>Lengua 3<span class="required">*</span></label>
+                                            <input id="lengua3_padronweb" name="lengua3_padronweb" class="form-control"
+                                                type="text" onkeyup="this.value=this.value.toUpperCase()"
+                                                value="">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                        <button type="button" id="btnsavepadronweb" onclick="savepadronweb()"
+                            class="btn btn-primary">Guardar</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- End Bootstrap modal -->
+
     </div>
 @endsection
 
 @section('js')
     <script>
         var table_principal = '';
+        var table_padroneib = '';
         $(document).ready(function() {
+            $("input").change(function() {
+                $(this).parent().removeClass('has-error');
+                $(this).next().empty();
+            });
+            $("textarea").change(function() {
+                $(this).parent().removeClass('has-error');
+                $(this).next().empty();
+            });
+            $("select").change(function() {
+                $(this).parent().removeClass('has-error');
+                $(this).next().empty();
+            });
+
             $('.upload_file').on('submit', upload);
 
             table_principal = $('#datatable').DataTable({
@@ -218,7 +423,9 @@
                 type: "POST",
             });
         });
+    </script>
 
+    <script>
         function upload(e) {
             e.preventDefault();
             let form = $(this),
@@ -307,7 +514,7 @@
         function monitor(id) {
             var url = "{{ route('imporpadroneib.listarimportados', 55555) }}";
             url = url.replace('55555', id);
-            $('#siagie-matricula').DataTable({
+            table_padroneib = $('#siagie-matricula').DataTable({
                     "processing": true,
                     "serverSide": true,
                     "responsive": false,
@@ -371,6 +578,9 @@
                     }, {
                         data: 'lengua_3',
                         name: 'lengua_3'
+                    }, {
+                        data: 'accion',
+                        name: 'accion'
                     }, ],
                 }
 
@@ -379,6 +589,127 @@
             $('#modal-siagie-matricula').modal('show');
             $('#modal-siagie-matricula .modal-title').text('Importado');
         }
+    </script>
+
+    <script>
+        var save_method_nuevo = '';
+        var save_method_padronweb = '';
+
+        function addpadronweb() {
+            save_method_padronweb = 'add';
+            $('#form_padronweb')[0].reset();
+            $('#form_padronweb .form-group').removeClass('has-error');
+            $('#form_padronweb .help-block').empty();
+            $('#modal_padronweb').modal('show');
+            $('#modal_padronweb .modal-title').text('Crear Nuevo Servicio Educativo');
+        };
+
+        function addnuevo() {
+            save_method_nuevo = 'add';
+            $('#form_nuevo')[0].reset();
+            $('#form_nuevo .form-group').removeClass('has-error');
+            $('#form_nuevo .help-block').empty();
+            $('#modal_nuevo').modal('show');
+            $('#modal_nuevo .modal-title').text('Crear Nuevo Servicio Educativo');
+        };
+
+        function buscarcodmodular() {
+            if ($('#codigomodular_padronweb').val() == '') {
+                alert('FALTA INGRESAR CODIGO MODULAR');
+            } else {
+
+                $('#buscar_padronweb').html("<i class='fa fa-spinner fa-spin'></i>");
+                $.ajax({
+                    url: "{{ url('/') }}/PadronWeb/codigo_modular/" + $('#codigomodular_padronweb').val(),
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function(data) {
+                        //console.log(data[0]);
+                        $('#form_padronweb')[0].reset();
+                        if (data.status) {
+                            var dd = data.info;
+                            $('#provincia_padronweb').val(dd.provincia);
+                            $('#distrito_padronweb').val(dd.distrito);
+                            $('#centropoblado_padronweb').val(dd.centro_poblado);
+                            $('#codigolocal_padronweb').val(dd.codigo_local); //codigo_nivel
+                            $('#iiee_padronweb').val(dd.iiee);
+                            $('#codigonivel_padronweb').val(dd.codigo_nivel);
+                            $('#nivelmodalidad_padronweb').val(dd.nivel_modalidad);
+                            $('#idiiee_padronweb').val(dd.idiiee);
+                            $('#codigomodular_padronweb').val(dd.codigo_modular);
+                            $('#estado_padronweb').val(dd.estado);
+                            if (dd.estado) {
+                                $('[name="codigomodular_padronweb"]').parent().addClass('has-error');
+                                $('[name="codigomodular_padronweb"]').next().text(
+                                    '<br> Servicio Educativo Registrado en el Padron EIB');
+                            }
+                        } else {
+                            $('[name="' + data.inputerror + '"]').parent().addClass('has-error');
+                            $('[name="' + data.inputerror + '"]').next().text('<br>' + data.error_string);
+                        }
+                        $('#buscar_padronweb').html('<i class="fa fa-search"></i>');
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        toastr.error(
+                            'No se puede eliminar este registro por seguridad de su base de datos, Contacte al Administrador del Sistema',
+                            'Mensaje');
+                        $('#buscar_padronweb').html('<i class="fa fa-search"></i>');
+                    }
+                });
+            }
+        }
+
+        function savepadronweb() {
+            $('#btnsavepadronweb').text('guardando...');
+            $('#btnsavepadronweb').attr('disabled', true);
+            $.ajax({
+                url: "{{ route('padroneib.ajax.add.opt1') }}",
+                data: $('#form_padronweb').serialize(),
+                type: "POST",
+                dataType: "JSON",
+                success: function(data) {
+                    console.log(data);
+                    if (data.status) {
+                        $('#modal_padronweb').modal('hide');
+                        //table_padroneib.ajax.reload();
+                        toastr.success("El registro fue creado exitosamente.", 'Mensaje');
+                    } else {
+                        for (var i = 0; i < data.inputerror.length; i++) {
+                            $('[name="' + data.inputerror[i] + '"]').parent().addClass('has-error');
+                            $('[name="' + data.inputerror[i] + '"]').next().text(data.error_string[i]);
+                        }
+                    }
+                    $('#btnsavepadronweb').text('Guardar');
+                    $('#btnsavepadronweb').attr('disabled', false);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    toastr.error("El registro no se pudo crear verifique las validaciones.", 'Mensaje');
+                    $('#btnsavepadronweb').text('Guardar');
+                    $('#btnsavepadronweb').attr('disabled', false);
+                }
+            });
+        };
+
+        function borrarmanual(id) {
+            bootbox.confirm("Seguro desea Eliminar el registro EIB del Padron?", function(result) {
+                if (result === true) {
+                    $.ajax({
+                        url: "{{ url('/') }}/PadronEIB/ajax_delete_opt1/" + id,
+                        type: "GET",
+                        dataType: "JSON",
+                        success: function(data) {
+                            table_padroneib.ajax.reload();
+                            toastr.success('El registro fue eliminado exitosamente.', 'Mensaje');
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            toastr.error(
+                                'No se puede eliminar este registro por seguridad de su base de datos, Contacte al Administrador del Sistema',
+                                'Mensaje');
+                        }
+                    });
+                }
+            });
+        };
     </script>
     <script src="{{ asset('/') }}public/assets/libs/jquery-validation/jquery.validate.min.js"></script>
     <!-- Validation init js-->

@@ -230,7 +230,14 @@ class ImporPadronEibController extends Controller
     public function ListaImportada(Request $request, $importacion_id) //(Request $request, $importacion_id)
     {
         $data = PadronEIBRepositorio::listaImportada($importacion_id);
-        return DataTables::of($data)->make(true);
+        return DataTables::of($data)
+            ->addColumn('accion', function ($oo) {
+                if ($oo->ingreso == 1)
+                    return '<button type="button" onclick="borrarmanual(' . $oo->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+                else return '';
+            })
+            ->rawColumns(['accion'])
+            ->make(true);
     }
 
     public function eliminar($id)

@@ -25,5 +25,6 @@ class PadronEIB extends Model
         'lengua_uno',
         'lengua_dos',
         'lengua_3',
+        'ingreso',
     ];
 }

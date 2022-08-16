@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\Importacion;
+use App\Models\Educacion\InstitucionEducativa;
 use App\Models\Educacion\PadronEIB;
 use App\Models\Parametro\Anio;
 use App\Repositories\Educacion\ImportacionRepositorio;
 use App\Utilities\Utilitario;
 use Exception;
-
+use Illuminate\Support\Facades\DB;
 
 class PadronEIBController extends Controller
 {
@@ -20,195 +21,70 @@ class PadronEIBController extends Controller
         $this->middleware('auth');
     }
 
-    public function importar()
+    private function _validate_ajaxopt1($rq)
     {
-        $mensaje = "";
-        $anios = Anio::orderBy('anio', 'desc')->get();
+        $data = array();
+        $data['error_string'] = array();
+        $data['inputerror'] = array();
+        $data['status'] = TRUE;
 
-        return view('educacion.PadronEIB.Importar', compact('mensaje', 'anios'));
+
+        if ($rq->idiiee_padronweb == '') {
+            $data['inputerror'][] = 'codigomodular_padronweb';
+            $data['error_string'][] = '<br>Este campo es obligatorio buscar.';
+            $data['status'] = FALSE;
+        }
+
+        if ($rq->estado_padronweb == 'SI') {
+            $data['inputerror'][] = 'codigomodular_padronweb';
+            $data['error_string'][] = '<br> Servicio Educativo Registrado en el Padron EIB.';
+            $data['status'] = FALSE;
+        }
+
+        if ($data['status'] === FALSE) {
+            echo json_encode($data);
+            exit();
+        }
+    }
+    public function ajax_add_opt1(Request $rq)
+    {
+        $this->_validate_ajaxopt1($rq);
+        $query = DB::table('edu_padron_eib as v1')
+            ->join('par_importacion as v2', 'v2.id', '=', 'v1.importacion_id')
+            ->orderBy('v2.fechaActualizacion', 'desc')
+            ->take(1)
+            ->select('v2.id', 'v1.anio_id as ano')
+            ->get();
+        $data = [
+            'importacion_id' => $query->first()->id,
+            'anio_id' => $query->first()->ano,
+            'institucioneducativa_id' => $rq->idiiee_padronweb,
+            'forma_atencion' => $rq->formaatencion_padronweb,
+            'cod_lengua' => $rq->codigolengua_padronweb,
+            'lengua_uno' => $rq->lenguauno_padronweb,
+            'lengua_dos' => $rq->lenguados_padronweb,
+            'lengua_3' => $rq->lengua3_padronweb,
+            'ingreso' => 1,
+        ];
+        //return response()->json(['status' => TRUE, 'info' => $data]);
+        $eib = PadronEIB::Create($data);
+        if ($eib) {
+            $iiee = InstitucionEducativa::find($rq->idiiee_padronweb);
+            $iiee->es_eib = 'SI';
+            $iiee->save();
+        }
+        return response()->json(['status' => TRUE, 'info' => $eib]);
     }
 
-    public function guardar(Request $request)
+    public function ajax_delete_opt1($idpadroneib)
     {
-        $anios = Anio::orderBy('anio', 'desc')->get();
-
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 12);
-        if ($existeMismaFecha != null) {
-            $mensaje = "Error, Ya existe archivos prendientes de aprobar para la fecha de versión ingresada";
-            $tipo = 'danger';
-            return view('Educacion.PadronEIB.Importar', compact('mensaje', 'anios', 'tipo'));
+        $eib = PadronEIB::find($idpadroneib);
+        if ($eib) {
+            $iiee = InstitucionEducativa::find($eib->institucioneducativa_id);
+            $iiee->es_eib = null;
+            $iiee->save();
         }
-
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 12);
-        if ($existeMismaFecha != null) {
-            $mensaje = "Error, Ya existe archivos procesados para la fecha de versión ingresada";
-            $tipo = 'danger';
-            return view('Educacion.PadronEIB.Importar', compact('mensaje', 'anios', 'tipo'));
-        }
-
-        $this->validate($request, ['file' => 'required|mimes:xls,xlsx']);
-        $archivo = $request->file('file');
-        $array = (new tablaXImport)->toArray($archivo);
-
-        $i = 0;
-        $cadena = '';
-
-        // VALIDACION DE LOS FORMATOS DE LOS 04 NIVELES
-        try {
-            foreach ($array as $key => $value) {
-                foreach ($value as $row) {
-                    if (++$i > 1) break;
-                    $cadena =  $cadena .
-                        $row['nro'] .
-                        $row['nombre_dre'] .
-                        $row['ugel'] .
-                        $row['codmodular'] .
-                        $row['anexo'] .
-                        $row['codlocal'] .
-                        $row['nombreinsteduc'] .
-                        $row['nivel_modalidad'] .
-                        $row['nombre_departamento'] .
-                        $row['nombre_provincia'] .
-                        $row['nombre_distrito'] .
-                        $row['centro_poblado'] .
-                        $row['formaatencion'] .
-                        $row['escenario'] .
-                        $row['nomlenguaoriginaria1'] .
-                        $row['nomlenguaoriginaria2'] .
-                        $row['nomlenguaoriginaria3'];
-                }
-            }
-        } catch (Exception $e) {
-            $mensaje = "Formato de archivo no reconocido, porfavor verifique si el formato es el correcto y vuelva a importar";
-            $tipo = 'danger';
-            return view('Educacion.PadronEIB.Importar', compact('mensaje', 'anios', 'tipo'));
-        }
-
-        /* $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request['fechaActualizacion'], 12);
-
-        if ($existeMismaFecha != null) {
-            $mensaje = "Error, Ya existe archivos prendientes de aprobar para la fecha de versión ingresada";
-            return view('Educacion.PadronEIB.Importar', compact('mensaje', 'anios'));
-        } else { */
-        try {
-            $importacion = Importacion::Create([
-                'fuenteImportacion_id' => 12, // valor predeterminado
-                'usuarioId_Crea' => auth()->user()->id,
-                'usuarioId_Aprueba' => null,
-                'fechaActualizacion' => $request['fechaActualizacion'],
-                'comentario' => $request['comentario'],
-                'estado' => 'PE'
-            ]);
-
-            foreach ($array as $key => $value) {
-                foreach ($value as $row) {
-                    $PadronEIB = PadronEIB::Create([
-                        'importacion_id' => $importacion->id, // valor predeterminado
-                        'anio_id' => $request['anio'],
-                        'ugel' => $row['ugel'],
-                        'codModular' => $row['codmodular'],
-                        'anexo' => $row['anexo'],
-                        'codLocal' => $row['codlocal'],
-                        'nombreInstEduc' => $row['nombreinsteduc'],
-                        'formaAtencion' => $row['formaatencion'],
-                        'escenario' => $row['escenario'],
-                        'nomLenguaOriginaria1' => $row['nomlenguaoriginaria1'],
-                        'nomLenguaOriginaria2' => $row['nomlenguaoriginaria2'],
-                        'nomLenguaOriginaria3' => $row['nomlenguaoriginaria3'],
-                    ]);
-                }
-            }
-        } catch (Exception $e) {
-            $importacion->estado = 'EL';
-            $importacion->save();
-
-            $mensaje = "Error en la carga de datos, verifique los datos de su archivo y/o comuniquese con el administrador del sistema";
-            $tipo = 'danger';
-            return view('Educacion.PadronEIB.Importar', compact('mensaje', 'anios', 'tipo'));
-        }
-        //}
-
-        //return view('correcto');
-
-        try {
-            $importacion  = Importacion::find($importacion->id);
-            $importacion->estado = 'PR';
-            $importacion->usuarioId_Aprueba = auth()->user()->id;
-            $importacion->save();
-        } catch (Exception $e) {
-            $importacion->estado = 'EL';
-            $importacion->save();
-            $mensaje = "Error al procesar la normalizacion de datos.";
-            $tipo = 'danger';
-            return view('Educacion.PadronEIB.Importar', compact('mensaje', 'anios', 'tipo'));
-        }
-
-        $mensaje = "Archivo excel subido y Procesado correctamente .";
-        $tipo = 'primary';
-        return view('Educacion.PadronEIB.Importar', compact('mensaje', 'anios', 'tipo'));
-    }
-
-    public function ListarDTImportFuenteTodos()
-    {
-        $data = ImportacionRepositorio::Listar_FuenteTodos_PEIB('12');
-        return datatables()
-            ->of($data)
-            ->editColumn('fechaActualizacion', '{{date("d-m-Y",strtotime($fechaActualizacion))}}')
-            ->editColumn('estado', function ($query) {
-                return $query->estado == "PR" ? "PROCESADO" : ($query->estado == "PE" ? "PENDIENTE" : "ELIMINADO");
-            })
-            ->rawColumns(['fechaActualizacion', 'ESTADO'])
-            ->toJson();
-    }
-
-    public function ListaImportada_DataTable($importacion_id)
-    {
-        // $Lista = CensoRepositorio::Listar_Por_Importacion_id($importacion_id);
-
-        // return  datatables()->of($Lista)->toJson();;
-    }
-
-    // public function ListaImportada($importacion_id)
-    // {
-    //     $datos_PadronEIB_importada = $this->datos_matricula_importada($importacion_id);  
-    //     return view('Educacion.PadronEIB.ListaImportada',compact('importacion_id','datos_PadronEIB_importada'));
-    // }
-
-    // public function aprobar($importacion_id)
-    // {
-    //     $importacion = ImportacionRepositorio::ImportacionPor_Id($importacion_id);        
-
-
-    //     return view('educacion.PadronEIB.Aprobar',compact('importacion_id','importacion'));
-    // } 
-
-    // public function datos_PadronEIB_importada($importacion_id)
-    // {
-    //     $PadronEIB = MatriculaRepositorio::matricula_porImportacion($importacion_id);        
-    //     return $datos_matricula_importada = MatriculaRepositorio::datos_matricula_importada($PadronEIB->first()->id);
-    // }
-
-    public function procesar($importacion_id)
-    {
-        $importacion  = Importacion::find($importacion_id);
-
-        $importacion->estado = 'PR';
-        $importacion->usuarioId_Aprueba = auth()->user()->id;
-        $importacion->save();
-
-        $this->elimina_mismaFecha($importacion->fechaActualizacion, $importacion->fuenteImportacion_id, $importacion_id);
-
-        return view('correcto');
-    }
-
-
-    public function elimina_mismaFecha($fechaActualizacion, $fuenteImportacion_id, $importacion_id)
-    {
-        $importacion  = ImportacionRepositorio::Importacion_mismaFecha($fechaActualizacion, $fuenteImportacion_id, $importacion_id);
-
-        if ($importacion != null) {
-            $importacion->estado = 'EL';
-            $importacion->save();
-        }
+        $eib->delete();
+        return response()->json(['status' => TRUE, 'eib' => $eib]);
     }
 }
