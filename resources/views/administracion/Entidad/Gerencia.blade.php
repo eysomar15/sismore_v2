@@ -16,7 +16,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             {{-- <div class="card-header card-header-primary">
-                            <h4 class="card-title">Relacion de Usuarios </h4>                            
+                            <h4 class="card-title">Relacion de Usuarios </h4>
                         </div> --}}
 
                             <div class="card-body">
@@ -214,7 +214,7 @@
                     ],
                     responsive: true,
                     autoWidth: false,
-                    order: false,
+                    orderable: false,
                     destroy: true,
                     language: {
                         "lengthMenu": "Mostrar " +
@@ -333,7 +333,7 @@
                     $('#entidad option ').remove();
                     var opt = '<option value="">SELECCIONAR</option>';
                     $.each(data.unidadejecutora, function(index, value) {
-                        opt += '<option value="' + value.id + '">' + value.unidad_ejecutora +
+                        opt += '<option value="' + value.id + '">' + value.nombre_ejecutora +
                             '</option>';
                     });
                     $('#entidad').append(opt);
@@ -355,7 +355,7 @@
                     var opt = '<option value="">SELECCIONAR</option>';
                     $.each(data.unidadejecutora, function(index, value) {
                         var ss = (entidad == value.id ? "selected" : "");
-                        opt += '<option value="' + value.id + '" ' + ss + '>' + value.unidad_ejecutora +
+                        opt += '<option value="' + value.id + '" ' + ss + '>' + value.nombre_ejecutora +
                             '</option>';
                     });
                     $('#gerencia_entidad').append(opt);

@@ -15,7 +15,6 @@
             align-items: center;
             background: #000000c9 !important;
         }
-
     </style>
 @endsection
 
@@ -28,7 +27,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             {{-- <div class="card-header card-header-primary">
-                            <h4 class="card-title">Relacion de Usuarios </h4>                            
+                            <h4 class="card-title">Relacion de Usuarios </h4>
                         </div> --}}
 
                             <div class="card-body">
@@ -89,23 +88,36 @@
                             <div class="col-sm-12">
                                 <div class="card">
                                     <!-- <div class="card-header">
-                                            <h3 class="card-title">Datos Personales</h3>
-                                        </div> -->
+                                                                                                        <h3 class="card-title">Datos Personales</h3>
+                                                                                                    </div> -->
                                     <div class="card-body">
                                         <div class="form">
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <label>DNI<span class="required">*</span></label>
-                                                        <input id="dni" name="dni" class="form-control" type="text"
-                                                            maxlength="8"
+                                                        {{-- <input id="dni" name="dni" class="form-control"
+                                                            type="text" maxlength="8"
                                                             onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;">
-                                                        <span class="help-block"></span>
+                                                        <span class="help-block"></span> --}}
+
+                                                        <div class="input-group">
+                                                            <input type="number" id="dni" name="dni"
+                                                                class="form-control" placeholder="DNI">
+                                                            <span class="help-block"></span>
+                                                            <span class="input-group-append">
+                                                                <button type="button"
+                                                                    class="btn waves-effect waves-light btn-primary"
+                                                                    onclick="buscardni();" id="btnbuscardni">
+                                                                    <i class="fa fa-search"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label>Nombre<span class="required">*</span></label>
-                                                        <input id="nombre" name="nombre" class="form-control" type="text"
-                                                            onkeyup="this.value=this.value.toUpperCase()">
+                                                        <input id="nombre" name="nombre" class="form-control"
+                                                            type="text" onkeyup="this.value=this.value.toUpperCase()">
                                                         <span class="help-block"></span>
                                                     </div>
                                                 </div>
@@ -132,10 +144,9 @@
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <label>Correo Electronico<span
-                                                                class="required">*</span></label>
-                                                        <input id="email" name="email" class="form-control" type="email"
-                                                            required>
+                                                        <label>Correo Electronico<span class="required">*</span></label>
+                                                        <input id="email" name="email" class="form-control"
+                                                            type="email" required>
                                                         <span class="help-block"></span>
                                                     </div>
                                                     <div class="col-md-6">
@@ -280,7 +291,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="form">
-                                            <div class="form-group" id="form-group-sistemas">                                                
+                                            <div class="form-group" id="form-group-sistemas">
                                                 <label>Seleccionar sistema<span class="required">*</span></label>
                                                 <div class="row">
                                                     @foreach ($sistemas as $item)
@@ -515,11 +526,11 @@
     {{-- <script src="{{ asset('/') }}public/assets/js/app.min.js"></script> --}}
     <script>
         /* var id;
-                                                                            //.delete nombre con el que se le llamo en el controlador al boton eliminar
-                                                                            $(document).on('click', '.delete', function() {
-                                                                                id = $(this).attr('id');
-                                                                                $('#confirmModalEliminar').modal('show');
-                                                                            }); */
+                                                                                                                                        //.delete nombre con el que se le llamo en el controlador al boton eliminar
+                                                                                                                                        $(document).on('click', '.delete', function() {
+                                                                                                                                            id = $(this).attr('id');
+                                                                                                                                            $('#confirmModalEliminar').modal('show');
+                                                                                                                                        }); */
 
         $(document).ready(function() {
             var save_method = '';
@@ -540,6 +551,40 @@
             });
             tablaPrincipal();
         });
+
+        function buscardni() {
+            if ($('#dni').val().length == 8) {
+                $('#btnbuscardni').html("<i class='fa fa-spinner fa-spin'></i>");
+                $.ajax({
+                    url: "https://apiperu.dev/api/dni/" + $('#dni').val() +
+                        "?api_token=59acc325cb3cdf40e05f8755d5c7fb3c6458983c83c59fed18bf4729566c4fb2",
+                    type: 'GET',
+                    beforeSend: function() {
+                        $('[name="nombre"]').val("");
+                        $('[name="apellidos"]').val("");
+                    },
+                    success: function(data) {
+                        if (data.success) {
+                            $("#nombre").val(data.data.nombres);
+                            $("#apellidos").val(data.data.apellido_paterno + " " + data.data.apellido_materno);
+                            //toastr.success("El registro fue creado exitosamente.", 'Mensaje');
+                        } else {
+                            alert('El DNI no existe');
+                            toastr.error('El DNI no existe', 'Mensaje');
+                        }
+                        $('#btnbuscardni').html('<i class="fa fa-search"></i>');
+                    },
+                    error: function(data) {
+                        $('#btnbuscardni').html('<i class="fa fa-search"></i>');
+                        toastr.error('Error en la busqueda, Contacte al Administrador del Sistema', 'Mensaje');
+                    }
+                });
+            } else {
+                alert('INGRESE UN DNI DE 8 DIGITOS');
+                toastr.error('INGRESE UN DNI DE 8 DIGITOS', 'Mensaje');
+            }
+
+        }
 
         function tablaPrincipal() {
             tabla_principal = $('#dtPrincipal').DataTable({
@@ -565,35 +610,9 @@
                 ],
                 responsive: true,
                 /* autoWidth: false, */
-                order: false,
-                //destroy: true,
-                language: {
-                    "lengthMenu": "Mostrar " +
-                        `<select class="custom-select custom-select-sm form-control form-control-sm">
-                        <option value = '10'> 10</option>
-                        <option value = '25'> 25</option>
-                        <option value = '50'> 50</option>
-                        <option value = '100'>100</option>
-                        <option value = '-1'>Todos</option>
-                        </select>` + " registros por página",
-                    "info": "Mostrando la página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No records available",
-                    "infoFiltered": "(Filtrado de _MAX_ registros totales)",
-                    "emptyTable": "No hay datos disponibles en la tabla.",
-                    "info": "Del _START_ al _END_ de _TOTAL_ registros ",
-                    "infoEmpty": "Mostrando 0 registros de un total de 0. registros",
-                    "infoFiltered": "(filtrados de un total de _MAX_ )",
-                    "infoPostFix": "",
-                    "loadingRecords": "Cargando...",
-                    "processing": "Procesando...",
-                    "search": "Buscar:",
-                    "searchPlaceholder": "Dato para buscar",
-                    "zeroRecords": "No se han encontrado coincidencias.",
-                    "paginate": {
-                        "next": "siguiente",
-                        "previous": "anterior"
-                    }
-                }
+                orderable: false,
+                destroy: true,
+                language: table_language
             });
         }
 
@@ -936,7 +955,7 @@
                             timeOut: 3000
                         });
                         $('#dtPrincipal').DataTable().ajax.reload();
-                    }, 100); //02 segundos                   
+                    }, 100); //02 segundos
                 }
             });
         }); */

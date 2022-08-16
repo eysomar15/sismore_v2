@@ -240,7 +240,6 @@
                                         <div class="col-md-6">
                                             <label>Codigo Modular<span class="required">*</span></label>
                                             <div class="input-group">
-
                                                 <input type="number" id="codigomodular_padronweb"
                                                     name="codigomodular_padronweb" class="form-control"
                                                     placeholder="Codigo Modular">
@@ -253,7 +252,6 @@
                                                         <i class="fa fa-search"></i>
                                                     </button>
                                                 </span>
-
                                             </div>
                                         </div>
                                         {{-- <div class="col-md-6">

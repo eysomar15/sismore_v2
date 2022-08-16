@@ -134,7 +134,7 @@ class EntidadController extends Controller
         $entidad = UnidadEjecutora::Create([
             'codigo' => $request->entidad_codigo,
             'tipogobierno' => $request->entidad_tipogobierno,
-            'unidad_ejecutora' => $request->entidad_nombre,
+            'nombre_ejecutora' => $request->entidad_nombre,
             'abreviatura' => $request->entidad_abreviado,
         ]);
         $entidad->save();
@@ -155,7 +155,7 @@ class EntidadController extends Controller
         $entidad = UnidadEjecutora::find($request->entidad_id);
         $entidad->codigo = $request->entidad_codigo;
         $entidad->tipogobierno = $request->entidad_tipogobierno;
-        $entidad->unidad_ejecutora = $request->entidad_nombre;
+        $entidad->nombre_ejecutora = $request->entidad_nombre;
         $entidad->abreviatura = $request->entidad_abreviado;
         $entidad->save();
 
