@@ -178,6 +178,30 @@
                         <h3 class="card-title text-primary "></h3>
                     </div>
                     <div class="card-body p-0">
+                        <div id="anal9"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="anal10"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
+                    </div>
+                    <div class="card-body p-0">
                         <div id="anal1"></div>
                     </div>
                 </div>
@@ -428,7 +452,7 @@
                 dataType: 'JSON',
                 success: function(data) {
                     gSimpleColumn('anal7', data.info.v7, '',
-                        'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                        'PLAZAS DE EDUCACIÓN POR AÑOS<br>Fuente:NEXUS', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -442,7 +466,35 @@
                 dataType: 'JSON',
                 success: function(data) {
                     gSimpleColumn('anal8', data.info.v8, '',
-                        'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                        'PLAZAS DE EDUCACIÓN POR MESES<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra9') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal9', data.info.v9, '',
+                        'PLAZAS DE PERSONAL DE EDUCACIÓN POR AÑOS<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra10') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal10', data.info.v10, '',
+                        'PLAZAS DE PERSONAL DE EDUCACIÓN POR MESES<br>Fuente:NEXUS', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -455,6 +507,7 @@
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
                 success: function(data) {
+                    $('#fechaActualizacion').html(data.info.fecha);
                     $('#vista1').html(data.info.DT.table);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -536,7 +589,7 @@
                      $('#tabla1').DataTable({
                         "order": false,
                         "language": table_language
-                    }); 
+                    });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);

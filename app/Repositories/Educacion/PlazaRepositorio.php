@@ -449,7 +449,8 @@ class PlazaRepositorio
         }
         return $result1;
     }
-    public static function listar_plazadocentesegunano_grafica()
+
+    public static function listar_plazassegunano_grafica()
     {
         $regs = Importacion::select(DB::raw("year(fechaActualizacion) ano"), DB::raw("max(id) id"))->where("estado", "PR")->where('fuenteImportacion_id', '2')
             ->groupBy('ano')->get();
@@ -465,9 +466,8 @@ class PlazaRepositorio
             ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
             ->where('v6.estado', 'PR')
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
-            ->where('v3.nombre', 'DOCENTE')
-            ->where('v4.nombre', 'DOCENTE')
-            ->whereIn('v2.nombre', ["NOMBRADO", "CONTRATADO"])
+            //->where('v3.nombre', 'DOCENTE')->where('v4.nombre', 'DOCENTE')
+            //->whereIn('v2.nombre', ["NOMBRADO", "CONTRATADO"])
             ->whereIn('v6.id', $ids)
             ->groupBy('name')
             ->select(
@@ -505,7 +505,8 @@ class PlazaRepositorio
             $value->y = (int)$value->y;
         } */
     }
-    public static function listar_plazadocentesegunmes_grafica($importacion_id, $anio)
+
+    public static function listar_plazassegunmes_grafica($importacion_id, $anio)
     {
         $regs = Importacion::select(DB::raw("month(fechaActualizacion) mes"), DB::raw("max(id) id"))->where("estado", "PR")->where('fuenteImportacion_id', '2')
             ->where(DB::raw('year(fechaActualizacion)'), $anio)->groupBy('mes')->get();
@@ -524,9 +525,8 @@ class PlazaRepositorio
             ->where('v6.estado', 'PR')
             ->where(DB::raw('YEAR(v6.fechaActualizacion)'), '=', $anio)
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
-            ->where('v3.nombre', 'DOCENTE')
-            ->where('v4.nombre', 'DOCENTE')
-            ->whereIn('v2.nombre', ["NOMBRADO", "CONTRATADO"])
+            //->where('v3.nombre', 'DOCENTE')->where('v4.nombre', 'DOCENTE')
+            //->whereIn('v2.nombre', ["NOMBRADO", "CONTRATADO"])
             ->whereIn('v6.id', $ids)
             ->groupBy('mes', 'name')
             ->select(
@@ -556,6 +556,114 @@ class PlazaRepositorio
         }
         return $query;
     }
+
+    public static function listar_plazadocentesegunano_grafica()
+    {
+        $regs = Importacion::select(DB::raw("year(fechaActualizacion) ano"), DB::raw("max(id) id"))->where("estado", "PR")->where('fuenteImportacion_id', '2')
+            ->groupBy('ano')->get();
+        $ids = [];
+        foreach ($regs as $key => $value) {
+            $ids[] = $value->id;
+        }
+        $query = DB::table('edu_plaza as v1')
+            ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->where('v6.estado', 'PR')
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->where('v3.nombre', 'DOCENTE')->where('v4.nombre', 'DOCENTE')
+            //->whereIn('v2.nombre', ["NOMBRADO", "CONTRATADO"])
+            ->whereIn('v6.id', $ids)
+            ->groupBy('name')
+            ->select(
+                DB::raw('YEAR(v6.fechaActualizacion) as name'),
+                DB::raw('count(v1.id) as y')
+            )
+            ->orderBy('name', 'ASC')
+            ->get();
+        return $query;
+
+        /* $query = DB::table('edu_plaza as v1')
+            ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->where('v6.estado', 'PR')
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->where('v3.nombre', 'DOCENTE')
+            ->where('v4.nombre', 'DOCENTE')
+            ->whereIn('v2.nombre', ["NOMBRADO", "CONTRATADO"])
+            ->groupBy('name')
+            ->select(
+                DB::raw('YEAR(v6.fechaActualizacion) as name'),
+                DB::raw('SUM(IF(v1.importacion_id=(
+                    select max(xx.id)  from par_importacion as xx
+                    where xx.estado="PR" and xx.fuenteImportacion_id=2 and year(xx.fechaActualizacion)=year(v6.fechaActualizacion)
+                    group by year(xx.fechaActualizacion)
+                    ),1,0)) as y')
+            )
+            ->orderBy('name', 'ASC')
+            ->get();
+        foreach ($query as $key => $value) {
+            $value->name = "" . $value->name;
+            $value->y = (int)$value->y;
+        } */
+    }
+
+    public static function listar_plazadocentesegunmes_grafica($importacion_id, $anio)
+    {
+        $regs = Importacion::select(DB::raw("month(fechaActualizacion) mes"), DB::raw("max(id) id"))->where("estado", "PR")->where('fuenteImportacion_id', '2')
+            ->where(DB::raw('year(fechaActualizacion)'), $anio)->groupBy('mes')->get();
+        $ids = [];
+
+        foreach ($regs as $key => $value) {
+            $ids[] = $value->id;
+        }
+
+        $query = DB::table('edu_plaza as v1')
+            ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->where('v6.estado', 'PR')
+            ->where(DB::raw('YEAR(v6.fechaActualizacion)'), '=', $anio)
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->where('v3.nombre', 'DOCENTE')->where('v4.nombre', 'DOCENTE')
+            //->whereIn('v2.nombre', ["NOMBRADO", "CONTRATADO"])
+            ->whereIn('v6.id', $ids)
+            ->groupBy('mes', 'name')
+            ->select(
+                DB::raw('month(`v6`.`fechaActualizacion`) as mes'),
+                DB::raw('CASE
+                WHEN month(`v6`.`fechaActualizacion`)=1 THEN "ENE"
+                WHEN month(`v6`.`fechaActualizacion`)=2 THEN "FEB"
+                WHEN month(`v6`.`fechaActualizacion`)=3 THEN "MAR"
+                WHEN month(`v6`.`fechaActualizacion`)=4 THEN "ABR"
+                WHEN month(`v6`.`fechaActualizacion`)=5 THEN "MAY"
+                WHEN month(`v6`.`fechaActualizacion`)=6 THEN "JUN"
+                WHEN month(`v6`.`fechaActualizacion`)=7 THEN "JUL"
+                WHEN month(`v6`.`fechaActualizacion`)=8 THEN "AGO"
+                WHEN month(`v6`.`fechaActualizacion`)=9 THEN "SET"
+                WHEN month(`v6`.`fechaActualizacion`)=10 THEN "OCT"
+                WHEN month(`v6`.`fechaActualizacion`)=11 THEN "NOV"
+                WHEN month(`v6`.`fechaActualizacion`)=12 THEN "DIC"
+                ELSE "" END as `name`'),
+                DB::raw('count(v1.id) as y ')
+            )
+            ->orderBy('mes', 'ASC')
+            ->get();
+        return $query;
+        foreach ($query as $key => $value) {
+            $value->name = "" . $value->name;
+            $value->y = (int)$value->y;
+        }
+        return $query;
+    }
+
     public static function listar_totalplazacontratadoynombradossegunugelyniveleducativo($importacion_id)
     {
         $bodys = DB::table('edu_plaza as v1')
