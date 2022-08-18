@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Educacion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Educacion\Area;
 use App\Models\Educacion\Importacion;
+use App\Models\Educacion\NivelModalidad;
 use App\Models\Educacion\PLaza;
 use App\Models\Parametro\Anio;
 use App\Repositories\Educacion\PlazaRepositorio;
@@ -137,6 +139,30 @@ class PLazaController extends Controller
         return response()->json(compact('info'));
     }
 
+    public function DocentesPrincipalDT2(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0);
+        $info['fecha'] = date('d/m/Y', strtotime($imp->fechaActualizacion));
+        $info['DT'] = PlazaRepositorio::cargarresumendeplazatabla2($imp->id);
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalDT3(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0);
+        $info['fecha'] = date('d/m/Y', strtotime($imp->fechaActualizacion));
+        $info['DT'] = PlazaRepositorio::cargarresumendeplazatabla3($imp->id);
+        return response()->json(compact('info'));
+    }
+
+    public function DocentesPrincipalDT4(Request $rq)
+    {
+        $imp = $this->cargarultimoimportado($rq->anio, 0);
+        $info['fecha'] = date('d/m/Y', strtotime($imp->fechaActualizacion));
+        $info['DT'] = PlazaRepositorio::cargarresumendeplazatabla4($rq, $imp->id);
+        return response()->json(compact('info'));
+    }
+
     public function cargardistritos($provincia)
     {
         $distritos = PlazaRepositorio::listar_distrito($provincia);
@@ -166,5 +192,34 @@ class PLazaController extends Controller
         $dato['tt'] = PlazaRepositorio::listar_profesorestitulados($request->fecha, $request->nivel, $request->provincia, $request->distrito);
         $dato['tu'] = PlazaRepositorio::listar_profesorestituladougel($request->fecha, $request->nivel, 1);
         return response()->json(compact('dato'));
+    }
+
+
+    public function coberturaplaza()
+    {
+        /* $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
+        $info['opt1'] = PlazaRepositorio::listar_tipotrabajadores($imp, 1)->count();
+        $info['opt2'] = PlazaRepositorio::listar_tipotrabajadores($imp, 2)->count();
+        $info['opt3'] = PlazaRepositorio::listar_tipotrabajadores($imp, 3)->count();
+        $info['opt4'] = PlazaRepositorio::listar_tipotrabajadores($imp, 4)->count();
+        return response()->json(compact('info')); */
+
+        /*  */
+
+        /* anos */
+        $anios = Importacion::select(DB::raw('YEAR(fechaActualizacion) as ano'))
+            ->where('estado', 'PR')->where('fuenteImportacion_id', '2')
+            ->orderBy('ano', 'desc')->distinct()->get();
+        /* tipo modalidad */
+        $tipo = NivelModalidad::select('tipo')->where(DB::raw('tipo is not null'), true)->groupBy('tipo')->get();
+        /* nivel modalidad */
+        //$nivel = NivelModalidad::select('id', 'nombre')->where('tipo', 'EBE')->get();
+        /* ultimo reg subido */
+        $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '2')
+            ->orderBy('fecha', 'desc')->take(1)->get();
+        $importacion_id = $imp->first()->id;
+        $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
+        //return [$anios, $tipo, $nivel, $imp, $fecha];
+        return view("educacion.Plaza.CoberturaPlaza", compact('anios', 'tipo', 'importacion_id', 'fecha'));
     }
 }

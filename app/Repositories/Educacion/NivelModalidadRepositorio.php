@@ -16,4 +16,9 @@ class NivelModalidadRepositorio
             ->get();
         return $query;
     }
+
+    public static function buscarportipo($tipo)
+    {
+        return NivelModalidad::where('tipo', $tipo)->get();
+    }
 }

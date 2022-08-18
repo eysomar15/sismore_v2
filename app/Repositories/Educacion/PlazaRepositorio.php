@@ -919,4 +919,204 @@ class PlazaRepositorio
         }
         return [];
     }
+
+    public static function cargarresumendeplazatabla2($importacion_id)
+    {/* titulo:: */
+        $bodys = DB::table('edu_plaza as v1')
+            ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->where('v1.importacion_id', $importacion_id)
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->groupBy('tipo', 'subtipo')
+            ->select(
+                'v4.nombre as tipo',
+                'v3.nombre as subtipo',
+                DB::raw('count(v1.id) as total'),
+                DB::raw('SUM(if(v2.id=1,1,0)) as portillo'),
+                DB::raw('SUM(if(v2.id=2,1,0)) as dre'),
+                DB::raw('SUM(if(v2.id=3,1,0)) as atalaya'),
+                DB::raw('SUM(if(v2.id=4,1,0)) as abad'),
+                DB::raw('SUM(if(v2.id=5,1,0)) as purus'),
+            )
+            ->get();
+        $heads = DB::table('edu_plaza as v1')
+            ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->where('v1.importacion_id', $importacion_id)
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->groupBy('tipo')
+            ->select(
+                'v4.nombre as tipo',
+                DB::raw('count(v1.id) as total'),
+                DB::raw('SUM(if(v2.id=1,1,0)) as portillo'),
+                DB::raw('SUM(if(v2.id=2,1,0)) as dre'),
+                DB::raw('SUM(if(v2.id=3,1,0)) as atalaya'),
+                DB::raw('SUM(if(v2.id=4,1,0)) as abad'),
+                DB::raw('SUM(if(v2.id=5,1,0)) as purus'),
+            )
+            ->get();
+        $foot = DB::table('edu_plaza as v1')
+            ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->where('v1.importacion_id', $importacion_id)
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->select(
+                DB::raw('count(v1.id) as total'),
+                DB::raw('SUM(if(v2.id=1,1,0)) as portillo'),
+                DB::raw('SUM(if(v2.id=2,1,0)) as dre'),
+                DB::raw('SUM(if(v2.id=3,1,0)) as atalaya'),
+                DB::raw('SUM(if(v2.id=4,1,0)) as abad'),
+                DB::raw('SUM(if(v2.id=5,1,0)) as purus'),
+            )
+            ->get()->first();
+        $dt['table'] = view('educacion.Plaza.DocentesPrincipalTabla2', compact('heads', 'bodys', 'foot'))->render();
+        return $dt;
+    }
+
+    public static function cargarresumendeplazatabla3($importacion_id)
+    {/* titulo:: */
+        $bodys = DB::table('edu_plaza as v1')
+            ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('edu_situacionlab as v6', 'v6.id', '=', 'v1.situacionLab_id')
+            ->where('v1.importacion_id', $importacion_id)
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->groupBy('id', 'ugel')
+            ->select(
+                'v2.id',
+                'v2.nombre as ugel',
+                DB::raw('count(v1.id) total'),
+                DB::raw('sum(IF(v6.id=4,1,0)) contratado'),
+                DB::raw('sum(IF(v6.id=7,1,0)) desigconfian'),
+                DB::raw('sum(IF(v6.id=8,1,0)) desigexcep'),
+                DB::raw('sum(IF(v6.id=1,1,0)) designado'),
+                DB::raw('sum(IF(v6.id=6,1,0)) destacado'),
+                DB::raw('sum(IF(v6.id=2,1,0)) encargado'),
+                DB::raw('sum(IF(v6.id=3,1,0)) nombrado'),
+                DB::raw('sum(IF(v6.id=5,1,0)) vacante'),
+            )
+            ->get();
+        /* $heads = DB::table('edu_plaza as v1')
+            ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->where('v1.importacion_id', $importacion_id)
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->groupBy('tipo')
+            ->select(
+                'v4.nombre as tipo',
+                DB::raw('count(v1.id) as total'),
+                DB::raw('SUM(if(v2.id=1,1,0)) as portillo'),
+                DB::raw('SUM(if(v2.id=2,1,0)) as dre'),
+                DB::raw('SUM(if(v2.id=3,1,0)) as atalaya'),
+                DB::raw('SUM(if(v2.id=4,1,0)) as abad'),
+                DB::raw('SUM(if(v2.id=5,1,0)) as purus'),
+            )
+            ->get(); */
+        $foot = DB::table('edu_plaza as v1')
+            ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('edu_situacionlab as v6', 'v6.id', '=', 'v1.situacionLab_id')
+            ->where('v1.importacion_id', $importacion_id)
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->select(
+                DB::raw('count(v1.id) total'),
+                DB::raw('sum(IF(v6.id=4,1,0)) contratado'),
+                DB::raw('sum(IF(v6.id=7,1,0)) desigconfian'),
+                DB::raw('sum(IF(v6.id=8,1,0)) desigexcep'),
+                DB::raw('sum(IF(v6.id=1,1,0)) designado'),
+                DB::raw('sum(IF(v6.id=6,1,0)) destacado'),
+                DB::raw('sum(IF(v6.id=2,1,0)) encargado'),
+                DB::raw('sum(IF(v6.id=3,1,0)) nombrado'),
+                DB::raw('sum(IF(v6.id=5,1,0)) vacante'),
+            )
+            ->get()->first();
+        $dt['table'] = view('educacion.Plaza.DocentesPrincipalTabla3', compact(/* 'heads',  */'bodys', 'foot'))->render();
+        return $dt;
+    }
+
+    public static function cargarresumendeplazatabla4($rq, $importacion_id)
+    {/* titulo:: */
+        $bodys = DB::table('edu_plaza as v1')
+            ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('edu_situacionlab as v6', 'v6.id', '=', 'v1.situacionLab_id')
+            ->join('edu_nivelmodalidad as v7', 'v7.id', '=', 'v1.nivelModalidad_id')
+            ->where('v1.importacion_id', $importacion_id)
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->groupBy('tipo', 'nivel')
+            ->select(
+                'v7.tipo',
+                'v7.nombre as nivel',
+                DB::raw('count(v1.id) total'),
+                DB::raw('sum(IF(v6.id=4,1,0)) contratado'),
+                DB::raw('sum(IF(v6.id=7,1,0)) desigconfian'),
+                DB::raw('sum(IF(v6.id=8,1,0)) desigexcep'),
+                DB::raw('sum(IF(v6.id=1,1,0)) designado'),
+                DB::raw('sum(IF(v6.id=6,1,0)) destacado'),
+                DB::raw('sum(IF(v6.id=2,1,0)) encargado'),
+                DB::raw('sum(IF(v6.id=3,1,0)) nombrado'),
+                DB::raw('sum(IF(v6.id=5,1,0)) vacante'),
+            )
+            ->get();
+        $heads = DB::table('edu_plaza as v1')
+            ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('edu_situacionlab as v6', 'v6.id', '=', 'v1.situacionLab_id')
+            ->join('edu_nivelmodalidad as v7', 'v7.id', '=', 'v1.nivelModalidad_id')
+            ->where('v1.importacion_id', $importacion_id)
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->groupBy('tipo')
+            ->select(
+                'v7.tipo',
+                DB::raw('count(v1.id) total'),
+                DB::raw('sum(IF(v6.id=4,1,0)) contratado'),
+                DB::raw('sum(IF(v6.id=7,1,0)) desigconfian'),
+                DB::raw('sum(IF(v6.id=8,1,0)) desigexcep'),
+                DB::raw('sum(IF(v6.id=1,1,0)) designado'),
+                DB::raw('sum(IF(v6.id=6,1,0)) destacado'),
+                DB::raw('sum(IF(v6.id=2,1,0)) encargado'),
+                DB::raw('sum(IF(v6.id=3,1,0)) nombrado'),
+                DB::raw('sum(IF(v6.id=5,1,0)) vacante'),
+            )
+            ->get();
+        $foot = DB::table('edu_plaza as v1')
+            ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('edu_situacionlab as v6', 'v6.id', '=', 'v1.situacionLab_id')
+            ->join('edu_nivelmodalidad as v7', 'v7.id', '=', 'v1.nivelModalidad_id')
+            ->where('v1.importacion_id', $importacion_id)
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->select(
+                DB::raw('count(v1.id) total'),
+                DB::raw('sum(IF(v6.id=4,1,0)) contratado'),
+                DB::raw('sum(IF(v6.id=7,1,0)) desigconfian'),
+                DB::raw('sum(IF(v6.id=8,1,0)) desigexcep'),
+                DB::raw('sum(IF(v6.id=1,1,0)) designado'),
+                DB::raw('sum(IF(v6.id=6,1,0)) destacado'),
+                DB::raw('sum(IF(v6.id=2,1,0)) encargado'),
+                DB::raw('sum(IF(v6.id=3,1,0)) nombrado'),
+                DB::raw('sum(IF(v6.id=5,1,0)) vacante'),
+            )
+            ->get()->first();
+        $dt['table'] = view('educacion.Plaza.DocentesPrincipalTabla4', compact('heads', 'bodys', 'foot'))->render();
+        return $dt;
+    }
 }

@@ -278,6 +278,63 @@
                     <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista1">
                         </div>
+                        {{-- <p class="text-muted font-13 m-0 p-0 text-right">
+                            Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span
+                                id="fechaActualizacion"></span>
+                        </p> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent pb-0 m-0">
+                        <h3 class="card-title ">TOTAL DE PLAZAS SEGÚN TIPO DE TRABAJADOR Y POR UGEL</h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div class="table-responsive" id="vista2">
+                        </div>
+                        {{-- <p class="text-muted font-13 m-0 p-0 text-right">
+                            Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span
+                                id="fechaActualizacion"></span>
+                        </p> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent pb-0 m-0">
+                        <h3 class="card-title ">TOTAL DE PLAZAS SEGÚN UGEL Y SITUACION LABORAL</h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div class="table-responsive" id="vista3">
+                        </div>
+                       {{--  <p class="text-muted font-13 m-0 p-0 text-right">
+                            Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span
+                                id="fechaActualizacion"></span>
+                        </p> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent pb-0 m-0">
+                        <h3 class="card-title ">TOTAL DE PLAZAS SEGÚN UGEL Y SITUACION LABORAL</h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div class="table-responsive" id="vista4">
+                        </div>
                         <p class="text-muted font-13 m-0 p-0 text-right">
                             Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span
                                 id="fechaActualizacion"></span>
@@ -509,6 +566,48 @@
                 success: function(data) {
                     $('#fechaActualizacion').html(data.info.fecha);
                     $('#vista1').html(data.info.DT.table);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.dt2') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    $('#fechaActualizacion').html(data.info.fecha);
+                    $('#vista2').html(data.info.DT.table);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.dt3') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    $('#fechaActualizacion').html(data.info.fecha);
+                    $('#vista3').html(data.info.DT.table);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+            $.ajax({
+                url: "{{ route('nexus.contratacion.dt4') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    $('#fechaActualizacion').html(data.info.fecha);
+                    $('#vista4').html(data.info.DT.table);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);

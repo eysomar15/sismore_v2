@@ -17,6 +17,7 @@ use App\Http\Controllers\Educacion\ImporPadronWebController;
 use App\Http\Controllers\Educacion\ImporMatriculaController;
 use App\Http\Controllers\Educacion\ImporPadronEibController;
 use App\Http\Controllers\Educacion\MatriculaDetalleController;
+use App\Http\Controllers\Educacion\NivelModalidadController;
 use App\Http\Controllers\Educacion\PadronWebController;
 use App\Http\Controllers\Educacion\PLazaController;
 use App\Http\Controllers\Educacion\TabletaController;
@@ -75,6 +76,8 @@ Route::get('/Home/gra3', [HomeController::class, 'homegrafica3'])->name('grafica
 Route::get('/Home/gra4', [HomeController::class, 'homegrafica4'])->name('graficas.home.educacion.4');
 Route::get('/Home/gra5', [HomeController::class, 'homegrafica5'])->name('graficas.home.educacion.5');
 Route::get('/Home/gra6', [HomeController::class, 'homegrafica6'])->name('graficas.home.educacion.6');
+
+Route::get('/NivelModalidad/Buscar/{tipo}', [NivelModalidadController::class, 'buscarnivelmodalidad']);
 
 Route::get('/ImporPadronWeb/Importar', [ImporPadronWebController::class, 'importar'])->name('ImporPadronWeb.importar');
 Route::post('/ImporPadronWeb/Importar', [ImporPadronWebController::class, 'guardar'])->name('ImporPadronWeb.guardar');
@@ -303,6 +306,10 @@ Route::post('/Plaza/Docentes/DocentePrincial/gra8', [PLazaController::class, 'Do
 Route::post('/Plaza/Docentes/DocentePrincial/gra9', [PLazaController::class, 'DocentesPrincipalgra9'])->name('nexus.contratacion.gra9');
 Route::post('/Plaza/Docentes/DocentePrincial/gra10', [PLazaController::class, 'DocentesPrincipalgra10'])->name('nexus.contratacion.gra10');
 Route::post('/Plaza/Docentes/DocentePrincial/DT1', [PLazaController::class, 'DocentesPrincipalDT1'])->name('nexus.contratacion.dt1');
+Route::post('/Plaza/Docentes/DocentePrincial/DT2', [PLazaController::class, 'DocentesPrincipalDT2'])->name('nexus.contratacion.dt2');
+Route::post('/Plaza/Docentes/DocentePrincial/DT3', [PLazaController::class, 'DocentesPrincipalDT3'])->name('nexus.contratacion.dt3');
+Route::post('/Plaza/Docentes/DocentePrincial/DT4', [PLazaController::class, 'DocentesPrincipalDT4'])->name('nexus.contratacion.dt4');
+Route::get('/Plaza/Docentes/CoberturaDePlaza', [PLazaController::class, 'coberturaplaza'])->name('nexus.cobertura.head');
 
 Route::get('/presupuesto/Principal', [MatriculaDetalleController::class, 'cargarpresupuestoxxx'])->name('educacion.xxx');
 
