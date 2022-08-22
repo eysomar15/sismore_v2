@@ -76,15 +76,16 @@
             </div>
         </div>
         <!-- end row -->
-        {{-- tablaa 0 --}}
+
+        {{-- tablaa 1 --}}
         <div class="row">
             <div class="col-xl-12">
                 <div class="card card-border">
                     <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">tabla1</h3>
+                        <h3 class="card-title">tabla1 </h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
-                        <div class="table-responsive" id="vista0">
+                        <div class="table-responsive" id="vista1">
                         </div>
                         {{-- <p class="text-muted font-13 m-0 p-0 text-right">
                             Fuente: ESCALE - MINEDU – PADRON WEB, ultima actualizacion del 12/07/2022
@@ -95,7 +96,7 @@
         </div>
         {{-- end  row --}}
 
-        {{-- tablaa 1 --}}
+        {{-- tablaa 2 --}}
         <div class="row">
             <div class="col-xl-12">
                 <div class="card card-border">
@@ -103,7 +104,7 @@
                         <h3 class="card-title">tabla2</h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
-                        <div class="table-responsive" id="vista1">
+                        <div class="table-responsive" id="vista2">
                         </div>
                         {{-- <p class="text-muted font-13 m-0 p-0 text-right">
                             Fuente: ESCALE - MINEDU – PADRON WEB, ultima actualizacion del 12/07/2022
@@ -161,19 +162,7 @@
 
         function cargartabla0() {
             $.ajax({
-                url: "{{ route('matriculadetalle.avance.tabla0') }}",
-                type: "POST",
-                data: $('#form_opciones').serialize(),
-                success: function(data) {
-                    $('#vista0').html(data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                },
-            });
-
-            $.ajax({
-                url: "{{ route('matriculadetalle.avance.tabla1') }}",
+                url: "{{ route('nexus.cobertura.tabla1') }}",
                 type: "POST",
                 data: $('#form_opciones').serialize(),
                 success: function(data) {
@@ -184,7 +173,19 @@
                 },
             });
 
-            $.ajax({
+            /* $.ajax({
+                url: "{{ route('matriculadetalle.avance.tabla1') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    $('#vista1').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            }); */
+
+           /*  $.ajax({
                 url: "{{ route('matriculadetalle.avance.grafica1') }}",
                 type: "POST",
                 data: $('#form_opciones').serialize(),
@@ -194,7 +195,7 @@
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 },
-            });
+            }); */
 
 
         }

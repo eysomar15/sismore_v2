@@ -132,14 +132,14 @@ class EntidadController extends Controller
             return response()->json($val);
         }
         $entidad = UnidadEjecutora::Create([
-            'codigo' => $request->entidad_codigo,
+            'codigo_ue' => $request->entidad_codigo,
             'tipogobierno' => $request->entidad_tipogobierno,
             'nombre_ejecutora' => $request->entidad_nombre,
             'abreviatura' => $request->entidad_abreviado,
         ]);
         $entidad->save();
 
-        return response()->json(array('status' => true, 'nuva entidad' => $entidad));
+        return response()->json(array('status' => true, 'entidad' => $entidad));
     }
     public function ajax_edit_entidad($entidad_id)
     {
@@ -153,7 +153,7 @@ class EntidadController extends Controller
             return response()->json($val);
         }
         $entidad = UnidadEjecutora::find($request->entidad_id);
-        $entidad->codigo = $request->entidad_codigo;
+        $entidad->codigo_ue = $request->entidad_codigo;
         $entidad->tipogobierno = $request->entidad_tipogobierno;
         $entidad->nombre_ejecutora = $request->entidad_nombre;
         $entidad->abreviatura = $request->entidad_abreviado;

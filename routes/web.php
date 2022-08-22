@@ -310,6 +310,8 @@ Route::post('/Plaza/Docentes/DocentePrincial/DT2', [PLazaController::class, 'Doc
 Route::post('/Plaza/Docentes/DocentePrincial/DT3', [PLazaController::class, 'DocentesPrincipalDT3'])->name('nexus.contratacion.dt3');
 Route::post('/Plaza/Docentes/DocentePrincial/DT4', [PLazaController::class, 'DocentesPrincipalDT4'])->name('nexus.contratacion.dt4');
 Route::get('/Plaza/Docentes/CoberturaDePlaza', [PLazaController::class, 'coberturaplaza'])->name('nexus.cobertura.head');
+Route::post('/Plaza/Plazas/tabla1', [PLazaController::class, 'cargarcoberturaplazatabla1'])->name('nexus.cobertura.tabla1');
+
 
 Route::get('/presupuesto/Principal', [MatriculaDetalleController::class, 'cargarpresupuestoxxx'])->name('educacion.xxx');
 

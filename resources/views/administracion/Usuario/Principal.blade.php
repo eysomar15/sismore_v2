@@ -44,7 +44,7 @@
 
                                 <div class="table-responsive">
                                     <br>
-                                    <table id="dtPrincipal" class="table table-striped table-bordered" style="width:100%">
+                                    <table id="dtPrincipal" class="table table-striped table-bordered" style="width:100%,font-size:12px" >
                                         <thead class="cabecera-dataTable">
                                             <!--th>Nº</th-->
                                             {{-- <th>DNI</th> --}}
@@ -178,7 +178,7 @@
                                                             <option value="">SELECCIONAR</option>
                                                             @foreach ($entidad as $item)
                                                                 <option value="{{ $item->id }}">
-                                                                    {{ $item->unidad_ejecutora }}</option>
+                                                                    {{ $item->nombre_ejecutora }}</option>
                                                             @endforeach
                                                         </select>
                                                         <span class="help-block"></span>
@@ -610,7 +610,7 @@
                 ],
                 responsive: true,
                 /* autoWidth: false, */
-                orderable: false,
+                orderable: true,
                 destroy: true,
                 language: table_language
             });

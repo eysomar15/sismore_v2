@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Presupuesto;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ImporGastosImport;
 use Illuminate\Http\Request;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\Importacion;
 use App\Models\Presupuesto\ImporGastos;
+use App\Repositories\Educacion\ImportacionRepositorio;
 use Exception;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ImporGastosController extends Controller
 {
@@ -26,42 +29,118 @@ class ImporGastosController extends Controller
         return view('presupuesto.ImporGastos.Importar', compact('mensaje'));
     }
 
+    function json_output($status = 200, $msg = 'OK!!', $data = null)
+    {
+        header('Content-Type:application/json');
+        echo json_encode([
+            'status' => $status,
+            'msg' => $msg,
+            'data' => $data
+        ]);
+        die;
+    }
+
     public function importarGuardar(Request $request)
     {
         ini_set('memory_limit', '-1');
+        set_time_limit(0);
+        /* $this->validate($request, ['file' => 'required|mimes:xls,xlsx']);
+        $archivo = $request->file('file');
+        $array = (new tablaXImport)->toArray($archivo); */
+
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 13);
+        if ($existeMismaFecha != null) {
+            $mensaje = "Error, Ya existe archivos prendientes de aprobar para la fecha de versión ingresada";
+            $this->json_output(400, $mensaje);
+        }
+
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 13);
+        if ($existeMismaFecha != null) {
+            $mensaje = "Error, Ya existe archivos procesados para la fecha de versión ingresada";
+            $this->json_output(400, $mensaje);
+        }
+
         $this->validate($request, ['file' => 'required|mimes:xls,xlsx']);
         $archivo = $request->file('file');
+        //Excel::import(new ImporGastosImport, $archivo);//
         $array = (new tablaXImport)->toArray($archivo);
 
-        $i = 0;
+        if (count($array) != 1) {
+            $this->json_output(400, 'Error de Hojas, Solo debe tener una HOJA, el LIBRO EXCEL');
+        }
+
         $cadena = '';
         try {
             foreach ($array as $key => $value) {
                 foreach ($value as $row) {
-                    if (++$i > 1) break;
-                    $cadena =  $cadena
-                        . $row['anio'] . $row['mes'] . $row['cod_uni_eje'] . $row['unidad_ejecutora'] . $row['cod_distrito']
-                        . $row['sec_func'] . $row['cod_cat_pres'] . $row['categoria_presupuestal'] . $row['tipo_prod_proy'] . $row['cod_prod_proy']
-                        . $row['producto_proyecto'] . $row['tipo_act_acc_obra'] . $row['cod_act_acc_obra'] . $row['actividad_accion_obra'] . $row['cod_funcion']
-                        . $row['funcion'] . $row['cod_div_fun'] . $row['division_funcional'] . $row['cod_gru_fun'] . $row['grupo_funcional']
-
-                        . $row['cod_finalidad'] . $row['meta_nombre'] . $row['cod_fue_fin'] . $row['fuente_financiamiento'] . $row['cod_rubro']
-                        . $row['rubro'] . $row['cod_tipo_rec'] . $row['tipo_recurso'] . $row['cod_categ_gasto'] . $row['categoria_gasto']
-                        . $row['tipo_trans'] . $row['cod_gen'] . $row['generica'] . $row['cod_subgen'] . $row['subgenerica']
-                        . $row['cod_subgen_det'] . $row['subgenerica_detalle'] . $row['cod_espe'] . $row['especifica'] . $row['cod_espe_det']
-
-                        . $row['especifica_detalle'] . $row['monto_pia'] . $row['monto_pim'] . $row['monto_certificado'] . $row['monto_comprometido_anual']
-                        . $row['monto_comprometido'] . $row['monto_devengado'] . $row['monto_girado'];
+                    if ($key > 0) break;
+                    $cadena =  $cadena .
+                        $row['anio'] .
+                        $row['mes'] .
+                        $row['cod_tipo_gob'] .
+                        $row['tipo_gobierno'] .
+                        $row['cod_sector'] .
+                        $row['sector'] .
+                        $row['cod_pliego'] .
+                        $row['pliego'] .
+                        $row['cod_ubigeo'] .
+                        $row['sec_ejec'] .
+                        $row['cod_ue'] .
+                        $row['unidad_ejecutora'] .
+                        $row['sec_func'] .
+                        $row['cod_cat_pres'] .
+                        $row['categoria_presupuestal'] .
+                        $row['tipo_prod_proy'] .
+                        $row['cod_prod_proy'] .
+                        $row['producto_proyecto'] .
+                        $row['tipo_act_acc_obra'] .
+                        $row['cod_act_acc_obra'] .
+                        $row['actividad_accion_obra'] .
+                        $row['cod_fun'] .
+                        $row['funcion'] .
+                        $row['cod_div_fun'] .
+                        $row['division_funcional'] .
+                        $row['cod_gru_fun'] .
+                        $row['grupo_funcional'] .
+                        $row['meta'] .
+                        $row['cod_fina'] .
+                        $row['finalidad'] .
+                        $row['cod_fue_fin'] .
+                        $row['fuente_financiamiento'] .
+                        $row['cod_rub'] .
+                        $row['rubro'] .
+                        $row['cod_tipo_rec'] .
+                        $row['tipo_recurso'] .
+                        $row['cod_cat_gas'] .
+                        $row['categoria_gasto'] .
+                        $row['cod_tipo_trans'] .
+                        $row['cod_gen'] .
+                        $row['generica'] .
+                        $row['cod_subgen'] .
+                        $row['subgenerica'] .
+                        $row['cod_subgen_det'] .
+                        $row['subgenerica_detalle'] .
+                        $row['cod_esp'] .
+                        $row['especifica'] .
+                        $row['cod_esp_det'] .
+                        $row['especifica_detalle'] .
+                        $row['pia'] .
+                        $row['pim'] .
+                        $row['certificado'] .
+                        $row['compromiso_anual'] .
+                        $row['compromiso_mensual'] .
+                        $row['devengado'] .
+                        $row['girado'];
                 }
             }
         } catch (Exception $e) {
-            $mensaje = "Formato de archivo no reconocido, porfavor verifique si el formato es el correcto y vuelva a importar";
-            return view('presupuesto.ImporGastos.Importar', compact('mensaje'));
+            $mensaje = "Formato de archivo no reconocido, porfavor verifique si el formato es el correcto." . $e->getMessage();
+            $this->json_output(403, $mensaje);
         }
 
         try {
             $importacion = Importacion::Create([
-                'fuenteImportacion_id' => 12, // valor predeterminado
+                'fuenteImportacion_id' => 13, // valor predeterminado
                 'usuarioId_Crea' => auth()->user()->id,
                 'usuarioId_Aprueba' => null,
                 'fechaActualizacion' => $request['fechaActualizacion'],
@@ -75,9 +154,16 @@ class ImporGastosController extends Controller
                         'importacion_id' => $importacion->id,
                         'anio' => $row['anio'],
                         'mes' => $row['mes'],
-                        'cod_uni_eje' => $row['cod_uni_eje'],
+                        'cod_tipo_gob' => $row['cod_tipo_gob'],
+                        'tipo_gobierno' => $row['tipo_gobierno'],
+                        'cod_sector' => $row['cod_sector'],
+                        'sector' => $row['sector'],
+                        'cod_pliego' => $row['cod_pliego'],
+                        'pliego' => $row['pliego'],
+                        'cod_ubigeo' => $row['cod_ubigeo'],
+                        'sec_ejec' => $row['sec_ejec'],
+                        'cod_ue' => $row['cod_ue'],
                         'unidad_ejecutora' => $row['unidad_ejecutora'],
-                        'cod_distrito' => $row['cod_distrito'],
                         'sec_func' => $row['sec_func'],
                         'cod_cat_pres' => $row['cod_cat_pres'],
                         'categoria_presupuestal' => $row['categoria_presupuestal'],
@@ -87,60 +173,67 @@ class ImporGastosController extends Controller
                         'tipo_act_acc_obra' => $row['tipo_act_acc_obra'],
                         'cod_act_acc_obra' => $row['cod_act_acc_obra'],
                         'actividad_accion_obra' => $row['actividad_accion_obra'],
-                        'cod_funcion' => $row['cod_funcion'],
+                        'cod_fun' => $row['cod_fun'],
                         'funcion' => $row['funcion'],
                         'cod_div_fun' => $row['cod_div_fun'],
                         'division_funcional' => $row['division_funcional'],
                         'cod_gru_fun' => $row['cod_gru_fun'],
                         'grupo_funcional' => $row['grupo_funcional'],
-                        'cod_finalidad' => $row['cod_finalidad'],
-                        'meta_nombre' => $row['meta_nombre'],
+                        'meta' => $row['meta'],
+                        'cod_fina' => $row['cod_fina'],
+                        'finalidad' => $row['finalidad'],
                         'cod_fue_fin' => $row['cod_fue_fin'],
                         'fuente_financiamiento' => $row['fuente_financiamiento'],
-                        'cod_rubro' => $row['cod_rubro'],
+                        'cod_rub' => $row['cod_rub'],
                         'rubro' => $row['rubro'],
                         'cod_tipo_rec' => $row['cod_tipo_rec'],
                         'tipo_recurso' => $row['tipo_recurso'],
-                        'cod_categ_gasto' => $row['cod_categ_gasto'],
+                        'cod_cat_gas' => $row['cod_cat_gas'],
                         'categoria_gasto' => $row['categoria_gasto'],
-                        'tipo_trans' => $row['tipo_trans'],
+                        'cod_tipo_trans' => $row['cod_tipo_trans'],
                         'cod_gen' => $row['cod_gen'],
                         'generica' => $row['generica'],
                         'cod_subgen' => $row['cod_subgen'],
                         'subgenerica' => $row['subgenerica'],
                         'cod_subgen_det' => $row['cod_subgen_det'],
                         'subgenerica_detalle' => $row['subgenerica_detalle'],
-                        'cod_espe' => $row['cod_espe'],
+                        'cod_esp' => $row['cod_esp'],
                         'especifica' => $row['especifica'],
-                        'cod_espe_det' => $row['cod_espe_det'],
+                        'cod_esp_det' => $row['cod_esp_det'],
                         'especifica_detalle' => $row['especifica_detalle'],
-                        'monto_pia' => $row['monto_pia'],
-                        'monto_pim' => $row['monto_pim'],
-                        'monto_certificado' => $row['monto_certificado'],
-                        'monto_comprometido_anual' => $row['monto_comprometido_anual'],
-                        'monto_comprometido' => $row['monto_comprometido'],
-                        'monto_devengado' => $row['monto_devengado'],
-                        'monto_girado' => $row['monto_girado'],
+                        'pia' => $row['pia'],
+                        'pim' => $row['pim'],
+                        'certificado' => $row['certificado'],
+                        'compromiso_anual' => $row['compromiso_anual'],
+                        'compromiso_mensual' => $row['compromiso_mensual'],
+                        'devengado' => $row['devengado'],
+                        'girado' => $row['girado'],
                     ]);
                 }
             }
         } catch (Exception $e) {
-            ImporGastos::where('importacion_id', $importacion->id)->delete();
-            DB::statement('ALTER TABLE pres_impor_gastos AUTO_INCREMENT 1');
-            $importacion->delete();
-            $mensaje = "Error en la carga de datos, comuniquese con el administrador del sistema \n" . $e->getMessage();
-            return view('presupuesto.ImporGastos.Importar', compact('mensaje'));
+            $importacion->estado = 'EL';
+            $importacion->save();
+
+            $mensaje = "Error en la carga de datos, verifique los datos de su archivo y/o comuniquese con el administrador del sistema" . $e->getMessage();
+            $this->json_output(400, $mensaje);
         }
 
-         $procesar = DB::select('call pres_pa_procesarImporGastos(?)', [$importacion->id]);// que sera esto :o :o :o  XDXDXD
-        return view('correcto');
+        /* try {
+            $procesar = DB::select('call edu_pa_procesarImporMatricula(?,?)', [$importacion->id, $importacion->usuarioId_Crea]);
+        } catch (Exception $e) {
+            $importacion->estado = 'EL';
+            $importacion->save();
 
-        //return 'todo OK'; //redirect()->route('pemapacopsa.listado', $importacion->id);
-        /* $mensaje = "Proceso terminado...";
-        return view('presupuesto.ImporGastos.Importar', compact('mensaje')); */
+            $mensaje = "Error al procesar la normalizacion de datos." . $e->getMessage();
+            $this->json_output(400, $mensaje);
+        } */
+
+        $mensaje = "Archivo excel subido y Procesado correctamente .";
+        $this->json_output(200, $mensaje, '');
     }
-    /* 
-    
+    /*
+
     public function importarListado($importacion_id)
     {
         return view('Vivienda.PadronEmapacopsa.ListaImportada', compact('importacion_id'));
