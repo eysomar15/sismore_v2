@@ -8,12 +8,14 @@ use Illuminate\Http\Request;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\Importacion;
 use App\Models\Presupuesto\ImporGastos;
+use App\Repositories\Educacion\ImporGastosRepositorio;
 use App\Repositories\Educacion\ImportacionRepositorio;
 use Exception;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\DataTables;
 
 class ImporGastosController extends Controller
 {
@@ -71,8 +73,8 @@ class ImporGastosController extends Controller
 
         $cadena = '';
         try {
-            foreach ($array as $key => $value) {
-                foreach ($value as $row) {
+            foreach ($array as $value) {
+                foreach ($value as $key => $row) {
                     if ($key > 0) break;
                     $cadena =  $cadena .
                         $row['anio'] .
@@ -232,27 +234,65 @@ class ImporGastosController extends Controller
         $mensaje = "Archivo excel subido y Procesado correctamente .";
         $this->json_output(200, $mensaje, '');
     }
-    /*
 
-    public function importarListado($importacion_id)
-    {
-        return view('Vivienda.PadronEmapacopsa.ListaImportada', compact('importacion_id'));
-    }
-    public function importarListadoDT($importacion_id)
-    {
-        $Lista = PadronEmapacopsaRepositorio::ListarImportados($importacion_id);
 
-        return  datatables()->of($Lista)->toJson();
-    }
-    public function importarAprobar($importacion_id)
+    public function ListarDTImportFuenteTodos(Request $rq)
     {
-        $importacion = ImportacionRepositorio::ImportacionPor_Id($importacion_id);
-        return  view('Vivienda.PadronEmapacopsa.Aprobar', compact('importacion_id', 'importacion'));
+        $draw = intval($rq->draw);
+        $start = intval($rq->start);
+        $length = intval($rq->length);
+
+        $query = ImportacionRepositorio::Listar_FuenteTodos('13');
+        $data = [];
+        foreach ($query as $key => $value) {
+            $nom = '';
+            if (strlen($value->cnombre) > 0) {
+                $xx = explode(' ', $value->cnombre);
+                $nom = $xx[0];
+            }
+            $ape = '';
+            if (strlen($value->capellidos) > 0) {
+                $xx = explode(' ', $value->capellidos);
+                $ape = $xx[0];
+            }
+
+            if (date('Y-m-d', strtotime($value->created_at)) == date('Y-m-d') || session('perfil_id') == 3 || session('perfil_id') == 8 || session('perfil_id') == 9 || session('perfil_id') == 10 || session('perfil_id') == 11)
+                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+            else
+                $boton = '';
+            $boton2 = '<button type="button" onclick="monitor(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
+            $data[] = array(
+                $key + 1,
+                date("d/m/Y", strtotime($value->fechaActualizacion)),
+                $value->fuente . $value->id,
+                $nom . ' ' . $ape,
+                date("d/m/Y", strtotime($value->created_at)),
+                $value->comentario,
+                $value->estado == "PR" ? "PROCESADO" : ($value->estado == "PE" ? "PENDIENTE" : "ELIMINADO"),
+                $boton /* . '&nbsp;' . $boton2, */
+            );
+        }
+        $result = array(
+            "draw" => $draw,
+            "recordsTotal" => $start,
+            "recordsFiltered" => $length,
+            "data" => $data
+        );
+        return response()->json($result);
     }
 
-    public function importarAprobarGuardar($importacion_id)
+    public function ListaImportada(Request $request, $importacion_id)
     {
-        $procesar = DB::select('call viv_pa_procesarEmapacopsa(?)', [$importacion_id]);// que sera esto :o :o :o  XDXDXD
-        return view('correcto');
-    } */
+        $data = ImporGastosRepositorio::listaImportada($importacion_id);
+        return DataTables::of($data)->make(true);
+    }
+
+    public function eliminar($id)
+    {
+        $entidad = Importacion::find($id);
+        $entidad->estado = 'EL';
+        $entidad->save();
+
+        return response()->json(array('status' => true));
+    }
 }

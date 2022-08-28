@@ -308,8 +308,8 @@
                                     <thead>
                                         <tr class="bg-primary text-white text-center">
                                             <td rowspan="2">NIVEL_MODALIDAD</td>
-                                            <td colspan="3">SERVICIOS EDUCATIVOS</td>
                                             <td colspan="3">INSTITUCIONES EDUCATIVAS</td>
+                                            <td colspan="3">SERVICIOS EDUCATIVOS</td>
                                             <td colspan="3">SECCIONES</td>
                                         </tr>
                                         <tr class="bg-primary text-white text-center">
@@ -682,7 +682,7 @@
                 }, */
                 series: [{
                     showInLegend: true,
-                    //name: 'Share',                    
+                    //name: 'Share',
                     data: datos,
                 }],
                 credits: false,

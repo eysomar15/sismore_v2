@@ -246,7 +246,7 @@ class CuadroAsigPersonalController extends Controller
             $data[] = array(
                 $key + 1,
                 date("d/m/Y", strtotime($value->fechaActualizacion)),
-                $value->fuente.$value->id,
+                $value->fuente,
                 $nom . ' ' . $ape,
                 date("d/m/Y", strtotime($value->created_at)),
                 $value->comentario,
