@@ -28,7 +28,10 @@
                 <div class="card card-fill bg-primary  mb-0">
                     <div class="card-header bg-transparent">
                         <h3 class="card-title text-white text-center">AVANCE MATRICULA SEGÚN SIAGIE- MINEDO ACTUALIZADO AL
-                            {{ $fecha }}</h3>
+                            {{ $fecha }}
+                                <a href="javascript:location.reload()" class="btn btn-warning" title="ACTUALIZAR PAGINA"><i
+                                        class="fa fa-redo"></i></a>
+                             </h3>
                     </div>
                 </div>
             </div>
@@ -49,6 +52,15 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <label class="col-md-1 col-form-label">Ugel</label>
+                                <div class="col-md-2">
+                                    <select id="ugel" name="ugel" class="form-control" onchange="cargartabla0()">
+                                        <option value="0">Todos</option>
+                                        @foreach ($ugels as $ugel)
+                                            <option value="{{ $ugel['id'] }}">{{ $ugel['nombre'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 <label class="col-md-1 col-form-label">Gestion</label>
                                 <div class="col-md-2">
                                     <select id="gestion" name="gestion" class="form-control" onchange="cargartabla0()">
@@ -58,8 +70,8 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <label class="col-md-2 col-form-label">Área Geografica</label>
-                                <div class="col-md-3">
+                                <label class="col-md-1 col-form-label">Área Geogra</label>
+                                <div class="col-md-2">
                                     <select id="area" name="area" class="form-control" onchange="cargartabla0()">
                                         <option value="0">Todos</option>
                                         @foreach ($areas as $prov)
@@ -67,10 +79,10 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-1">
+                                {{-- <div class="col-md-1">
                                     <a href="javascript:location.reload()" class="btn btn-primary"><i
                                             class="fa fa-redo"></i></a>
-                                </div>
+                                </div> --}}
 
                             </div>
                         </form>

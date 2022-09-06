@@ -34,7 +34,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($base as $item)
+        @foreach ($base as $key=>$item)
             <tr class="text-center">
                 <th>{{ $key+1 }}</th>
                 <td class="text-left"><a href="#" class="">{{ $item->iiee }}</a></td>
@@ -56,6 +56,7 @@
     </tbody>
     <tfoot>
         <tr class="text-center bg-primary text-white">
+            <th class="text-left"></th>
             <th class="text-left">TOTAL</th>
             <th>{{ number_format($foot->tts, 0) }}</th>
             <th>{{ number_format($foot->ttsh, 0) }}</th>

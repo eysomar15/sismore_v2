@@ -28,7 +28,8 @@
                 <div class="card card-fill bg-primary  mb-0">
                     <div class="card-header bg-transparent">
                         <h3 class="card-title text-white text-center">COBERTURA DE PLAZAS - NEXUS ACTUALIZADO AL
-                            {{ $fecha }}</h3>
+                            {{ $fecha }} <a href="javascript:location.reload()" class="btn btn-warning" title="ACTUALIZAR PAGINA"><i
+                                class="fa fa-redo"></i></a></h3>
                     </div>
                 </div>
             </div>
@@ -51,23 +52,33 @@
                                 </div>
                                 <label class="col-md-1 col-form-label">Tipo</label>
                                 <div class="col-md-2">
-                                    <select id="tipo" name="tipo" class="form-control" onchange="cargarnivelmodalidad();cargartabla0()">
+                                    <select id="tipo" name="tipo" class="form-control"
+                                        onchange="cargarnivelmodalidad();cargartabla0()">
                                         <option value="0">Todos</option>
                                         @foreach ($tipo as $prov)
                                             <option value="{{ $prov->tipo }}">{{ $prov->tipo }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <label class="col-md-2 col-form-label">Nivel</label>
-                                <div class="col-md-3">
+                                <label class="col-md-1 col-form-label">Nivel</label>
+                                <div class="col-md-2">
                                     <select id="nivel" name="nivel" class="form-control" onchange="cargartabla0()">
                                         <option value="0">Todos</option>
                                     </select>
                                 </div>
-                                <div class="col-md-1">
+                                <label class="col-md-1 col-form-label">Ugel</label>
+                                <div class="col-md-2">
+                                    <select id="ugel" name="ugel" class="form-control" onchange="cargartabla0()">
+                                        <option value="0">Todos</option>
+                                        @foreach ($ugels as $ugel)
+                                            <option value="{{ $ugel['id'] }}">{{ $ugel['nombre'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                {{-- <div class="col-md-1">
                                     <a href="javascript:location.reload()" class="btn btn-primary"><i
                                             class="fa fa-redo"></i></a>
-                                </div>
+                                </div> --}}
 
                             </div>
                         </form>
@@ -185,17 +196,17 @@
                 },
             }); */
 
-           /*  $.ajax({
-                url: "{{ route('matriculadetalle.avance.grafica1') }}",
-                type: "POST",
-                data: $('#form_opciones').serialize(),
-                success: function(data) {
-                    gLineaBasica('gra1', data, '', 'MATRICULA ACUMULADA MENSUAL', '');
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                },
-            }); */
+            /*  $.ajax({
+                 url: "{{ route('matriculadetalle.avance.grafica1') }}",
+                 type: "POST",
+                 data: $('#form_opciones').serialize(),
+                 success: function(data) {
+                     gLineaBasica('gra1', data, '', 'MATRICULA ACUMULADA MENSUAL', '');
+                 },
+                 error: function(jqXHR, textStatus, errorThrown) {
+                     console.log(jqXHR);
+                 },
+             }); */
 
 
         }

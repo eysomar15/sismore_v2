@@ -22,12 +22,12 @@ class PLazaController extends Controller
 
     public function DocentesPrincipal()
     {
+        /* anios */
         $anios = PLazaRepositorio::listar_anios();
-        /* $imp = Importacion::where('fuenteImportacion_id', '2')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')
-            ->select('id', 'fechaActualizacion')->take(1)->first(); */
-        /* $fecha = date('d/m/Y', strtotime($imp->fechaActualizacion)); */
+        /* ugels */
+        $ugels = Ugel::select('id', 'nombre', 'codigo')->where('codigo', 'like', '25%')->get();
 
-        return view('educacion.Plaza.DocentesPrincipal', compact('anios'));
+        return view('educacion.Plaza.DocentesPrincipal', compact('anios', 'ugels'));
     }
 
     public function nemuDocente($importacion_id, $anio)
@@ -36,7 +36,7 @@ class PLazaController extends Controller
         //$info['v2'] = PlazaRepositorio::listar_docentesyauxiliaresporugel_grafica($importacion_id);
         //$info['v3'] = PlazaRepositorio::listar_trabajadoresadministrativosporugel_grafica($importacion_id);
         //$info['v4'] = PlazaRepositorio::listar_trabajadorespecporugel_grafica($importacion_id);
-        $info['opt1'] = PlazaRepositorio::listar_tipotrabajadores($importacion_id, 1)->count();
+        /* $info['opt1'] = PlazaRepositorio::listar_tipotrabajadores($importacion_id, 1)->count();
         $info['opt2'] = PlazaRepositorio::listar_tipotrabajadores($importacion_id, 2)->count();
         $info['opt3'] = PlazaRepositorio::listar_tipotrabajadores($importacion_id, 3)->count();
         $info['opt4'] = PlazaRepositorio::listar_tipotrabajadores($importacion_id, 4)->count();
@@ -49,7 +49,7 @@ class PLazaController extends Controller
         $info['v7'] = PlazaRepositorio::listar_plazadocentesegunano_grafica();
         $info['v8'] = PlazaRepositorio::listar_plazadocentesegunmes_grafica($importacion_id, $anio);
         $info['DT'] = PlazaRepositorio::listar_totalplazacontratadoynombradossegunugelyniveleducativo($importacion_id);
-        return response()->json(compact('info'));
+        return response()->json(compact('info')); */
     }
 
     public function DocentesPrincipalHead(Request $rq)
@@ -65,70 +65,70 @@ class PLazaController extends Controller
     public function DocentesPrincipalgra1(Request $rq)
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['v1'] = PlazaRepositorio::listar_plazasegununidaddegestioneducativa_grafica($imp);
+        $info['v1'] = PlazaRepositorio::listar_plazasegununidaddegestioneducativa_grafica($imp, $rq->ugel);
         return response()->json(compact('info'));
     }
 
     public function DocentesPrincipalgra2(Request $rq)
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['v2'] = PlazaRepositorio::listar_plazaseguntipodeniveleducactivo_grafica($imp);
+        $info['v2'] = PlazaRepositorio::listar_plazaseguntipodeniveleducactivo_grafica($imp, $rq->ugel);
         return response()->json(compact('info'));
     }
 
     public function DocentesPrincipalgra3(Request $rq)
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['v3'] = PlazaRepositorio::listar_plazaseguntipotrabajador_grafica($imp);
+        $info['v3'] = PlazaRepositorio::listar_plazaseguntipotrabajador_grafica($imp, $rq->ugel);
         return response()->json(compact('info'));
     }
 
     public function DocentesPrincipalgra4(Request $rq)
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['v4'] = PlazaRepositorio::listar_plazadocenteseguntipodeniveleducactivo_grafica($imp);
+        $info['v4'] = PlazaRepositorio::listar_plazadocenteseguntipodeniveleducactivo_grafica($imp, $rq->ugel);
         return response()->json(compact('info'));
     }
 
     public function DocentesPrincipalgra5(Request $rq)
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['v5'] = PlazaRepositorio::listar_plazadocentesegunsituacionlaboral_grafica($imp);
+        $info['v5'] = PlazaRepositorio::listar_plazadocentesegunsituacionlaboral_grafica($imp, $rq->ugel);
         return response()->json(compact('info'));
     }
 
     public function DocentesPrincipalgra6(Request $rq)
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['v6'] = PlazaRepositorio::listar_plazadocentesegunregimenlaboral_grafica($imp);
+        $info['v6'] = PlazaRepositorio::listar_plazadocentesegunregimenlaboral_grafica($imp, $rq->ugel);
         return response()->json(compact('info'));
     }
 
     public function DocentesPrincipalgra7(Request $rq)
     {
         //$imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['v7'] = PlazaRepositorio::listar_plazassegunano_grafica();
+        $info['v7'] = PlazaRepositorio::listar_plazassegunano_grafica($rq->ugel);
         return response()->json(compact('info'));
     }
 
     public function DocentesPrincipalgra8(Request $rq)
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['v8'] = PlazaRepositorio::listar_plazassegunmes_grafica($imp, $rq->anio);
+        $info['v8'] = PlazaRepositorio::listar_plazassegunmes_grafica($imp, $rq->anio, $rq->ugel);
         return response()->json(compact('info'));
     }
 
     public function DocentesPrincipalgra9(Request $rq)
     {
         //$imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['v9'] = PlazaRepositorio::listar_plazadocentesegunano_grafica();
+        $info['v9'] = PlazaRepositorio::listar_plazadocentesegunano_grafica($rq->ugel);
         return response()->json(compact('info'));
     }
 
     public function DocentesPrincipalgra10(Request $rq)
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['v10'] = PlazaRepositorio::listar_plazadocentesegunmes_grafica($imp, $rq->anio);
+        $info['v10'] = PlazaRepositorio::listar_plazadocentesegunmes_grafica($imp, $rq->anio, $rq->ugel);
         return response()->json(compact('info'));
     }
 
@@ -136,7 +136,7 @@ class PLazaController extends Controller
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0);
         $info['fecha'] = date('d/m/Y', strtotime($imp->fechaActualizacion));
-        $info['DT'] = PlazaRepositorio::listar_totalplazacontratadoynombradossegunugelyniveleducativo($imp->id);
+        $info['DT'] = PlazaRepositorio::listar_totalplazacontratadoynombradossegunugelyniveleducativo($imp->id, $rq->ugel);
         return response()->json(compact('info'));
     }
 
@@ -144,7 +144,7 @@ class PLazaController extends Controller
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0);
         $info['fecha'] = date('d/m/Y', strtotime($imp->fechaActualizacion));
-        $info['DT'] = PlazaRepositorio::cargarresumendeplazatabla2($imp->id);
+        $info['DT'] = PlazaRepositorio::cargarresumendeplazatabla2($imp->id, $rq->ugel);
         return response()->json(compact('info'));
     }
 
@@ -152,7 +152,7 @@ class PLazaController extends Controller
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0);
         $info['fecha'] = date('d/m/Y', strtotime($imp->fechaActualizacion));
-        $info['DT'] = PlazaRepositorio::cargarresumendeplazatabla3($imp->id);
+        $info['DT'] = PlazaRepositorio::cargarresumendeplazatabla3($imp->id, $rq->ugel);
         return response()->json(compact('info'));
     }
 
@@ -160,7 +160,7 @@ class PLazaController extends Controller
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0);
         $info['fecha'] = date('d/m/Y', strtotime($imp->fechaActualizacion));
-        $info['DT'] = PlazaRepositorio::cargarresumendeplazatabla4($rq, $imp->id);
+        $info['DT'] = PlazaRepositorio::cargarresumendeplazatabla4($rq, $imp->id, $rq->ugel);
         return response()->json(compact('info'));
     }
 
@@ -198,30 +198,21 @@ class PLazaController extends Controller
 
     public function coberturaplaza()
     {
-        /* $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['opt1'] = PlazaRepositorio::listar_tipotrabajadores($imp, 1)->count();
-        $info['opt2'] = PlazaRepositorio::listar_tipotrabajadores($imp, 2)->count();
-        $info['opt3'] = PlazaRepositorio::listar_tipotrabajadores($imp, 3)->count();
-        $info['opt4'] = PlazaRepositorio::listar_tipotrabajadores($imp, 4)->count();
-        return response()->json(compact('info')); */
-
-        /*  */
-
         /* anos */
         $anios = Importacion::select(DB::raw('YEAR(fechaActualizacion) as ano'))
             ->where('estado', 'PR')->where('fuenteImportacion_id', '2')
             ->orderBy('ano', 'desc')->distinct()->get();
         /* tipo modalidad */
         $tipo = NivelModalidad::select('tipo')->where(DB::raw('tipo is not null'), true)->groupBy('tipo')->get();
-        /* nivel modalidad */
-        //$nivel = NivelModalidad::select('id', 'nombre')->where('tipo', 'EBE')->get();
+        /* ugels */
+        $ugels = Ugel::select('id', 'nombre', 'codigo')->where('codigo', 'like', '25%')->get();
         /* ultimo reg subido */
         $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '2')
             ->orderBy('fecha', 'desc')->take(1)->get();
         $importacion_id = $imp->first()->id;
         $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
         //return [$anios, $tipo, $nivel, $imp, $fecha];
-        return view("educacion.Plaza.CoberturaPlaza", compact('anios', 'tipo', 'importacion_id', 'fecha'));
+        return view("educacion.Plaza.CoberturaPlaza", compact('anios', 'tipo', 'ugels', 'importacion_id', 'fecha'));
     }
     public function cargarcoberturaplazatabla1(Request $rq)
     {
@@ -229,8 +220,8 @@ class PLazaController extends Controller
         $tipo = $rq->tipo;
         $nivel = $rq->nivel;
 
-        $optgestion = ($tipo == 0 ? "" : ($tipo == 3 ? " and v8.id=$tipo " : " and v8.id!=3 "));
-        $optarea = $nivel == 0 ? "" : " and v9.id=$nivel ";
+        $opttipo = ($tipo == 0 ? "" : ($tipo == 3 ? " and v8.id=$tipo " : " and v8.id!=3 "));
+        $optnivel = $nivel == 0 ? "" : " and v9.id=$nivel ";
 
         $error['ano'] = $ano;
         $error['tipo'] = $tipo;
@@ -296,7 +287,7 @@ class PLazaController extends Controller
         inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
         inner join edu_tipogestion as v8 on v8.id=v7.dependencia
         inner join edu_area as v9 on v9.id=v4.Area_id
-        where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$anoA and month(v3.fechaActualizacion)=12 $optgestion $optarea
+        where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$anoA and month(v3.fechaActualizacion)=12 $opttipo $optnivel
         group by ugel
         order by ugel asc
             ) as xx"))->get();
@@ -343,7 +334,7 @@ class PLazaController extends Controller
             inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
             inner join edu_tipogestion as v8 on v8.id=v7.dependencia
             inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $optgestion $optarea
+            where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $opttipo $optnivel
             group by id,ugel
             order by ugel asc
             ) as xx"))->get();

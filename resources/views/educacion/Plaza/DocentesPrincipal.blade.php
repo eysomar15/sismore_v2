@@ -39,17 +39,26 @@
                             {{-- <input type="hidden" id="importacion_id" name="importacion_id"> --}}
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="titulo_Indicadores  mb-0">REPORTE DE PLAZAS DOCENTES</p>
+                                    <p class="titulo_Indicadores  mb-0">RESUMEN DE PLAZAS</p>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     <div class="form-group row">
-                                        <div class="col-md-4"></div>
-                                        <label class="col-md-4 col-form-label">Año:</label>
-                                        <div class="col-md-4">
+                                        <label class="col-md-2 col-form-label">Año</label>
+                                        <div class="col-md-3">
                                             <select id="anio" name="anio" class="form-control"
                                                 onchange="cargardatos();">
                                                 @foreach ($anios as $item)
                                                     <option value="{{ $item->anio }}"> {{ $item->anio }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <label class="col-md-2 col-form-label">Ugel</label>
+                                        <div class="col-md-5">
+                                            <select id="ugel" name="ugel" class="form-control"
+                                                onchange="cargardatos()">
+                                                <option value="0">Todos</option>
+                                                @foreach ($ugels as $ugel)
+                                                    <option value="{{ $ugel['id'] }}">{{ $ugel['nombre'] }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -316,7 +325,7 @@
                     <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista3">
                         </div>
-                       {{--  <p class="text-muted font-13 m-0 p-0 text-right">
+                        {{-- <p class="text-muted font-13 m-0 p-0 text-right">
                             Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span
                                 id="fechaActualizacion"></span>
                         </p> --}}

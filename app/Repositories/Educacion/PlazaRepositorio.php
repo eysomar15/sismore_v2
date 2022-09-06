@@ -335,122 +335,139 @@ class PlazaRepositorio
     }
 
 
-    public static function listar_plazasegununidaddegestioneducativa_grafica($importacion_id)
+    public static function listar_plazasegununidaddegestioneducativa_grafica($importacion_id, $ugel)
     {
         $result1 = DB::table('edu_plaza as v1')
             ->join('edu_institucioneducativa as v2', 'v2.id', '=', 'v1.institucionEducativa_id')
             ->join('edu_tipogestion as v3', 'v3.id', '=', 'v2.TipoGestion_id')
-            ->join('edu_ugel as v4', 'v4.id', '=', 'v2.Ugel_id')
+            ->join('edu_ugel as v4', 'v4.id', '=', 'v1.Ugel_id')
             ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
             ->where('v1.importacion_id', $importacion_id)
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
             ->groupBy('v4.nombre')
             ->select('v4.nombre as name', DB::raw('count(v1.id) as y'))
-            ->orderBy('y', 'desc')
-            ->get();
+            ->orderBy('y', 'desc');
+        if ($ugel != 0)
+            $result1 = $result1->where('v4.id', $ugel);
+        $result1 = $result1->get();
         foreach ($result1 as $key => $value) {
             $value->y = (int)$value->y;
         }
         return $result1;
     }
-    public static function listar_plazaseguntipodeniveleducactivo_grafica($importacion_id)
+    public static function listar_plazaseguntipodeniveleducactivo_grafica($importacion_id, $ugel)
     {
         $result1 = DB::table('edu_plaza as v1')
             ->join('edu_nivelmodalidad as v2', 'v2.id', '=', 'v1.NivelModalidad_id')
+            ->join('edu_ugel as v4', 'v4.id', '=', 'v1.Ugel_id')
             ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
             ->where('v1.importacion_id', $importacion_id)
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
             ->groupBy('v2.tipo')
             ->select('v2.tipo as name', DB::raw('count(v1.id) as y'))
-            ->orderBy('y', 'desc')
-            ->get();
+            ->orderBy('y', 'desc');
+        if ($ugel != 0)
+            $result1 = $result1->where('v4.id', $ugel);
+        $result1 = $result1->get();
         foreach ($result1 as $key => $value) {
             $value->y = (int)$value->y;
         }
         return $result1;
     }
 
-    public static function listar_plazaseguntipotrabajador_grafica($importacion_id)
+    public static function listar_plazaseguntipotrabajador_grafica($importacion_id, $ugel)
     {
         $result1 = DB::table('edu_plaza as v1')
             ->join('edu_tipotrabajador as v2', 'v2.id', '=', 'v1.tipoTrabajador_id')
             ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v2.dependencia')
+            ->join('edu_ugel as v4', 'v4.id', '=', 'v1.Ugel_id')
             ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
             ->where('v1.importacion_id', $importacion_id)
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
             ->where('v3.nombre', 'DOCENTE')
             ->groupBy('v2.nombre')
             ->select('v2.nombre as name', DB::raw('count(v1.id) as y'))
-            ->orderBy('y', 'desc')
-            ->get();
+            ->orderBy('y', 'desc');
+        if ($ugel != 0)
+            $result1 = $result1->where('v4.id', $ugel);
+        $result1 = $result1->get();
         foreach ($result1 as $key => $value) {
             $value->y = (int)$value->y;
         }
         return $result1;
     }
 
-    public static function listar_plazadocenteseguntipodeniveleducactivo_grafica($importacion_id)
+    public static function listar_plazadocenteseguntipodeniveleducactivo_grafica($importacion_id, $ugel)
     {
         $result1 = DB::table('edu_plaza as v1')
             ->join('edu_nivelmodalidad as v2', 'v2.id', '=', 'v1.NivelModalidad_id')
             ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
             ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
             ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('edu_ugel as v6', 'v6.id', '=', 'v1.Ugel_id')
             ->where('v1.importacion_id', $importacion_id)
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
             ->where('v3.nombre', 'DOCENTE')
             ->groupBy('v2.tipo')
             ->select('v2.tipo as name', DB::raw('count(v1.id) as y'))
-            ->orderBy('y', 'desc')
-            ->get();
+            ->orderBy('y', 'desc');
+        if ($ugel != 0)
+            $result1 = $result1->where('v6.id', $ugel);
+        $result1 = $result1->get();
         foreach ($result1 as $key => $value) {
             $value->y = (int)$value->y;
         }
         return $result1;
     }
 
-    public static function listar_plazadocentesegunsituacionlaboral_grafica($importacion_id)
+    public static function listar_plazadocentesegunsituacionlaboral_grafica($importacion_id, $ugel)
     {
         $result1 = DB::table('edu_plaza as v1')
             ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
             ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
             ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
             ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('edu_ugel as v6', 'v6.id', '=', 'v1.Ugel_id')
             ->where('v1.importacion_id', $importacion_id)
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
             ->where('v3.nombre', 'DOCENTE')
             ->where('v4.nombre', 'DOCENTE')
             ->groupBy('v2.nombre')
             ->select('v2.nombre as name', DB::raw('count(v1.id) as y'))
-            ->orderBy('y', 'desc')
-            ->get();
+            ->orderBy('y', 'desc');
+        if ($ugel != 0)
+            $result1 = $result1->where('v6.id', $ugel);
+        $result1 = $result1->get();
         foreach ($result1 as $key => $value) {
             $value->y = (int)$value->y;
         }
         return $result1;
     }
 
-    public static function listar_plazadocentesegunregimenlaboral_grafica($importacion_id)
+    public static function listar_plazadocentesegunregimenlaboral_grafica($importacion_id, $ugel)
     {
         $result1 = DB::table('edu_plaza as v1')
             ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
             ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
             ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('edu_ugel as v6', 'v6.id', '=', 'v1.Ugel_id')
             ->where('v1.importacion_id', $importacion_id)
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
             ->where('v3.nombre', 'DOCENTE')
             ->where('v4.nombre', 'DOCENTE')
             ->groupBy('v1.ley')
             ->select('v1.ley as name', DB::raw('count(v1.id) as y'))
-            ->orderBy('y', 'desc')
-            ->get();
+            ->orderBy('y', 'desc');
+        if ($ugel != 0)
+            $result1 = $result1->where('v6.id', $ugel);
+        $result1 = $result1->get();
         foreach ($result1 as $key => $value) {
             $value->y = (int)$value->y;
         }
         return $result1;
     }
 
-    public static function listar_plazassegunano_grafica()
+    public static function listar_plazassegunano_grafica($ugel)
     {
         $regs = Importacion::select(DB::raw("year(fechaActualizacion) ano"), DB::raw("max(id) id"))->where("estado", "PR")->where('fuenteImportacion_id', '2')
             ->groupBy('ano')->get();
@@ -464,6 +481,7 @@ class PlazaRepositorio
             ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
             ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
             ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->join('edu_ugel as v7', 'v7.id', '=', 'v1.Ugel_id')
             ->where('v6.estado', 'PR')
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
             //->where('v3.nombre', 'DOCENTE')->where('v4.nombre', 'DOCENTE')
@@ -474,8 +492,10 @@ class PlazaRepositorio
                 DB::raw('YEAR(v6.fechaActualizacion) as name'),
                 DB::raw('count(v1.id) as y')
             )
-            ->orderBy('name', 'ASC')
-            ->get();
+            ->orderBy('name', 'ASC');
+        if ($ugel != 0)
+            $query = $query->where('v7.id', $ugel);
+        $query = $query->get();
         return $query;
 
         /* $query = DB::table('edu_plaza as v1')
@@ -506,7 +526,7 @@ class PlazaRepositorio
         } */
     }
 
-    public static function listar_plazassegunmes_grafica($importacion_id, $anio)
+    public static function listar_plazassegunmes_grafica($importacion_id, $anio, $ugel)
     {
         $regs = Importacion::select(DB::raw("month(fechaActualizacion) mes"), DB::raw("max(id) id"))->where("estado", "PR")->where('fuenteImportacion_id', '2')
             ->where(DB::raw('year(fechaActualizacion)'), $anio)->groupBy('mes')->get();
@@ -522,6 +542,7 @@ class PlazaRepositorio
             ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
             ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
             ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->join('edu_ugel as v7', 'v7.id', '=', 'v1.Ugel_id')
             ->where('v6.estado', 'PR')
             ->where(DB::raw('YEAR(v6.fechaActualizacion)'), '=', $anio)
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
@@ -547,17 +568,19 @@ class PlazaRepositorio
                 ELSE "" END as `name`'),
                 DB::raw('count(v1.id) as y ')
             )
-            ->orderBy('mes', 'ASC')
-            ->get();
+            ->orderBy('mes', 'ASC');
+        if ($ugel != 0)
+            $query = $query->where('v7.id', $ugel);
+        $query = $query->get();
         return $query;
-        foreach ($query as $key => $value) {
+        /* foreach ($query as $key => $value) {
             $value->name = "" . $value->name;
             $value->y = (int)$value->y;
         }
-        return $query;
+        return $query; */
     }
 
-    public static function listar_plazadocentesegunano_grafica()
+    public static function listar_plazadocentesegunano_grafica($ugel)
     {
         $regs = Importacion::select(DB::raw("year(fechaActualizacion) ano"), DB::raw("max(id) id"))->where("estado", "PR")->where('fuenteImportacion_id', '2')
             ->groupBy('ano')->get();
@@ -571,6 +594,7 @@ class PlazaRepositorio
             ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
             ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
             ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->join('edu_ugel as v7', 'v7.id', '=', 'v1.Ugel_id')
             ->where('v6.estado', 'PR')
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
             ->where('v3.nombre', 'DOCENTE')->where('v4.nombre', 'DOCENTE')
@@ -581,8 +605,10 @@ class PlazaRepositorio
                 DB::raw('YEAR(v6.fechaActualizacion) as name'),
                 DB::raw('count(v1.id) as y')
             )
-            ->orderBy('name', 'ASC')
-            ->get();
+            ->orderBy('name', 'ASC');
+        if ($ugel != 0)
+            $query = $query->where('v7.id', $ugel);
+        $query = $query->get();
         return $query;
 
         /* $query = DB::table('edu_plaza as v1')
@@ -613,7 +639,7 @@ class PlazaRepositorio
         } */
     }
 
-    public static function listar_plazadocentesegunmes_grafica($importacion_id, $anio)
+    public static function listar_plazadocentesegunmes_grafica($importacion_id, $anio, $ugel)
     {
         $regs = Importacion::select(DB::raw("month(fechaActualizacion) mes"), DB::raw("max(id) id"))->where("estado", "PR")->where('fuenteImportacion_id', '2')
             ->where(DB::raw('year(fechaActualizacion)'), $anio)->groupBy('mes')->get();
@@ -629,6 +655,7 @@ class PlazaRepositorio
             ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
             ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
             ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->join('edu_ugel as v7', 'v7.id', '=', 'v1.Ugel_id')
             ->where('v6.estado', 'PR')
             ->where(DB::raw('YEAR(v6.fechaActualizacion)'), '=', $anio)
             ->where('v5.nombre', '!=', 'POR REEMPLAZO')
@@ -654,17 +681,19 @@ class PlazaRepositorio
                 ELSE "" END as `name`'),
                 DB::raw('count(v1.id) as y ')
             )
-            ->orderBy('mes', 'ASC')
-            ->get();
+            ->orderBy('mes', 'ASC');
+        if ($ugel != 0)
+            $query = $query->where('v7.id', $ugel);
+        $query = $query->get();
         return $query;
-        foreach ($query as $key => $value) {
+        /* foreach ($query as $key => $value) {
             $value->name = "" . $value->name;
             $value->y = (int)$value->y;
         }
-        return $query;
+        return $query; */
     }
 
-    public static function listar_totalplazacontratadoynombradossegunugelyniveleducativo($importacion_id)
+    public static function listar_totalplazacontratadoynombradossegunugelyniveleducativo($importacion_id, $ugel)
     {
         $bodys = DB::table('edu_plaza as v1')
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
@@ -692,8 +721,10 @@ class PlazaRepositorio
                 DB::raw('sum(if(v5.nombre="PEC",1,0)) as PEC'),
                 DB::raw('count(v1.id) as TOTAL')
             )
-            ->orderBy('TOTAL', 'desc')
-            ->get();
+            ->orderBy('TOTAL', 'desc');
+        if ($ugel != 0)
+            $bodys = $bodys->where('v2.id', $ugel);
+        $bodys = $bodys->get();
         /* $heads = DB::table('edu_plaza as v1')
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
             ->join('edu_nivelmodalidad as v3', 'v3.id', '=', 'v1.nivelModalidad_id')
@@ -743,8 +774,11 @@ class PlazaRepositorio
                 DB::raw('sum(if(v6.nombre="NOMBRADO" and v5.nombre="PEC",1,0)) as PNOMBRADO'),
                 DB::raw('sum(if(v5.nombre="PEC",1,0)) as PEC'),
                 DB::raw('count(v1.id) as TOTAL')
-            )
-            ->get()->first();
+            );
+        if ($ugel != 0)
+            $foot = $foot->where('v2.id', $ugel);
+        $foot = $foot->get()->first();
+        //->get()->first();
         $dt['table'] = view('educacion.Plaza.DocentesPrincipalTabla1', compact(/* 'heads', */'bodys', 'foot'))->render();
         return $dt;
     }
@@ -920,7 +954,7 @@ class PlazaRepositorio
         return [];
     }
 
-    public static function cargarresumendeplazatabla2($importacion_id)
+    public static function cargarresumendeplazatabla2($importacion_id, $ugel)
     {/* titulo:: */
         $bodys = DB::table('edu_plaza as v1')
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
@@ -939,8 +973,11 @@ class PlazaRepositorio
                 DB::raw('SUM(if(v2.id=3,1,0)) as atalaya'),
                 DB::raw('SUM(if(v2.id=4,1,0)) as abad'),
                 DB::raw('SUM(if(v2.id=5,1,0)) as purus'),
-            )
-            ->get();
+            );
+        if ($ugel != 0)
+            $bodys = $bodys->where('v2.id', $ugel);
+        $bodys = $bodys->get();
+
         $heads = DB::table('edu_plaza as v1')
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
             ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
@@ -957,8 +994,11 @@ class PlazaRepositorio
                 DB::raw('SUM(if(v2.id=3,1,0)) as atalaya'),
                 DB::raw('SUM(if(v2.id=4,1,0)) as abad'),
                 DB::raw('SUM(if(v2.id=5,1,0)) as purus'),
-            )
-            ->get();
+            );
+        if ($ugel != 0)
+            $heads = $heads->where('v2.id', $ugel);
+        $heads = $heads->get();
+
         $foot = DB::table('edu_plaza as v1')
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
             ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
@@ -973,13 +1013,16 @@ class PlazaRepositorio
                 DB::raw('SUM(if(v2.id=3,1,0)) as atalaya'),
                 DB::raw('SUM(if(v2.id=4,1,0)) as abad'),
                 DB::raw('SUM(if(v2.id=5,1,0)) as purus'),
-            )
-            ->get()->first();
+            );
+        if ($ugel != 0)
+            $foot = $foot->where('v2.id', $ugel);
+        $foot = $foot->get()->first();
+        //->get()->first();
         $dt['table'] = view('educacion.Plaza.DocentesPrincipalTabla2', compact('heads', 'bodys', 'foot'))->render();
         return $dt;
     }
 
-    public static function cargarresumendeplazatabla3($importacion_id)
+    public static function cargarresumendeplazatabla3($importacion_id, $ugel)
     {/* titulo:: */
         $bodys = DB::table('edu_plaza as v1')
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
@@ -1002,8 +1045,10 @@ class PlazaRepositorio
                 DB::raw('sum(IF(v6.id=2,1,0)) encargado'),
                 DB::raw('sum(IF(v6.id=3,1,0)) nombrado'),
                 DB::raw('sum(IF(v6.id=5,1,0)) vacante'),
-            )
-            ->get();
+            );
+        if ($ugel != 0)
+            $bodys = $bodys->where('v2.id', $ugel);
+        $bodys = $bodys->get();
         /* $heads = DB::table('edu_plaza as v1')
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
             ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
@@ -1040,13 +1085,16 @@ class PlazaRepositorio
                 DB::raw('sum(IF(v6.id=2,1,0)) encargado'),
                 DB::raw('sum(IF(v6.id=3,1,0)) nombrado'),
                 DB::raw('sum(IF(v6.id=5,1,0)) vacante'),
-            )
-            ->get()->first();
+            );
+        if ($ugel != 0)
+            $foot = $foot->where('v2.id', $ugel);
+        $foot = $foot->get()->first();
+
         $dt['table'] = view('educacion.Plaza.DocentesPrincipalTabla3', compact(/* 'heads',  */'bodys', 'foot'))->render();
         return $dt;
     }
 
-    public static function cargarresumendeplazatabla4($rq, $importacion_id)
+    public static function cargarresumendeplazatabla4($rq, $importacion_id, $ugel)
     {/* titulo:: */
         $bodys = DB::table('edu_plaza as v1')
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
@@ -1070,8 +1118,11 @@ class PlazaRepositorio
                 DB::raw('sum(IF(v6.id=2,1,0)) encargado'),
                 DB::raw('sum(IF(v6.id=3,1,0)) nombrado'),
                 DB::raw('sum(IF(v6.id=5,1,0)) vacante'),
-            )
-            ->get();
+            );
+        if ($ugel != 0)
+            $bodys = $bodys->where('v2.id', $ugel);
+        $bodys = $bodys->get();
+
         $heads = DB::table('edu_plaza as v1')
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
             ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
@@ -1093,8 +1144,11 @@ class PlazaRepositorio
                 DB::raw('sum(IF(v6.id=2,1,0)) encargado'),
                 DB::raw('sum(IF(v6.id=3,1,0)) nombrado'),
                 DB::raw('sum(IF(v6.id=5,1,0)) vacante'),
-            )
-            ->get();
+            );
+        if ($ugel != 0)
+            $heads = $heads->where('v2.id', $ugel);
+        $heads = $heads->get();
+
         $foot = DB::table('edu_plaza as v1')
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
             ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
@@ -1114,8 +1168,10 @@ class PlazaRepositorio
                 DB::raw('sum(IF(v6.id=2,1,0)) encargado'),
                 DB::raw('sum(IF(v6.id=3,1,0)) nombrado'),
                 DB::raw('sum(IF(v6.id=5,1,0)) vacante'),
-            )
-            ->get()->first();
+            );
+        if ($ugel != 0)
+            $foot = $foot->where('v2.id', $ugel);
+        $foot = $foot->get()->first();
         $dt['table'] = view('educacion.Plaza.DocentesPrincipalTabla4', compact('heads', 'bodys', 'foot'))->render();
         return $dt;
     }

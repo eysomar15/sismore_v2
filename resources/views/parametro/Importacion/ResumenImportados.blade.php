@@ -1,7 +1,8 @@
 @extends('layouts.main', ['titlePage' => 'RESUMEN DE IMPORTADOS'])
 @section('css')
     <!-- Table datatable css -->
-    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"> --}}
 @endsection
 @section('content')
@@ -13,30 +14,32 @@
                     <div class="card-header">
                         <h3 class="card-title">FILTRO</h3>
                     </div>
-
                     <div class="card-body">
-                        <div class="form">
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                    <label class=" col-form-label">SISTEMA</label>
-                                    <div class="">
-                                        <select class="form-control" name="sistema" id="sistema"
-                                            onchange="cargarfuenteimportacion()">
-                                            <option value="1">EDUCACION</option>
-                                            <option value="2">VIVIENDA</option>
-                                        </select>
+                        <form class="form-horizontal" id="form-filtro">
+                            {{-- @csrf --}}
+
+                            <div class="form">
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label class=" col-form-label">SISTEMA</label>
+                                        <div class="">
+                                            <select class="form-control" name="sistema" id="sistema"
+                                                onchange="cargarfuenteimportacion()">
+                                                <option value="1">EDUCACION</option>
+                                                <option value="2">VIVIENDA</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="col-form-label">FUENTE DE IMPORTACION</label>
-                                    <div class="">
-                                        <select class="form-control" name="fuenteimportacion"
-                                            id="fuenteimportacion" onchange="listarimportados()"></select>
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">FUENTE DE IMPORTACION</label>
+                                        <div class="">
+                                            <select class="form-control" name="fuenteimportacion" id="fuenteimportacion"
+                                                onchange="listarimportados()"></select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- .form -->
+                        </form>
                     </div>
                     <!-- card-body -->
                 </div>
@@ -66,7 +69,7 @@
                                                 <th>Registro</th>
                                                 <th>Comentario</th>
                                                 <th>Estado</th>
-                                                {{-- <th>Accion</th> --}}
+                                                <th>Accion</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -92,15 +95,47 @@
 
         $(document).ready(function() {
             cargarfuenteimportacion();
-            //listarimportados();
+
+
         });
 
         function listarimportados() {
-            var xx=$('#fuenteimportacion').val();
+            table_principal = $('#datatable').DataTable({
+                responsive: true,
+                autoWidth: false,
+                order: true,
+                language: table_language,
+                ajax: {
+                    url: "{{ route('importacion.listar.importados') }}",
+                    type: "POST",
+                    data: $('#form-filtro').serialize(),
+                    /* dataType:'json', */
+                },
+            });
+
+            {{--
+                ajax: "{{ route('importacion.listar.importados') }}",
+                type: "POST",
+                 table_principal = $('#datatable').DataTable({
+                responsive: true,
+                autoWidth: false,
+                order: true,
+                language: table_language,
+                ajax: {
+                    url: "{{ url('/') }}/Importacion/Importados/",
+                    type: "POST",
+                    data: $('#form-filtro').serialize(),
+                    dataType:'json',
+                },
+
+            }); --}}
+
+            /* A */
+            {{-- var xx = $('#fuenteimportacion').val();
             console.log($('#fuenteimportacion').val());
             table_principal = $('#datatable').DataTable({
-                //"ajax": "{{ route('importacion.listar.importados', ['fuenteimportacion_id' =>2]) }}", //ece.listar.importados
-                "ajax": "{{url('/')}}/Importacion/Importados/dt/"+xx, 
+                //"ajax": "{{ route('importacion.listar.importados', ['fuenteimportacion_id' => 2]) }}", //ece.listar.importados
+                "ajax": "{{ url('/') }}/Importacion/Importados/dt/" + xx,
                 "columns": [{
                         data: 'fechaActualizacion'
                     },
@@ -139,70 +174,7 @@
                 }).nodes().each(function(cell, i) {
                     cell.innerHTML = i + 1;
                 });
-            }).draw();
-        }
-
-        function upload(e) {
-            e.preventDefault();
-            let form = $(this),
-                wrapper = $('.pwrapper'),
-                /* wrapper_f = $('.wrapper_files'), */
-                progress_bar = $('.progress_bar'),
-                data = new FormData(form.get(0));
-
-            progress_bar.removeClass('bg-success bg-danger').addClass('bg-info');
-            progress_bar.css('width', '0%');
-            progress_bar.html('Preparando...');
-
-            wrapper.fadeIn();
-
-            $.ajax({
-                xhr: function() {
-                    let xhr = new window.XMLHttpRequest();
-                    xhr.upload.addEventListener("progress", function(e) {
-                        if (e.lengthComputable) {
-                            let percentComplete = Math.floor((e.loaded / e.total) * 100);
-                            progress_bar.css('width', percentComplete + '%');
-                            progress_bar.html(percentComplete + '%');
-                        }
-                    }, false);
-                    return xhr;
-                },
-                type: "POST",
-                url: "{{ route('CuadroAsigPersonal.guardar') }}",
-                dataType: "json",
-                contentType: false,
-                processData: false,
-                cache: false,
-                data: data,
-                beforeSend: () => {
-                    $('button', form).attr('disabled', true);
-                }
-            }).done(res => {
-                if (res.status === 200) {
-                    progress_bar.removeClass('bg-info').addClass('bg-success');
-                    progress_bar.html('Listo!');
-                    form.trigger('reset');
-
-                    setTimeout(() => {
-                        wrapper.fadeOut();
-                        progress_bar.removeClass('bg-success bg-danger').addClass('bg-info');
-                        progress_bar.css('width', '0%');
-                        table_principal.ajax.reload();
-                    }, 1500);
-                } else {
-                    progress_bar.css('width', '100%');
-                    progress_bar.html(res.msg);
-                    form.trigger('reset');
-                    //alert(res.msg);
-                }
-            }).fail(err => {
-                progress_bar.removeClass('bg-success bg-info').addClass('bg-danger');
-                //progress_bar.html('Hubo un error!!');
-                progress_bar.html('Archivo desconocido');
-            }).always(() => {
-                $('button', form).attr('disabled', false);
-            });
+            }).draw(); --}}
         }
 
         function geteliminar(id) {

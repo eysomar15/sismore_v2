@@ -256,7 +256,8 @@ Route::get('/Importacion', [ImportacionController::class, 'inicio'])->name('impo
 Route::get('/Importacion/importaciones_DataTable/', [ImportacionController::class, 'importacionesLista_DataTable'])->name('importacion.importacionesLista_DataTable');
 Route::get('/Importacion/Eliminar/{id}', [ImportacionController::class, 'eliminar'])->name('importacion.Eliminar');
 Route::get('/Importacion/GetEliminar/{id}', [ImportacionController::class, 'setEliminar']);
-Route::get('/Importacion/Importados/dt/{fuenteimportacion_id}', [ImportacionController::class, 'ListarImportadosDT'])->name('importacion.listar.importados');
+//Route::get('/Importac-ion/Impo-rtados/dt/{fuenteimp-ortacion_id}', [Importacio-nController::class, 'ListarIm-portadosDT'])->name('import-acion.listar.importados');
+Route::post('/Importacion/Importados/', [ImportacionController::class, 'ListarDTImportFuenteTodos'])->name('importacion.listar.importados');
 
 Route::get('/ECE/Importar', [EceController::class, 'importar'])->name('ece.importar');
 Route::get('/ECE/Importar/Aprobar/{importacion_id}', [EceController::class, 'importarAprobar'])->name('ece.importar.aprobar');
