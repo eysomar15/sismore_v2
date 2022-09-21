@@ -219,24 +219,14 @@ class PLazaController extends Controller
         $ano = (int)$rq->ano;
         $tipo = $rq->tipo;
         $nivel = $rq->nivel;
-
-        $opttipo = ($tipo == 0 ? "" : ($tipo == 3 ? " and v8.id=$tipo " : " and v8.id!=3 "));
-        $optnivel = $nivel == 0 ? "" : " and v9.id=$nivel ";
-
-        $error['ano'] = $ano;
-        $error['tipo'] = $tipo;
-        $error['nivel'] = $nivel;
-
+        $ugel = $rq->ugel;
 
         //$anios = ['2022', '2021', '2020'];
         $anoA = 0;
         $anoA = $ano - 1;
-        //$error['anios'] = $anios;
-        $error['anoA'] = $anoA;
-
+        /* $error['anoA'] = $anoA; */
 
         $fechas = DB::table(DB::raw("(
-            select mes, max(fecha) fecha from (
                 select
                     distinct
                     v3.fechaActualizacion fecha,
@@ -247,102 +237,96 @@ class PLazaController extends Controller
                 inner join par_importacion as v3 on v3.id=v1.importacion_id
                 where v3.estado='PR' and YEAR(v3.fechaActualizacion)=$ano
                 order by fecha desc
-            ) as xx
-            group by mes
-            order by mes asc
-                ) as xx"))->get();
+            ) as xx"))
+            ->select('mes', DB::raw('max(fecha) fecha'))
+            ->groupBy('mes')
+            ->orderBy('mes', 'asc')
+            ->get();
 
-        $error['fechas'] = $fechas;
+        /* $error['fechas'] = $fechas; */
 
-        $fx = '';
+        $fx = [];
         $anoI = 0;
         $anoF = 0;
         foreach ($fechas as $key => $value) {
-            if ($key < count($fechas) - 1)
-                $fx .= "'$value->fecha',";
-            else
-                $fx .= "'$value->fecha'";
+            $fx[] = $value->fecha;
             if ($key == 0) $anoI = $value->mes;
             if ($key == (count($fechas) - 1)) $anoF = $value->mes + 1;
         }
 
-        $error['fx'] = $fx;
+        /* $error['fx'] = $fx;
         $error['anoI'] = $anoI;
-        $error['anoF'] = $anoF;
+        $error['anoF'] = $anoF; */
 
+        $baseA = DB::table('edu_plaza as v1')
+            ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->join('edu_ugel as v7', 'v7.id', '=', 'v1.Ugel_id')
+            ->join('edu_nivelmodalidad as v8', 'v8.id', '=', 'v1.nivelModalidad_id')
+            ->where('v6.estado', 'PR')->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            //->where('v3.nombre', 'DOCENTE')->where('v4.nombre', 'DOCENTE')
+            ->where(DB::raw('YEAR(v6.fechaActualizacion)'), $anoA)
+            ->where(DB::raw('MONTH(v6.fechaActualizacion)'), 12)
+            ->groupBy('id', 'ugel')
+            ->select(
+                'v7.id',
+                DB::raw('v7.nombre as ugel'),
+                DB::raw('count(v1.id) as dic'),
+            );
+        if ($ugel != 0) $baseA = $baseA->where('v7.id', $ugel);
+        if ($tipo != 0) $baseA = $baseA->where('v8.tipo', $tipo);
+        if ($nivel != 0) $baseA = $baseA->where('v8.id', $nivel);
+        $baseA = $baseA->get();
 
-        return $error;
-
-
-        $baseA = DB::table(DB::raw("(
-        select
-            v6.nombre ugel,
-            sum(IF(month(v3.fechaActualizacion)=12,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) dic
-        from edu_matricula_detalle as v1
-        inner join edu_matricula as v2 on v2.id=v1.matricula_id
-        inner join par_importacion as v3 on v3.id=v2.importacion_id
-        inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-        inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
-        inner join edu_ugel as v6 on v6.id=v4.Ugel_id
-        inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-        inner join edu_tipogestion as v8 on v8.id=v7.dependencia
-        inner join edu_area as v9 on v9.id=v4.Area_id
-        where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$anoA and month(v3.fechaActualizacion)=12 $opttipo $optnivel
-        group by ugel
-        order by ugel asc
-            ) as xx"))->get();
         if (count($baseA) == 0) {
-            $baseA = Ugel::where('dependencia', '2')->select('nombre as ugel', DB::raw('0 as dic'))->get();
+            $baseA = Ugel::select('nombre as ugel', DB::raw('0 as dic'))->get();
         }
-        $error['baseA'] = $baseA;
+        /* $error['baseA'] = $baseA; */
 
-
-        $base = DB::table(DB::raw("(
-            select
-                v6.id,
-                v6.nombre ugel,
-                sum(IF(month(v3.fechaActualizacion)= 1,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) ene,
-                sum(IF(month(v3.fechaActualizacion)= 2,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)= 1,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) feb,
-                sum(IF(month(v3.fechaActualizacion)= 3,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)= 2,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) mar,
-                sum(IF(month(v3.fechaActualizacion)= 4,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)= 3,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) abr,
-                sum(IF(month(v3.fechaActualizacion)= 5,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)= 4,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) may,
-                sum(IF(month(v3.fechaActualizacion)= 6,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)= 5,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) jun,
-                sum(IF(month(v3.fechaActualizacion)= 7,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)= 6,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) jul,
-                sum(IF(month(v3.fechaActualizacion)= 8,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)= 7,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) ago,
-                sum(IF(month(v3.fechaActualizacion)= 9,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)= 8,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) `set`,
-                sum(IF(month(v3.fechaActualizacion)=10,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)= 9,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) oct,
-                sum(IF(month(v3.fechaActualizacion)=11,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)=10,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) nov,
-                sum(IF(month(v3.fechaActualizacion)=12,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) -
-                sum(IF(month(v3.fechaActualizacion)=11,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) dic,
-                sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) total
-            from edu_matricula_detalle as v1
-            inner join edu_matricula as v2 on v2.id=v1.matricula_id
-            inner join par_importacion as v3 on v3.id=v2.importacion_id
-            inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
-            inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
-            inner join edu_ugel as v6 on v6.id=v4.Ugel_id
-            inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
-            inner join edu_tipogestion as v8 on v8.id=v7.dependencia
-            inner join edu_area as v9 on v9.id=v4.Area_id
-            where v3.estado='PR' and v5.tipo in ('EBR','EBE') and v2.anio_id=$ano and v3.fechaActualizacion in ($fx) $opttipo $optnivel
-            group by id,ugel
-            order by ugel asc
-            ) as xx"))->get();
+        $base = DB::table('edu_plaza as v1')
+            ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->join('edu_ugel as v7', 'v7.id', '=', 'v1.Ugel_id')
+            ->join('edu_nivelmodalidad as v8', 'v8.id', '=', 'v1.nivelModalidad_id')
+            ->where('v6.estado', 'PR')->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            //->where('v3.nombre', 'DOCENTE')->where('v4.nombre', 'DOCENTE')
+            ->where(DB::raw('YEAR(v6.fechaActualizacion)'), $ano)
+            ->whereIn('v6.fechaActualizacion', $fx)
+            ->groupBy('id', 'ugel')
+            ->select(
+                'v7.id',
+                DB::raw('v7.nombre as ugel'),
+                DB::raw('count(v1.id) as conteo'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 1,1,0)) as `ene`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 2,1,0))-sum(IF(month(v6.fechaActualizacion)= 1,1,0)) as `feb`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 3,1,0))-sum(IF(month(v6.fechaActualizacion)= 2,1,0)) as `mar`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 4,1,0))-sum(IF(month(v6.fechaActualizacion)= 3,1,0)) as `abr`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 5,1,0))-sum(IF(month(v6.fechaActualizacion)= 4,1,0)) as `may`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 6,1,0))-sum(IF(month(v6.fechaActualizacion)= 5,1,0)) as `jun`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 7,1,0))-sum(IF(month(v6.fechaActualizacion)= 6,1,0)) as `jul`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 8,1,0))-sum(IF(month(v6.fechaActualizacion)= 7,1,0)) as `ago`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 9,1,0))-sum(IF(month(v6.fechaActualizacion)= 8,1,0)) as `set`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 10,1,0))-sum(IF(month(v6.fechaActualizacion)= 9,1,0)) as `oct`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 11,1,0))-sum(IF(month(v6.fechaActualizacion)= 10,1,0)) as `nov`'),
+                DB::raw('sum(IF(month(v6.fechaActualizacion)= 12,1,0))-sum(IF(month(v6.fechaActualizacion)= 11,1,0)) as `dic`'),
+            );
+        if ($ugel != 0) $base = $base->where('v7.id', $ugel);
+        if ($tipo != 0) $base = $base->where('v8.tipo', $tipo);
+        if ($nivel != 0) $base = $base->where('v8.id', $nivel);
+        $base = $base->get();
 
         $foot = ['meta' => 0, 'ene' => 0, 'feb' => 0, 'mar' => 0, 'abr' => 0, 'may' => 0, 'jun' => 0, 'jul' => 0, 'ago' => 0, 'set' => 0, 'oct' => 0, 'nov' => 0, 'dic' => 0, 'total' => 0, 'avance' => 0,];
 
         foreach ($base as $reg => $bb) {
-            $bb->treg = ($anoF != 1 ? $bb->ene : 0) + ($anoF != 2 ? $bb->feb : 0) + ($anoF != 3 ? $bb->mar : 0) + ($anoF != 4 ? $bb->abr : 0) +  ($anoF != 5 ? $bb->may : 0) +  ($anoF != 6 ? $bb->jun : 0) +  ($anoF != 7 ? $bb->jul : 0) +  ($anoF != 8 ? $bb->ago : 0) + ($anoF != 9 ? $bb->set : 0) + ($anoF != 10 ? $bb->oct : 0) +  ($anoF != 11 ? $bb->nov : 0) + ($anoF != 12 ? $bb->dic : 0);
+            $bb->treg = ($anoF != 1 ? $bb->ene : 0) + ($anoF != 2 ? $bb->feb : 0) + ($anoF != 3 ? $bb->mar : 0) + ($anoF != 4 ? $bb->abr : 0) +
+                ($anoF != 5 ? $bb->may : 0) +  ($anoF != 6 ? $bb->jun : 0) +  ($anoF != 7 ? $bb->jul : 0) +  ($anoF != 8 ? $bb->ago : 0) +
+                ($anoF != 9 ? $bb->set : 0) + ($anoF != 10 ? $bb->oct : 0) +  ($anoF != 11 ? $bb->nov : 0) + ($anoF != 12 ? $bb->dic : 0);
 
             foreach ($baseA as $key2 => $bA) {
                 if ($bA->ugel == $bb->ugel)
@@ -366,11 +350,207 @@ class PLazaController extends Controller
             $foot['total'] += $bb->treg;
         }
         $foot['avance'] = $foot['meta'] > 0 ? $foot['total'] / $foot['meta'] : 1;
-        $error['base'] = $base;
 
-
+        /* $error['base'] = $base; */
 
         //return $error;
-        return view("educacion.MatriculaDetalle.MatriculaAvancetabla0", compact('rq', 'base', 'anoI', 'anoF', 'foot'));
+        return view("educacion.Plaza.CoberturaPlazaTabla1", compact('rq', 'base', 'anoI', 'anoF', 'foot'));
+    }
+
+    public function cargarcoberturaplazatabla2(Request $rq)
+    {
+        $ano = (int)$rq->ano;
+        $tipo = $rq->tipo;
+        $nivel = $rq->nivel;
+        $ugel = $rq->ugel;
+
+        $imp = $this->cargarultimoimportado($ano, 0);
+
+        $bases = DB::table('edu_plaza as v1')
+            ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->join('edu_ugel as v7', 'v7.id', '=', 'v1.Ugel_id')
+            ->join('edu_nivelmodalidad as v8', 'v8.id', '=', 'v1.nivelModalidad_id')
+            //->where('v3.nombre', 'DOCENTE')
+            //->where('v4.nombre', 'DOCENTE')
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->where('v6.estado', 'PR')
+            //->where(DB::raw('YEAR(v6.fechaActualizacion)'), $ano)
+            ->where('v6.fechaActualizacion', $imp->fechaActualizacion)
+            ->groupBy('tipox', 'subx')
+            ->select(
+                DB::raw('v4.nombre as tipox'),
+                DB::raw('v3.nombre as subx'),
+                DB::raw('count(v1.id) as total'),
+                DB::raw('SUM(IF(v2.id=1,1,0)) as designado'),
+                DB::raw('SUM(IF(v2.id=2,1,0)) as encargado'),
+                DB::raw('SUM(IF(v2.id=3,1,0)) as nombrado'),
+                DB::raw('SUM(IF(v2.id=4,1,0)) as contratado'),
+                DB::raw('SUM(IF(v2.id=5,1,0)) as vacante'),
+                DB::raw('SUM(IF(v2.id=6,1,0)) as destacado'),
+                DB::raw('SUM(IF(v2.id=7,1,0)) as desigconfian'),
+                DB::raw('SUM(IF(v2.id=8,1,0)) as desigexcep'),
+                //DB::raw('SUM(IF(v2.id=9,1,0)) as desigtemp'),
+            );
+        if ($ugel != 0) $bases = $bases->where('v7.id', $ugel);
+        if ($tipo != 0) $bases = $bases->where('v8.tipo', $tipo);
+        if ($nivel != 0) $bases = $bases->where('v8.id', $nivel);
+        $bases = $bases->get();
+
+        $heads = DB::table('edu_plaza as v1')
+            ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->join('edu_ugel as v7', 'v7.id', '=', 'v1.Ugel_id')
+            ->join('edu_nivelmodalidad as v8', 'v8.id', '=', 'v1.nivelModalidad_id')
+            //->where('v3.nombre', 'DOCENTE')
+            //->where('v4.nombre', 'DOCENTE')
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->where('v6.estado', 'PR')
+            //->where(DB::raw('YEAR(v6.fechaActualizacion)'), $ano)
+            ->where('v6.fechaActualizacion', $imp->fechaActualizacion)
+            ->groupBy('tipox')
+            ->select(
+                DB::raw('v4.nombre as tipox'),
+                DB::raw('count(v1.id) as total'),
+                DB::raw('SUM(IF(v2.id=1,1,0)) as designado'),
+                DB::raw('SUM(IF(v2.id=2,1,0)) as encargado'),
+                DB::raw('SUM(IF(v2.id=3,1,0)) as nombrado'),
+                DB::raw('SUM(IF(v2.id=4,1,0)) as contratado'),
+                DB::raw('SUM(IF(v2.id=5,1,0)) as vacante'),
+                DB::raw('SUM(IF(v2.id=6,1,0)) as destacado'),
+                DB::raw('SUM(IF(v2.id=7,1,0)) as desigconfian'),
+                DB::raw('SUM(IF(v2.id=8,1,0)) as desigexcep'),
+            );
+        if ($ugel != 0) $heads = $heads->where('v7.id', $ugel);
+        if ($tipo != 0) $heads = $heads->where('v8.tipo', $tipo);
+        if ($nivel != 0) $heads = $heads->where('v8.id', $nivel);
+        $heads = $heads->get();
+
+        $foot = DB::table('edu_plaza as v1')
+            ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->join('edu_ugel as v7', 'v7.id', '=', 'v1.Ugel_id')
+            ->join('edu_nivelmodalidad as v8', 'v8.id', '=', 'v1.nivelModalidad_id')
+            //->where('v3.nombre', 'DOCENTE')
+            //->where('v4.nombre', 'DOCENTE')
+            ->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            ->where('v6.estado', 'PR')
+            //->where(DB::raw('YEAR(v6.fechaActualizacion)'), $ano)
+            ->where('v6.fechaActualizacion', $imp->fechaActualizacion)
+            ->select(
+                DB::raw('count(v1.id) as total'),
+                DB::raw('SUM(IF(v2.id=1,1,0)) as designado'),
+                DB::raw('SUM(IF(v2.id=2,1,0)) as encargado'),
+                DB::raw('SUM(IF(v2.id=3,1,0)) as nombrado'),
+                DB::raw('SUM(IF(v2.id=4,1,0)) as contratado'),
+                DB::raw('SUM(IF(v2.id=5,1,0)) as vacante'),
+                DB::raw('SUM(IF(v2.id=6,1,0)) as destacado'),
+                DB::raw('SUM(IF(v2.id=7,1,0)) as desigconfian'),
+                DB::raw('SUM(IF(v2.id=8,1,0)) as desigexcep'),
+            );
+        if ($ugel != 0) $foot = $foot->where('v7.id', $ugel);
+        if ($tipo != 0) $foot = $foot->where('v8.tipo', $tipo);
+        if ($nivel != 0) $foot = $foot->where('v8.id', $nivel);
+        $foot = $foot->first();
+
+
+        //return $base;
+        return view("educacion.Plaza.CoberturaPlazaTabla2", compact('rq', 'bases', 'heads', 'foot'));
+    }
+
+    public function cargarcoberturaplazagrafica1(Request $rq)
+    {
+        $ano = (int)$rq->ano;
+        $tipo = $rq->tipo;
+        $nivel = $rq->nivel;
+        $ugel = $rq->ugel;
+
+        $fechas = DB::table(DB::raw("(
+            select
+                distinct
+                v3.fechaActualizacion fecha,
+                year(v3.fechaActualizacion) ano,
+                month(v3.fechaActualizacion) mes,
+                day(v3.fechaActualizacion) dia
+            from edu_plaza as v1
+            inner join par_importacion as v3 on v3.id=v1.importacion_id
+            where v3.estado='PR' and YEAR(v3.fechaActualizacion)=$ano
+            order by fecha desc
+        ) as xx"))
+            ->select('mes', DB::raw('max(fecha) fecha'))
+            ->groupBy('mes')
+            ->orderBy('mes', 'asc')
+            ->get();
+
+        /* $error['fechas'] = $fechas; */
+
+        $fx = [];
+        $anoI = 0;
+        $anoF = 0;
+        foreach ($fechas as $key => $value) {
+            $fx[] = $value->fecha;
+            if ($key == 0) $anoI = $value->mes;
+            if ($key == (count($fechas) - 1)) $anoF = $value->mes + 1;
+        }
+
+        /* $error['fx'] = $fx;
+        $error['anoI'] = $anoI;
+        $error['anoF'] = $anoF; */
+
+        $base = DB::table('edu_plaza as v1')
+            ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v1.tipoTrabajador_id')
+            ->join('edu_tipotrabajador as v4', 'v4.id', '=', 'v3.dependencia')
+            ->join('edu_tipo_registro_plaza as v5', 'v5.id', '=', 'v1.tipo_registro_id')
+            ->join('par_importacion as v6', 'v6.id', '=', 'v1.importacion_id')
+            ->join('edu_ugel as v7', 'v7.id', '=', 'v1.Ugel_id')
+            ->join('edu_nivelmodalidad as v8', 'v8.id', '=', 'v1.nivelModalidad_id')
+            ->where('v6.estado', 'PR')->where('v5.nombre', '!=', 'POR REEMPLAZO')
+            //->where('v3.nombre', 'DOCENTE')->where('v4.nombre', 'DOCENTE')
+            ->where(DB::raw('YEAR(v6.fechaActualizacion)'), $ano)
+            ->whereIn('v6.fechaActualizacion', $fx)
+            ->groupBy('mes', 'name')
+            ->select(
+                DB::raw('month(v6.fechaActualizacion) as mes'),
+                DB::raw("case month(v6.fechaActualizacion)
+                            WHEN 1 THEN 'ENERO'
+                            WHEN 2 THEN 'FEBRERO'
+                            WHEN 3 THEN 'MARZO'
+                            WHEN 4 THEN 'ABRIL'
+                            WHEN 5 THEN 'MAYO'
+                            WHEN 6 THEN 'JUNIO'
+                            WHEN 7 THEN 'JULIO'
+                            WHEN 8 THEN 'AGOSTO'
+                            WHEN 9 THEN 'SETIEMBRE'
+                            WHEN 10 THEN 'OCTUBRE'
+                            WHEN 11 THEN 'NOVIEMBRE'
+                            WHEN 12 THEN 'DICIEMBRE'
+                        END AS name"),
+                DB::raw('count(v1.id) as y'),
+
+            );
+        if ($ugel != 0) $base = $base->where('v7.id', $ugel);
+        if ($tipo != 0) $base = $base->where('v8.tipo', $tipo);
+        if ($nivel != 0) $base = $base->where('v8.id', $nivel);
+        $base = $base->get();
+
+        /* $error['base'] = $base; */
+
+        $data['cat'] = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SETIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+        $data['dat'] = [null, null, null, null, null, null, null, null, null, null, null, null];
+        foreach ($base as $key => $value) {
+            $data['dat'][$value->mes - 1] = (int)$value->y;
+        }
+
+        return $data;
     }
 }

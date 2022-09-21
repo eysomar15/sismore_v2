@@ -13,13 +13,15 @@
     <link rel="shortcut icon" href="{{ asset('/') }}public/assets/images/favicon.ico">
 
     <!-- Plugins css-->
-    <link href="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet"
+        type="text/css" />
 
     <!-- App css -->
     <link href="{{ asset('/') }}public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"
         id="bootstrap-stylesheet" />
     <link href="{{ asset('/') }}public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/') }}public/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+    <link href="{{ asset('/') }}public/assets/css/app.min.css" rel="stylesheet" type="text/css"
+        id="app-stylesheet" />
 
     {{-- {{assets('/')}} --}}
     <!-- estilos personalizados XD-->
@@ -121,15 +123,16 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <label>DNI<span class="required">*</span></label>
-                                                        <input id="dnip" name="dnip" class="form-control" type="text"
-                                                            maxlength="8"
+                                                        <input id="dnip" name="dnip" class="form-control"
+                                                            type="text" maxlength="8"
                                                             onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;">
                                                         <span class="help-block"></span>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label>Nombres<span class="required">*</span></label>
                                                         <input id="nombrep" name="nombrep" class="form-control"
-                                                            type="text" onkeyup="this.value=this.value.toUpperCase()">
+                                                            type="text"
+                                                            onkeyup="this.value=this.value.toUpperCase()">
                                                         <span class="help-block"></span>
                                                     </div>
                                                 </div>
@@ -140,7 +143,8 @@
                                                     <div class="col-md-6">
                                                         <label>Apellidos<span class="required">*</span></label>
                                                         <input id="apellidosp" name="apellidosp" class="form-control"
-                                                            type="text" onkeyup="this.value=this.value.toUpperCase()">
+                                                            type="text"
+                                                            onkeyup="this.value=this.value.toUpperCase()">
                                                         <span class="help-block"></span>
                                                     </div>
                                                     <div class="col-md-6">
@@ -266,6 +270,9 @@
     <!-- App js -->
     <script src="{{ asset('/') }}public/assets/js/app.min.js"></script>
     <script>
+        var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263',
+            '#6AF9C4'
+        ];
         var table_language = {
             "lengthMenu": "Mostrar " +
                 `<select class="custom-select custom-select-sm form-control form-control-sm">

@@ -5,6 +5,7 @@
         type="text/css" />
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"> --}}
 @endsection
+
 @section('content')
     <div class="content">
 

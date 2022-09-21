@@ -470,9 +470,11 @@
 
 @section('js')
     <script type="text/javascript">
+        //var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263', '#6AF9C4'];
         $(document).ready(function() {
+            //console.log(Highcharts.getOptions().colors)
             Highcharts.setOptions({
-                colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
+                colors: Highcharts.map(paleta_colores, function(color) {
                     return {
                         radialGradient: {
                             cx: 0.5,
@@ -482,7 +484,7 @@
                         stops: [
                             [0, color],
                             [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
-                        ]
+                        ],
                     };
                 }),
                 lang: {
@@ -496,7 +498,8 @@
                 dataType: "JSON",
                 success: function(data) {
                     gSimpleColumn('anal1', data.info, '',
-                        'Estudiantes Matriculados por Años<br><span class="fuentex">Fuente:SIAGIE'+'</span>', '');
+                        'Estudiantes Matriculados por Años<br><span class="fuentex">Fuente:SIAGIE' +
+                        '</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -510,7 +513,8 @@
                 dataType: "JSON",
                 success: function(data) {
                     gSimpleColumn('anal2', data.info,
-                        '', 'Personal Docente por Años<br><span class="fuentex">Fuente:NEXUS'+'</span>', '');
+                        '', 'Personal Docente por Años<br><span class="fuentex">Fuente:NEXUS' +
+                        '</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 2");
@@ -525,8 +529,9 @@
                 success: function(data) {
                     gPie('anal3', data.info['puntos'],
                         '',
-                        'Estudiantes Matriculados según Genero<br><span class="fuentex">Fuente:SIAGIE AL ' + data.info[
-                            'fecha']+'</span>', '');
+                        'Estudiantes Matriculados según Genero<br><span class="fuentex">Fuente:SIAGIE AL ' +
+                        data.info[
+                            'fecha'] + '</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -540,8 +545,10 @@
                 dataType: "JSON",
                 success: function(data) {
                     gPie('anal4', data.info['puntos'],
-                        '', 'Personal Docente según Genero<br><span class="fuentex">Fuente:NEXUS AL ' + data.info[
-                        'fecha']+'</span>',
+                        '',
+                        'Personal Docente según Genero<br><span class="fuentex">Fuente:NEXUS AL ' +
+                        data.info[
+                            'fecha'] + '</span>',
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
@@ -557,8 +564,9 @@
                 success: function(data) {
                     gPie('anal5', data.info['puntos'],
                         '',
-                        'Estudiantes Matriculados según Area Geografica<br><span class="fuentex">Fuente:SIAGIE AL ' + data
-                        .info['fecha']+'</span>', '');
+                        'Estudiantes Matriculados según Area Geografica<br><span class="fuentex">Fuente:SIAGIE AL ' +
+                        data
+                        .info['fecha'] + '</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 5");
@@ -607,6 +615,10 @@
                         text: 'Porcentaje',
                     }
                 },
+                /* colors: [
+                    '#8085e9',
+                    '#2b908f',
+                ], */
                 series: [{
                     showInLegend: tituloserie != '',
                     name: tituloserie,

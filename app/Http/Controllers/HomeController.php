@@ -7,6 +7,7 @@ use App\Models\Administracion\UsuarioPerfil;
 use App\Models\Educacion\CentroPoblado;
 use App\Models\Educacion\Importacion;
 use App\Models\Educacion\Matricula;
+use App\Models\Presupuesto\BaseGastos;
 use App\Models\Vivienda\CentroPobladoDatass;
 use App\Repositories\Administracion\MenuRepositorio;
 use App\Repositories\Administracion\SistemaRepositorio;
@@ -120,30 +121,71 @@ class HomeController extends Controller
 
     public function presupuesto($sistema_id)
     {
-        $imp = Importacion::where('fuenteimportacion_id', '7')->select(DB::raw('max(id) as maximo'))->first();
-        $data[] = ['name' => 'Centro Poblado', 'y' => CentroPobladoDatassRepositorio::listar_centroPoblado($imp->maximo)->conteo];
-        $data[] = ['name' => 'con sistema de agua', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 20, $imp->maximo)['indicador'][0]->y];
-        $data[] = ['name' => 'con disposición de excretas', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 23, $imp->maximo)['indicador2'][0]->y];
-        $data[] = ['name' => 'con sistema de cloración', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 21, $imp->maximo)['indicador2'][0]->y];
+        $impG = Importacion::where('fuenteimportacion_id', '13')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
+        $impI = Importacion::where('fuenteimportacion_id', '15')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
 
-        $query = CentroPobladoDatass::where('importacion_id', $imp->maximo)->select(
-            DB::raw('sum(total_poblacion) as poblacion'),
-            DB::raw('sum(poblacion_servicio_agua) as con_agua'),
-            DB::raw('sum(total_viviendas) as viviendas'),
-            DB::raw('sum(viviendas_conexion) as con_conexion')
-        )->first();
-        $data2[] = ['name' => 'población', 'y' => $query->poblacion];/* total_poblacion */
-        $data2[] = ['name' => 'Cobertura de Agua', 'y' => $query->con_agua];/* poblacion_con_servicio_agua */
-        $data2[] = ['name' => 'viviendas', 'y' => $query->con_conexion];/* total_viviendas */
-        $data2[] = ['name' => 'viviendas con conexion', 'y' => $query->con_conexion];/* viviendas_con_conexion */
+        $opt1 = BaseGastos::where('importacion_id', $impG->id)->select(DB::raw('sum(pim) as pim'), DB::raw('100*sum(devengado)/sum(pim) as eje'))->first();
+        $card1['pim'] = $opt1->pim;
+        $card1['eje'] = $opt1->eje;
 
-        $grafica[] = CentroPobladoRepositotio::listarporprovincias($imp->maximo);/* total de centro poblado por provincia */
-        $grafica[] = CentroPobladoRepositotio::listarporprovinciasconsistemaagua($imp->maximo);/* total de centro poblado con servicio de agua(sistema_agua) */
+        $opt1 = BaseGastos::where('pres_base_gastos.importacion_id', $impG->id)
+            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
+            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
+            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
+            ->select(
+                'v4.id',
+                'v4.tipogobierno as gobiernos',
+                DB::raw('sum(pres_base_gastos.pim) as pim'),
+                DB::raw('100*sum(pres_base_gastos.devengado)/sum(pres_base_gastos.pim) as eje')
+            )
+            ->groupBy('id', 'gobiernos')
+            ->orderBy('v4.id', 'asc')
+            ->get();
+        $card2['pim'] = $opt1[1]->pim;
+        $card2['eje'] = $opt1[1]->eje;
+        $card3['pim'] = $opt1[2]->pim;
+        $card3['eje'] = $opt1[2]->eje;
+        $card4['pim'] = $opt1[0]->pim;
+        $card4['eje'] = $opt1[0]->eje;
+        //return $opt1;
 
-        $grafica2[] = CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 20, $imp->maximo)['indicador'];
-        $grafica2[] = CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 23, $imp->maximo)['indicador2'];
-        /* return $grafica2; */
-        return view('home', compact('sistema_id', 'data', 'data2', 'grafica', 'grafica2'));
+        return view('home', compact('sistema_id', 'card1', 'card2', 'card3', 'card4', 'impG'));
+    }
+
+    public function presupuestografica1($importacion_id)
+    {
+        $info = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
+            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
+            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
+            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
+            ->select(
+                'v4.id',
+                'v4.tipogobierno as name',
+                DB::raw('sum(pres_base_gastos.pim) as y'),
+            )
+            ->groupBy('id', 'name')
+            ->orderBy('v4.id', 'asc')
+            ->get();
+        return response()->json(compact('info'));
+    }
+
+    public function presupuestotabla1($importacion_id)
+    {
+        $info = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
+            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
+            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
+            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
+            ->select(
+                'v4.id',
+                'v4.tipogobierno as name',
+                DB::raw('sum(pres_base_gastos.pia) as y1'),
+                DB::raw('sum(pres_base_gastos.pim) as y2'),
+                DB::raw('sum(pres_base_gastos.devengado) as y3'),
+            )
+            ->groupBy('id', 'name')
+            ->orderBy('v4.id', 'asc')
+            ->get();
+        return response()->json(compact('info'));
     }
 
     public function vivienda($sistema_id)
@@ -299,7 +341,7 @@ class HomeController extends Controller
 
         $fechaTableta = $tabletas_ultimaActualizacion->fechaActualizacion;
 
-        //{{number_format($sum_cero_nivel_hombre,0)}} 
+        //{{number_format($sum_cero_nivel_hombre,0)}}
 
         $par_medidor1_max = 100;
         $par_medidor1_data =  number_format((($tabletas_ultimaActualizacion->total_Recepcionadas * 100) / $tabletas_ultimaActualizacion->total_aDistribuir), 2);

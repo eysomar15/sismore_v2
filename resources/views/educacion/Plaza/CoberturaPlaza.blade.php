@@ -28,8 +28,8 @@
                 <div class="card card-fill bg-primary  mb-0">
                     <div class="card-header bg-transparent">
                         <h3 class="card-title text-white text-center">COBERTURA DE PLAZAS - NEXUS ACTUALIZADO AL
-                            {{ $fecha }} <a href="javascript:location.reload()" class="btn btn-warning" title="ACTUALIZAR PAGINA"><i
-                                class="fa fa-redo"></i></a></h3>
+                            {{ $fecha }} <a href="javascript:location.reload()" class="btn btn-warning"
+                                title="ACTUALIZAR PAGINA"><i class="fa fa-redo"></i></a></h3>
                     </div>
                 </div>
             </div>
@@ -93,7 +93,7 @@
             <div class="col-xl-12">
                 <div class="card card-border">
                     <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">tabla1 </h3>
+                        <h3 class="card-title">Avance de la CONTRATACIÓN de plazas </h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista1">
@@ -112,7 +112,7 @@
             <div class="col-xl-12">
                 <div class="card card-border">
                     <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">tabla2</h3>
+                        <h3 class="card-title">Total de la CONTRATACIÓN de plazas Según tipo trabajdor con SITUACIÓN laboral</h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista2">
@@ -184,29 +184,29 @@
                 },
             });
 
-            /* $.ajax({
-                url: "{{ route('matriculadetalle.avance.tabla1') }}",
+            $.ajax({
+                url: "{{ route('nexus.cobertura.tabla2') }}",
                 type: "POST",
                 data: $('#form_opciones').serialize(),
                 success: function(data) {
-                    $('#vista1').html(data);
+                    $('#vista2').html(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 },
-            }); */
+            });
 
-            /*  $.ajax({
-                 url: "{{ route('matriculadetalle.avance.grafica1') }}",
-                 type: "POST",
-                 data: $('#form_opciones').serialize(),
-                 success: function(data) {
-                     gLineaBasica('gra1', data, '', 'MATRICULA ACUMULADA MENSUAL', '');
-                 },
-                 error: function(jqXHR, textStatus, errorThrown) {
-                     console.log(jqXHR);
-                 },
-             }); */
+            $.ajax({
+                url: "{{ route('nexus.cobertura.grafica1') }}",
+                type: "POST",
+                data: $('#form_opciones').serialize(),
+                success: function(data) {
+                    gLineaBasica('gra1', data, '', 'CONTRATACIÓN DE PLAZAS ACUMULADA MENSUAL', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
 
 
         }

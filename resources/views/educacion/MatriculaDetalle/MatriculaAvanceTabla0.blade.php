@@ -24,19 +24,19 @@
             <tr class="text-center">
                 <td class="text-left"><a href="#" class="">{{ $item->ugel }}</a></td>
                 <tH class="">{{ number_format($item->tregA) }}</tH>
-                <td>{!! bajas($anoF != 1 ? $item->ene : 0) !!}</td>
-                <td>{!! bajas($anoF != 2 ? $item->feb : 0) !!}</td>
-                <td>{!! bajas($anoF != 3 ? $item->mar : 0) !!}</td>
-                <td>{!! bajas($anoF != 4 ? $item->abr : 0) !!}</td>
-                <td>{!! bajas($anoF != 5 ? $item->may : 0) !!}</td>
-                <td>{!! bajas($anoF != 6 ? $item->jun : 0) !!}</td>
-                <td>{!! bajas($anoF != 7 ? $item->jul : 0) !!}</td>
-                <td>{!! bajas($anoF != 8 ? $item->ago : 0) !!}</td>
-                <td>{!! bajas($anoF != 9 ? $item->set : 0) !!}</td>
-                <td>{!! bajas($anoF != 10 ? $item->oct : 0) !!}</td>
-                <td>{!! bajas($anoF != 11 ? $item->nov : 0) !!}</td>
-                <td>{!! bajas($anoF != 12 ? $item->dic : 0) !!}</td>
-                <th>{!! bajas($item->treg) !!}</th>
+                <td>{!! bajas($anoF == 1, $item->ene, $anoF - 1) !!}</td>
+                <td>{!! bajas($anoF == 2, $item->feb, $anoF - 2) !!}</td>
+                <td>{!! bajas($anoF == 3, $item->mar, $anoF - 3) !!}</td>
+                <td>{!! bajas($anoF == 4, $item->abr, $anoF - 4) !!}</td>
+                <td>{!! bajas($anoF == 5, $item->may, $anoF - 5) !!}</td>
+                <td>{!! bajas($anoF == 6, $item->jun, $anoF - 6) !!}</td>
+                <td>{!! bajas($anoF == 7, $item->jul, $anoF - 7) !!}</td>
+                <td>{!! bajas($anoF == 8, $item->ago, $anoF - 8) !!}</td>
+                <td>{!! bajas($anoF == 9, $item->set, $anoF - 9) !!}</td>
+                <td>{!! bajas($anoF == 10, $item->oct, $anoF - 10) !!}</td>
+                <td>{!! bajas($anoF == 11, $item->nov, $anoF - 11) !!}</td>
+                <td>{!! bajas($anoF == 12, $item->dic, $anoF - 12) !!}</td>
+                <th>{!! number_format($item->treg) !!}</th>
                 <td>{!! avance($item->avance * 100) !!}</td>
             </tr>
         @endforeach
@@ -45,19 +45,19 @@
         <tr class="text-center bg-primary text-white">
             <th class="text-left">Total</th>
             <th class="">{{ number_format($foot['meta'], 0) }}</th>
-            <th>{!! bajas($anoF != 1 ? $foot['ene'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 2 ? $foot['feb'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 3 ? $foot['mar'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 4 ? $foot['abr'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 5 ? $foot['may'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 6 ? $foot['jun'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 7 ? $foot['jul'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 8 ? $foot['ago'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 9 ? $foot['set'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 10 ? $foot['oct'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 11 ? $foot['nov'] : 0) !!}</th>
-            <th>{!! bajas($anoF != 12 ? $foot['dic'] : 0) !!}</th>
-            <th>{!! bajas($foot['total']) !!}</th>
+            <th>{!! bajas($anoF == 1, $foot['ene'], $anoF - 1) !!}</th>
+            <th>{!! bajas($anoF == 2, $foot['feb'], $anoF - 2) !!}</th>
+            <th>{!! bajas($anoF == 3, $foot['mar'], $anoF - 3) !!}</th>
+            <th>{!! bajas($anoF == 4, $foot['abr'], $anoF - 4) !!}</th>
+            <th>{!! bajas($anoF == 5, $foot['may'], $anoF - 5) !!}</th>
+            <th>{!! bajas($anoF == 6, $foot['jun'], $anoF - 6) !!}</th>
+            <th>{!! bajas($anoF == 7, $foot['jul'], $anoF - 7) !!}</th>
+            <th>{!! bajas($anoF == 8, $foot['ago'], $anoF - 8) !!}</th>
+            <th>{!! bajas($anoF == 9, $foot['set'], $anoF - 9) !!}</th>
+            <th>{!! bajas($anoF == 10, $foot['oct'], $anoF - 10) !!}</th>
+            <th>{!! bajas($anoF == 11, $foot['nov'], $anoF - 11) !!}</th>
+            <th>{!! bajas($anoF == 12, $foot['dic'], $anoF - 12) !!}</th>
+            <th>{!! number_format($foot['total']) !!}</th>
             <th>{!! avance($foot['avance'] * 100) !!}</th>
         </tr>
     </tfoot>
@@ -76,12 +76,28 @@ function avance($monto)
         return '<span class="badge badge-pill badge-success" style="font-size:90%;">' . round($monto, 1) . '%</span>';
     }
 }
-function bajas($monto)
+function bajas($anoF, $monto, $paint)
+{
+    if (!$anoF) {
+        if ($paint > 0) {
+            if ($monto < 0) {
+                return '<span class="badge badge-pill badge-danger" style="font-size:85%;">' . round($monto, 0) . '</span>';
+            } else {
+                return number_format($monto);
+            }
+        } else {
+            return '';
+        }
+    } else {
+        return '';
+    }
+}
+/* function bajas($monto)
 {
     if ($monto < 0) {
         return '<span class="badge badge-pill badge-danger" style="font-size:85%;">' . round($monto, 0) . '</span>';
     } else {
         return number_format($monto);
     }
-}
+} */
 @endphp
