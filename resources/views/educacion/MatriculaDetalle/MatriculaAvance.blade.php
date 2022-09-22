@@ -29,9 +29,9 @@
                     <div class="card-header bg-transparent">
                         <h3 class="card-title text-white text-center">AVANCE MATRICULA SEGÚN SIAGIE- MINEDO ACTUALIZADO AL
                             {{ $fecha }}
-                                <a href="javascript:location.reload()" class="btn btn-warning" title="ACTUALIZAR PAGINA"><i
-                                        class="fa fa-redo"></i></a>
-                             </h3>
+                            <a href="javascript:location.reload()" class="btn btn-warning" title="ACTUALIZAR PAGINA"><i
+                                    class="fa fa-redo"></i></a>
+                        </h3>
                     </div>
                 </div>
             </div>
@@ -145,6 +145,32 @@
         {{-- end  row --}}
 
     </div>
+
+
+    <!-- Bootstrap modal -->
+    <div id="modal_rojos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+        style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive" id="vistarojo">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    {{-- <button type="button" id="btnSaveentidad" onclick="saveentidad()"
+                        class="btn btn-primary">Guardar</button> --}}
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- End Bootstrap modal -->
 @endsection
 
 @section('js')
@@ -190,10 +216,36 @@
                     console.log(jqXHR);
                 },
             });
-
-
         }
 
+        function openrojos(mes, nivel, ano) {
+
+            $.ajax({
+                url: "{{ url('/') }}/MatriculaDetalle/rojos/" + mes + '/' + nivel + '/' + ano,
+                type: "GET",
+                //dataType: "JSON",
+                success: function(data) {
+                    //console.log(data);
+                    $('#modal_rojos').modal('show');
+                    $('#modal_rojos .modal-title').text('xxx');
+
+                    $('#vistarojo').html(data);
+
+                    //$('#tabla1rojos').DataTable();
+                    $('#tabla1rojos').DataTable({
+                        "language": table_language,
+                    });
+
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    toastr.error("El registro no se pudo crear verifique las validaciones.", 'Mensaje');
+                }
+            });
+        };
+    </script>
+
+    <script type="text/javascript">
         function gLineaBasica(div, data, titulo, subtitulo, titulovetical) {
             Highcharts.chart(div, {
                 title: {
@@ -254,6 +306,7 @@
             });
         }
     </script>
+
     <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts-more.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/exporting.js"></script>

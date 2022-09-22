@@ -27,6 +27,122 @@ class MatriculaDetalleController extends Controller
         $this->middleware('auth');
     }
 
+    public function rojos($mes, $nivel, $ano)
+    {
+        if ($mes > 1 && $mes < 13) {
+            $mesA = $mes - 1;
+            $nfi = '' . ($mesA < 10 ? '0' : '') . $mesA . '/' . $ano;
+            $nff = '' . ($mes < 10 ? '0' : '') . $mes . '/' . $ano;
+            $fechas = DB::table(DB::raw("(
+                select mes, max(fecha) fecha from (
+                    select
+                        distinct
+                        v3.fechaActualizacion fecha,
+                        year(v3.fechaActualizacion) ano,
+                        month(v3.fechaActualizacion) mes,
+                        day(v3.fechaActualizacion) dia
+                    from edu_matricula_detalle as v1
+                    inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                    inner join par_importacion as v3 on v3.id=v2.importacion_id
+                    inner join par_anio as v4 on v4.id=v2.anio_id
+                    where v3.estado='PR' and year(v3.fechaActualizacion)=$ano and month(v3.fechaActualizacion)=$mesA
+                    order by fecha desc
+                ) as xx
+                group by mes
+                order by mes asc
+                    ) as xx"))->get()->first();
+            $fi = $fechas->fecha;
+
+            $fechas = DB::table(DB::raw("(
+                select mes, max(fecha) fecha from (
+                    select
+                        distinct
+                        v3.fechaActualizacion fecha,
+                        year(v3.fechaActualizacion) ano,
+                        month(v3.fechaActualizacion) mes,
+                        day(v3.fechaActualizacion) dia
+                    from edu_matricula_detalle as v1
+                    inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                    inner join par_importacion as v3 on v3.id=v2.importacion_id
+                    inner join par_anio as v4 on v4.id=v2.anio_id
+                    where v3.estado='PR' and year(v3.fechaActualizacion)=$ano and month(v3.fechaActualizacion)=$mes
+                    order by fecha desc
+                ) as xx
+                group by mes
+                order by mes asc
+                    ) as xx"))->get()->first();
+            $ff = $fechas->fecha;
+
+            /* $baseA = DB::table(DB::raw("(
+                        select
+                            v5.id,
+                            v5.tipo,
+                            v5.nombre nivel,
+                            sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) conteo
+                        from edu_matricula_detalle as v1
+                        inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                        inner join par_importacion as v3 on v3.id=v2.importacion_id
+                        inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+                        inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+                        inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+                        inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+                        inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+                        inner join edu_area as v9 on v9.id=v4.Area_id
+                        where v3.estado='PR' and v3.fechaActualizacion='$fA' and v5.id=$nivel
+                        group by id,tipo,nivel
+                            ) as xx"))->get();
+            $base = DB::table(DB::raw("(
+                                select
+                                    v5.id,
+                                    v5.tipo,
+                                    v5.nombre nivel,
+                                    sum(IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres)) conteo
+                                from edu_matricula_detalle as v1
+                                inner join edu_matricula as v2 on v2.id=v1.matricula_id
+                                inner join par_importacion as v3 on v3.id=v2.importacion_id
+                                inner join edu_institucioneducativa as v4 on v4.id=v1.institucioneducativa_id
+                                inner join edu_nivelmodalidad as v5 on v5.id=v4.NivelModalidad_id
+                                inner join edu_ugel as v6 on v6.id=v4.Ugel_id
+                                inner join edu_tipogestion as v7 on v7.id=v4.TipoGestion_id
+                                inner join edu_tipogestion as v8 on v8.id=v7.dependencia
+                                inner join edu_area as v9 on v9.id=v4.Area_id
+                                where v3.estado='PR' and v3.fechaActualizacion='$f' and v5.id=$nivel
+                                group by id,tipo,nivel
+                                    ) as xx"))->get(); */
+            $base = DB::table('edu_matricula_detalle as v1')
+                ->join('edu_matricula as v2', 'v2.id', '=', 'v1.matricula_id')
+                ->join('par_importacion as v3', 'v3.id', '=', 'v2.importacion_id')
+                ->join('edu_institucioneducativa as v4', 'v4.id', '=', 'v1.institucioneducativa_id')
+                ->join('edu_nivelmodalidad as v5', 'v5.id', '=', 'v4.NivelModalidad_id')
+                ->join('edu_ugel as v6', 'v6.id', '=', 'v4.Ugel_id')
+                ->join('edu_tipogestion as v7', 'v7.id', '=', 'v4.TipoGestion_id')
+                ->join('edu_tipogestion as v8', 'v8.id', '=', 'v7.dependencia')
+                ->join('edu_area as v9', 'v9.id', '=', 'v4.Area_id')
+                ->where('v3.estado', "PR")->where('v5.id', $nivel)->whereIn('v3.fechaActualizacion', [$fi, $ff])
+                ->groupBy('modular', 'iiee')
+                ->select(
+                    'v4.codModular as modular',
+                    'v4.nombreInstEduc as iiee',
+                    DB::raw("sum(IF(month(v3.fechaActualizacion)=$mesA,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) cfi"),
+                    DB::raw("sum(IF(month(v3.fechaActualizacion)=$mes,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) cff"),
+                    DB::raw("sum(IF(month(v3.fechaActualizacion)=$mes,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0))-
+                    sum(IF(month(v3.fechaActualizacion)=$mesA,IF((v1.total_hombres+v1.total_mujeres)=0,v1.total_estudiantes,v1.total_hombres+v1.total_mujeres),0)) as  ct")
+                )
+                ->get();
+            $foot['cfi'] = 0;
+            $foot['cff'] = 0;
+            $foot['ct'] = 0;
+            foreach ($base as $key => $value) {
+                $foot['cfi'] += $value->cfi;
+                $foot['cff'] += $value->cff;
+                $foot['ct'] += $value->ct;
+            }
+            //return response()->json(compact('fechas', 'base'));
+            return view("educacion.MatriculaDetalle.MatriculaAvanceRojos", compact('base', 'foot', 'nfi', 'nff'));
+        }
+        return 'xcxc';
+    }
+
     public function avance()
     {
         /* anos */
@@ -221,21 +337,26 @@ class MatriculaDetalleController extends Controller
         $optgestion = ($gestion == 0 ? "" : ($gestion == 3 ? " and v8.id=$gestion " : " and v8.id!=3 "));
         $optarea = $area == 0 ? "" : " and v9.id=$area ";
 
-        $error['ano'] = $ano;
+        /* $error['ano'] = $ano;
         $error['gestion'] = $gestion;
-        $error['area'] = $area;
+        $error['area'] = $area; */
 
 
         $anios = Anio::orderBy('anio', 'desc')->get();
         $anonro = 0;
         $anoA = 0;
+        $anos = 0;
         foreach ($anios as $key => $value) {
-            if ($value->id == $ano) $anonro = $value->anio - 1;
+            if ($value->id == $ano) {
+                $anonro = $value->anio - 1;
+                $anos = $value->anio;
+            }
             if ($value->anio == $anonro) $anoA = $value->id;
         }
-        $error['anios'] = $anios;
+
+        /* $error['anios'] = $anios;
         $error['anonro'] = $anonro;
-        $error['anoA'] = $anoA;
+        $error['anoA'] = $anoA; */
 
 
         $fechas = DB::table(DB::raw("(
@@ -257,7 +378,7 @@ class MatriculaDetalleController extends Controller
             order by mes asc
                 ) as xx"))->get();
 
-        $error['fechas'] = $fechas;
+        /* $error['fechas'] = $fechas; */
 
 
         $fx = '';
@@ -272,9 +393,9 @@ class MatriculaDetalleController extends Controller
             if ($key == (count($fechas) - 1)) $anoF = $value->mes + 1;
         }
 
-        $error['fx'] = $fx;
+        /* $error['fx'] = $fx;
         $error['anoI'] = $anoI;
-        $error['anoF'] = $anoF;
+        $error['anoF'] = $anoF; */
 
         $baseA = DB::table(DB::raw("(
         select
@@ -297,7 +418,7 @@ class MatriculaDetalleController extends Controller
         if (count($baseA) == 0) {
             $baseA = NivelModalidad::whereIn('tipo', ['EBR', 'EBE'])->select('id', 'tipo', DB::raw('0 as dic'))->get();
         }
-        $error['baseA'] = $baseA;
+        /* $error['baseA'] = $baseA; */
 
 
         $base = DB::table(DB::raw("(
@@ -352,7 +473,6 @@ class MatriculaDetalleController extends Controller
             foreach ($baseA as $key2 => $bA) {
                 if ($bA->id == $bb->id)
                     $bb->tregA = $bA->dic;
-                //else                    $bb->tregA = 0;
             }
             $bb->avance = $bb->tregA > 0 ? $bb->treg / $bb->tregA : 1;
 
@@ -373,7 +493,7 @@ class MatriculaDetalleController extends Controller
         }
         $foot['avance'] = $foot['meta'] > 0 ? $foot['total'] / $foot['meta'] : 1;
 
-        $error['base'] = $base;
+        /* $error['base'] = $base; */
 
         $headA = DB::table(DB::raw("(
             select
@@ -394,7 +514,7 @@ class MatriculaDetalleController extends Controller
         if (count($headA) == 0) {
             $headA = NivelModalidad::whereIn('tipo', ['EBR', 'EBE'])->distinct()->select('tipo', DB::raw('0 as dic'))->get();
         }
-        $error['headA'] = $headA;
+        /* $error['headA'] = $headA; */
 
         $head = DB::table(DB::raw("(
             select
@@ -442,15 +562,14 @@ class MatriculaDetalleController extends Controller
 
                 if ($bA->tipo == $bb->tipo)
                     $bb->tregA = $bA->dic;
-                //else
             }
             $bb->avance = $bb->tregA > 0 ? $bb->treg / $bb->tregA : 1;
         }
 
-        $error['head'] = $head;
+        /* $error['head'] = $head; */
 
         //return $error;
-        return view("educacion.MatriculaDetalle.MatriculaAvancetabla1", compact('rq', 'head', 'base', 'anoI', 'anoF', 'foot'));
+        return view("educacion.MatriculaDetalle.MatriculaAvancetabla1", compact('rq', 'head', 'base', 'anoI', 'anoF', 'foot', 'anos'));
     }
 
     public function cargargrafica1(Request $rq)
@@ -576,7 +695,7 @@ class MatriculaDetalleController extends Controller
         $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '8')->orderBy('fecha', 'desc')->take(1)->get();
         $importacion_id = $imp->first()->id;
         $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
-        return view("educacion.MatriculaDetalle.BasicaRegular", compact('anios', 'gestions', 'areas','ugels', 'importacion_id', 'fecha'));
+        return view("educacion.MatriculaDetalle.BasicaRegular", compact('anios', 'gestions', 'areas', 'ugels', 'importacion_id', 'fecha'));
     }
 
     public function cargarEBRgrafica1(Request $rq)
@@ -2526,7 +2645,7 @@ class MatriculaDetalleController extends Controller
         $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '8')->orderBy('fecha', 'desc')->take(1)->get();
         $importacion_id = $imp->first()->id;
         $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
-        return view("educacion.MatriculaDetalle.BasicaEspecial", compact('anios', 'gestions', 'areas','ugels', 'importacion_id', 'fecha'));
+        return view("educacion.MatriculaDetalle.BasicaEspecial", compact('anios', 'gestions', 'areas', 'ugels', 'importacion_id', 'fecha'));
     }
 
     public function cargarEBEgrafica1(Request $rq)
@@ -3017,7 +3136,7 @@ class MatriculaDetalleController extends Controller
         $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '8')->orderBy('fecha', 'desc')->take(1)->get();
         $importacion_id = $imp->first()->id;
         $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
-        return view("educacion.MatriculaDetalle.InterculturalBilingue", compact('anios', 'gestions', 'areas','ugels', 'importacion_id', 'fecha'));
+        return view("educacion.MatriculaDetalle.InterculturalBilingue", compact('anios', 'gestions', 'areas', 'ugels', 'importacion_id', 'fecha'));
     }
 
     public function cargarEIBgrafica1(Request $rq)
