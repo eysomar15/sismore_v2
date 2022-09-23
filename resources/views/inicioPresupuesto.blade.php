@@ -1,4 +1,4 @@
-{{-- @extends('layouts.main', ['activePage' => '', 'titlePage' => '']) --}}
+{{-- @extends('layouts.main', ['activePage' => '', 'titlePage' => 'asdasdas']) --}}
 {{-- @extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - SISTEMA NEXUS']) --}}
 
 @section('css')

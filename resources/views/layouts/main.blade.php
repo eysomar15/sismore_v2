@@ -42,33 +42,55 @@
             <div class="content-page">
                 <div class="content">
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                @if ($titlePage != '')
-                                    <div class="page-title-box">
-                                        <h4 class="page-title">{{ $titlePage }}</h4>
-                                        <div class="page-title-right">
-                                            <ol class="breadcrumb p-0 m-0">
-                                                @isset($breadcrumb)
-                                                    @foreach ($breadcrumb as $key => $item)
-                                                        @if ($key == count($breadcrumb) - 1)
-                                                            <li class="breadcrumb-item">{{ $item['titulo'] }}</li>
-                                                        @else
-                                                            <li class="breadcrumb-item"><a
-                                                                    href="{{ $item['url'] }}">{{ $item['titulo'] }}</a></li>
-                                                        @endif
-                                                    @endforeach
-                                                @endisset
-                                            </ol>
+                        @if ($sistema_id != 5)
+                            <div class="row">
+                                <div class="col-12">
+                                    @if ($titlePage != '')
+                                        <div class="page-title-box">
+                                            <h4 class="page-title">{{ $titlePage }}</h4>
+                                            <div class="page-title-right">
+                                                <ol class="breadcrumb p-0 m-0">
+                                                    @isset($breadcrumb)
+                                                        @foreach ($breadcrumb as $key => $item)
+                                                            @if ($key == count($breadcrumb) - 1)
+                                                                <li class="breadcrumb-item">{{ $item['titulo'] }}</li>
+                                                            @else
+                                                                <li class="breadcrumb-item"><a
+                                                                        href="{{ $item['url'] }}">{{ $item['titulo'] }}</a>
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    @endisset
+                                                </ol>
+                                            </div>
+                                            <div class="clearfix"></div>
                                         </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                @else
-                                    <br>
-                                @endif
+                                    @else
+                                        <br>
+                                    @endif
 
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="row">
+                                <div class="col-12">
+                                    @if ($titlePage != '')
+                                        <div class="page-title-box">
+                                            <h4 class="page-title">Tablero de Control</h4>
+                                            <div class="page-title-right">
+                                                <ol class="breadcrumb p-0 m-0">
+                                                Actualizado al {{date('d/m/Y',strtotime($impI->fechaActualizacion))}}
+                                            </ol>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    @else
+                                        <br>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+
 
                         @yield('content')
                     </div>
