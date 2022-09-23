@@ -3,7 +3,7 @@
         <tr class="bg-primary text-white text-center">
             <th>#</th>
             <th>Codigo Modular</th>
-            <th>Servicio</th>
+            <th>Institución Educativa</th>
             <th>{{ $nfi }}</th>
             <th>{{ $nff }}</th>
             <th>Avance</th>
@@ -12,13 +12,13 @@
     <tbody>
 
         @foreach ($base as $pos => $item)
-            <tr class="text-center">
-                <td>{{ $pos + 1 }}</td>
-                <td>{{ $item->modular }}</td>
+            <tr>
+                <td class="text-center">{{ $pos + 1 }}</td>
+                <td class="text-center">{{ $item->modular }}</td>
                 <td>{{ $item->iiee }}</td>
-                <td>{{ $item->cfi }}</td>
-                <td>{{ $item->cff }}</td>
-                <td>{!! bajas($item->ct) !!}</td>
+                <td class="text-center">{{ $item->cfi }}</td>
+                <td class="text-center">{{ $item->cff }}</td>
+                <td class="text-center">{!! bajas($item->ct) !!}</td>
             </tr>
         @endforeach
 

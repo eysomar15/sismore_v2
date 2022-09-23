@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => 'aasdasdsad'])
+{{-- @extends('layouts.main', ['activePage' => '', 'titlePage' => '']) --}}
 {{-- @extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - SISTEMA NEXUS']) --}}
 
 @section('css')
@@ -169,15 +169,22 @@
             <div class="row">
                 <div class="col-xl-6">
                     <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
                         <div class="card-body">
                             <div id="anal1" style="min-width:400px;height:300px;margin:0 auto;"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-6">
+
                     <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
                         <div class="card-body">
-                            <div id="anal2g" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                            <div id="anal4" style="min-width:400px;height:300px;margin:0 auto;"></div>
                         </div>
                     </div>
                 </div>
@@ -186,7 +193,11 @@
 
             <div class="row">
                 <div class="col-xl-6">
+
                     <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
                         <div class="card-body">
                             <div id="anal2" style="min-width:400px;height:300px;margin:0 auto;"></div>
                         </div>
@@ -194,8 +205,11 @@
                 </div>
                 <div class="col-xl-6">
                     <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
                         <div class="card-body">
-                            <div id="con2" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                            <div id="anal5" style="min-width:400px;height:300px;margin:0 auto;"></div>
                         </div>
                     </div>
                 </div>
@@ -205,6 +219,9 @@
             <div class="row">
                 <div class="col-xl-6">
                     <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
                         <div class="card-body">
                             <div id="anal3" style="min-width:400px;height:300px;margin:0 auto;"></div>
                         </div>
@@ -212,8 +229,11 @@
                 </div>
                 <div class="col-xl-6">
                     <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
                         <div class="card-body">
-                            <div id="con2" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                            <div id="anal6" style="min-width:400px;height:300px;margin:0 auto;"></div>
                         </div>
                     </div>
                 </div>
@@ -242,15 +262,21 @@
                             [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
                         ]
                     };
-                })
+                }),
+                lang: {
+                    thousandsSep: ","
+                }
             });
 
+            /*
+            *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 1
+            */
             $.ajax({
                 url: "{{ url('/') }}/Home/Presupuesto/gra1/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    console.log(data)
+                    //console.log(data)
                     gPie('anal1', data.info,
                         '',
                         'Distribución del Presupuesto  de la Región Ucayali', '');
@@ -261,12 +287,15 @@
                 },
             });
 
+            /*
+            *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 2
+            */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra1/{{ $impG->id }}",
+                url: "{{ url('/') }}/Home/Presupuesto/gra2/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    console.log(data)
+                    //console.log(data)
                     gPie('anal2', data.info,
                         '',
                         'Distribución del Presupuesto en Inversiones', '');
@@ -277,15 +306,18 @@
                 },
             });
 
+            /*
+            *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 3
+            */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra1/{{ $impG->id }}",
+                url: "{{ url('/') }}/Home/Presupuesto/gra3/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    console.log(data)
+                    //console.log(data)
                     gPie('anal3', data.info,
                         '',
-                        'Ingreso Presuuestal de la Region Ucayali', '');
+                        'Ingreso Presupuestal de la Region Ucayali', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -293,15 +325,65 @@
                 },
             });
 
-
+            /*
+            *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
+            */
             $.ajax({
                 url: "{{ url('/') }}/Home/Presupuesto/tabla1/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
+                    //console.log(data.data['categoria'])
+                    gAnidadaColumn(
+                        'anal4',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Ejecución Presupuestal Según Tipo De Gobierno.');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 1");
+                    console.log(jqXHR);
+                },
+            });
+
+            /*
+            *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
+            */
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/tabla2/{{ $impG->id }}",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data) {
+                    //console.log(data.data['categoria'])
+                    gAnidadaColumn(
+                        'anal5',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Ejecución Presupuestal en Inversiones Según Tipo De Gobierno.');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 1");
+                    console.log(jqXHR);
+                },
+            });
+
+                        /*
+            *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 3
+            */
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/tabla3/{{ $impI->id }}",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data) {
                     console.log(data)
-                    /* gSimpleColumn('anal1', data.info, '',
-                        'Estudiantes Matriculados por Años<br><span class="fuentex">Fuente:SIAGIE'+'</span>', ''); */
+                    gAnidadaColumn(
+                        'anal6',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Recaudación De Ingresos Según Tipo De Gobierno.');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -390,8 +472,14 @@
                         dataLabels: {
                             enabled: true,
                             //format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                            format: '{point.yx} ( {point.percentage:.1f}% )',
+                            format: '{point.y:,.0f} ( {point.percentage:.1f}% )',
                             connectorColor: 'silver'
+                        }
+                    },
+                    series: {
+                        //allowPointSelect: true
+                        style: {
+                            fontSize: '10pt'
                         }
                     }
                 },
@@ -406,6 +494,7 @@
                             connectorColor: 'silver'
                         }
                     }
+
                 }, */
                 series: [{
                     showInLegend: true,
@@ -452,6 +541,55 @@
                     }
                 },
                 series: datos,
+                credits: false,
+            });
+        }
+
+        function gAnidadaColumn(div, categoria, series, titulo, subtitulo) {
+            Highcharts.chart(div, {
+                chart: {
+                    type: 'column',
+                },
+                title: {
+                    text: titulo, //'Browser market shares in January, 2018'
+                },
+                subtitle: {
+                    text: subtitulo,
+                },
+                xAxis: {
+                    categories: categoria
+                },
+                yAxis: {
+                    allowDecimals: false,
+                    min: 0,
+                    title: {
+                        enabled: false,
+                        text: 'Porcentaje',
+                    }
+                },
+                series: series,
+                plotOptions: {
+                    columns: {
+                        stacking: 'normal'
+                    },
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:,.0f}',
+                            //format: '{point.y:.1f}%',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                        },
+                    }
+                },
                 credits: false,
             });
         }

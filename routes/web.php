@@ -456,10 +456,12 @@ Route::get('/Importado/resumen', [ImportacionController::class, 'resumenimportad
 
 /**************************************** PRESUPUESTO ************************************************/
 Route::get('/Home/Presupuesto/gra1/{importacion_id}', [HomeController::class, 'presupuestografica1'])->name('graficas.home.presupuesto.1');
-Route::get('/Home/Presupuesto/gra2', [HomeController::class, 'presupuestografica2'])->name('graficas.home.presupuesto.2');
-Route::get('/Home/Presupuesto/gra3', [HomeController::class, 'presupuestografica3'])->name('graficas.home.presupuesto.3');
+Route::get('/Home/Presupuesto/gra2/{importacion_id}', [HomeController::class, 'presupuestografica2'])->name('graficas.home.presupuesto.2');
+Route::get('/Home/Presupuesto/gra3/{importacion_id}', [HomeController::class, 'presupuestografica3'])->name('graficas.home.presupuesto.3');
 
 Route::get('/Home/Presupuesto/tabla1/{importacion_id}', [HomeController::class, 'presupuestotabla1'])->name('tabla.home.presupuesto.1');
+Route::get('/Home/Presupuesto/tabla2/{importacion_id}', [HomeController::class, 'presupuestotabla2'])->name('tabla.home.presupuesto.2');
+Route::get('/Home/Presupuesto/tabla3/{importacion_id}', [HomeController::class, 'presupuestotabla3'])->name('tabla.home.presupuesto.3');
 
 Route::get('/IMPORGASTOS/Gastos/Importar', [ImporGastosController::class, 'importar'])->name('pres.gastos.importar');
 Route::post('/IMPORGASTOS/Gastos/Importar', [ImporGastosController::class, 'importarGuardar'])->name('imporgastos.gastos.guardar');

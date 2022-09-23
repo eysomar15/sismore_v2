@@ -227,7 +227,7 @@
                 success: function(data) {
                     //console.log(data);
                     $('#modal_rojos').modal('show');
-                    $('#modal_rojos .modal-title').text('xxx');
+                    $('#modal_rojos .modal-title').text('Avance de Matricula por Institución Educativa');
 
                     $('#vistarojo').html(data);
 
