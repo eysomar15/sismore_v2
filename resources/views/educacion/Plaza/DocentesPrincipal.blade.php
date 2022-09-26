@@ -386,7 +386,7 @@
         var nombre_mes = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE",
             "NOVIEMBRE", "DICIEMBRE"
         ];
-        $(document).ready(function() {//paleta_colores
+        $(document).ready(function() { //paleta_colores
             Highcharts.setOptions({
                 //colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
                 colors: Highcharts.map(paleta_colores, function(color) {

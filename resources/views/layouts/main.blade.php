@@ -42,7 +42,7 @@
             <div class="content-page">
                 <div class="content">
                     <div class="container-fluid">
-                        @if ($sistema_id != 5)
+                    @if (session('sistema_id')  != 5)
                             <div class="row">
                                 <div class="col-12">
                                     @if ($titlePage != '')
@@ -76,10 +76,12 @@
                                 <div class="col-12">
                                     @if ($titlePage != '')
                                         <div class="page-title-box">
-                                            <h4 class="page-title">Tablero de Control</h4>
+                                            <h4 class="page-title">Ejecución Presupuestal De La Región Ucayali</h4>
                                             <div class="page-title-right">
                                                 <ol class="breadcrumb p-0 m-0">
-                                                Actualizado al {{date('d/m/Y',strtotime($impI->fechaActualizacion))}}
+                                                @if (isset($impI))
+                                                    Actualizado al 23 Setiembre 2022{{--date('d/m/Y',strtotime($impG->fechaActualizacion))--}}        
+                                                    @endif
                                             </ol>
                                             </div>
                                             <div class="clearfix"></div>
@@ -115,7 +117,7 @@
         <!-- ============================================================== -->
 
     </div>
-    <!-- END wrapper -->
+    <!-- END wrapper --> 
 
     <!-- Bootstrap modal -->
     {{-- <div id="modal_form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"> --}}

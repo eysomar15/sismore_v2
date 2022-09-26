@@ -675,7 +675,7 @@
                         dataLabels: {
                             enabled: true,
                             //format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                            format: '{point.yx} ( {point.percentage:.1f}% )',
+                            format: '{point.y:,0f} ( {point.percentage:.1f}% )',
                             connectorColor: 'silver'
                         }
                     }

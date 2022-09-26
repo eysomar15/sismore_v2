@@ -11,6 +11,31 @@
     <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/accessibility.js"></script>
 
     {{-- <script src="https://code.highcharts.com/modules/solid-gauge.js"></script> --}}
+    <style>
+        .tablex thead th {
+            padding: 2px;
+            text-align: center;
+        }
+
+        .tablex thead td {
+            padding: 2px;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+
+        .tablex tbody td,
+        .tablex tbody th,
+        .tablex tfoot td,
+        .tablex tfoot th {
+            padding: 2px;
+        }
+
+        .fuentex {
+            font-size: 10px;
+            font-weight: bold;
+        }
+    </style>
 @endsection
 {{-- <div>
     <div id="container-speed" class="chart-container"></div>
@@ -279,7 +304,7 @@
                     //console.log(data)
                     gPie('anal1', data.info,
                         '',
-                        'Distribución del Presupuesto  de la Región Ucayali', '');
+                        'Distribución del Presupuesto  de la Región Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -298,7 +323,7 @@
                     //console.log(data)
                     gPie('anal2', data.info,
                         '',
-                        'Distribución del Presupuesto en Inversiones', '');
+                        'Distribución del Presupuesto en Inversiones.<br><b class="fuentex">Fuente: SIAF-MEF</b>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -317,7 +342,7 @@
                     //console.log(data)
                     gPie('anal3', data.info,
                         '',
-                        'Ingreso Presupuestal de la Region Ucayali', '');
+                        'Ingreso Presupuestal de la Region Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -339,7 +364,7 @@
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Ejecución Presupuestal Según Tipo De Gobierno.');
+                        'Ejecución Presupuestal Según Tipo De Gobierno.<br><b class="fuentex">Fuente: SIAF-MEF</b>');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -361,7 +386,7 @@
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Ejecución Presupuestal en Inversiones Según Tipo De Gobierno.');
+                        'Ejecución Presupuestal en Inversiones Según Tipo De Gobierno.<br><b class="fuentex">Fuente: SIAF-MEF</b>');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -383,7 +408,7 @@
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Recaudación De Ingresos Según Tipo De Gobierno.');
+                        'Recaudación De Ingresos Según Tipo De Gobierno.<br><b class="fuentex">Fuente: SIAF-MEF</b>');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");

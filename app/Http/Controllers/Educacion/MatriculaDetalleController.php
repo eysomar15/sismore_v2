@@ -3614,4 +3614,14 @@ class MatriculaDetalleController extends Controller
     {
         return view("educacion.MatriculaDetalle.presupuestoxxx");
     }
+    public function cargarpresupuestoview1()
+    {
+        return view("educacion.MatriculaDetalle.presupuestoview1");
+    }
+
+    public function cargarpresupuestoview2()
+    {
+        return view("educacion.MatriculaDetalle.presupuestoview2");
+    }
+
 }

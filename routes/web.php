@@ -71,12 +71,12 @@ Route::get('/AEI', [HomeController::class, 'AEI_tempo'])->name('AEI_tempo');
 
 
 /**************************************** EDUCACION ************************************************/
-Route::get('/Home/gra1', [HomeController::class, 'homegrafica1'])->name('graficas.home.educacion.1');
-Route::get('/Home/gra2', [HomeController::class, 'homegrafica2'])->name('graficas.home.educacion.2');
-Route::get('/Home/gra3', [HomeController::class, 'homegrafica3'])->name('graficas.home.educacion.3');
-Route::get('/Home/gra4', [HomeController::class, 'homegrafica4'])->name('graficas.home.educacion.4');
-Route::get('/Home/gra5', [HomeController::class, 'homegrafica5'])->name('graficas.home.educacion.5');
-Route::get('/Home/gra6', [HomeController::class, 'homegrafica6'])->name('graficas.home.educacion.6');
+Route::get('/Home/gra1', [HomeController::class, 'educaciongrafica1'])->name('graficas.home.educacion.1');
+Route::get('/Home/gra2', [HomeController::class, 'educaciongrafica2'])->name('graficas.home.educacion.2');
+Route::get('/Home/gra3', [HomeController::class, 'educaciongrafica3'])->name('graficas.home.educacion.3');
+Route::get('/Home/gra4', [HomeController::class, 'educaciongrafica4'])->name('graficas.home.educacion.4');
+Route::get('/Home/gra5', [HomeController::class, 'educaciongrafica5'])->name('graficas.home.educacion.5');
+Route::get('/Home/gra6', [HomeController::class, 'educaciongrafica6'])->name('graficas.home.educacion.6');
 
 Route::get('/NivelModalidad/Buscar/{tipo}', [NivelModalidadController::class, 'buscarnivelmodalidad']);
 
@@ -463,6 +463,8 @@ Route::get('/Home/Presupuesto/tabla1/{importacion_id}', [HomeController::class, 
 Route::get('/Home/Presupuesto/tabla2/{importacion_id}', [HomeController::class, 'presupuestotabla2'])->name('tabla.home.presupuesto.2');
 Route::get('/Home/Presupuesto/tabla3/{importacion_id}', [HomeController::class, 'presupuestotabla3'])->name('tabla.home.presupuesto.3');
 
+
+
 Route::get('/IMPORGASTOS/Gastos/Importar', [ImporGastosController::class, 'importar'])->name('pres.gastos.importar');
 Route::post('/IMPORGASTOS/Gastos/Importar', [ImporGastosController::class, 'importarGuardar'])->name('imporgastos.gastos.guardar');
 Route::get('/IMPORGASTOS/Listar/ImportarDT', [ImporGastosController::class, 'ListarDTImportFuenteTodos'])->name('imporgastos.listar.importados');
@@ -480,6 +482,8 @@ Route::get('/PRES/Regiones/Importar', [ImporGastosController::class, 'importar']
 
 
 Route::get('/presupuesto/Principal', [MatriculaDetalleController::class, 'cargarpresupuestoxxx'])->name('educacion.xxx');
+Route::get('/presupuesto/Principal/vista1', [MatriculaDetalleController::class, 'cargarpresupuestoview1'])->name('educacion.view1');
+Route::get('/presupuesto/Principal/vista2', [MatriculaDetalleController::class, 'cargarpresupuestoview2'])->name('educacion.view2');
 
 /**************************************** FIN PRESUPUESTO ***************************************************/
 

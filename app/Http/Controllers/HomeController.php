@@ -237,25 +237,22 @@ class HomeController extends Controller
                 DB::raw('sum(pres_base_gastos.devengado) as y3'),
             )
             ->groupBy('id', 'name')
-            ->orderBy('v4.id', 'asc')
+            ->orderBy('v4.pos', 'asc')
             ->get();
         //$gobiernos = TipoGobierno::all();
         $data['categoria'] = ['GOBIERNO NACIONAL', 'GOBIERNOS REGIONALES', 'GOBIERNOS LOCALES'];
         $data['series'] = [];
-        foreach ($data['categoria'] as $cat) {
-            $dx = [];
-            foreach ($info as $key => $value) {
-                if ($cat == 'GOBIERNO NACIONAL') $dx[] = $value->y1;
-                if ($cat == 'GOBIERNOS REGIONALES') $dx[] = $value->y2;
-                if ($cat == 'GOBIERNOS LOCALES') $dx[] = round($value->y3, 2);
-            }
-            if ($cat == 'GOBIERNO NACIONAL')
-                $data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx];
-            if ($cat == 'GOBIERNOS REGIONALES')
-                $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx];
-            if ($cat == 'GOBIERNOS LOCALES')
-                $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#F2CA4C', 'data' => $dx];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
+        foreach ($info as $key => $value) {
+            $dx1[] = $value->y1; //pia
+            $dx2[] = $value->y2; //pim
+            $dx3[] = round($value->y3, 2); //devengado
         }
+        $data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
+        $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx2];
+        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#F2CA4C', 'data' => $dx3];
 
         //$data['categoria'] = ['GOB. NACIONAL', 'GOB. REGIONALES', 'GOB. LOCALES'];
 
@@ -278,25 +275,22 @@ class HomeController extends Controller
             )
             ->where('v5.codigo', '2')
             ->groupBy('id', 'name')
-            ->orderBy('v4.id', 'asc')
+            ->orderBy('v4.pos', 'asc')
             ->get();
         //$gobiernos = TipoGobierno::all();
         $data['categoria'] = ['GOBIERNO NACIONAL', 'GOBIERNOS REGIONALES', 'GOBIERNOS LOCALES'];
         $data['series'] = [];
-        foreach ($data['categoria'] as $cat) {
-            $dx = [];
-            foreach ($info as $key => $value) {
-                if ($cat == 'GOBIERNO NACIONAL') $dx[] = $value->y1;
-                if ($cat == 'GOBIERNOS REGIONALES') $dx[] = $value->y2;
-                if ($cat == 'GOBIERNOS LOCALES') $dx[] = round($value->y3, 2);
-            }
-            if ($cat == 'GOBIERNO NACIONAL')
-                $data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx];
-            if ($cat == 'GOBIERNOS REGIONALES')
-                $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx];
-            if ($cat == 'GOBIERNOS LOCALES')
-                $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#F2CA4C', 'data' => $dx];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
+        foreach ($info as $key => $value) {
+            $dx1[] = $value->y1; //pia
+            $dx2[] = $value->y2; //pim
+            $dx3[] = round($value->y3, 2); //devengado
         }
+        $data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
+        $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx2];
+        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#F2CA4C', 'data' => $dx3];
         return response()->json(compact('data'));
     }
 
@@ -314,28 +308,27 @@ class HomeController extends Controller
                 DB::raw('sum(pres_base_ingresos.recaudado) as y3'),
             )
             ->groupBy('id', 'name')
-            ->orderBy('v4.id', 'asc')
+            ->orderBy('v4.pos', 'asc')
             ->get();
         //return $info;
         //$gobiernos = TipoGobierno::all();
         $data['categoria'] = ['GOBIERNO NACIONAL', 'GOBIERNOS REGIONALES', 'GOBIERNOS LOCALES'];
         $data['series'] = [];
-        foreach ($data['categoria'] as $cat) {
-            $dx = [];
-            foreach ($info as $key => $value) {
-                if ($cat == 'GOBIERNO NACIONAL') $dx[] = $value->y1;
-                if ($cat == 'GOBIERNOS REGIONALES') $dx[] = $value->y2;
-                if ($cat == 'GOBIERNOS LOCALES') $dx[] = round($value->y3, 2);
-            }
-            if ($cat == 'GOBIERNO NACIONAL')
-                $data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx];
-            if ($cat == 'GOBIERNOS REGIONALES')
-                $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx];
-            if ($cat == 'GOBIERNOS LOCALES')
-                $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#F2CA4C', 'data' => $dx];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
+        foreach ($info as $key => $value) {
+            $dx1[] = $value->y1; //pia
+            $dx2[] = $value->y2; //pim
+            $dx3[] = round($value->y3, 2); //devengado
         }
+        $data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
+        $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx2];
+        $data['series'][] = ['name' => 'RECAUDACIÓN', 'color' => '#F2CA4C', 'data' => $dx3];
         return response()->json(compact('data'));
     }
+
+
 
     public function vivienda($sistema_id)
     {
@@ -368,13 +361,9 @@ class HomeController extends Controller
 
     public function educacion($sistema_id)
     {
-        $imp = ImportacionRepositorio::Max_yearPadronWeb();
-        $imp2 = ImportacionRepositorio::Max_yearSiagieMatricula();
-        //return $imp2;
-        //$imp2 = ImportacionRepositorio::Max_porfuente(8);
-        $imp3 = ImportacionRepositorio::Max_porfuente(2);
-        //$mat = Matricula::where('importacion_id', $imp2)->first();
-
+        $imp = ImportacionRepositorio::Max_yearPadronWeb();//padron web
+        $imp2 = ImportacionRepositorio::Max_yearSiagieMatricula();//siagie
+        $imp3 = ImportacionRepositorio::Max_porfuente(2);//nexus
 
         if ($imp->count() > 0 && $imp2->count() > 0 && $imp3 != null) {
             $importacion_id = $imp->first()->id;
@@ -385,24 +374,8 @@ class HomeController extends Controller
             $info['tm'] = MatriculaDetalleRepositorio::count_matriculados($imp2->first()->mat);
             $info['do'] = PlazaRepositorio::count_docente($imp3);
 
-            /* $info['g1'] = MatriculaDetalleRepositorio::estudiantes_matriculadosEBR_EBE_anual();
-            $info['g2'] = PlazaRepositorio::docentes_conteo_anual();
-
-            $info['g3'] = MatriculaDetalleRepositorio::estudiantes_matriculados_segungenero();
-            $info['g4'] = PlazaRepositorio::docentes_segungenero_anual(); */
-
-            /* $info['g5'] = MatriculaDetalleRepositorio::estudiantes_matriculados_seguntipogestion();
-            $info['g6'] = PlazaRepositorio::docentes_seguntipogestion();
-
-            $info['g7'] = MatriculaDetalleRepositorio::estudiantes_matriculados_segunareageografica();
-            $info['g8'] = PlazaRepositorio::docentes_segunareageograficas();
-
-            $info['g9'] = MatriculaDetalleRepositorio::estudiantes_matriculados_segunaugel();
-            $info['g10'] = PlazaRepositorio::docentes_segunugel(); */
-
             $info['dt0'] = MatriculaDetalleRepositorio::listar_estudiantesMatriculadosDeEducacionBasicaPorUgel($imp2);
             $info['dt1'] = PadronWebRepositorio::listar_totalServicosLocalesSecciones($imp);
-            /* $info['dt4'] = MatriculaDetalleRepositorio::listar_estudiantesNivelProvinciaDistrito(); */
             return  view('home', compact('importacion_id', 'info', 'imp', 'matricula_id'));
         } else {
             $importacion_id = null;
@@ -413,32 +386,32 @@ class HomeController extends Controller
         }
     }
 
-    public function homegrafica1()
+    public function educaciongrafica1()
     {
         $info = MatriculaDetalleRepositorio::estudiantes_matriculadosEBR_EBE_anual();
         return response()->json(compact('info'));
     }
-    public function homegrafica2()
+    public function educaciongrafica2()
     {
         $info = PlazaRepositorio::docentes_conteo_anual();
         return response()->json(compact('info'));
     }
-    public function homegrafica3()
+    public function educaciongrafica3()
     {
         $info = MatriculaDetalleRepositorio::estudiantes_matriculados_segungenero();
         return response()->json(compact('info'));
     }
-    public function homegrafica4()
+    public function educaciongrafica4()
     {
         $info = PlazaRepositorio::docentes_segungenero_anual();
         return response()->json(compact('info'));
     }
-    public function homegrafica5()
+    public function educaciongrafica5()
     {
         $info = MatriculaDetalleRepositorio::estudiantes_matriculados_segunareageografica();
         return response()->json(compact('info'));
     }
-    public function homegrafica6()
+    public function educaciongrafica6()
     {
         $info =  PlazaRepositorio::docentes_segunareageograficas();
         return response()->json(compact('info'));

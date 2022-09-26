@@ -25,7 +25,7 @@ class PLazaController extends Controller
         /* anios */
         $anios = PLazaRepositorio::listar_anios();
         /* ugels */
-        $ugels = Ugel::select('id', 'nombre', 'codigo')->where('codigo', 'like', '25%')->get();
+        $ugels = Ugel::select('id', 'nombre', 'codigo')->where('codigo', 'like', '25%')->orderBy('nombre','asc')->get();
 
         return view('educacion.Plaza.DocentesPrincipal', compact('anios', 'ugels'));
     }
@@ -55,10 +55,10 @@ class PLazaController extends Controller
     public function DocentesPrincipalHead(Request $rq)
     {
         $imp = $this->cargarultimoimportado($rq->anio, 0)->id;
-        $info['opt1'] = PlazaRepositorio::listar_tipotrabajadores($imp, 1)->count();
-        $info['opt2'] = PlazaRepositorio::listar_tipotrabajadores($imp, 2)->count();
-        $info['opt3'] = PlazaRepositorio::listar_tipotrabajadores($imp, 3)->count();
-        $info['opt4'] = PlazaRepositorio::listar_tipotrabajadores($imp, 4)->count();
+        $info['opt1'] = PlazaRepositorio::listar_tipotrabajadores($imp, 1, $rq->ugel)->count();
+        $info['opt2'] = PlazaRepositorio::listar_tipotrabajadores($imp, 2, $rq->ugel)->count();
+        $info['opt3'] = PlazaRepositorio::listar_tipotrabajadores($imp, 3, $rq->ugel)->count();
+        $info['opt4'] = PlazaRepositorio::listar_tipotrabajadores($imp, 4, $rq->ugel)->count();
         return response()->json(compact('info'));
     }
 
@@ -205,7 +205,7 @@ class PLazaController extends Controller
         /* tipo modalidad */
         $tipo = NivelModalidad::select('tipo')->where(DB::raw('tipo is not null'), true)->groupBy('tipo')->get();
         /* ugels */
-        $ugels = Ugel::select('id', 'nombre', 'codigo')->where('codigo', 'like', '25%')->get();
+        $ugels = Ugel::select('id', 'nombre', 'codigo')->where('codigo', 'like', '25%')->orderBy('nombre','asc')->get();
         /* ultimo reg subido */
         $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '2')
             ->orderBy('fecha', 'desc')->take(1)->get();
