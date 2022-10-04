@@ -223,6 +223,83 @@ class HomeController extends Controller
         return response()->json(compact('info'));
     }
 
+    public function presupuestografica4($importacion_id)
+    {
+        $base = BaseGastos::select(
+            'v3.id',
+            'v2.anio as name',
+            'v2.anio as drilldown',
+            //DB::raw("sum(pres_base_gastos.pim) as pim"),
+            DB::raw("ROUND(100*sum(pres_base_gastos.devengado)/sum(pres_base_gastos.pim),1) as y")
+        )
+            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
+            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_gastos.importacion_id')
+            ->where('v3.estado', 'PR')
+            ->groupBy('id', 'name')
+            ->get();
+
+        $info = BaseGastos::where('v5.estado', 'PR')
+            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
+            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
+            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
+            ->join('par_importacion as v5', 'v5.id', '=', 'pres_base_gastos.importacion_id')
+            ->select(
+                DB::raw('year(v5.fechaActualizacion) as ano'),
+                'v4.id',
+                'v4.tipogobierno as name',
+                DB::raw('sum(pres_base_gastos.pia) as pia'),
+                DB::raw('sum(pres_base_gastos.pim) as pim'),
+                DB::raw('sum(pres_base_gastos.devengado) as ejecutado'),
+                DB::raw('ROUND(100*sum(pres_base_gastos.devengado)/sum(pres_base_gastos.pim),1) as pejecutado'),
+            )
+            ->groupBy('ano', 'id', 'name')
+            //->orderBy('v4.pos', 'asc')
+            ->get();
+
+        $base2 = [];
+        foreach ($base as $key => $ba) {
+            $ba->name =  $ba->name;
+            $data2 = [];
+            foreach ($info as $inf) {
+                if ($inf->ano == $ba->name)
+                    $data2[] = [$inf->name, $inf->pia];
+            }
+            $base2[] = ['name' => $ba->name, 'id' => $ba->drilldown, 'data' => $data2];
+        }
+        return response()->json(compact('base', 'base2'));
+    }
+
+    public function presupuestografica5($importacion_id)
+    {
+        $base = BaseGastos::select(
+            'v2.anio as name',
+            //DB::raw("sum(pres_base_gastos.pim) as y"),
+            DB::raw("ROUND(100*sum(pres_base_gastos.devengado)/sum(pres_base_gastos.pim),1) as y")
+        )
+            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
+            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_gastos.importacion_id')
+            ->join('pres_producto_proyecto as v4', 'v4.id', '=', 'pres_base_gastos.productoproyecto_id')
+            ->where('v3.estado', 'PR')
+            ->where('v4.codigo', '2')
+            ->groupBy('name')
+            ->get();
+        return response()->json(compact('base'));
+    }
+    public function presupuestografica6($importacion_id)
+    {
+        $base = BaseIngresos::select(
+            'v2.anio as name',
+            //DB::raw("sum(pres_base_ingresos.pim) as y"),
+            DB::raw("ROUND(100*sum(pres_base_ingresos.recaudado)/sum(pres_base_ingresos.pim),1) as y")
+        )
+            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_ingresos.anio_id')
+            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_ingresos.importacion_id')
+            ->where('v3.estado', 'PR')
+            ->groupBy('name')
+            ->get();
+        return response()->json(compact('base'));
+    }
+
     public function presupuestotabla1($importacion_id)
     {
         $info = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
@@ -250,7 +327,7 @@ class HomeController extends Controller
             $dx2[] = $value->y2; //pim
             $dx3[] = round($value->y3, 2); //devengado
         }
-        $data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
+        //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
         $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx2];
         $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#F2CA4C', 'data' => $dx3];
 
@@ -288,7 +365,7 @@ class HomeController extends Controller
             $dx2[] = $value->y2; //pim
             $dx3[] = round($value->y3, 2); //devengado
         }
-        $data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
+        //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
         $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx2];
         $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#F2CA4C', 'data' => $dx3];
         return response()->json(compact('data'));
@@ -322,7 +399,7 @@ class HomeController extends Controller
             $dx2[] = $value->y2; //pim
             $dx3[] = round($value->y3, 2); //devengado
         }
-        $data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
+        //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
         $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx2];
         $data['series'][] = ['name' => 'RECAUDACIÓN', 'color' => '#F2CA4C', 'data' => $dx3];
         return response()->json(compact('data'));
@@ -361,9 +438,9 @@ class HomeController extends Controller
 
     public function educacion($sistema_id)
     {
-        $imp = ImportacionRepositorio::Max_yearPadronWeb();//padron web
-        $imp2 = ImportacionRepositorio::Max_yearSiagieMatricula();//siagie
-        $imp3 = ImportacionRepositorio::Max_porfuente(2);//nexus
+        $imp = ImportacionRepositorio::Max_yearPadronWeb(); //padron web
+        $imp2 = ImportacionRepositorio::Max_yearSiagieMatricula(); //siagie
+        $imp3 = ImportacionRepositorio::Max_porfuente(2); //nexus
 
         if ($imp->count() > 0 && $imp2->count() > 0 && $imp3 != null) {
             $importacion_id = $imp->first()->id;

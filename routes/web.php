@@ -16,6 +16,7 @@ use App\Http\Controllers\Educacion\PadronEIBController;
 use App\Http\Controllers\Educacion\ImporPadronWebController;
 use App\Http\Controllers\Educacion\ImporMatriculaController;
 use App\Http\Controllers\Educacion\ImporPadronEibController;
+use App\Http\Controllers\Educacion\ImporRERController;
 use App\Http\Controllers\Educacion\MatriculaDetalleController;
 use App\Http\Controllers\Educacion\NivelModalidadController;
 use App\Http\Controllers\Educacion\PadronWebController;
@@ -318,6 +319,11 @@ Route::post('/Plaza/Plazas/tabla1', [PLazaController::class, 'cargarcoberturapla
 Route::post('/Plaza/Plazas/tabla2', [PLazaController::class, 'cargarcoberturaplazatabla2'])->name('nexus.cobertura.tabla2');
 Route::post('/Plaza/Plazas/grafica1', [PLazaController::class, 'cargarcoberturaplazagrafica1'])->name('nexus.cobertura.grafica1');
 
+
+Route::get('/ImporRER/Importar', [ImporRERController::class, 'importar'])->name('imporrer.importar');
+Route::post('/ImporRER/Importar', [ImporRERController::class, 'guardar'])->name('imporrer.guardar');
+Route::post('/ImporRER/ListaImportada/{importacion_id}', [ImporRERController::class, 'ListaImportada'])->name('imporrer.listarimportados');
+
 Route::get('/INDICADOR/SINRUTA', function () {
     //return 'Ruta no definida';
     return view('paginavacio');
@@ -458,6 +464,9 @@ Route::get('/Importado/resumen', [ImportacionController::class, 'resumenimportad
 Route::get('/Home/Presupuesto/gra1/{importacion_id}', [HomeController::class, 'presupuestografica1'])->name('graficas.home.presupuesto.1');
 Route::get('/Home/Presupuesto/gra2/{importacion_id}', [HomeController::class, 'presupuestografica2'])->name('graficas.home.presupuesto.2');
 Route::get('/Home/Presupuesto/gra3/{importacion_id}', [HomeController::class, 'presupuestografica3'])->name('graficas.home.presupuesto.3');
+Route::get('/Home/Presupuesto/gra4/{importacion_id}', [HomeController::class, 'presupuestografica4'])->name('graficas.home.presupuesto.4');
+Route::get('/Home/Presupuesto/gra5/{importacion_id}', [HomeController::class, 'presupuestografica5'])->name('graficas.home.presupuesto.5');
+Route::get('/Home/Presupuesto/gra6/{importacion_id}', [HomeController::class, 'presupuestografica6'])->name('graficas.home.presupuesto.6');
 
 Route::get('/Home/Presupuesto/tabla1/{importacion_id}', [HomeController::class, 'presupuestotabla1'])->name('tabla.home.presupuesto.1');
 Route::get('/Home/Presupuesto/tabla2/{importacion_id}', [HomeController::class, 'presupuestotabla2'])->name('tabla.home.presupuesto.2');
