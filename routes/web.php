@@ -21,6 +21,8 @@ use App\Http\Controllers\Educacion\MatriculaDetalleController;
 use App\Http\Controllers\Educacion\NivelModalidadController;
 use App\Http\Controllers\Educacion\PadronWebController;
 use App\Http\Controllers\Educacion\PLazaController;
+use App\Http\Controllers\Educacion\RerAsignadoController;
+use App\Http\Controllers\Educacion\RERController;
 use App\Http\Controllers\Educacion\TabletaController;
 use App\Http\Controllers\Educacion\TextosEscolaresController;
 use App\Http\Controllers\HomeController;
@@ -323,6 +325,25 @@ Route::post('/Plaza/Plazas/grafica1', [PLazaController::class, 'cargarcoberturap
 Route::get('/ImporRER/Importar', [ImporRERController::class, 'importar'])->name('imporrer.importar');
 Route::post('/ImporRER/Importar', [ImporRERController::class, 'guardar'])->name('imporrer.guardar');
 Route::post('/ImporRER/ListaImportada/{importacion_id}', [ImporRERController::class, 'ListaImportada'])->name('imporrer.listarimportados');
+
+Route::get('/Mantenimiento/RER/Principal', [RERController::class, 'principal'])->name('mantenimiento.rer.principal');
+Route::post('/Mantenimiento/RER/Importados/', [RERController::class, 'ListarDTImportFuenteTodos'])->name('mantenimiento.rer.listar.importados');
+Route::get('/Mantenimiento/RER/ajax_edit/{id}', [RERController::class, 'ajax_edit']);
+Route::post('/Mantenimiento/RER/ajax_add/', [RERController::class, 'ajax_add']);
+Route::post('/Mantenimiento/RER/ajax_update/', [RERController::class, 'ajax_update']);
+Route::get('/Mantenimiento/RER/ajax_estado/{id}', [RERController::class, 'ajax_estado']);
+Route::get('/Mantenimiento/RER/ajax_delete/{id}', [RERController::class, 'ajax_delete']);
+
+Route::get('/Mantenimiento/RERAsignado/Principal', [RerAsignadoController::class, 'principal'])->name('mantenimiento.rer.asig.principal');
+Route::post('/Mantenimiento/RERAsignado/Importados/', [RerAsignadoController::class, 'ListarDTImportFuenteTodos'])->name('mantenimiento.rer.asig.listar.importados');
+Route::get('/Mantenimiento/RERAsignado/ajax_edit/{id}', [RerAsignadoController::class, 'ajax_edit']);
+Route::post('/Mantenimiento/RERAsignado/ajax_add/', [RerAsignadoController::class, 'ajax_add']);
+Route::post('/Mantenimiento/RERAsignado/ajax_update/', [RerAsignadoController::class, 'ajax_update']);
+//Route::get('/Mantenimiento/RERAsignado/ajax_estado/{id}', [RerAsignadoController::class, 'ajax_estado']);
+Route::get('/Mantenimiento/RERAsignado/ajax_delete/{id}', [RerAsignadoController::class, 'ajax_delete']);
+
+Route::get('/Mantenimiento/RERAsignado/RedEducativa/autocompletar', [RerAsignadoController::class, 'completarred'])->name('mantenimiento.rerasig.completar.rer');
+Route::get('/Mantenimiento/RERAsignado/IIEE/autocompletar', [RerAsignadoController::class, 'completariiee'])->name('mantenimiento.rerasig.completar.iiee');
 
 Route::get('/INDICADOR/SINRUTA', function () {
     //return 'Ruta no definida';

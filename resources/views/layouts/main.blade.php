@@ -42,7 +42,7 @@
             <div class="content-page">
                 <div class="content">
                     <div class="container-fluid">
-                    @if (session('sistema_id')  != 5)
+                        @if (session('sistema_id') != 5)
                             <div class="row">
                                 <div class="col-12">
                                     @if ($titlePage != '')
@@ -79,10 +79,10 @@
                                             <h4 class="page-title">Ejecución Presupuestal De La Región Ucayali</h4>
                                             <div class="page-title-right">
                                                 <ol class="breadcrumb p-0 m-0">
-                                                @if (isset($impI))
-                                                    Actualizado al 23 Setiembre 2022{{--date('d/m/Y',strtotime($impG->fechaActualizacion))--}}        
+                                                    @if (isset($impI))
+                                                        Actualizado al 23 Setiembre 2022{{-- date('d/m/Y',strtotime($impG->fechaActualizacion)) --}}
                                                     @endif
-                                            </ol>
+                                                </ol>
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>
@@ -117,7 +117,7 @@
         <!-- ============================================================== -->
 
     </div>
-    <!-- END wrapper --> 
+    <!-- END wrapper -->
 
     <!-- Bootstrap modal -->
     {{-- <div id="modal_form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"> --}}
@@ -261,6 +261,7 @@
 
 
 
+    {{-- <script src="{{ asset('/') }}public/assets/jquery-ui/external/jquery/jquery.js"></script> --}}
     <!-- Vendor js -->
     <script src="{{ asset('/') }}public/assets/js/vendor.min.js"></script>
 
@@ -269,10 +270,10 @@
     <script src="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
     <!-- Chat app -->
-    <script src="{{ asset('/') }}public/assets/js/pages/jquery.chat.js"></script>
+    {{-- <script src="{{ asset('/') }}public/assets/js/pages/jquery.chat.js"></script> --}}
 
     <!-- Todo app -->
-    <script src="{{ asset('/') }}public/assets/js/pages/jquery.todo.js"></script>
+    {{-- <script src="{{ asset('/') }}public/assets/js/pages/jquery.todo.js"></script> --}}
 
     <script src="{{ asset('/') }}public/assets/libs/toastr/toastr.min.js"></script>
     <script src="{{ asset('/') }}public/assets/js/bootbox.js"></script>
