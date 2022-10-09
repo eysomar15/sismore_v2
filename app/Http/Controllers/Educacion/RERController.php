@@ -47,15 +47,15 @@ class RERController extends Controller
 
             $data[] = array(
                 $key + 1,
-                $value->codigo_rer,
+                "<center>$value->codigo_rer</center>",
                 $value->nombre,
-                !$value->anio_creacion || $value->anio_creacion == 0 ? '' : $value->anio_creacion,
+                !$value->anio_creacion || $value->anio_creacion == 0 ? '' : "<center>$value->anio_creacion</center>",
                 //!$value->anio_implementacion || $value->anio_implementacion == 0 ? '' : $value->anio_implementacion,
                 //!$value->fecha_resolucion || $value->fecha_resolucion == null ? '' : date("d/m/Y", strtotime($value->fecha_resolucion)),
-                $value->numero_resolucion,
-                $value->presupuesto,
-                $iiees->count(),
-                $btn1 . $btn4 . $btn2  . $btn3,
+                "<center>$value->numero_resolucion</center>",
+                '<div style="text-align:right">'.$value->presupuesto.'</div>',
+                "<center>".$iiees->count()."</center>",
+                "<center>".$btn1 . $btn4 . $btn2  . $btn3."</center>",
             );
         }
         $result = array(

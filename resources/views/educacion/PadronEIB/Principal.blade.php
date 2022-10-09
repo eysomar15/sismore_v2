@@ -1,11 +1,28 @@
 @extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => 'Padron Educacion Intercultural Bilingue.'])
 
 @section('css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css"> --}}
+
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"> --}}
+
+    <!-- Table datatable css -->
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/fixedHeader.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/scroller.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
+    {{-- autocompletar --}}
     <link href="{{ asset('/') }}public/assets/jquery-ui/jquery-ui.css" rel="stylesheet" />
 
     <style>
@@ -254,7 +271,8 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label>Institución Educativa <span class="required">*</span></label>
-                                            <input type="text" id="viiee" name="viiee" class="form-control" readonly>
+                                            <input type="text" id="viiee" name="viiee" class="form-control"
+                                                readonly>
                                             <span class="help-block"></span>
                                         </div>
                                         <div class="col-md-6">
@@ -383,14 +401,43 @@
 @endsection
 
 @section('js')
+    {{-- autocompletar --}}
     <script src="{{ asset('/') }}public/assets/jquery-ui/jquery-ui.js"></script>
 
     {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
 
-    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    {{-- <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script> --}}
+
+    <!-- third party js -->
+    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/jszip/jszip.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/pdfmake.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/vfs_fonts.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.html5.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.print.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.scroller.min.js"></script>
+
 
     {{-- <script src="{{ asset('/') }}public/assets/jquery-ui/external/jquery/jquery.js"></script> --}}
     <script>
@@ -444,11 +491,65 @@
                 autoWidth: false,
                 ordered: false,
                 language: table_language,
+                dom: 'Bfrtip',
+                //dom: 'Blrtip',
+                //buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+                buttons: [
+                    /* {
+                                            extend: "copy",
+                                            className: "btn-sm"
+                                        }, {
+                                            extend: "csv",
+                                            className: "btn-sm"
+                                        },  */
+                    {
+                        extend: "excel",
+                        title: null,
+                        className: "btn-sm",
+                        text: '<i class="fa fa-file-excel"></i> Excel',
+                        titleAttr: 'Excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6],
+                            //columns: [0, ':visible'],
+                            //columns: ':visible',
+                        },
+                    }, {
+                        extend: "pdf",
+                        className: "btn-sm",
+                        title: "Padron Educacion Intercultural Billingue",
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6],
+                            //columns: [0, ':visible'],
+                            //columns: ':visible',
+                        },
+                        orientation:'landscape',
+                        /* customize: function(win) {
+                            $(win.document.body)
+                                .css('font-size', '10pt')
+                                .prepend(
+                                    '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                                );
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }, */
+                        //messageTop:"Ronald" ,
+                        text: '<i class="fa fa-file-pdf"></i> PDF',
+                        titleAttr: 'PDF'
+                    },
+                    /*  {
+                                        extend: "print",
+                                        className: "btn-sm"
+                                    } */
+                ],
+                //buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5'],
                 ajax: {
                     "url": "{{ route('padroneib.listar.importados') }}",
                     "type": "GET",
                     //"dataType": 'JSON',
                 },
+
             });
         });
 
