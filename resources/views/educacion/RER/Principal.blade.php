@@ -334,7 +334,7 @@
                 }, {
                     extend: "pdf",
                     className: "btn-sm",
-                    title: "Padron Educacion Intercultural Billingue",
+                    title: "REDES EDUCATIVAS",
                     exportOptions: {
                         columns: [0, 1, 2, 3, 4, 5, 6],
                     },

@@ -222,14 +222,54 @@ class HomeController extends Controller
         }
         return response()->json(compact('info'));
     }
-
     public function presupuestografica4($importacion_id)
+    {
+        $base = BaseGastos::select(
+            'v3.id',
+            'v2.anio as ano',
+            'v6.tipogobierno as tipo',
+            DB::raw("sum(IF(v6.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos.pim,0)) as pim1"),
+            DB::raw("sum(IF(v6.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos.pim,0)) as pim2"),
+            DB::raw("sum(IF(v6.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos.pim,0)) as pim3"),
+        )
+            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
+            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_gastos.importacion_id')
+            ->join('pres_pliego as v4', 'v4.id', '=', 'pres_base_gastos.pliego_id')
+            ->join('pres_unidadejecutora as v5', 'v5.id', '=', 'v4.unidadejecutora_id')
+            ->join('pres_tipo_gobierno as v6', 'v6.id', '=', 'v5.tipogobierno')
+            ->where('v3.estado', 'PR')
+            ->groupBy('id', 'ano', 'tipo')
+            ->get();
+        $data['categoria'] = [];
+        $data['series'] = [];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
+        //$data['categoria'][] = [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,]; //$ba->ano;
+        foreach ($base as $key => $ba) {
+            if ($ba->tipo == 'GOBIERNO NACIONAL') {
+                $data['categoria'][] = $ba->ano;
+                $dx1[] = $ba->pim1;
+            }
+            if ($ba->tipo == 'GOBIERNOS REGIONALES')
+                $dx2[] = $ba->pim2;
+            if ($ba->tipo == 'GOBIERNOS LOCALES')
+                $dx3[] = $ba->pim3;
+        }
+        $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#7e57c2',  'data' => $dx1];
+        $data['series'][] = ['name' => 'GOBIERNOS REGIONALES', 'color' => '#317eeb',  'data' => $dx2];
+        $data['series'][] = ['name' => 'GOBIERNOS LOCALES', 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('data'));
+    }
+
+    public function presupuestografica4x($importacion_id)
     {
         $base = BaseGastos::select(
             'v3.id',
             'v2.anio as name',
             'v2.anio as drilldown',
-            //DB::raw("sum(pres_base_gastos.pim) as pim"),
+            DB::raw("sum(pres_base_gastos.pim) as pim"),
+            DB::raw('ROUND(sum(pres_base_gastos.devengado),2) as devengado'),
             DB::raw("ROUND(100*sum(pres_base_gastos.devengado)/sum(pres_base_gastos.pim),1) as y")
         )
             ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
@@ -238,7 +278,7 @@ class HomeController extends Controller
             ->groupBy('id', 'name')
             ->get();
 
-        $info = BaseGastos::where('v5.estado', 'PR')
+        /* $info = BaseGastos::where('v5.estado', 'PR')
             ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
             ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
             ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
@@ -254,19 +294,30 @@ class HomeController extends Controller
             )
             ->groupBy('ano', 'id', 'name')
             //->orderBy('v4.pos', 'asc')
-            ->get();
+            ->get(); */
 
+        $data['categoria'] = [];
+        $data['series'] = [];
         $base2 = [];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
         foreach ($base as $key => $ba) {
-            $ba->name =  $ba->name;
-            $data2 = [];
-            foreach ($info as $inf) {
+            /* $ba->name =  $ba->name;
+            $data2 = []; */
+            /* foreach ($info as $inf) {
                 if ($inf->ano == $ba->name)
                     $data2[] = [$inf->name, $inf->pia];
             }
-            $base2[] = ['name' => $ba->name, 'id' => $ba->drilldown, 'data' => $data2];
+            $base2[] = ['name' => $ba->name, 'id' => $ba->drilldown, 'data' => $data2]; */
+
+            $data['categoria'][] = $ba->name;
+            $dx2[] = $ba->pim; // ['name' => $ba->pim, 'drilldown' => $ba->drilldown]; //pim
+            $dx3[] = $ba->devengado; // ['name' => $ba->devengado, 'drilldown' => $ba->drilldown]; //devengado
         }
-        return response()->json(compact('base', 'base2'));
+        $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb',  'data' => $dx2];
+        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('data'));
     }
 
     public function presupuestografica5($importacion_id)
@@ -323,13 +374,13 @@ class HomeController extends Controller
         $dx2 = [];
         $dx3 = [];
         foreach ($info as $key => $value) {
-            $dx1[] = $value->y1; //pia
+            //$dx1[] = $value->y1; //pia
             $dx2[] = $value->y2; //pim
             $dx3[] = round($value->y3, 2); //devengado
         }
         //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
-        $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx2];
-        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#F2CA4C', 'data' => $dx3];
+        $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb', 'data' => $dx2];
+        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
 
         //$data['categoria'] = ['GOB. NACIONAL', 'GOB. REGIONALES', 'GOB. LOCALES'];
 
@@ -366,8 +417,8 @@ class HomeController extends Controller
             $dx3[] = round($value->y3, 2); //devengado
         }
         //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
-        $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx2];
-        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#F2CA4C', 'data' => $dx3];
+        $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb', 'data' => $dx2];
+        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
         return response()->json(compact('data'));
     }
 
@@ -400,8 +451,8 @@ class HomeController extends Controller
             $dx3[] = round($value->y3, 2); //devengado
         }
         //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
-        $data['series'][] = ['name' => 'PIM', 'color' => '#F25656', 'data' => $dx2];
-        $data['series'][] = ['name' => 'RECAUDACIÓN', 'color' => '#F2CA4C', 'data' => $dx3];
+        $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb', 'data' => $dx2];
+        $data['series'][] = ['name' => 'RECAUDACIÓN', 'color' => '#ef5350', 'data' => $dx3];
         return response()->json(compact('data'));
     }
 

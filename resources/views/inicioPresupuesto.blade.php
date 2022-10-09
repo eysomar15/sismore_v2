@@ -308,11 +308,11 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body p-0 m-0">
-                            {{-- <div id="anal7" style="min-width:400px;height:300px;margin:0 auto;"></div> --}}
-                            <figure class="highcharts-figure">
+                        <div class="card-body p-0 m-0">{{-- style="min-width:400px;height:300px;margin:0 auto;" --}}
+                            <div id="anal7"></div>
+                            {{-- <figure class="highcharts-figure">
                                 <div id="anal7"></div>
-                            </figure>
+                            </figure> --}}
                         </div>
                     </div>
                 </div>
@@ -466,7 +466,14 @@
                 },
                 success: function(data) {
                     console.log(data)
-                    gColumnDrilldown('anal7', data.base, data.base2,
+                    /* gColumnDrilldown('anal7', data.base, data.base2,
+                        '',
+                        'Evolución Del Presupuesto Del Sector Público De La Región De Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
+                        'Año'); */
+                    glineal(
+                        'anal7',
+                        data.data['categoria'],
+                        data.data['series'],
                         '',
                         'Evolución Del Presupuesto Del Sector Público De La Región De Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
                         'Año');
@@ -673,6 +680,105 @@
                     data: data1,
 
                 }],
+                drilldown: {
+                    breadcrumbs: {
+                        position: {
+                            align: 'right',
+                        }
+                    },
+                    series: data2,
+                },
+                credits: false,
+            });
+        }
+
+        function gColumnDrilldown2(div, categoria, serie1, data2, titulo, subtitulo, tituloserie) {
+            Highcharts.chart(div, {
+                chart: {
+                    type: 'column',
+                },
+                title: {
+                    enabled: false,
+                    text: titulo,
+                    //align:'left',
+                },
+                subtitle: {
+                    //align:'left',
+                    text: subtitulo,
+                },
+                accessibility: {
+                    announceNewData: {
+                        enabled: true,
+                    }
+                },
+                xAxis: {
+                    //type: 'category',
+                    categories: categoria
+                },
+                yAxis: {
+                    /* max: 100, */
+                    title: {
+                        enabled: false,
+                        text: 'Porcentaje',
+                    }
+                },
+                legend: {
+                    enabled: false,
+                },
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y}%',
+                        },
+                    },
+                    drilldown: {
+                        series: {
+                            //borderWidth: 0,
+                            dataLabels: {
+                                enabled: true,
+                                format: '{point.y}',
+                            },
+                            format: '{point.y}',
+                        },
+                    }
+                    /* series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:,.0f}',
+                            //format: '{point.y:.1f}%',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                        },
+                    } */
+                },
+                tooltip: {
+                    pointFormat: '<span style="color:{point.color}">\u25CF</span> Hay: <b>{point.y}%</b><br/>',
+                    shared: true,
+                    /* headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>' */
+                },
+                series: serie1
+                    /* [{
+                                        showInLegend: tituloserie != '',
+                                        name: tituloserie,
+                                        label: {
+                                            enabled: false
+                                        },
+                                        colorByPoint: false,
+                                        data: data1,
+
+                                    }] */
+                    ,
                 drilldown: {
                     breadcrumbs: {
                         position: {
@@ -980,6 +1086,79 @@
                     name: 'CL',
                     data: [0, 2, 6, 3]
                 }]
+            });
+        }
+
+        function glineal(div, categoria, series, titulo, subtitulo) {
+            Highcharts.chart(div, {
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: titulo, //'Browser market shares in January, 2018'
+                },
+                subtitle: {
+                    text: subtitulo,
+                },
+                xAxis: {
+                    categories: categoria
+                    /* accessibility: {
+                        rangeDescription: 'Range: 2015 to 2025'
+                    } */
+                },
+                yAxis: {
+                    /* title: {
+                        text: 'Number of Employees'
+                    } */
+                    /* allowDecimals: false,
+                    min: 0,
+                    title: {
+                        enabled: false,
+                        text: 'Porcentaje',
+                    } */
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                /* plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                }, */
+                /*  plotOptions: {
+                     series: {
+                         label: {
+                             connectorAllowed: false
+                         },
+                         pointStart: 2010
+                     }
+                 }, */
+
+                series: series,
+
+                /* responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                //layout: 'vertical', //horizontal
+                                //align: 'center', //center
+                                //verticalAlign: 'middle'//bottom
+                            }
+                        }
+                    }]
+                } */
+                credits: false,
+
             });
         }
     </script>

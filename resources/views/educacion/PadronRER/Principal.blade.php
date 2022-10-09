@@ -1,9 +1,18 @@
 @extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => 'Padron Red Educativa Rural'])
 
 @section('css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css">
+    <!-- Table datatable css -->
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/fixedHeader.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/scroller.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <link href="{{ asset('/') }}public/assets/jquery-ui/jquery-ui.css" rel="stylesheet" />
@@ -272,10 +281,26 @@
 
     {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
 
-    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+    <!-- third party js -->
+    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/jszip/jszip.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/pdfmake.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/vfs_fonts.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.html5.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.print.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.scroller.min.js"></script>
 
     {{-- <script src="{{ asset('/') }}public/assets/jquery-ui/external/jquery/jquery.js"></script> --}}
     <script>
@@ -345,6 +370,27 @@
                 autoWidth: false,
                 ordered: true,
                 language: table_language,
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: "excel",
+                    title: null,
+                    className: "btn-sm",
+                    text: '<i class="fa fa-file-excel"></i> Excel',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6],
+                    },
+                }, {
+                    extend: "pdf",
+                    className: "btn-sm",
+                    title: "Padron Red Educativa Rural",
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6],
+                    },
+                    orientation: 'landscape',
+                    text: '<i class="fa fa-file-pdf"></i> PDF',
+                    titleAttr: 'PDF'
+                }, ],
                 ajax: {
                     "headers": {
                         'X-CSRF-TOKEN': $('input[name=_token]').val()
