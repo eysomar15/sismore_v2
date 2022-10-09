@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Educacion;
 
-use App\Models\Educacion\Importacion;
 use Illuminate\Support\Facades\DB;
 
 class PadronEIBRepositorio
@@ -40,7 +39,7 @@ class PadronEIBRepositorio
             join par_ubigeo v7 on v7.id=v6.Ubigeo_id
             join par_ubigeo v8 on v8.id=v7.dependencia
             join edu_nivelmodalidad v9 on v9.id=v3.NivelModalidad_id
-            where v1.importacion_id=$id
+            where v1.importacion_id=$id order by v1.id desc
         ) as tb"))->get();
         return $query;
     }

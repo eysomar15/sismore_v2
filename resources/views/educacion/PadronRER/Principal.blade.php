@@ -102,13 +102,15 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Red Educativa <span class="required">*</span></label>
-                                        <input type="text" id="rer" name="rer" class="form-control">
+                                        <input type="text" id="rer" name="rer" class="form-control"
+                                            placeholder="Buscar Red Educativa">
                                         <span class="help-block"></span>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label>Institución Educativa <span class="required">*</span></label>
-                                        <input type="text" id="iiee" name="iiee" class="form-control">
+                                        <input type="text" id="iiee" name="iiee" class="form-control"
+                                            placeholder="Buscar Institución Educativa">
                                         <span class="help-block"></span>
                                     </div>
                                 </div>
@@ -167,9 +169,101 @@
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                     <button type="button" id="btnSave" onclick="save()" class="btn btn-primary">Guardar</button>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            </div>
+        </div>
+    </div>
+    <!-- End Bootstrap modal -->
+
+    <!-- Bootstrap modal -->
+    <div id="modal_ver" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="formver" class="form-horizontal" autocomplete="off">
+                        @csrf
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Red Educativa <span class="required">*</span></label>
+                                        <input type="text" id="vrer" name="vrer" class="form-control"
+                                            placeholder="Buscar Red Educativa" readonly>
+                                        <span class="help-block"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label>Institución Educativa <span class="required">*</span></label>
+                                        <input type="text" id="viiee" name="viiee" class="form-control"
+                                            placeholder="Buscar Institución Educativa" readonly>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Total Estudiantes<span class="required">*</span></label>
+                                        <input id="vestudiantes" name="vestudiantes" class="form-control" type="number"
+                                            readonly>
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Total Docentes<span class="required">*</span></label>
+                                        <input id="vdocentes" name="vdocentes" class="form-control" type="number"
+                                            readonly>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Total Personal Administrativos<span class="required">*</span></label>
+                                        <input id="vadministrativos" name="vadministrativos" class="form-control"
+                                            type="number" readonly>
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Tipo Transporte<span class="required">*</span></label>
+                                        <input id="vtransporte" name="vtransporte" class="form-control" type="text"
+                                            maxlength="30" readonly>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Tiempo traslado a la IE sede de RER<span class="required">*</span></label>
+                                        <input id="vtiempo1" name="vtiempo1" class="form-control" type="text"
+                                            maxlength="20" readonly>
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Tiempo traslado a la IE sede de RER a la UGEL<span
+                                                class="required">*</span></label>
+                                        <input id="vtiempo2" name="vtiempo2" class="form-control" type="text"
+                                            maxlength="20" readonly>
+                                        <span class="help-block"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- End Bootstrap modal -->
 @endsection
 
@@ -193,7 +287,7 @@
             $("#rer").autocomplete({
                 source: function(request, response) {
                     $.ajax({
-                        url: "{{ route('mantenimiento.rerasig.completar.rer') }}",
+                        url: "{{ route('mantenimiento.padronrer.completar.rer') }}",
                         data: {
                             term: request.term
                         },
@@ -213,7 +307,7 @@
             $('#iiee').autocomplete({
                 source: function(request, response) {
                     $.ajax({
-                        url: "{{ route('mantenimiento.rerasig.completar.iiee') }}",
+                        url: "{{ route('mantenimiento.padronrer.completar.iiee') }}",
                         data: {
                             term: request.term
                         },
@@ -255,7 +349,7 @@
                     "headers": {
                         'X-CSRF-TOKEN': $('input[name=_token]').val()
                     },
-                    "url": "{{ route('mantenimiento.rer.asig.listar.importados') }}",
+                    "url": "{{ route('mantenimiento.padronrer.listar.importados') }}",
                     "type": "POST",
                     //"dataType": 'JSON',
                 },
@@ -278,11 +372,11 @@
             $('#btnSave').attr('disabled', true);
             var url;
             if (save_method == 'add') {
-                url = "{{ url('/') }}/Mantenimiento/RERAsignado/ajax_add";
+                url = "{{ url('/') }}/Mantenimiento/PadronRER/ajax_add";
                 msgsuccess = "El registro fue creado exitosamente.";
                 msgerror = "El registro no se pudo crear verifique las validaciones.";
             } else {
-                url = "{{ url('/') }}/Mantenimiento/RERAsignado/ajax_update";
+                url = "{{ url('/') }}/Mantenimiento/PadronRER/ajax_update";
                 msgsuccess = "El registro fue actualizado exitosamente.";
                 msgerror = "El registro no se pudo actualizar. Verifique la operación";
             }
@@ -320,21 +414,21 @@
             $('.form-group').removeClass('has-error');
             $('.help-block').empty();
             $.ajax({
-                url: "{{ url('/') }}/Mantenimiento/RERAsignado/ajax_edit/" + id,
+                url: "{{ url('/') }}/Mantenimiento/PadronRER/ajax_edit/" + id,
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    $('[name="id"]').val(data.rer.id);
-                    $('[name="rer_id"]').val(data.rer.rer_id);
-                    $('[name="rer"]').val(data.rer.red);
-                    $('[name="iiee_id"]').val(data.rer.institucioneducativa_id);
-                    $('[name="iiee"]').val(data.rer.iiee);
-                    $('[name="estudiantes"]').val(data.rer.total_estudiantes);
-                    $('[name="docentes"]').val(data.rer.total_docentes);
-                    $('[name="administrativos"]').val(data.rer.total_administrativo);
-                    $('[name="transporte"]').val(data.rer.tipo_transporte);
-                    $('[name="tiempo1"]').val(data.rer.tiempo_tras_rer);
-                    $('[name="tiempo2"]').val(data.rer.tiempo_tras_rer_ugel);
+                    $('[name="id"]').val(data.padronRER.id);
+                    $('[name="rer_id"]').val(data.padronRER.rer_id);
+                    $('[name="rer"]').val(data.padronRER.red);
+                    $('[name="iiee_id"]').val(data.padronRER.institucioneducativa_id);
+                    $('[name="iiee"]').val(data.padronRER.iiee);
+                    $('[name="estudiantes"]').val(data.padronRER.total_estudiantes);
+                    $('[name="docentes"]').val(data.padronRER.total_docentes);
+                    $('[name="administrativos"]').val(data.padronRER.total_administrativo);
+                    $('[name="transporte"]').val(data.padronRER.tipo_transporte);
+                    $('[name="tiempo1"]').val(data.padronRER.tiempo_tras_rer);
+                    $('[name="tiempo2"]').val(data.padronRER.tiempo_tras_rer_ugel);
                     $('#modal_form').modal('show');
                     $('.modal-title').text('Modificar Asignacion');
                 },
@@ -348,7 +442,7 @@
             bootbox.confirm("Seguro desea Eliminar este registro?", function(result) {
                 if (result === true) {
                     $.ajax({
-                        url: "{{ url('/') }}/Mantenimiento/RERAsignado/ajax_delete/" + id,
+                        url: "{{ url('/') }}/Mantenimiento/PadronRER/ajax_delete/" + id,
                         type: "GET",
                         dataType: "JSON",
                         success: function(data) {
@@ -395,42 +489,30 @@
             });
         };
 
-        /* function buscarrer() {
-            if ($('#rer_codigo').val() == '') {
-                alert('FALTA INGRESAR CODIGO SEDE RER');
-            } else {
-
-                $('#buscar_padronweb').html("<i class='fa fa-spinner fa-spin'></i>");
-                $.ajax({
-                    url: "{{ url('/') }}/Mantenimiento/RERAsignado/rer/" + $('#rer_codigo').val(),
-                    type: "GET",
-                    dataType: "JSON",
-                    success: function(data) {
-                        //console.log(data[0]);
-                        $('#form_padronweb')[0].reset();
-                        if (data.status) {
-                            var dd = data.info;
-                            $('#rer_id').val(dd.provincia);
-                            $('#rer').val(dd.distrito);
-                            if (dd.estado) {
-                                $('[name="rer_codigo"]').parent().addClass('has-error');
-                                $('[name="rer_codigo"]').next().text(
-                                    '<br> Servicio Educativo Registrado en el Padron EIB');
-                            }
-                        } else {
-                            $('[name="' + data.inputerror + '"]').parent().addClass('has-error');
-                            $('[name="' + data.inputerror + '"]').next().text('<br>' + data.error_string);
-                        }
-                        $('#buscar_rer').html('<i class="fa fa-search"></i>');
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        toastr.error(
-                            'No se puede eliminar este registro por seguridad de su base de datos, Contacte al Administrador del Sistema',
-                            'Mensaje');
-                        $('#buscar_rer').html('<i class="fa fa-search"></i>');
-                    }
-                });
-            }
-        } */
+        function ver(id) {
+            $('#formver')[0].reset();
+            $('.form-group').removeClass('has-error');
+            $('.help-block').empty();
+            $.ajax({
+                url: "{{ url('/') }}/Mantenimiento/PadronRER/ajax_edit/" + id,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data) {
+                    $('[name="vrer"]').val(data.padronRER.red);
+                    $('[name="viiee"]').val(data.padronRER.iiee);
+                    $('[name="vestudiantes"]').val(data.padronRER.total_estudiantes);
+                    $('[name="vdocentes"]').val(data.padronRER.total_docentes);
+                    $('[name="vadministrativos"]').val(data.padronRER.total_administrativo);
+                    $('[name="vtransporte"]').val(data.padronRER.tipo_transporte);
+                    $('[name="vtiempo1"]').val(data.padronRER.tiempo_tras_rer);
+                    $('[name="vtiempo2"]').val(data.padronRER.tiempo_tras_rer_ugel);
+                    $('#modal_ver').modal('show');
+                    $('.modal-title').text('Modificar Asignacion');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error get data from ajax');
+                }
+            });
+        };
     </script>
 @endsection

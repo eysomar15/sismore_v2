@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Educacion;
 use App\Http\Controllers\Controller;
 use App\Models\Educacion\InstitucionEducativa;
 use App\Models\Educacion\RER;
-use App\Models\Educacion\RerAsignacion;
+use App\Models\Educacion\PadronRER;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+/* serapadronRER */
 
-class RerAsignadoController extends Controller
+class PadronRERController extends Controller
 {
     public function __construct()
     {
@@ -20,7 +21,7 @@ class RerAsignadoController extends Controller
     public function principal()
     {
         $mensaje = "";
-        return view('educacion.RerAsignacion.Principal', compact('mensaje'));
+        return view('educacion.PadronRER.Principal', compact('mensaje'));
     }
 
     public function ListarDTImportFuenteTodos(Request $rq)
@@ -29,8 +30,8 @@ class RerAsignadoController extends Controller
         $start = intval($rq->start);
         $length = intval($rq->length);
 
-        $query = RerAsignacion::select(
-            'edu_rer_asignacion.*',
+        $query = PadronRER::select(
+            'edu_padron_rer.*',
             'v2.codigo_rer as modularrer',
             'v2.nombre as rer',
             'v3.codModular as modulariiee',
@@ -38,11 +39,11 @@ class RerAsignadoController extends Controller
             'v4.nombre as nivel',
             'v5.nombre as ugel',
         )
-            ->join('edu_rer as v2', 'v2.id', '=', 'edu_rer_asignacion.rer_id')
-            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'edu_rer_asignacion.institucioneducativa_id')
+            ->join('edu_rer as v2', 'v2.id', '=', 'edu_padron_rer.rer_id')
+            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'edu_padron_rer.institucioneducativa_id')
             ->join('edu_nivelmodalidad as v4', 'v4.id', '=', 'v3.NivelModalidad_id')
             ->join('edu_ugel as v5', 'v5.id', '=', 'v3.Ugel_id')
-            ->orderBy('edu_rer_asignacion.id', 'desc')->get();
+            ->orderBy('edu_padron_rer.id', 'desc')->get();
         $data = [];
         foreach ($query as $key => $value) {
 
@@ -64,7 +65,7 @@ class RerAsignadoController extends Controller
                 $value->nivel,
                 $value->rer,
                 $value->tipo_transporte,
-                $btn1  . $btn3 . $btn4,
+                $btn1 . $btn4 . $btn3,
             );
         }
         $result = array(
@@ -75,8 +76,6 @@ class RerAsignadoController extends Controller
         );
         return response()->json($result);
     }
-
-
 
     private function _validate($request)
     {
@@ -107,7 +106,7 @@ class RerAsignadoController extends Controller
             $data['error_string'][] = 'Este campo es obligatorio.';
             $data['status'] = FALSE;
         } else { //'rer_id' => $request->rer_id,
-            $iiee = RerAsignacion::where(['institucioneducativa_id' => $request->iiee_id])->get();
+            $iiee = PadronRER::where(['institucioneducativa_id' => $request->iiee_id])->get();
             if ($iiee->count() > 0 && $request->id == '') {
                 $data['inputerror'][] = 'iiee';
                 $data['error_string'][] = 'IE ya está en uso.';
@@ -146,7 +145,7 @@ class RerAsignadoController extends Controller
         if ($val['status'] === FALSE) {
             return response()->json($val);
         }
-        $rer = RerAsignacion::Create([
+        $rer = PadronRER::Create([
             'rer_id' => $request->rer_id,
             'institucioneducativa_id' => $request->iiee_id,
             'total_estudiantes' => $request->estudiantes,
@@ -164,7 +163,7 @@ class RerAsignadoController extends Controller
         if ($val['status'] === FALSE) {
             return response()->json($val);
         }
-        $rer = RerAsignacion::find($request->id);
+        $rer = PadronRER::find($request->id);
         $rer->rer_id = $request->rer_id;
         $rer->institucioneducativa_id = $request->iiee_id;
         $rer->total_estudiantes = $request->estudiantes;
@@ -179,50 +178,24 @@ class RerAsignadoController extends Controller
     }
     public function ajax_edit($id)
     {
-        $rer = RerAsignacion::find($id);
-        $rer->red = RER::find($rer->rer_id)->nombre;
-        $rer->iiee = InstitucionEducativa::find($rer->institucioneducativa_id)->nombreInstEduc;
-        return response()->json(compact('rer'));
+        $padronRER = PadronRER::find($id);
+        $rer = RER::find($padronRER->rer_id);
+        $padronRER->red = $rer->codigo_rer . ' | ' . $rer->nombre;
+        $iiee = InstitucionEducativa::find($padronRER->institucioneducativa_id);
+        $padronRER->iiee = $iiee->codModular . ' | ' . $iiee->nombreInstEduc;
+        return response()->json(compact('padronRER', 'iiee'));
     }
     public function ajax_delete($id)
     {
-        $rer = RerAsignacion::find($id);
+        $rer = PadronRER::find($id);
         $rer->delete();
         return response()->json(array('status' => true));
     }
     public function ajax_estado($id)
     {
-        $rer = RerAsignacion::find($id);
+        $rer = PadronRER::find($id);
         $rer->estado = $rer->estado == 1 ? 0 : 1;
         $rer->save();
         return response()->json(array('status' => true));
-    }
-
-    public function completarred(Request $rq)
-    {
-        $term = $rq->get('term');
-        $query = RER::where(DB::raw("concat(' ',codigo_rer,nombre)"), 'like', "%$term%")->where('estado', 0)->orderBy('nombre','asc')->get();
-        $data = [];
-        foreach ($query as $key => $value) {
-            $data[] = [
-                "label" => $value->codigo_rer . ' | ' . $value->nombre,
-                "id" => $value->id
-            ];
-        }
-        return $data; //response()->json('data');
-    }
-
-    public function completariiee(Request $rq)
-    {
-        $term = $rq->get('term');
-        $query = InstitucionEducativa::where(DB::raw("concat(' ',codModular,nombreInstEduc)"), 'like', "%$term%")->orderBy('nombreInstEduc','asc')->get();
-        $data = [];
-        foreach ($query as $key => $value) {
-            $data[] = [
-                "label" => $value->codModular . ' | ' . $value->nombreInstEduc,
-                "id" => $value->id
-            ];
-        }
-        return $data; //response()->json('data');
     }
 }

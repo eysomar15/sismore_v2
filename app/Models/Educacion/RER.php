@@ -24,6 +24,7 @@ class RER extends Model
         'fecha_resolucion',
         'numero_resolucion',
         'presupuesto',
+        'ambito',
         'estado',
     ];
 }

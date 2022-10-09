@@ -4,14 +4,10 @@ namespace App\Http\Controllers\Educacion;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Imports\tablaXImport;
-use App\Models\Educacion\Importacion;
 use App\Models\Educacion\InstitucionEducativa;
 use App\Models\Educacion\PadronEIB;
-use App\Models\Parametro\Anio;
-use App\Repositories\Educacion\ImportacionRepositorio;
-use App\Utilities\Utilitario;
-use Exception;
+use App\Repositories\Educacion\InstitucionEducativaRepositorio;
+use App\Repositories\Educacion\PadronEIBRepositorio;
 use Illuminate\Support\Facades\DB;
 
 class PadronEIBController extends Controller
@@ -21,6 +17,44 @@ class PadronEIBController extends Controller
         $this->middleware('auth');
     }
 
+    public function principal()
+    {
+        $mensaje = "";
+        return view('educacion.PadronEIB.Principal', compact('mensaje'));
+    }
+
+    public function ListarDTImportFuenteTodos(Request $rq)
+    {
+        $draw = intval($rq->draw);
+        $start = intval($rq->start);
+        $length = intval($rq->length);
+
+        $query = PadronEIBRepositorio::listaImportada(518);
+        $data = [];
+        foreach ($query as $key => $value) {
+            $btn1 = '<a href="#" class="btn btn-info btn-xs" onclick="edit(' . $value->id . ')"  title="MODIFICAR"> <i class="fa fa-pen"></i> </a>';
+            $btn3 = '&nbsp;<a href="#" class="btn btn-danger btn-xs" onclick="borrar(' . $value->id . ')"  title="ELIMINAR"> <i class="fa fa-trash"></i> </a>';
+            $btn4 = '&nbsp;<button type="button" onclick="ver(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
+            $data[] = array(
+                $key + 1,
+                $value->ugel,
+                $value->cod_mod,
+                $value->institucion_educativa,
+                $value->nivel_modalidad,
+                $value->forma_atencion,
+                $value->lengua_uno,
+                $btn1  . $btn4 . $btn3,
+            );
+        }
+        $result = array(
+            "draw" => $draw,
+            "recordsTotal" => $start,
+            "recordsFiltered" => $length,
+            "data" => $data,
+        );
+        return response()->json($result);
+    }
+/*
     private function _validate_ajaxopt1($rq)
     {
         $data = array();
@@ -86,5 +120,102 @@ class PadronEIBController extends Controller
         }
         $eib->delete();
         return response()->json(['status' => TRUE, 'eib' => $eib]);
+    } */
+
+    /*  */
+    /*  */
+    /*  */
+
+    private function _validate($rq)
+    {
+        $data = array();
+        $data['error_string'] = array();
+        $data['inputerror'] = array();
+        $data['status'] = TRUE;
+
+
+        if ($rq->iiee_id == '') {
+            $data['inputerror'][] = 'iiee';
+            $data['error_string'][] = 'Este campo es obligatorio buscar.';
+            $data['status'] = FALSE;
+        }
+
+        if ($rq->id == '' && $rq->estado == 'SI') {
+            $data['inputerror'][] = 'iiee';
+            $data['error_string'][] = 'Servicio Educativo Ya Registrado.';
+            $data['status'] = FALSE;
+        }
+
+        if ($data['status'] === FALSE) {
+            echo json_encode($data);
+            exit();
+        }
+    }
+
+    public function ajax_add(Request $rq)
+    {
+        $this->_validate($rq);
+        $data = [
+            'importacion_id' => 518,
+            'anio_id' => 8,
+            'institucioneducativa_id' => $rq->iiee_id,
+            'forma_atencion' => $rq->formaatencion,
+            'cod_lengua' => $rq->codigolengua,
+            'lengua_uno' => $rq->lenguauno,
+            'lengua_dos' => $rq->lenguados,
+            'lengua_3' => $rq->lengua3,
+            'ingreso' => 1,
+        ];
+        $eib = PadronEIB::Create($data);
+        if ($eib) {
+            $iiee = InstitucionEducativa::find($rq->iiee_id);
+            $iiee->es_eib = 'SI';
+            $iiee->save();
+        }
+        return response()->json(array('status' => true));
+    }
+
+    public function ajax_update(Request $request)
+    {
+        $this->_validate($request);
+        $eib = PadronEIB::find($request->id);
+        $eib->institucioneducativa_id = $request->iiee_id;
+        $eib->forma_atencion = $request->formaatencion;
+        $eib->cod_lengua = $request->codigolengua;
+        $eib->lengua_uno = $request->lenguauno;
+        $eib->lengua_dos = $request->lenguados;
+        $eib->lengua_3 = $request->lengua3;
+        $eib->save();
+
+        return response()->json(array('status' => true));
+    }
+    public function ajax_edit($id)
+    {
+        $eib = PadronEIB::find($id);
+        $iiee = InstitucionEducativaRepositorio::buscariiee_id($eib->institucioneducativa_id);
+        if ($iiee->count() > 0) {
+            $eib->provincia = $iiee->first()->provincia;
+            $eib->distrito = $iiee->first()->distrito;
+            $eib->centro_poblado = $iiee->first()->centro_poblado;
+            $eib->codigo_local = $iiee->first()->codigo_local;
+            $eib->iiee = $iiee->first()->iiee;
+            $eib->codigo_nivel = $iiee->first()->codigo_nivel;
+            $eib->nivel_modalidad = $iiee->first()->nivel_modalidad;
+            $eib->estado = $iiee->first()->estado;
+            $eib->ugel = $iiee->first()->ugel;
+            $eib->label = $iiee->first()->codigo_modular . ' | ' . $iiee->first()->iiee;
+        }
+        return response()->json(compact('eib'));
+    }
+    public function ajax_delete($id)
+    {
+        $eib = PadronEIB::find($id);
+        if ($eib) {
+            $iiee = InstitucionEducativa::find($eib->institucioneducativa_id);
+            $iiee->es_eib = null;
+            $iiee->save();
+        }
+        $eib->delete();
+        return response()->json(array('status' => true));
     }
 }

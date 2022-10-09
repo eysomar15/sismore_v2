@@ -20,7 +20,7 @@ class PadronWebController extends Controller
         $this->middleware('auth');
     }
 
-    public function buscariiee($codigo_modular)
+    public function buscariiee($codigo_modular)///esta por ver
     {
         $query = PadronWebRepositorio::buscariiee($codigo_modular);
         if ($query->count() > 0) {

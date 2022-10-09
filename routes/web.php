@@ -21,7 +21,7 @@ use App\Http\Controllers\Educacion\MatriculaDetalleController;
 use App\Http\Controllers\Educacion\NivelModalidadController;
 use App\Http\Controllers\Educacion\PadronWebController;
 use App\Http\Controllers\Educacion\PLazaController;
-use App\Http\Controllers\Educacion\RerAsignadoController;
+use App\Http\Controllers\Educacion\PadronRERController;
 use App\Http\Controllers\Educacion\RERController;
 use App\Http\Controllers\Educacion\TabletaController;
 use App\Http\Controllers\Educacion\TextosEscolaresController;
@@ -91,9 +91,16 @@ Route::get('/ImporPadronWeb/Aprobar/{importacion_id}', [ImporPadronWebController
 Route::post('/ImporPadronWeb/Aprobar/procesar/{importacion_id}', [ImporPadronWebController::class, 'procesar'])->name('ImporPadronWeb.procesar');
 Route::get('/ImporPadronWeb/Listar/ImportarDT', [ImporPadronWebController::class, 'ListarDTImportFuenteTodos'])->name('ImporPadronWeb.listar.importados');
 
-Route::get('/PadronWeb/codigo_modular/{codigo_modular}', [PadronWebController::class, 'buscariiee']);
+//Route::get('/PadronWeb/codigo_modular/{codigo_modular}', [PadronWebController::class, 'buscariiee']);//esta por ver
 
 Route::get('/FuenteImportacion/cargar/{sistema_id}', [FuenteImportacionController::class, 'cargar']);
+
+Route::get('/ImporPadronEIB/Importar', [ImporPadronEibController::class, 'importar'])->name('PadronEIB.importar');
+Route::post('/ImporPadronEIB/Importar', [ImporPadronEibController::class, 'guardar'])->name('imporpadroneib.guardar');
+Route::get('/ImporPadronEIB/Listar/ImportarDT', [ImporPadronEibController::class, 'ListarDTImportFuenteTodos'])->name('imporpadroneib.listar.importados');
+Route::post('/ImporPadronEIB/ListaImportada/{importacion_id}', [ImporPadronEibController::class, 'ListaImportada'])->name('imporpadroneib.listarimportados');
+Route::get('/ImporPadronEIB/eliminar/{id}', [ImporPadronEibController::class, 'eliminar']);
+
 
 Route::get('/ImporMatricula/Importar', [ImporMatriculaController::class, 'importar'])->name('ImporMatricula.importar');
 Route::post('/ImporMatricula/Importar', [ImporMatriculaController::class, 'guardar'])->name('ImporMatricula.guardar');
@@ -103,21 +110,6 @@ Route::get('/ImporMatricula/ListaImportada_DataTable/{importacion_id}', [ImporMa
 //Route::post('/ImporMatricula/Aprobar/procesar/{importacion_id}', [ImporMatriculaController::class, 'procesar'])->name('ImporMatricula.procesar');
 Route::get('/ImporMatricula/Listar/ImportarDT', [ImporMatriculaController::class, 'ListarDTImportFuenteTodos'])->name('ImporMatricula.listar.importados');
 Route::get('/ImporMatricula/eliminar/{id}', [ImporMatriculaController::class, 'eliminar']);
-
-/* Route::get('/PadronEIB/Importar', [PadronEIBController::class, 'importar'])->name('PadronEIB.importar');
-Route::post('/PadronEIB/Importar', [PadronEIBController::class, 'guardar'])->name('PadronEIB.guardar');
-Route::get('/PadronEIB/Listar/ImportarDT', [PadronEIBController::class, 'ListarDTImportFuenteTodos'])->name('PadronEIB.listar.importados'); */
-
-Route::post('/PadronEIB/ajax_add_opt1/', [PadronEIBController::class, 'ajax_add_opt1'])->name('padroneib.ajax.add.opt1');
-Route::get('/PadronEIB/ajax_delete_opt1/{idpadroneib}', [PadronEIBController::class, 'ajax_delete_opt1']); //->name('padroneib.ajax.delete.opt1');
-
-
-
-Route::get('/ImporPadronEIB/Importar', [ImporPadronEibController::class, 'importar'])->name('PadronEIB.importar');
-Route::post('/ImporPadronEIB/Importar', [ImporPadronEibController::class, 'guardar'])->name('imporpadroneib.guardar');
-Route::get('/ImporPadronEIB/Listar/ImportarDT', [ImporPadronEibController::class, 'ListarDTImportFuenteTodos'])->name('imporpadroneib.listar.importados');
-Route::post('/ImporPadronEIB/ListaImportada/{importacion_id}', [ImporPadronEibController::class, 'ListaImportada'])->name('imporpadroneib.listarimportados');
-Route::get('/ImporPadronEIB/eliminar/{id}', [ImporPadronEibController::class, 'eliminar']);
 
 Route::get('/TextosEscolares/Importar', [TextosEscolaresController::class, 'importar'])->name('TextosEscolares.importar');
 Route::post('/TextosEscolares/Importar', [TextosEscolaresController::class, 'guardar'])->name('TextosEscolares.guardar');
@@ -325,7 +317,6 @@ Route::post('/Plaza/Plazas/grafica1', [PLazaController::class, 'cargarcoberturap
 Route::get('/ImporRER/Importar', [ImporRERController::class, 'importar'])->name('imporrer.importar');
 Route::post('/ImporRER/Importar', [ImporRERController::class, 'guardar'])->name('imporrer.guardar');
 Route::post('/ImporRER/ListaImportada/{importacion_id}', [ImporRERController::class, 'ListaImportada'])->name('imporrer.listarimportados');
-
 Route::get('/Mantenimiento/RER/Principal', [RERController::class, 'principal'])->name('mantenimiento.rer.principal');
 Route::post('/Mantenimiento/RER/Importados/', [RERController::class, 'ListarDTImportFuenteTodos'])->name('mantenimiento.rer.listar.importados');
 Route::get('/Mantenimiento/RER/ajax_edit/{id}', [RERController::class, 'ajax_edit']);
@@ -334,16 +325,27 @@ Route::post('/Mantenimiento/RER/ajax_update/', [RERController::class, 'ajax_upda
 Route::get('/Mantenimiento/RER/ajax_estado/{id}', [RERController::class, 'ajax_estado']);
 Route::get('/Mantenimiento/RER/ajax_delete/{id}', [RERController::class, 'ajax_delete']);
 
-Route::get('/Mantenimiento/RERAsignado/Principal', [RerAsignadoController::class, 'principal'])->name('mantenimiento.rer.asig.principal');
-Route::post('/Mantenimiento/RERAsignado/Importados/', [RerAsignadoController::class, 'ListarDTImportFuenteTodos'])->name('mantenimiento.rer.asig.listar.importados');
-Route::get('/Mantenimiento/RERAsignado/ajax_edit/{id}', [RerAsignadoController::class, 'ajax_edit']);
-Route::post('/Mantenimiento/RERAsignado/ajax_add/', [RerAsignadoController::class, 'ajax_add']);
-Route::post('/Mantenimiento/RERAsignado/ajax_update/', [RerAsignadoController::class, 'ajax_update']);
-//Route::get('/Mantenimiento/RERAsignado/ajax_estado/{id}', [RerAsignadoController::class, 'ajax_estado']);
-Route::get('/Mantenimiento/RERAsignado/ajax_delete/{id}', [RerAsignadoController::class, 'ajax_delete']);
+Route::get('/Mantenimiento/PadronRER/Principal', [PadronRERController::class, 'principal'])->name('mantenimiento.padronrer.principal');
+Route::post('/Mantenimiento/PadronRER/Importados/', [PadronRERController::class, 'ListarDTImportFuenteTodos'])->name('mantenimiento.padronrer.listar.importados');
+Route::get('/Mantenimiento/PadronRER/ajax_edit/{id}', [PadronRERController::class, 'ajax_edit']);
+Route::post('/Mantenimiento/PadronRER/ajax_add/', [PadronRERController::class, 'ajax_add']);
+Route::post('/Mantenimiento/PadronRER/ajax_update/', [PadronRERController::class, 'ajax_update']);
+//Route::get('/Mantenimiento/PadronRER/ajax_estado/{id}', [PadronRERController::class, 'ajax_estado']);
+Route::get('/Mantenimiento/PadronRER/ajax_delete/{id}', [PadronRERController::class, 'ajax_delete']);
+Route::get('/Mantenimiento/PadronRER/RedEducativa/autocompletar', [RERController::class, 'completarred'])->name('mantenimiento.padronrer.completar.rer');
+Route::get('/Mantenimiento/PadronRER/IIEE/autocompletar', [InstEducativaController::class, 'completariiee'])->name('mantenimiento.padronrer.completar.iiee');
 
-Route::get('/Mantenimiento/RERAsignado/RedEducativa/autocompletar', [RerAsignadoController::class, 'completarred'])->name('mantenimiento.rerasig.completar.rer');
-Route::get('/Mantenimiento/RERAsignado/IIEE/autocompletar', [RerAsignadoController::class, 'completariiee'])->name('mantenimiento.rerasig.completar.iiee');
+Route::get('/PadronEIB/Principal', [PadronEIBController::class, 'principal'])->name('padroneib.principal');
+/* Route::post('/PadronEIB/ajax_add_opt1/', [PadronEIBController::class, 'ajax_add_opt1'])->name('padroneib.ajax.add.opt1');
+Route::get('/PadronEIB/ajax_delete_opt1/{idpadroneib}', [PadronEIBController::class, 'ajax_delete_opt1']);   */
+
+//Route::post('/PadronEIB/Importados/', [PadronEIBController::class, 'ListarDTImportFuenteTodos'])->name('padroneib.listar.importados');
+Route::get('/PadronEIB/Importados/', [PadronEIBController::class, 'ListarDTImportFuenteTodos'])->name('padroneib.listar.importados');
+Route::get('/PadronEIB/ajax_edit/{id}', [PadronEIBController::class, 'ajax_edit']);
+Route::post('/PadronEIB/ajax_add/', [PadronEIBController::class, 'ajax_add']);
+Route::post('/PadronEIB/ajax_update/', [PadronEIBController::class, 'ajax_update']);
+Route::get('/PadronEIB/ajax_delete/{id}', [PadronEIBController::class, 'ajax_delete']);
+Route::get('/PadronEIB/IIEE/autocompletar', [InstEducativaController::class, 'completariiee2'])->name('padroneib.completar.iiee');
 
 Route::get('/INDICADOR/SINRUTA', function () {
     //return 'Ruta no definida';

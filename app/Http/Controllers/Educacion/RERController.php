@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Educacion;
 
 use App\Http\Controllers\Controller;
 use App\Models\Educacion\RER;
+use App\Models\Educacion\PadronRER;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,9 +34,9 @@ class RERController extends Controller
         $query = RER::orderBy('id', 'desc')->get();
         $data = [];
         foreach ($query as $key => $value) {
+            $iiees = PadronRER::where('rer_id', $value->id)->get();
 
             $btn1 = '<a href="#" class="btn btn-info btn-xs" onclick="edit(' . $value->id . ')"  title="MODIFICAR"> <i class="fa fa-pen"></i> </a>';
-
             if ($value->estado == 0) {
                 $btn2 = '&nbsp;<a class="btn btn-sm btn-dark btn-xs" href="javascript:void(0)" title="Desactivar" onclick="estado(' . $value->id . ',' . $value->estado . ')"><i class="fa fa-power-off"></i></a> ';
             } else {
@@ -53,7 +54,8 @@ class RERController extends Controller
                 //!$value->fecha_resolucion || $value->fecha_resolucion == null ? '' : date("d/m/Y", strtotime($value->fecha_resolucion)),
                 $value->numero_resolucion,
                 $value->presupuesto,
-                $btn1 . $btn2 . $btn3 . $btn4,
+                $iiees->count(),
+                $btn1 . $btn4 . $btn2  . $btn3,
             );
         }
         $result = array(
@@ -126,7 +128,8 @@ class RERController extends Controller
             'anio_implementacion' => $request->anio_implementacion,
             'fecha_resolucion' => $request->fecha_resolucion,
             'numero_resolucion' => $request->numero_resolucion,
-            //'presupuesto' => $request->presupuesto,
+            'presupuesto' => $request->presupuesto,
+            'ambito' => $request->ambito,
             'estado' => 0,
         ]);
         return response()->json(array('status' => true));
@@ -166,5 +169,19 @@ class RERController extends Controller
         $rer->estado = $rer->estado == 1 ? 0 : 1;
         $rer->save();
         return response()->json(array('status' => true, 'estado' => $rer->estado));
+    }
+
+    public function completarred(Request $rq)
+    {
+        $term = $rq->get('term');
+        $query = RER::where(DB::raw("concat(' ',codigo_rer,nombre)"), 'like', "%$term%")->where('estado', 0)->orderBy('nombre', 'asc')->get();
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                "label" => $value->codigo_rer . ' | ' . $value->nombre,
+                "id" => $value->id
+            ];
+        }
+        return $data; //response()->json('data');
     }
 }

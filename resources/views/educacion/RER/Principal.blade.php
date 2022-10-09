@@ -59,6 +59,7 @@
                                             <th>Año Creación</th>
                                             <th>Nº Resolución</th>
                                             <th>Presupuesto</th>
+                                            <th>Padron</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -108,41 +109,52 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
+                                        <label>Ambito</label>
+                                        <select id="ambito" name="ambito" class="form-control">
+                                            <option value="Rural">Rural</option>
+                                            <option value="Rural/Urbana">Rural/Urbano</option>
+                                        </select>
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="col-md-6">
                                         <label>Año Creación</label>
                                         <input id="anio_creacion" name="anio_creacion" class="form-control" type="number">
                                         <span class="help-block"></span>
                                     </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-6">
                                         <label>Año Implementación </label>
                                         <input id="anio_implementacion" name="anio_implementacion" class="form-control"
                                             type="number">
                                         <span class="help-block"></span>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
                                     <div class="col-md-6">
                                         <label>Fecha Resolución </label>
                                         <input id="fecha_resolucion" name="fecha_resolucion" class="form-control"
                                             type="date">
                                         <span class="help-block"></span>
                                     </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-6">
                                         <label>Numero Resolución </label>
                                         <input id="numero_resolucion" name="numero_resolucion" class="form-control"
                                             type="text">
                                         <span class="help-block"></span>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
                                     <div class="col-md-6">
                                         <label>Presupuesto</label>
-                                        <input id="presupuesto" name="presupuesto" class="form-control" type="number">
+                                        <input id="presupuesto" name="presupuesto" class="form-control" type="number" value="0">
                                         <span class="help-block"></span>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -152,14 +164,14 @@
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                     <button type="button" id="btnSave" onclick="save()" class="btn btn-primary">Guardar</button>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            </div>
+        </div>
+    </div>
     <!-- End Bootstrap modal -->
 
     <!-- Bootstrap modal -->
-    <div id="modal_rer" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-        style="display: none;">
+    <div id="modal_ver" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -169,63 +181,76 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" id="formxxx" name="formxxx" class="form-horizontal" autocomplete="off">
+                    <form action="" id="formver" name="formver" class="form-horizontal" autocomplete="off">
                         @csrf
                         <div class="form-body">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Codigo Sede<span class="required">*</span></label>
-                                        <input id="codigo_rer" name="codigo_rer" class="form-control" type="text"
-                                            maxlength="8">
+                                        <input id="vcodigo_rer" name="vcodigo_rer" class="form-control" type="text"
+                                            maxlength="8" readonly>
                                         <span class="help-block"></span>
                                     </div>
                                     <div class="col-md-6">
                                         <label>Nombre<span class="required">*</span></label>
-                                        <input id="nombre" name="nombre" class="form-control" type="text"
-                                            onkeyup="this.value=this.value.toUpperCase()" maxlength="150">
+                                        <input id="vnombre" name="vnombre" class="form-control" type="text"
+                                            maxlength="150" readonly>
                                         <span class="help-block"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Ambito</label>
+                                        <select id="vambito" name="vambito" class="form-control" readonly>
+                                            <option value="Rural">Rural</option>
+                                            <option value="Rural/Urbana">Rural/Urbana</option>
+                                        </select>
+                                        <span class="help-block"></span>
+                                    </div>
                                     <div class="col-md-6">
                                         <label>Año Creación</label>
-                                        <input id="anio_creacion" name="anio_creacion" class="form-control" type="number">
+                                        <input id="vanio_creacion" name="vanio_creacion" class="form-control"
+                                            type="number" readonly>
                                         <span class="help-block"></span>
                                     </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-6">
                                         <label>Año Implementación </label>
-                                        <input id="anio_implementacion" name="anio_implementacion" class="form-control"
-                                            type="number">
+                                        <input id="vanio_implementacion" name="vanio_implementacion" class="form-control"
+                                            type="number" readonly>
                                         <span class="help-block"></span>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
                                     <div class="col-md-6">
                                         <label>Fecha Resolución </label>
-                                        <input id="fecha_resolucion" name="fecha_resolucion" class="form-control"
-                                            type="date">
+                                        <input id="vfecha_resolucion" name="vfecha_resolucion" class="form-control"
+                                            type="date" readonly>
                                         <span class="help-block"></span>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label>Numero Resolución </label>
-                                        <input id="numero_resolucion" name="numero_resolucion" class="form-control"
-                                            type="text">
-                                        <span class="help-block"></span>
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Presupuesto</label>
-                                        <input id="presupuesto" name="presupuesto" class="form-control" type="number">
+                                        <label>Numero Resolución </label>
+                                        <input id="vnumero_resolucion" name="vnumero_resolucion" class="form-control"
+                                            type="text" readonly>
                                         <span class="help-block"></span>
                                     </div>
+                                    <div class="col-md-6">
+                                        <label>Presupuesto</label>
+                                        <input id="vpresupuesto" name="vpresupuesto" class="form-control"
+                                            type="number" readonly>
+                                        <span class="help-block"></span>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -348,6 +373,7 @@
                     $('[name="anio_implementacion"]').val(data.rer.anio_implementacion);
                     $('[name="fecha_resolucion"]').val(data.rer.fecha_resolucion);
                     $('[name="numero_resolucion"]').val(data.rer.numero_resolucion);
+                    $('[name="ambito"]').val(data.rer.ambito);
                     $('#modal_form').modal('show');
                     $('.modal-title').text('Modificar Red');
                 },
@@ -408,9 +434,30 @@
             });
         };
 
-        function ver() {
-            $('#modal_rer').modal('show');
-            $('.modal-title').text('Red Educativa');
+        function ver(id) {
+            $('#form')[0].reset();
+            $('.form-group').removeClass('has-error');
+            $('.help-block').empty();
+            $.ajax({
+                url: "{{ url('/') }}/Mantenimiento/RER/ajax_edit/" + id,
+                type: "GET",
+                dataType: "JSON",
+                success: function(data) {
+                    $('[name="vcodigo_rer"]').val(data.rer.codigo_rer);
+                    $('[name="vnombre"]').val(data.rer.nombre);
+                    $('[name="vanio_creacion"]').val(data.rer.anio_creacion);
+                    $('[name="vanio_implementacion"]').val(data.rer.anio_implementacion);
+                    $('[name="vfecha_resolucion"]').val(data.rer.fecha_resolucion);
+                    $('[name="vnumero_resolucion"]').val(data.rer.numero_resolucion);
+                    $('[name="vambito"]').val(data.rer.ambito);
+                    $('#modal_ver').modal('show');
+                    $('.modal-title').text('Vista General');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error get data from ajax');
+                }
+            });
         };
+
     </script>
 @endsection

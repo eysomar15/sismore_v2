@@ -5,11 +5,11 @@ namespace App\Models\Educacion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RerAsignacion extends Model
+class PadronRER extends Model
 {
     use HasFactory;
 
-    protected $table = "edu_rer_asignacion";
+    protected $table = "edu_padron_rer";
     //public $timestamps = false;
     /**
      * The attributes that are mass assignable.
