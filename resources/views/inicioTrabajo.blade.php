@@ -54,10 +54,10 @@
                             </div>
                         </div>
                         <div class="mt-4">
-                            <h6 class="text-uppercase"> -<span class="float-right">1410 %</span></h6>
+                            <h6 class="text-uppercase"> -<span class="float-right">60 %</span></h6>
                             <div class="progress progress-sm m-0">
-                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                    <span class="sr-only">1410 % Complete</span>
+                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                    <span class="sr-only">60 % Complete</span>
                                 </div>
                             </div>
                         </div>
@@ -114,10 +114,10 @@
                         </div>
 
                         <div class="mt-4">
-                            <h6 class="text-uppercase"> -<span class="float-right">111.66  %</span></h6>
+                            <h6 class="text-uppercase"> -<span class="float-right">58.26  %</span></h6>
                             <div class="progress progress-sm m-0">
-                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                    <span class="sr-only">111.66  % Complete</span>
+                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 58.26%">
+                                    <span class="sr-only">58.26 % Complete</span>
                                 </div>
                             </div>
                         </div>
