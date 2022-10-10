@@ -100,7 +100,6 @@ class PadronEIBController extends Controller
             'lengua_uno' => $rq->lenguauno_padronweb,
             'lengua_dos' => $rq->lenguados_padronweb,
             'lengua_3' => $rq->lengua3_padronweb,
-            'ingreso' => 1,
         ];
         //return response()->json(['status' => TRUE, 'info' => $data]);
         $eib = PadronEIB::Create($data);
@@ -166,7 +165,6 @@ class PadronEIBController extends Controller
             'lengua1_id' => $rq->lengua1,
             'lengua2_id' => $rq->lengua2,
             'lengua3_id' => $rq->lengua3,
-            'ingreso' => 1,
         ];
         $eib = PadronEIB::Create($data);
         if ($eib) {
