@@ -23,10 +23,12 @@
         <div class="row">
             <div class="col-md-12 col-xl-12">
                 <div class="card-box">
-                    <h5 class="mb-0 mt-0 text-truncate">FORTALECIMIENTO DE LAS CONDICIONES LABORALES</h5>
+                    <h5 class="mb-0 mt-0 text-truncate">PPR 0103 - FORTALECIMIENTO DE LAS CONDICIONES LABORALES AL 2021</h5>
                     <br>
                 </div>
             </div>
+
+            
         </div>
 
             <div class="row">
@@ -76,6 +78,8 @@
             </div>
 
 
+           
+
             <div class="row">
                 <div class="col-md-6 col-xl-6">
                     <div class="alert alert-info"> 
@@ -90,15 +94,14 @@
                                     <table style="width: 100%;" border="1px solid #000" >
                                         <thead>
                                             <tr>
-                                                <th  class="titulo_tabla">Indicador</th>               
-                                                <th class="titulo_tabla" > Absoluto</th>
-                                                <th class="titulo_tabla" > %</th>                        
+                                                <th class="titulo_tabla"> Indicador</th>               
+                                                <th class="titulo_tabla"> Absoluto</th>
+                                                <th class="titulo_tabla"> %</th>                        
                                             </tr>                    
                                         </thead>
-
                                         <tbody>
                                         
-                                                <tr>                                            
+                                                <tr>
                                                     <td class="titulo_tabla">Afiliado</td>                
                                                     <td class="titulo_tabla">32,132</td>
                                                     <td class="titulo_tabla">31,6</td>                           
@@ -108,8 +111,8 @@
                                                     <td class="titulo_tabla">No Afiliado</td>                
                                                     <td class="titulo_tabla">69,684</td>
                                                     <td class="titulo_tabla">68,4</td>                           
-                                                </tr> 
-                                        
+                                                </tr>
+
                                         </tbody>
                                         
                                     </table>
@@ -182,11 +185,19 @@
 
 <div class="row">
     <div class="col-md-12 col-xl-12">
+        <div class="card-box">
+            <h5 class="mb-0 mt-0 text-truncate"> OET 1 - MEJORAR LA CALIDAD DE VIDA DE LA POBLACION VULNERABLE DE LA REGION</h5>
+            <br>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-xl-12">
        <div class="card-box">     
             @include('trabajo.Indicadores.PeaParcial')
         </div>
     </div>
-
 </div>
 
 

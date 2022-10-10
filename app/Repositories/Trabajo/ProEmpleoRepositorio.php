@@ -95,6 +95,9 @@ class ProEmpleoRepositorio
                         ->join('tra_proempleo as proEmp', 'imp.id', '=', 'proEmp.importacion_id')
                         ->join('par_anio as anio', 'proEmp.anio_id', '=', 'anio.id')
                         ->join('tra_proempleo_colocados as colocados', 'proEmp.id', '=', 'colocados.proempleo_id')
+
+                        
+
                         ->where('imp.estado', '=', 'PR')
                         ->where('anio.id', '=',$anio_id)
                         ->groupBy('proEmp.id')
@@ -103,6 +106,9 @@ class ProEmpleoRepositorio
                         ->groupBy('demanda')
                         ->groupBy('mes')
                         ->groupBy('anio')
+
+                        ->orderBy('mes')
+                     
                         ->get([
                                 DB::raw('oferta_hombres'),
                                 DB::raw('oferta_mujeres'),
@@ -120,7 +126,7 @@ class ProEmpleoRepositorio
         $data = DB::table(
                     DB::raw(
                          "(
-                              select oferta_hombres,oferta_mujeres,demanda,meses.mes as nombreMes ,cantColocadosM,cantColocadosF
+                              select oferta_hombres,oferta_mujeres,demanda,meses.mes as nombreMes ,cantColocadosM,cantColocadosF,meses.codigo
                               from par_importacion imp
                               inner join tra_proempleo as proEmpleo on imp.id = proEmpleo.importacion_id
                               inner join par_mes as meses on proEmpleo.mes = meses.codigo
@@ -131,8 +137,10 @@ class ProEmpleoRepositorio
                               group by proempleo_id) as colocados on proEmpleo.id = colocados.proempleo_id
 
                               where imp.estado = 'PR' and anio_id = $anio_id 
-                              order by meses.codigo
-                         ) as datos"
+                             
+                         ) as datos
+                         order by codigo
+                         "
                     )
                )
 

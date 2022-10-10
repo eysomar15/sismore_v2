@@ -9,7 +9,181 @@
            <h5>RESUMEN ESTADISTICO MENSUAL - 2022</h5>
         </div>
     </div>
+</div>
 
+
+
+<div class="row">
+    <div class="col-md-12 col-xl-12">
+        <div class="card card-border card-primary"> 
+            <div class="card-body">
+
+                <div class="card-header border-primary bg-transparent p-0">                
+                </div>
+
+                <div class="table-responsive">
+                    <table style="width: 100%;" border="1px solid #000" >
+                        
+                        <thead>
+                            <tr>
+                                <th class="titulo_tabla" rowspan="2">Item</th>     
+                                <th class="titulo_tabla" rowspan="2">Actividad</th>               
+                                <th class="titulo_tabla" rowspan="2">Unidad de Medida</th>
+                                <th class="titulo_tabla" rowspan="2">Meta Anual</th>
+                                <th class="titulo_tabla" colspan="12">Mes-Periodo</th>
+                                <th class="titulo_tabla" rowspan="2">Porcentaje</th>
+                                <th class="titulo_tabla" rowspan="2">Acumulado</th>
+                            </tr>
+                            <tr>                                
+                                <th class="titulo_tabla" >Ene.</th>
+                                <th class="titulo_tabla" >Feb.</th>
+                                <th class="titulo_tabla" >Mar.</th>
+                                <th class="titulo_tabla" >Abr.</th>
+                                <th class="titulo_tabla" >May.</th>
+                                <th class="titulo_tabla" >Jun.</th>
+                                <th class="titulo_tabla" >Jul.</th>
+                                <th class="titulo_tabla" >Ago.</th>
+                                <th class="titulo_tabla" >Set.</th>
+                                <th class="titulo_tabla" >Oct.</th>
+                                <th class="titulo_tabla" >Nov.</th>
+                                <th class="titulo_tabla" >Dic.</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach ($direcciones as $item)
+                                <tr>                                            
+                                    <td class="titulo_tabla_izq" colspan="18">{{$item->direccion}} </td>
+                                </tr>  
+
+                                @foreach ($actividades as $item4)
+
+                                    @if($item->Direccion_id == $item4->direccion_id)
+                                        <tr>             
+                                            <td class="titulo_tabla_izq"  > </td>                               
+                                            {{-- <td class="fila_tabla" colspan="11">{{$item4->actividad}}  </td> --}}
+                                            @if($item4->esSubTitulo)                            
+                                                <td class="titulo_tabla_izq" colspan="1">{{$item4->actividad}}  </td>
+                                            @else
+                                                <td class="fila_tabla" colspan="1">{{$item4->actividad}}  </td>
+                                            @endif
+
+                                            <td class="titulo_tabla" colspan="1"> {{$item4->uniMed}}</td>
+                                            <td class="titulo_tabla" colspan="1"> {{$item4->valor}}</td>
+
+                                         
+                                            @foreach ($Actividad_Resultado as $item5)
+
+                                                @if($item5->actividad_id == $item4->actividad_id)
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M1}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M2}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M3}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M4}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M5}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M6}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M7}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M8}}</td>  
+
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M9}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M10}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M11}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M12}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->M7}}</td>
+                                                    <td class="titulo_tabla" colspan="1"> {{$item5->Acumulado}}</td>
+                                                @else   
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>   
+                                                    
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                    <td class="titulo_tabla" colspan="1"> </td>
+                                                @endif
+                                            @endforeach
+                                        </tr>
+                                    @endif
+                                @endforeach
+
+
+                                @foreach ($subDirecciones as $item2)
+
+                                    @if($item->Direccion_id == $item2->dependencia)
+                                        <tr>             
+                                            <td class="titulo_tabla_izq"  >  </td>                               
+                                            <td class="titulo_tabla_izq" colspan="17">{{$item2->direccion}} </td>
+                                        </tr>
+
+                                        @foreach ($actividades as $item3)
+
+                                            @if($item2->Direccion_id == $item3->direccion_id)
+                                                <tr>             
+                                                    <td class="titulo_tabla_izq"  >  </td>  
+                                                   
+                                                    @if($item3->esSubTitulo)                            
+                                                        <td class="titulo_tabla_izq" colspan="11">{{$item3->actividad}}  </td>
+                                                    @else
+                                                        <td class="fila_tabla" colspan="17">{{$item3->actividad}}  </td>
+                                                    @endif
+                                                </tr>
+                                            @endif
+                                            
+                                        @endforeach
+
+                                    @endif                                    
+
+                                @endforeach
+                                
+                            @endforeach
+
+                            <tr>                                            
+                                <td class="titulo_tabla_izq" colspan="18"> -------------</td>
+                            </tr>
+                            <tr>                                            
+                                <td class="titulo_tabla_izq" colspan="18"> -------------</td>
+                            </tr>
+                            <tr>                                            
+                                <td class="titulo_tabla_izq" colspan="18"> -------------</td>
+                            </tr>
+
+                            <tr>                                            
+                                <td class="titulo_tabla_izq" colspan="18">DIRECCION DE PROMOCION DEL EMPLEO Y CAPACITACION LABORAL </td>
+                            </tr>  
+                        
+                            <tr>       
+                                <td class="titulo_tabla">1</td>                                     
+                                <td class="fila_tabla">Acercamiento Empresarial (empresas visitadas) </td>                    
+                                <td class="titulo_tabla">Empresa</td>
+                                <td class="titulo_tabla">120</td>
+                                <td class="titulo_tabla">25</td>
+                                <td class="titulo_tabla">23</td>                    
+                                <td class="titulo_tabla">30</td>
+                                <td class="titulo_tabla">18</td>
+                                <td class="titulo_tabla">19</td>
+                                <td class="titulo_tabla">19</td>
+                                <td class="titulo_tabla">
+                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="111" aria-valuemin="0" aria-valuemax="111" style="width: 100%">
+                                        111.66 %
+                                    </div>
+                                </td>   
+                                <td class="titulo_tabla">134</td>                                 
+                            </tr>        
+
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </div> 
+    </div>
 </div>
 
 <div class="row">
@@ -17,9 +191,6 @@
 
         <div class="card card-border card-primary"> 
             <div class="card-body">
-                
-                <h3 class="card-title text-secundary ">Población Economicamente Activa - PEA</h3>
-                <br>
 
                 <div class="card-header border-primary bg-transparent p-0">
                 

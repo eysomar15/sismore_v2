@@ -96,8 +96,7 @@ class AnuarioEstadisticoController extends Controller
                                 $Anuario_Estadistico = Anuario_Estadistico::Create([      
                                     'importacion_id'=>$importacion->id,
                                     'anio_id'=>$request['anio'],
-                                    'ubigeo_id'=>$ubigeo_id,                         
-
+                                    'ubigeo_id'=>$ubigeo_id,
                                     'enero'=>$row['enero'],
                                     'febrero'=>$row['febrero'],
                                     'marzo'=>$row['marzo'],
@@ -110,12 +109,11 @@ class AnuarioEstadisticoController extends Controller
                                     'octubre'=>$row['octubre'],
                                     'noviembre'=>$row['noviembre'],
                                     'diciembre'=>$row['diciembre'],
-                                                        
                                 ]);
                             }
                         }                        
                     }
-                }
+                } 
 
             } catch (Exception $e) {
                 $importacion->estado = 'EL';
@@ -145,7 +143,7 @@ class AnuarioEstadisticoController extends Controller
         $importacion->estado = 'PR';
         $importacion->usuarioId_Aprueba = auth()->user()->id;
         $importacion->save();
-
+        
         $importacion  = ProEmpleoRepositorio::eliminar_mismoPeriodo($importacion_id);
 
         return view('correcto');
@@ -155,7 +153,7 @@ class AnuarioEstadisticoController extends Controller
     {
         $padronWebLista = AnuarioEstadisticoRepositorio::Listar_Por_Importacion_id($importacion_id);
 
-        return  datatables()->of($padronWebLista)->toJson();;
+        return  datatables()->of($padronWebLista)->toJson();
     }
 
     public function Grafico_Promedio_Remuneracion ($importacion_id)
