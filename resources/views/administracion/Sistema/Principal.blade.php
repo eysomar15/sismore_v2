@@ -16,7 +16,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             {{-- <div class="card-header card-header-primary">
-                            <h4 class="card-title">Relacion de Usuarios </h4>                            
+                            <h4 class="card-title">Relacion de Usuarios </h4>
                         </div> --}}
 
                             <div class="card-body">
@@ -57,8 +57,8 @@
     </div>
 
     <!-- Bootstrap modal -->
-    <div id="modal_form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true" style="display: none;">
+    <div id="modal_form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+        style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -90,7 +90,8 @@
                                 <label>Posicion
                                     <!--span class="required">*</span-->
                                 </label>
-                                <input id="pos" name="pos" class="form-control" type="number" value="{{ $posmax }}">
+                                <input id="pos" name="pos" class="form-control" type="number"
+                                    value="{{ $posmax }}">
                                 <span class="help-block"></span>
                             </div>
 
@@ -255,7 +256,7 @@
                 ],
                 responsive: true,
                 autoWidth: false,
-                order: false,
+                orderable: false,
                 destroy: true,
                 language: {
                     "lengthMenu": "Mostrar " +

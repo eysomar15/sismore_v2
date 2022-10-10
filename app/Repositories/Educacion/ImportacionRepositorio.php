@@ -12,7 +12,7 @@ class ImportacionRepositorio
     //     $data = Importacion::select(
     //             'par_importacion.id','par_importacion.comentario','par_importacion.fechaActualizacion',
     //             'par_importacion.estado',
-    //             // 'case when Importacion.estado = '.'PE'.'then'.'pendiente'.'else Importacion.estado end as estado', 
+    //             // 'case when Importacion.estado = '.'PE'.'then'.'pendiente'.'else Importacion.estado end as estado',
     //             'adm_usuario.usuario',
     //             'par_fuenteimportacion.nombre',
     //             'par_fuenteimportacion.codigo',
@@ -74,10 +74,10 @@ class ImportacionRepositorio
                 DB::raw('adm_usuario.apellidos as uapellido'),
                 DB::raw('(concat( par_fuenteimportacion.formato ," ",ifnull(anioMatAnu.anio,""),ifnull(anioMat.anio,"") ,
                                         ifnull(anioCenso.anio,"") ,ifnull(anioTableta.anio,"") ,ifnull(anioEce.anio,"") ,
-                                                                                
+
                                         ifnull(
-                                        case when mes = 1 then " - ENERO " 
-                                            when  mes = 2 then " - FEBRERO " 
+                                        case when mes = 1 then " - ENERO "
+                                            when  mes = 2 then " - FEBRERO "
                                             when  mes = 3 then " - MARZO "
                                             when  mes = 4 then " - ABRIL "
                                             when  mes = 5 then " - MAYO "
@@ -88,7 +88,7 @@ class ImportacionRepositorio
                                             when  mes = 10 then " - OCTUBRE "
                                             when  mes = 11 then " - NOVIEMBRE "
                                             when  mes = 12 then " - DICIEMBRE " else "" end,""),
-                                            ifnull(anioProEmp.anio,"")   ,ifnull(anioAnuarioEstadictico.anio,"")                                        
+                                            ifnull(anioProEmp.anio,"")   ,ifnull(anioAnuarioEstadictico.anio,"")
 
                                         )) as formato '),
 
@@ -253,32 +253,42 @@ class ImportacionRepositorio
     }
     public static function Max_yearPadronWeb()
     {
-        $anio = (array) DB::table('par_importacion as v1')
+        $query = /* (array) */  DB::table('par_importacion as v1')
             ->join('edu_padronweb as v2', 'v2.importacion_id', '=', 'v1.id')
             ->where('v1.estado', "PR")
             ->orderBy('v1.fechaActualizacion', 'desc')
-            ->distinct()
-            ->select('v1.id', 'v1.fechaActualizacion', DB::raw('YEAR(v1.fechaActualizacion) as anio'))
-            ->first();
-        /* $anio = DB::table('par_importacion as v1')
-            ->join('edu_padronweb as v2', 'v2.importacion_id', '=', 'v1.id')
-            ->where('v1.estado', "PR")
-            ->orderBy('v1.fechaActualizacion', 'desc')
-            ->distinct()
-            ->select('v1.id', 'v1.fechaActualizacion', DB::raw('YEAR(v1.fechaActualizacion) as anio'))
-            ->first(); */
-        return $anio;
-        /* if ($anio->count() > 0) {
-            return $anio->first()->toArray(); //->first()->anio;
-        } else
-            return 0; */
+            ->distinct()->select('v1.id', 'v1.fechaActualizacion as fecha', DB::raw('YEAR(v1.fechaActualizacion) as anio'))
+            ->take(1)
+            ->get();
+        return $query;
     }
 
     public static function Max_porfuente($fuente)
     {
-        $query = Importacion::select('id', 'fechaActualizacion as fecha')->where('fuenteimportacion_id', $fuente)
-            ->where('estado', 'PR')->orderBy('fecha', 'desc')->get();
+        $query = Importacion::select('id', 'fechaActualizacion as fecha')
+            ->where('fuenteimportacion_id', $fuente)
+            ->where('estado', 'PR')
+            ->orderBy('fecha', 'desc')->get();
         return $query->count() > 0 ? $query->first()->id : 0;
         //return Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', $fuente)->where('estado', 'PR')->first()->maximo;
+    }
+
+    public static function Max_yearSiagieMatricula()
+    {
+        $query =  DB::table('par_importacion as v1')
+            ->join('edu_matricula as v2', 'v2.importacion_id', '=', 'v1.id')
+            ->join('edu_matricula_detalle as v3', 'v3.matricula_id', '=', 'v2.id')
+            ->where('v1.estado', "PR")
+            ->orderBy('v1.fechaActualizacion', 'desc')
+            ->distinct()->select(
+                'v1.id as imp',
+                'v1.fechaActualizacion as fecha',
+                DB::raw('YEAR(v1.fechaActualizacion) as anio'),
+                'v2.id as mat',
+                'v2.anio_id'
+            )
+            ->take(1)
+            ->get();
+        return $query;
     }
 }

@@ -1,9 +1,11 @@
-@extends('layouts.main',['titlePage'=>'IMPORTAR DATOS - SISTEMA NEXUS'])
+@extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - SISTEMA NEXUS'])
 @section('css')
     <!-- Table datatable css -->
-    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"> --}}
 @endsection
+
 @section('content')
     <div class="content">
 
@@ -64,8 +66,7 @@
                                 <div class="form-group row">
                                     <label class="col-md-2 col-form-label">Comentario</label>
                                     <div class="col-md-10">
-                                        <textarea class="form-control" placeholder="comentario opcional" id="ccomment"
-                                            name="comentario"></textarea>
+                                        <textarea class="form-control" placeholder="comentario opcional" id="ccomment" name="comentario"></textarea>
                                     </div>
                                 </div>
 
@@ -117,7 +118,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap">
+                                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap"
+                                        style="font-size: 12px">
                                         <thead class="text-primary">
                                             <tr>
                                                 <th>N°</th>
@@ -144,6 +146,84 @@
             </div> <!-- End col -->
         </div> <!-- End row -->
 
+        <!-- Bootstrap modal -->
+        <div id="modal-siagie-matricula" class="modal fade centrarmodal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table id="siagie-matricula" class="table table-striped table-bordered" style="font-size:12px">
+                                <thead class="text-primary">
+                                    <th>UNIDAD_EJECUTORA</th>
+                                    <th>UGEL</th>
+                                    <th>PROVINCIA</th>
+                                    <th>DISTRITO</th>
+                                    <th>TIPO_IE</th>
+                                    <th>GESTION</th>
+                                    <th>ZONA</th>
+                                    <th>CODMOD_IE</th>
+                                    <th>CODIGO_LOCAL</th>
+                                    <th>CLAVE8</th>
+                                    <th>NIVEL_EDUCATIVO</th>
+                                    <th>INSTITUCION_EDUCATIVA</th>
+                                    <th>CODIGO_PLAZA</th>
+                                    <th>TIPO_TRABAJADOR</th>
+                                    <th>SUB_TIPO_TRABAJADOR</th>
+                                    <th>CARGO</th>
+                                    <th>SITUACION_LABORAL</th>
+                                    <th>MOTIVO_VACANTE</th>
+                                    <th>DOCUMENTO</th>
+                                    <th>SEXO</th>
+                                    <th>CODMOD_DOCENTE</th>
+                                    <th>APELLIDO_PATERNO</th>
+                                    <th>APELLIDO_MATERNO</th>
+                                    <th>NOMBRES</th>
+                                    <th>FECHA_INGRESO</th>
+                                    <th>CATEGORIA_REMUNERATIVA</th>
+                                    <th>JORNADA_LABORAL</th>
+                                    <th>ESTADO</th>
+                                    <th>FECHA_NACIMIENTO</th>
+                                    <th>FECHA_INICIO</th>
+                                    <th>FECHA_TERMINO</th>
+                                    <th>TIPO_REGISTRO</th>
+                                    <th>LEY</th>
+                                    <th>PREVENTIVA</th>
+                                    <th>ESPECIALIDAD</th>
+                                    <th>TIPO_ESTUDIOS</th>
+                                    <th>ESTADO_ESTUDIOS</th>
+                                    <th>GRADO</th>
+                                    <th>MENCION</th>
+                                    <th>ESPECIALIDAD_PROFESIONAL</th>
+                                    <th>FECHA_RESOLUCION</th>
+                                    <th>NUMERO_RESOLUCION</th>
+                                    <th>CENTRO_ESTUDIOS</th>
+                                    <th>CELULAR</th>
+                                    <th>EMAIL</th>
+                                    <th>DESC_SUPERIOR</th>
+
+
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <!-- End Bootstrap modal -->
+
     </div>
 @endsection
 
@@ -154,6 +234,15 @@
             $('.upload_file').on('submit', upload);
 
             table_principal = $('#datatable').DataTable({
+                responsive: false,
+                autoWidth: false,
+                order: true,
+                language: table_language,
+                ajax: "{{ route('cuadroasigpersonal.listar.importados') }}",
+                type: "POST",
+            });
+
+            /* table_principal = $('#datatable').DataTable({
                 "ajax": "{{ route('cuadroasigpersonal.listar.importados') }}", //ece.listar.importados
                 "columns": [{
                         data: 'fechaActualizacion'
@@ -192,7 +281,7 @@
                 }).nodes().each(function(cell, i) {
                     cell.innerHTML = i + 1;
                 });
-            }).draw();
+            }).draw(); */
         });
 
         function upload(e) {
@@ -257,6 +346,7 @@
                 $('button', form).attr('disabled', false);
             });
         }
+
         function geteliminar(id) {
             bootbox.confirm("Seguro desea Eliminar este IMPORTACION?", function(result) {
                 if (result === true) {
@@ -278,6 +368,200 @@
                 }
             });
         };
+
+        function monitor(id) {
+            var url = "{{ route('CuadroAsigPersonal.listarimportados', 55555) }}";
+            url = url.replace('55555', id);
+            $('#siagie-matricula').DataTable({
+                    "processing": true,
+                    "serverSide": true,
+                    "responsive": false,
+                    "autoWidth": false,
+                    "order": true,
+                    "destroy": true,
+                    "language": table_language,
+                    "ajax": {
+                        "headers": {
+                            'X-CSRF-TOKEN': $('input[name=_token]').val()
+                        },
+                        "url": url,
+                        "type": "POST",
+                        "dataType": 'JSON',
+                    },
+                    "columns": [{
+                            data: 'dre',
+                            name: 'dre'
+                        }, {
+                            data: 'ugel',
+                            name: 'ugel'
+                        }, {
+                            data: 'departamento',
+                            name: 'departamento'
+                        }, {
+                            data: 'provincia',
+                            name: 'provincia'
+                        }, {
+                            data: 'distrito',
+                            name: 'distrito' /*  */
+                        }, {
+                            data: 'centropoblado',
+                            name: 'centropoblado'
+                        }, {
+                            data: 'modular',
+                            name: 'modular'
+                        }, {
+                            data: 'iiee',
+                            name: 'iiee'
+                        }, {
+                            data: 'codnivel',
+                            name: 'codnivel'
+                        }, {
+                            data: 'nivel',
+                            name: 'nivel' /*  */
+                        }, {
+                            data: 'tiponivel',
+                            name: 'tiponivel'
+                        }, {
+                            data: 'codgestion',
+                            name: 'codgestion'
+                        }, {
+                            data: 'gestiondependencia',
+                            name: 'gestiondependencia'
+                        },
+                        /* {
+                                                   data: 'codtipogestion'
+                                               },  */
+                        {
+                            data: 'tipogestion',
+                            name: 'tipogestion'
+                        }, {
+                            data: 'total_estudiantes',
+                            name: 'total_estudiantes' /*  */
+                        }, {
+                            data: 'matricula_definitiva',
+                            name: 'matricula_definitiva'
+                        }, {
+                            data: 'matricula_proceso',
+                            name: 'matricula_proceso'
+                        }, {
+                            data: 'dni_validado',
+                            name: 'dni_validado'
+                        }, {
+                            data: 'dni_sin_validar',
+                            name: 'dni_sin_validar'
+                        }, {
+                            data: 'registrado_sin_dni',
+                            name: 'registrado_sin_dni' /*  */
+                        }, {
+                            data: 'total_grados',
+                            name: 'total_grados'
+                        }, {
+                            data: 'total_secciones',
+                            name: 'total_secciones'
+                        }, {
+                            data: 'nominas_generadas',
+                            name: 'nominas_generadas'
+                        }, {
+                            data: 'nominas_aprobadas',
+                            name: 'nominas_aprobadas'
+                        }, {
+                            data: 'nominas_por_rectificar',
+                            name: 'nominas_por_rectificar' /*  */
+                        }, {
+                            data: 'tres_anios_hombre',
+                            name: 'tres_anios_hombre'
+                        }, {
+                            data: 'tres_anios_mujer',
+                            name: 'tres_anios_mujer'
+                        }, {
+                            data: 'cuatro_anios_hombre',
+                            name: 'cuatro_anios_hombre'
+                        }, {
+                            data: 'cuatro_anios_mujer',
+                            name: 'cuatro_anios_mujer'
+                        }, {
+                            data: 'cinco_anios_hombre',
+                            name: 'cinco_anios_hombre' /*  */
+                        }, {
+                            data: 'cinco_anios_mujer',
+                            name: 'cinco_anios_mujer'
+                        }, {
+                            data: 'primero_hombre',
+                            name: 'primero_hombre'
+                        }, {
+                            data: 'primero_mujer',
+                            name: 'primero_mujer'
+                        }, {
+                            data: 'segundo_hombre',
+                            name: 'segundo_hombre'
+                        }, {
+                            data: 'segundo_mujer',
+                            name: 'segundo_mujer' /*  */
+                        }, {
+                            data: 'tercero_hombre',
+                            name: 'tercero_hombre'
+                        }, {
+                            data: 'tercero_mujer',
+                            name: 'tercero_mujer'
+                        }, {
+                            data: 'cuarto_hombre',
+                            name: 'cuarto_hombre'
+                        }, {
+                            data: 'cuarto_mujer',
+                            name: 'cuarto_mujer'
+                        }, {
+                            data: 'quinto_hombre',
+                            name: 'quinto_hombre' /*  */
+                        }, {
+                            data: 'quinto_mujer',
+                            name: 'quinto_mujer'
+                        }, {
+                            data: 'sexto_hombre',
+                            name: 'sexto_hombre'
+                        }, {
+                            data: 'sexto_mujer',
+                            name: 'sexto_mujer'
+                        }, {
+                            data: 'cero_anios_hombre',
+                            name: 'cero_anios_hombre'
+                        }, {
+                            data: 'cero_anios_mujer',
+                            name: 'cero_anios_mujer' /*  */
+                        }, {
+                            data: 'un_anio_hombre',
+                            name: 'un_anio_hombre'
+                        }, {
+                            data: 'un_anio_mujer',
+                            name: 'un_anio_mujer'
+                        }, {
+                            data: 'dos_anios_hombre',
+                            name: 'dos_anios_hombre'
+                        }, {
+                            data: 'dos_anios_mujer',
+                            name: 'dos_anios_mujer'
+                        }, {
+                            data: 'mas_cinco_anios_hombre',
+                            name: 'mas_cinco_anios_hombre' /*  */
+                        }, {
+                            data: 'mas_cinco_anios_mujer',
+                            name: 'mas_cinco_anios_mujer'
+                        },
+                        /* {
+                                               data: 'total_hombres'
+                                           }, */
+                        /*  {
+                                                data: 'total_mujer'
+                                            }, */
+                    ],
+                }
+
+            );
+
+            $('#modal-siagie-matricula').modal('show');
+            $('#modal-siagie-matricula .modal-title').text('Importado');
+        }
+
+
     </script>
 
     <script src="{{ asset('/') }}public/assets/libs/jquery-validation/jquery.validate.min.js"></script>

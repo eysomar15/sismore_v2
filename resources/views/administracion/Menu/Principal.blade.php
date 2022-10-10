@@ -1,4 +1,4 @@
-@extends('layouts.main',['activePage'=>'usuarios','titlePage'=>'GESTION DE MENU'])
+@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => 'GESTION DE MENU'])
 
 @section('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
@@ -9,14 +9,14 @@
 
 @section('content')
     <div class="content">
-  
+
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             {{-- <div class="card-header card-header-primary">
-                            <h4 class="card-title">Relacion de Usuarios </h4>                            
+                            <h4 class="card-title">Relacion de Usuarios </h4>
                         </div> --}}
 
                             <div class="card-body">
@@ -69,8 +69,7 @@
     </div>
 
     <!-- Modal  Eliminar -->
-    <div class="modal fade" id="confirmModalEliminar" tabindex="-1" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="confirmModalEliminar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -91,8 +90,8 @@
     </div> <!-- Fin Modal  Eliminar -->
 
     <!-- Bootstrap modal -->
-    <div id="modal_form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true" style="display: none;">
+    <div id="modal_form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+        style="display: none;">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -170,7 +169,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -181,7 +180,6 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!-- End Bootstrap modal -->
-
 @endsection
 
 @section('js')
@@ -376,40 +374,14 @@
                     },
                     {
                         data: 'action',
-                        orderable: false
+                        /* orderable: false */
                     }
                 ],
                 responsive: true,
                 autoWidth: false,
-                order: false,
+                orderable: true,
                 destroy: true,
-                language: {
-                    "lengthMenu": "Mostrar " +
-                        `<select class="custom-select custom-select-sm form-control form-control-sm">
-                        <option value = '10'> 10</option>
-                        <option value = '25'> 25</option>
-                        <option value = '50'> 50</option>
-                        <option value = '100'>100</option>
-                        <option value = '-1'>Todos</option>
-                        </select>` + " registros por página",
-                    "info": "Mostrando la página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No records available",
-                    "infoFiltered": "(Filtrado de _MAX_ registros totales)",
-                    "emptyTable": "No hay datos disponibles en la tabla.",
-                    "info": "Del _START_ al _END_ de _TOTAL_ registros ",
-                    "infoEmpty": "Mostrando 0 registros de un total de 0. registros",
-                    "infoFiltered": "(filtrados de un total de _MAX_ )",
-                    "infoPostFix": "",
-                    "loadingRecords": "Cargando...",
-                    "processing": "Procesando...",
-                    "search": "Buscar:",
-                    "searchPlaceholder": "Dato para buscar",
-                    "zeroRecords": "No se han encontrado coincidencias.",
-                    "paginate": {
-                        "next": "siguiente",
-                        "previous": "anterior"
-                    }
-                }
+                language: table_language
             });
         }
 

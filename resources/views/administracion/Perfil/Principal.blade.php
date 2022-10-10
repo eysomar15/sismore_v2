@@ -10,13 +10,13 @@
 @section('content')
     <div class="content">
 
-         <div class="row">
+        <div class="row">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             {{-- <div class="card-header card-header-primary">
-                            <h4 class="card-title">Relacion de Usuarios </h4>                            
+                            <h4 class="card-title">Relacion de Usuarios </h4>
                         </div> --}}
 
                             <div class="card-body">
@@ -67,8 +67,8 @@
     </div>
 
     <!-- Bootstrap modal -->
-    <div id="modal_form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-        aria-hidden="true" style="display: none;">
+    <div id="modal_form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+        style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -132,7 +132,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                    <button type="button" id="btnSavemenu" onclick="savemenu()" class="btn btn-primary">Guardar</button>
+                    <button type="button" id="btnSavemenu" onclick="savemenu()"
+                        class="btn btn-primary">Guardar</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -315,7 +316,7 @@
                 }],
                 responsive: true,
                 autoWidth: false,
-                order: false,
+                orderable: false,
                 destroy: true,
                 language: {
                     "lengthMenu": "Mostrar " +

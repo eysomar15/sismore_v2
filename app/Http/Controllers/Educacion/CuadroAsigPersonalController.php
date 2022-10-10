@@ -14,6 +14,7 @@ use App\Repositories\Educacion\PlazaRepositorio;
 use App\Utilities\Utilitario;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class CuadroAsigPersonalController extends Controller
 {
@@ -217,7 +218,52 @@ class CuadroAsigPersonalController extends Controller
         $this->json_output(200, $mensaje, '');
     }
 
-    public function ListarDTImportFuenteTodos()
+    public function ListarDTImportFuenteTodos(Request $rq)
+    {
+        $draw = intval($rq->draw);
+        $start = intval($rq->start);
+        $length = intval($rq->length);
+
+        $query = ImportacionRepositorio::Listar_FuenteTodos('2');
+        $data = [];
+        foreach ($query as $key => $value) {
+            $nom = '';
+            if (strlen($value->cnombre) > 0) {
+                $xx = explode(' ', $value->cnombre);
+                $nom = $xx[0];
+            }
+            $ape = '';
+            if (strlen($value->capellidos) > 0) {
+                $xx = explode(' ', $value->capellidos);
+                $ape = $xx[0];
+            }
+
+            if (date('Y-m-d', strtotime($value->created_at)) == date('Y-m-d') || session('perfil_id') == 3 || session('perfil_id') == 8 || session('perfil_id') == 9 || session('perfil_id') == 10 || session('perfil_id') == 11)
+                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+            else
+                $boton = '';
+            $boton2 = '<button type="button" onclick="monitor(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
+            $data[] = array(
+                $key + 1,
+                date("d/m/Y", strtotime($value->fechaActualizacion)),
+                $value->fuente,
+                $nom . ' ' . $ape,
+                date("d/m/Y", strtotime($value->created_at)),
+                $value->comentario,
+                $value->estado == "PR" ? "PROCESADO" : ($value->estado == "PE" ? "PENDIENTE" : "ELIMINADO"),
+                $boton /* . '&nbsp;' . $boton2, */
+            );
+        }
+        $result = array(
+            "draw" => $draw,
+            "recordsTotal" => $start,
+            "recordsFiltered" => $length,
+            "data" => $data
+        );
+        return response()->json($result);
+    }
+
+    public function ListarDTImportFuenteTodosx()
     {
         $data = ImportacionRepositorio::Listar_FuenteTodos('2');
         return datatables()
@@ -251,9 +297,12 @@ class CuadroAsigPersonalController extends Controller
             ->toJson();
     }
 
-    public function ListaImportada($importacion_id)
+    public function ListaImportada(Request $request, $importacion_id)
     {
-        return view('Educacion.CuadroAsigPersonal.ListaImportada', compact('importacion_id'));
+        $data = PlazaRepositorio::listaImportada($importacion_id);
+        //return response()->json($data);
+        return DataTables::of($data)->make(true);
+        /* return view('Educacion.CuadroAsigPersonal.ListaImportada', compact('importacion_id')); */
     }
 
     public function ListaImportada_DataTable($importacion_id)
@@ -328,7 +377,7 @@ class CuadroAsigPersonalController extends Controller
         $puntos[] = ['name' => 'Pedagógico', 'y' => floatval($sumaPedagogico * 100 / $sumaTotal)];
         $puntos[] = ['name' => 'No Pedagógico', 'y' => floatval(($sumaTotal - $sumaPedagogico) * 100 / $sumaTotal)];
 
-        $contenedor = 'resumen_por_ugel'; //nombre del contenedor para el grafico     
+        $contenedor = 'resumen_por_ugel'; //nombre del contenedor para el grafico
         $titulo_grafico = 'Docentes Título Pedagógico - Nivel Primaria';
 
         return  view(
@@ -372,7 +421,7 @@ class CuadroAsigPersonalController extends Controller
         $puntos[] = ['name' => 'Bilingue', 'y' => floatval($sumaBilingue * 100 / $sumaTotal)];
         $puntos[] = ['name' => 'No Bilingue', 'y' => floatval(($sumaTotal - $sumaBilingue) * 100 / $sumaTotal)];
 
-        $contenedor = 'resumen_bilingue'; //nombre del contenedor para el grafico     
+        $contenedor = 'resumen_bilingue'; //nombre del contenedor para el grafico
         $titulo_grafico = 'Docentes Bilingues';
 
 
@@ -449,7 +498,7 @@ class CuadroAsigPersonalController extends Controller
     public function DocentesReportePrincipal($tipoTrab_id, $importacion_id)
     {
         $plazas_porTipoTrab = CuadroAsigPersonalRepositorio::docentes_porUgel($importacion_id);
-        // $plazas_Titulados = CuadroAsigPersonalRepositorio::plazas_docentes_Titulados($importacion_id);          
+        // $plazas_Titulados = CuadroAsigPersonalRepositorio::plazas_docentes_Titulados($importacion_id);
 
         return view('educacion.CuadroAsigPersonal.DocentesReportePrincipal', compact('plazas_porTipoTrab'));
     }

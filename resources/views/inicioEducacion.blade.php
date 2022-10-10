@@ -1,12 +1,12 @@
 @section('css')
     <style>
         .tablex thead th {
-            padding: .5px;
+            padding: 2px;
             text-align: center;
         }
 
         .tablex thead td {
-            padding: .5px;
+            padding: 2px;
             text-align: center;
             vertical-align: middle;
             font-weight: bold;
@@ -16,7 +16,12 @@
         .tablex tbody th,
         .tablex tfoot td,
         .tablex tfoot th {
-            padding: 0px;
+            padding: 2px;
+        }
+
+        .fuentex {
+            font-size: 10px;
+            font-weight: bold;
         }
     </style>
 @endsection
@@ -199,7 +204,7 @@
                         <div class="card-header border-primary bg-transparent pb-0 m-0">
                             <h3 class="card-title">Estudiantes Matriculados De Educación Básica Según UGEL</h3>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body pb-0 pt-0">
                             <div class="table-responsive">
                                 <table id="tabla0" class="table table-striped table-bordered mb-0 tablex"
                                     style="font-size:11px;">
@@ -296,15 +301,15 @@
                             <h3 class="card-title">Total servicios educativos, instituciones educativas y secciones
                             </h3>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body pb-0 pt-0">
                             <div class="table-responsive">
                                 <table id="tabla1" class="table table-striped table-bordered mb-0 tablex"
                                     style="font-size:11px;">
                                     <thead>
                                         <tr class="bg-primary text-white text-center">
                                             <td rowspan="2">NIVEL_MODALIDAD</td>
-                                            <td colspan="3">SERVICIOS EDUCATIVOS</td>
                                             <td colspan="3">INSTITUCIONES EDUCATIVAS</td>
+                                            <td colspan="3">SERVICIOS EDUCATIVOS</td>
                                             <td colspan="3">SECCIONES</td>
                                         </tr>
                                         <tr class="bg-primary text-white text-center">
@@ -339,22 +344,19 @@
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $item2->nivel }}
                                                         </td>
-                                                        <th class="table-success text-center">
-                                                            {{ number_format($item2->ttlc, 0) }}
+                                                        <th class="text-center">{{ number_format($item2->ttlc, 0) }}
                                                         </th>
                                                         <td class="text-center">{{ number_format($item2->pulc, 0) }}
                                                         </td>
                                                         <td class="text-center">{{ number_format($item2->prlc, 0) }}
                                                         </td>
-                                                        <th class="table-success text-center">
-                                                            {{ number_format($item2->ttsr, 0) }}
+                                                        <th class="text-center">{{ number_format($item2->ttsr, 0) }}
                                                         </th>
                                                         <td class="text-center">{{ number_format($item2->pusr, 0) }}
                                                         </td>
                                                         <td class="text-center">{{ number_format($item2->prsr, 0) }}
                                                         </td>
-                                                        <th class="table-success text-center">
-                                                            {{ number_format($item2->ttsc, 0) }}
+                                                        <th class="text-center">{{ number_format($item2->ttsc, 0) }}
                                                         </th>
                                                         <td class="text-center">{{ number_format($item2->pusc, 0) }}
                                                         </td>
@@ -468,9 +470,11 @@
 
 @section('js')
     <script type="text/javascript">
+        //var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263', '#6AF9C4'];
         $(document).ready(function() {
+            //console.log(Highcharts.getOptions().colors)
             Highcharts.setOptions({
-                colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
+                colors: Highcharts.map(paleta_colores, function(color) {
                     return {
                         radialGradient: {
                             cx: 0.5,
@@ -480,7 +484,7 @@
                         stops: [
                             [0, color],
                             [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
-                        ]
+                        ],
                     };
                 }),
                 lang: {
@@ -494,7 +498,8 @@
                 dataType: "JSON",
                 success: function(data) {
                     gSimpleColumn('anal1', data.info, '',
-                        'Estudiantes Matriculados por Años<br>Fuente:SIAGIE', '');
+                        'Estudiantes Matriculados por Años<br><span class="fuentex">Fuente:SIAGIE' +
+                        '</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -508,7 +513,8 @@
                 dataType: "JSON",
                 success: function(data) {
                     gSimpleColumn('anal2', data.info,
-                        '', 'Personal Docente por Años<br>Fuente:NEXUS', '');
+                        '', 'Personal Docente por Años<br><span class="fuentex">Fuente:NEXUS' +
+                        '</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 2");
@@ -521,9 +527,11 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    gPie('anal3', data.info,
+                    gPie('anal3', data.info['puntos'],
                         '',
-                        'Estudiantes Matriculados según Genero<br>Fuente:SIAGIE ', '');
+                        'Estudiantes Matriculados según Genero<br><span class="fuentex">Fuente:SIAGIE AL ' +
+                        data.info[
+                            'fecha'] + '</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -536,12 +544,15 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    gPie('anal4', data.info,
-                        '', 'Personal Docente según Genero<br>Fuente:NEXUS ',
+                    gPie('anal4', data.info['puntos'],
+                        '',
+                        'Personal Docente según Genero<br><span class="fuentex">Fuente:NEXUS AL ' +
+                        data.info[
+                            'fecha'] + '</span>',
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 2");
+                    console.log("ERROR GRAFICA 4");
                     console.log(jqXHR);
                 },
             });
@@ -551,12 +562,14 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    gPie('anal5', data.info,
+                    gPie('anal5', data.info['puntos'],
                         '',
-                        'Estudiantes Matriculados según Area Geografica<br>Fuente:SIAGIE ', '');
+                        'Estudiantes Matriculados según Area Geografica<br><span class="fuentex">Fuente:SIAGIE AL ' +
+                        data
+                        .info['fecha'] + '</span>', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 5");
                     console.log(jqXHR);
                 },
             });
@@ -566,12 +579,14 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function(data) {
-                    gPie('anal6', data.info,
-                        '', 'Personal Docente según Area Geografica<br>Fuente:NEXUS ',
+                    gPie('anal6', data.info['puntos'],
+                        '',
+                        'Personal Docente según Area Geografica<br><span class="fuentex">Fuente:NEXUS AL ' +
+                        data.info['fecha'] + '</span>',
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 2");
+                    console.log("ERROR GRAFICA 6");
                     console.log(jqXHR);
                 },
             });
@@ -600,6 +615,10 @@
                         text: 'Porcentaje',
                     }
                 },
+                /* colors: [
+                    '#8085e9',
+                    '#2b908f',
+                ], */
                 series: [{
                     showInLegend: tituloserie != '',
                     name: tituloserie,
@@ -621,7 +640,7 @@
                         },
                     }
                 },
-                
+
                 credits: false,
             });
         }
@@ -656,7 +675,7 @@
                         dataLabels: {
                             enabled: true,
                             //format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                            format: '{point.yx} ( {point.percentage:.1f}% )',
+                            format: '{point.y:,0f} ( {point.percentage:.1f}% )',
                             connectorColor: 'silver'
                         }
                     }
@@ -675,7 +694,7 @@
                 }, */
                 series: [{
                     showInLegend: true,
-                    //name: 'Share',                    
+                    //name: 'Share',
                     data: datos,
                 }],
                 credits: false,

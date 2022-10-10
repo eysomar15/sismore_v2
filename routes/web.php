@@ -15,14 +15,21 @@ use App\Http\Controllers\Educacion\MatriculaController;
 use App\Http\Controllers\Educacion\PadronEIBController;
 use App\Http\Controllers\Educacion\ImporPadronWebController;
 use App\Http\Controllers\Educacion\ImporMatriculaController;
+use App\Http\Controllers\Educacion\ImporPadronEibController;
+use App\Http\Controllers\Educacion\ImporRERController;
 use App\Http\Controllers\Educacion\MatriculaDetalleController;
+use App\Http\Controllers\Educacion\NivelModalidadController;
+use App\Http\Controllers\Educacion\PadronWebController;
 use App\Http\Controllers\Educacion\PLazaController;
+use App\Http\Controllers\Educacion\PadronRERController;
+use App\Http\Controllers\Educacion\RERController;
 use App\Http\Controllers\Educacion\TabletaController;
 use App\Http\Controllers\Educacion\TextosEscolaresController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Parametro\ClasificadorController;
 use App\Http\Controllers\Parametro\FuenteImportacionController;
 use App\Http\Controllers\Presupuesto\ImporGastosController;
+use App\Http\Controllers\Presupuesto\ImporIngresosController;
 use App\Http\Controllers\Trabajo\ActividadController;
 use App\Http\Controllers\Trabajo\AnuarioEstadisticoController;
 use App\Http\Controllers\Trabajo\IndicadorTrabajoController;
@@ -67,12 +74,14 @@ Route::get('/AEI', [HomeController::class, 'AEI_tempo'])->name('AEI_tempo');
 
 
 /**************************************** EDUCACION ************************************************/
-Route::get('/Home/gra1', [HomeController::class, 'homegrafica1'])->name('graficas.home.educacion.1');
-Route::get('/Home/gra2', [HomeController::class, 'homegrafica2'])->name('graficas.home.educacion.2');
-Route::get('/Home/gra3', [HomeController::class, 'homegrafica3'])->name('graficas.home.educacion.3');
-Route::get('/Home/gra4', [HomeController::class, 'homegrafica4'])->name('graficas.home.educacion.4');
-Route::get('/Home/gra5', [HomeController::class, 'homegrafica5'])->name('graficas.home.educacion.5');
-Route::get('/Home/gra6', [HomeController::class, 'homegrafica6'])->name('graficas.home.educacion.6');
+Route::get('/Home/gra1', [HomeController::class, 'educaciongrafica1'])->name('graficas.home.educacion.1');
+Route::get('/Home/gra2', [HomeController::class, 'educaciongrafica2'])->name('graficas.home.educacion.2');
+Route::get('/Home/gra3', [HomeController::class, 'educaciongrafica3'])->name('graficas.home.educacion.3');
+Route::get('/Home/gra4', [HomeController::class, 'educaciongrafica4'])->name('graficas.home.educacion.4');
+Route::get('/Home/gra5', [HomeController::class, 'educaciongrafica5'])->name('graficas.home.educacion.5');
+Route::get('/Home/gra6', [HomeController::class, 'educaciongrafica6'])->name('graficas.home.educacion.6');
+
+Route::get('/NivelModalidad/Buscar/{tipo}', [NivelModalidadController::class, 'buscarnivelmodalidad']);
 
 Route::get('/ImporPadronWeb/Importar', [ImporPadronWebController::class, 'importar'])->name('ImporPadronWeb.importar');
 Route::post('/ImporPadronWeb/Importar', [ImporPadronWebController::class, 'guardar'])->name('ImporPadronWeb.guardar');
@@ -82,20 +91,25 @@ Route::get('/ImporPadronWeb/Aprobar/{importacion_id}', [ImporPadronWebController
 Route::post('/ImporPadronWeb/Aprobar/procesar/{importacion_id}', [ImporPadronWebController::class, 'procesar'])->name('ImporPadronWeb.procesar');
 Route::get('/ImporPadronWeb/Listar/ImportarDT', [ImporPadronWebController::class, 'ListarDTImportFuenteTodos'])->name('ImporPadronWeb.listar.importados');
 
+//Route::get('/PadronWeb/codigo_modular/{codigo_modular}', [PadronWebController::class, 'buscariiee']);//esta por ver
+
 Route::get('/FuenteImportacion/cargar/{sistema_id}', [FuenteImportacionController::class, 'cargar']);
+
+Route::get('/ImporPadronEIB/Importar', [ImporPadronEibController::class, 'importar'])->name('PadronEIB.importar');
+Route::post('/ImporPadronEIB/Importar', [ImporPadronEibController::class, 'guardar'])->name('imporpadroneib.guardar');
+Route::get('/ImporPadronEIB/Listar/ImportarDT', [ImporPadronEibController::class, 'ListarDTImportFuenteTodos'])->name('imporpadroneib.listar.importados');
+Route::post('/ImporPadronEIB/ListaImportada/{importacion_id}', [ImporPadronEibController::class, 'ListaImportada'])->name('imporpadroneib.listarimportados');
+Route::get('/ImporPadronEIB/eliminar/{id}', [ImporPadronEibController::class, 'eliminar']);
+
 
 Route::get('/ImporMatricula/Importar', [ImporMatriculaController::class, 'importar'])->name('ImporMatricula.importar');
 Route::post('/ImporMatricula/Importar', [ImporMatriculaController::class, 'guardar'])->name('ImporMatricula.guardar');
-Route::get('/ImporMatricula/ListaImportada/{importacion_id}', [ImporMatriculaController::class, 'ListaImportada'])->name('ImporMatricula.PadronWeb_Lista');
+Route::post('/ImporMatricula/ListaImportada/{importacion_id}', [ImporMatriculaController::class, 'ListaImportada'])->name('ImporMatricula.listarimportados');
 Route::get('/ImporMatricula/ListaImportada_DataTable/{importacion_id}', [ImporMatriculaController::class, 'ListaImportada_DataTable'])->name('ImporMatricula.ListaImportada_DataTable');
-Route::get('/ImporMatricula/Aprobar/{importacion_id}', [ImporMatriculaController::class, 'aprobar'])->name('ImporMatricula.aprobar');
-Route::post('/ImporMatricula/Aprobar/procesar/{importacion_id}', [ImporMatriculaController::class, 'procesar'])->name('ImporMatricula.procesar');
+//Route::get('/ImporMatricula/Aprobar/{importacion_id}', [ImporMatriculaController::class, 'aprobar'])->name('ImporMatricula.aprobar');
+//Route::post('/ImporMatricula/Aprobar/procesar/{importacion_id}', [ImporMatriculaController::class, 'procesar'])->name('ImporMatricula.procesar');
 Route::get('/ImporMatricula/Listar/ImportarDT', [ImporMatriculaController::class, 'ListarDTImportFuenteTodos'])->name('ImporMatricula.listar.importados');
 Route::get('/ImporMatricula/eliminar/{id}', [ImporMatriculaController::class, 'eliminar']);
-
-Route::get('/PadronEIB/Importar', [PadronEIBController::class, 'importar'])->name('PadronEIB.importar');
-Route::post('/PadronEIB/Importar', [PadronEIBController::class, 'guardar'])->name('PadronEIB.guardar');
-Route::get('/PadronEIB/Listar/ImportarDT', [PadronEIBController::class, 'ListarDTImportFuenteTodos'])->name('PadronEIB.listar.importados');
 
 Route::get('/TextosEscolares/Importar', [TextosEscolaresController::class, 'importar'])->name('TextosEscolares.importar');
 Route::post('/TextosEscolares/Importar', [TextosEscolaresController::class, 'guardar'])->name('TextosEscolares.guardar');
@@ -105,7 +119,7 @@ Route::post('/TextosEscolares/ReporteUgel/{importacion_id}', [TextosEscolaresCon
 
 Route::get('/CuadroAsigPersonal/Importar', [CuadroAsigPersonalController::class, 'importar'])->name('CuadroAsigPersonal.importar');
 Route::post('/CuadroAsigPersonal/Importar', [CuadroAsigPersonalController::class, 'guardar'])->name('CuadroAsigPersonal.guardar');
-Route::get('/CuadroAsigPersonal/ListaImportada/{importacion_id}', [CuadroAsigPersonalController::class, 'ListaImportada'])->name('CuadroAsigPersonal.CuadroAsigPersonal_Lista');
+Route::post('/CuadroAsigPersonal/ListaImportada/{importacion_id}', [CuadroAsigPersonalController::class, 'ListaImportada'])->name('CuadroAsigPersonal.listarimportados');
 Route::get('/CuadroAsigPersonal/ListaImportada_DataTable/{importacion_id}', [CuadroAsigPersonalController::class, 'ListaImportada_DataTable'])->name('CuadroAsigPersonal.ListaImportada_DataTable');
 Route::get('/CuadroAsigPersonal/Aprobar/{importacion_id}', [CuadroAsigPersonalController::class, 'aprobar'])->name('CuadroAsigPersonal.aprobar');
 Route::post('/CuadroAsigPersonal/Aprobar/procesar/{importacion_id}', [CuadroAsigPersonalController::class, 'procesar'])->name('CuadroAsigPersonal.procesar');
@@ -177,6 +191,49 @@ Route::post('/InstEducativa/GraficoBarras_Instituciones_Distrito', [InstEducativ
 Route::get('/MatriculaDetalle/avance/', [MatriculaDetalleController::class, 'avance'])->name('matriculadetalle.avance');
 Route::post('/MatriculaDetalle/avance/tabla0', [MatriculaDetalleController::class, 'cargartabla0'])->name('matriculadetalle.avance.tabla0');
 Route::post('/MatriculaDetalle/avance/tabla1', [MatriculaDetalleController::class, 'cargartabla1'])->name('matriculadetalle.avance.tabla1');
+Route::post('/MatriculaDetalle/avance/grafica1', [MatriculaDetalleController::class, 'cargargrafica1'])->name('matriculadetalle.avance.grafica1');
+Route::get('/MatriculaDetalle/rojos/{mes}/{nivel}/{ano}', [MatriculaDetalleController::class, 'rojos']);
+
+Route::get('/MatriculaDetalle/EBR/', [MatriculaDetalleController::class, 'basicaregular'])->name('matriculadetalle.basicaregular');
+Route::post('/MatriculaDetalle/EBR/grafica1', [MatriculaDetalleController::class, 'cargarEBRgrafica1'])->name('matriculadetalle.ebr.grafica1');
+Route::post('/MatriculaDetalle/EBR/grafica2', [MatriculaDetalleController::class, 'cargarEBRgrafica2'])->name('matriculadetalle.ebr.grafica2');
+Route::post('/MatriculaDetalle/EBR/grafica3', [MatriculaDetalleController::class, 'cargarEBRgrafica3'])->name('matriculadetalle.ebr.grafica3');
+Route::post('/MatriculaDetalle/EBR/grafica4', [MatriculaDetalleController::class, 'cargarEBRgrafica4'])->name('matriculadetalle.ebr.grafica4');
+Route::post('/MatriculaDetalle/EBR/grafica5', [MatriculaDetalleController::class, 'cargarEBRgrafica5'])->name('matriculadetalle.ebr.grafica5');
+Route::post('/MatriculaDetalle/EBR/grafica6', [MatriculaDetalleController::class, 'cargarEBRgrafica6'])->name('matriculadetalle.ebr.grafica6');
+Route::post('/MatriculaDetalle/EBR/grafica7', [MatriculaDetalleController::class, 'cargarEBRgrafica7'])->name('matriculadetalle.ebr.grafica7');
+Route::post('/MatriculaDetalle/EBR/tabla1', [MatriculaDetalleController::class, 'cargarEBRtabla1'])->name('matriculadetalle.ebr.tabla1');
+Route::post('/MatriculaDetalle/EBR/tabla2', [MatriculaDetalleController::class, 'cargarEBRtabla2'])->name('matriculadetalle.ebr.tabla2');
+Route::post('/MatriculaDetalle/EBR/tabla3', [MatriculaDetalleController::class, 'cargarEBRtabla3'])->name('matriculadetalle.ebr.tabla3');
+Route::post('/MatriculaDetalle/EBR/tabla3_1', [MatriculaDetalleController::class, 'cargarEBRtabla3_1'])->name('matriculadetalle.ebr.tabla3_1');
+Route::post('/MatriculaDetalle/EBR/tabla3_2', [MatriculaDetalleController::class, 'cargarEBRtabla3_2'])->name('matriculadetalle.ebr.tabla3_2');
+Route::post('/MatriculaDetalle/EBR/tabla3_3', [MatriculaDetalleController::class, 'cargarEBRtabla3_3'])->name('matriculadetalle.ebr.tabla3_3');
+Route::post('/MatriculaDetalle/EBR/tabla4', [MatriculaDetalleController::class, 'cargarEBRtabla4'])->name('matriculadetalle.ebr.tabla4');
+Route::post('/MatriculaDetalle/EBR/tabla4_1', [MatriculaDetalleController::class, 'cargarEBRtabla4_1'])->name('matriculadetalle.ebr.tabla4_1');
+Route::post('/MatriculaDetalle/EBR/tabla4_2', [MatriculaDetalleController::class, 'cargarEBRtabla4_2'])->name('matriculadetalle.ebr.tabla4_2');
+//Route::post('/MatriculaDetalle/EBR/tabla4_3', [MatriculaDetalleController::class, 'cargarEBRtabla4_3'])->name('matriculadetalle.ebr.tabla4_3');
+Route::post('/MatriculaDetalle/EBR/tabla5', [MatriculaDetalleController::class, 'cargarEBRtabla5'])->name('matriculadetalle.ebr.tabla5');
+Route::post('/MatriculaDetalle/EBR/tabla5_1', [MatriculaDetalleController::class, 'cargarEBRtabla5_1'])->name('matriculadetalle.ebr.tabla5_1');
+Route::post('/MatriculaDetalle/EBR/tabla5_2', [MatriculaDetalleController::class, 'cargarEBRtabla5_2'])->name('matriculadetalle.ebr.tabla5_2');
+//Route::post('/MatriculaDetalle/EBR/tabla5_3', [MatriculaDetalleController::class, 'cargarEBRtabla5_3'])->name('matriculadetalle.ebr.tabla5_3');
+Route::post('/MatriculaDetalle/EBR/tabla6', [MatriculaDetalleController::class, 'cargarEBRtabla6'])->name('matriculadetalle.ebr.tabla6');
+
+Route::get('/MatriculaDetalle/EBE/', [MatriculaDetalleController::class, 'basicaespecial'])->name('matriculadetalle.basicaespecial');
+Route::post('/MatriculaDetalle/EBE/grafica1', [MatriculaDetalleController::class, 'cargarEBEgrafica1'])->name('matriculadetalle.ebe.grafica1');
+Route::post('/MatriculaDetalle/EBE/grafica2', [MatriculaDetalleController::class, 'cargarEBEgrafica2'])->name('matriculadetalle.ebe.grafica2');
+Route::post('/MatriculaDetalle/EBE/grafica3', [MatriculaDetalleController::class, 'cargarEBEgrafica3'])->name('matriculadetalle.ebe.grafica3');
+Route::post('/MatriculaDetalle/EBE/grafica4', [MatriculaDetalleController::class, 'cargarEBEgrafica4'])->name('matriculadetalle.ebe.grafica4');
+Route::post('/MatriculaDetalle/EBE/tabla1', [MatriculaDetalleController::class, 'cargarEBEtabla1'])->name('matriculadetalle.ebe.tabla1');
+Route::post('/MatriculaDetalle/EBE/tabla2', [MatriculaDetalleController::class, 'cargarEBEtabla2'])->name('matriculadetalle.ebe.tabla2');
+
+Route::get('/MatriculaDetalle/EIB/', [MatriculaDetalleController::class, 'interculturalbilingue'])->name('matriculadetalle.interculturalbilingue');
+Route::post('/MatriculaDetalle/EIB/grafica1', [MatriculaDetalleController::class, 'cargarEIBgrafica1'])->name('matriculadetalle.eib.grafica1');
+Route::post('/MatriculaDetalle/EIB/grafica2', [MatriculaDetalleController::class, 'cargarEIBgrafica2'])->name('matriculadetalle.eib.grafica2');
+Route::post('/MatriculaDetalle/EIB/grafica3', [MatriculaDetalleController::class, 'cargarEIBgrafica3'])->name('matriculadetalle.eib.grafica3');
+Route::post('/MatriculaDetalle/EIB/grafica4', [MatriculaDetalleController::class, 'cargarEIBgrafica4'])->name('matriculadetalle.eib.grafica4');
+Route::post('/MatriculaDetalle/EIB/tabla1', [MatriculaDetalleController::class, 'cargarEIBtabla1'])->name('matriculadetalle.eib.tabla1');
+Route::post('/MatriculaDetalle/EIB/tabla2', [MatriculaDetalleController::class, 'cargarEIBtabla2'])->name('matriculadetalle.eib.tabla2');
+
 
 
 Route::get('/Tableta/Importar', [TabletaController::class, 'importar'])->name('Tableta.importar');
@@ -195,7 +252,8 @@ Route::get('/Importacion', [ImportacionController::class, 'inicio'])->name('impo
 Route::get('/Importacion/importaciones_DataTable/', [ImportacionController::class, 'importacionesLista_DataTable'])->name('importacion.importacionesLista_DataTable');
 Route::get('/Importacion/Eliminar/{id}', [ImportacionController::class, 'eliminar'])->name('importacion.Eliminar');
 Route::get('/Importacion/GetEliminar/{id}', [ImportacionController::class, 'setEliminar']);
-Route::get('/Importacion/Importados/dt/{fuenteimportacion_id}', [ImportacionController::class, 'ListarImportadosDT'])->name('importacion.listar.importados');
+//Route::get('/Importac-ion/Impo-rtados/dt/{fuenteimp-ortacion_id}', [Importacio-nController::class, 'ListarIm-portadosDT'])->name('import-acion.listar.importados');
+Route::post('/Importacion/Importados/', [ImportacionController::class, 'ListarDTImportFuenteTodos'])->name('importacion.listar.importados');
 
 Route::get('/ECE/Importar', [EceController::class, 'importar'])->name('ece.importar');
 Route::get('/ECE/Importar/Aprobar/{importacion_id}', [EceController::class, 'importarAprobar'])->name('ece.importar.aprobar');
@@ -243,13 +301,55 @@ Route::post('/Plaza/Docentes/DocentePrincial/gra5', [PLazaController::class, 'Do
 Route::post('/Plaza/Docentes/DocentePrincial/gra6', [PLazaController::class, 'DocentesPrincipalgra6'])->name('nexus.contratacion.gra6');
 Route::post('/Plaza/Docentes/DocentePrincial/gra7', [PLazaController::class, 'DocentesPrincipalgra7'])->name('nexus.contratacion.gra7');
 Route::post('/Plaza/Docentes/DocentePrincial/gra8', [PLazaController::class, 'DocentesPrincipalgra8'])->name('nexus.contratacion.gra8');
+Route::post('/Plaza/Docentes/DocentePrincial/gra9', [PLazaController::class, 'DocentesPrincipalgra9'])->name('nexus.contratacion.gra9');
+Route::post('/Plaza/Docentes/DocentePrincial/gra10', [PLazaController::class, 'DocentesPrincipalgra10'])->name('nexus.contratacion.gra10');
 Route::post('/Plaza/Docentes/DocentePrincial/DT1', [PLazaController::class, 'DocentesPrincipalDT1'])->name('nexus.contratacion.dt1');
+Route::post('/Plaza/Docentes/DocentePrincial/DT2', [PLazaController::class, 'DocentesPrincipalDT2'])->name('nexus.contratacion.dt2');
+Route::post('/Plaza/Docentes/DocentePrincial/DT3', [PLazaController::class, 'DocentesPrincipalDT3'])->name('nexus.contratacion.dt3');
+Route::post('/Plaza/Docentes/DocentePrincial/DT4', [PLazaController::class, 'DocentesPrincipalDT4'])->name('nexus.contratacion.dt4');
 
-Route::get('/presupuesto/Principal', [MatriculaDetalleController::class, 'cargarpresupuestoxxx'])->name('educacion.xxx');
+Route::get('/Plaza/Docentes/CoberturaDePlaza', [PLazaController::class, 'coberturaplaza'])->name('nexus.cobertura.head');
+Route::post('/Plaza/Plazas/tabla1', [PLazaController::class, 'cargarcoberturaplazatabla1'])->name('nexus.cobertura.tabla1');
+Route::post('/Plaza/Plazas/tabla2', [PLazaController::class, 'cargarcoberturaplazatabla2'])->name('nexus.cobertura.tabla2');
+Route::post('/Plaza/Plazas/grafica1', [PLazaController::class, 'cargarcoberturaplazagrafica1'])->name('nexus.cobertura.grafica1');
 
+
+Route::get('/ImporRER/Importar', [ImporRERController::class, 'importar'])->name('imporrer.importar');
+Route::post('/ImporRER/Importar', [ImporRERController::class, 'guardar'])->name('imporrer.guardar');
+Route::post('/ImporRER/ListaImportada/{importacion_id}', [ImporRERController::class, 'ListaImportada'])->name('imporrer.listarimportados');
+Route::get('/Mantenimiento/RER/Principal', [RERController::class, 'principal'])->name('mantenimiento.rer.principal');
+Route::post('/Mantenimiento/RER/Importados/', [RERController::class, 'ListarDTImportFuenteTodos'])->name('mantenimiento.rer.listar.importados');
+Route::get('/Mantenimiento/RER/ajax_edit/{id}', [RERController::class, 'ajax_edit']);
+Route::post('/Mantenimiento/RER/ajax_add/', [RERController::class, 'ajax_add']);
+Route::post('/Mantenimiento/RER/ajax_update/', [RERController::class, 'ajax_update']);
+Route::get('/Mantenimiento/RER/ajax_estado/{id}', [RERController::class, 'ajax_estado']);
+Route::get('/Mantenimiento/RER/ajax_delete/{id}', [RERController::class, 'ajax_delete']);
+
+Route::get('/Mantenimiento/PadronRER/Principal', [PadronRERController::class, 'principal'])->name('mantenimiento.padronrer.principal');
+Route::post('/Mantenimiento/PadronRER/Importados/', [PadronRERController::class, 'ListarDTImportFuenteTodos'])->name('mantenimiento.padronrer.listar.importados');
+Route::get('/Mantenimiento/PadronRER/ajax_edit/{id}', [PadronRERController::class, 'ajax_edit']);
+Route::post('/Mantenimiento/PadronRER/ajax_add/', [PadronRERController::class, 'ajax_add']);
+Route::post('/Mantenimiento/PadronRER/ajax_update/', [PadronRERController::class, 'ajax_update']);
+//Route::get('/Mantenimiento/PadronRER/ajax_estado/{id}', [PadronRERController::class, 'ajax_estado']);
+Route::get('/Mantenimiento/PadronRER/ajax_delete/{id}', [PadronRERController::class, 'ajax_delete']);
+Route::get('/Mantenimiento/PadronRER/RedEducativa/autocompletar', [RERController::class, 'completarred'])->name('mantenimiento.padronrer.completar.rer');
+Route::get('/Mantenimiento/PadronRER/IIEE/autocompletar', [InstEducativaController::class, 'completariiee'])->name('mantenimiento.padronrer.completar.iiee');
+
+Route::get('/PadronEIB/Principal', [PadronEIBController::class, 'principal'])->name('padroneib.principal');
+/* Route::post('/PadronEIB/ajax_add_opt1/', [PadronEIBController::class, 'ajax_add_opt1'])->name('padroneib.ajax.add.opt1');
+Route::get('/PadronEIB/ajax_delete_opt1/{idpadroneib}', [PadronEIBController::class, 'ajax_delete_opt1']);   */
+
+//Route::post('/PadronEIB/Importados/', [PadronEIBController::class, 'ListarDTImportFuenteTodos'])->name('padroneib.listar.importados');
+Route::get('/PadronEIB/Importados/', [PadronEIBController::class, 'ListarDTImportFuenteTodos'])->name('padroneib.listar.importados');
+Route::get('/PadronEIB/ajax_edit/{id}', [PadronEIBController::class, 'ajax_edit']);
+Route::post('/PadronEIB/ajax_add/', [PadronEIBController::class, 'ajax_add']);
+Route::post('/PadronEIB/ajax_update/', [PadronEIBController::class, 'ajax_update']);
+Route::get('/PadronEIB/ajax_delete/{id}', [PadronEIBController::class, 'ajax_delete']);
+Route::get('/PadronEIB/IIEE/autocompletar', [InstEducativaController::class, 'completariiee2'])->name('padroneib.completar.iiee');
 
 Route::get('/INDICADOR/SINRUTA', function () {
-    return 'Ruta no definida';
+    //return 'Ruta no definida';
+    return view('paginavacio');
 })->name('sinruta');
 /**************************************** FIN EDUCACION ************************************************/
 
@@ -384,12 +484,38 @@ Route::get('/Importado/resumen', [ImportacionController::class, 'resumenimportad
 /**************************************** FIN ADMINISTRADOR ************************************************/
 
 /**************************************** PRESUPUESTO ************************************************/
-Route::get('/PRES/Gastos/Importar', [ImporGastosController::class, 'importar'])->name('pres.gastos.importar');
-Route::post('/PRES/Gastos/Importar', [ImporGastosController::class, 'importarGuardar'])->name('pres.gastos.guardar');
+Route::get('/Home/Presupuesto/gra1/{importacion_id}', [HomeController::class, 'presupuestografica1'])->name('graficas.home.presupuesto.1');
+Route::get('/Home/Presupuesto/gra2/{importacion_id}', [HomeController::class, 'presupuestografica2'])->name('graficas.home.presupuesto.2');
+Route::get('/Home/Presupuesto/gra3/{importacion_id}', [HomeController::class, 'presupuestografica3'])->name('graficas.home.presupuesto.3');
+Route::get('/Home/Presupuesto/gra4/{importacion_id}', [HomeController::class, 'presupuestografica4'])->name('graficas.home.presupuesto.4');
+Route::get('/Home/Presupuesto/gra5/{importacion_id}', [HomeController::class, 'presupuestografica5'])->name('graficas.home.presupuesto.5');
+Route::get('/Home/Presupuesto/gra6/{importacion_id}', [HomeController::class, 'presupuestografica6'])->name('graficas.home.presupuesto.6');
+
+Route::get('/Home/Presupuesto/tabla1/{importacion_id}', [HomeController::class, 'presupuestotabla1'])->name('tabla.home.presupuesto.1');
+Route::get('/Home/Presupuesto/tabla2/{importacion_id}', [HomeController::class, 'presupuestotabla2'])->name('tabla.home.presupuesto.2');
+Route::get('/Home/Presupuesto/tabla3/{importacion_id}', [HomeController::class, 'presupuestotabla3'])->name('tabla.home.presupuesto.3');
+
+
+
+Route::get('/IMPORGASTOS/Gastos/Importar', [ImporGastosController::class, 'importar'])->name('pres.gastos.importar');
+Route::post('/IMPORGASTOS/Gastos/Importar', [ImporGastosController::class, 'importarGuardar'])->name('imporgastos.gastos.guardar');
+Route::get('/IMPORGASTOS/Listar/ImportarDT', [ImporGastosController::class, 'ListarDTImportFuenteTodos'])->name('imporgastos.listar.importados');
+Route::get('/IMPORGASTOS/eliminar/{id}', [ImporGastosController::class, 'eliminar']);
+Route::post('/IMPORGASTOS/ListaImportada/{importacion_id}', [ImporGastosController::class, 'ListaImportada'])->name('imporgastos.listarimportados');
+
+Route::get('/IMPORINGRESO/ingresos/Importar', [ImporIngresosController::class, 'importar'])->name('pres.ingresos.importar');
+Route::post('/IMPORINGRESO/ingresos/Importar', [ImporIngresosController::class, 'guardar'])->name('imporingresos.guardar');
+Route::get('/IMPORINGRESO/Listar/ImportarDT', [ImporIngresosController::class, 'ListarDTImportFuenteTodos'])->name('imporingresos.listar.importados');
+Route::get('/IMPORINGRESO/eliminar/{id}', [ImporIngresosController::class, 'eliminar']);
+Route::post('/IMPORINGRESO/ListaImportada/{importacion_id}', [ImporIngresosController::class, 'ListaImportada'])->name('imporingresos.listarimportados');
 
 Route::get('/PRES/Covid/Importar', [ImporGastosController::class, 'importar'])->name('pres.covid.importar');
-Route::get('/PRES/ingresos/Importar', [ImporGastosController::class, 'importar'])->name('pres.ingresos.importar');
 Route::get('/PRES/Regiones/Importar', [ImporGastosController::class, 'importar'])->name('pres.regiones.importar');
+
+
+Route::get('/presupuesto/Principal', [MatriculaDetalleController::class, 'cargarpresupuestoxxx'])->name('educacion.xxx');
+Route::get('/presupuesto/Principal/vista1', [MatriculaDetalleController::class, 'cargarpresupuestoview1'])->name('educacion.view1');
+Route::get('/presupuesto/Principal/vista2', [MatriculaDetalleController::class, 'cargarpresupuestoview2'])->name('educacion.view2');
 
 /**************************************** FIN PRESUPUESTO ***************************************************/
 

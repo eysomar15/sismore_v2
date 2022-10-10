@@ -1,4 +1,4 @@
-@extends('layouts.main',['activePage'=>'usuarios','titlePage'=>'GESTION DE ENTIDAD'])
+@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => 'GESTION DE ENTIDAD'])
 
 @section('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
@@ -16,7 +16,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             {{-- <div class="card-header card-header-primary">
-                            <h4 class="card-title">Relacion de Usuarios </h4>                            
+                            <h4 class="card-title">Relacion de Usuarios </h4>
                         </div> --}}
 
                             <div class="card-body">
@@ -30,7 +30,9 @@
                                                     onchange="listarDT();">
                                                     {{-- <option value="0">SELECCIONAR</option> --}}
                                                     @foreach ($tipogobierno as $item)
-                                                        <option value="{{ $item->id }}" {{$item->id==3?'selected':''}}>{{ $item->tipogobierno }}</option>
+                                                        <option value="{{ $item->id }}"
+                                                            {{ $item->id == 3 ? 'selected' : '' }}>{{ $item->tipogobierno }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -38,14 +40,14 @@
                                     </div>
                                     <div class="col-2 ">
                                         <!-- <div class="row form-group">
-                                            <label class="col-md-4 col-form-label">GERENCIA</label>
-                                            <div class="col-md-8">
-                                                <select class="form-control" name="entidadgerencia" id="entidadgerencia"
-                                                    onchange="listarDT();">
-                                                    <option value="0">SELECCIONAR</option>
-                                                </select>
-                                            </div>
-                                        </div> -->
+                                                            <label class="col-md-4 col-form-label">GERENCIA</label>
+                                                            <div class="col-md-8">
+                                                                <select class="form-control" name="entidadgerencia" id="entidadgerencia"
+                                                                    onchange="listarDT();">
+                                                                    <option value="0">SELECCIONAR</option>
+                                                                </select>
+                                                            </div>
+                                                        </div> -->
                                     </div>
                                     <div class="col-4 ">
                                         <div class="row justify-content-end">
@@ -96,12 +98,12 @@
                         @csrf
                         <input type="hidden" class="form-control" id="entidad_id" name="entidad_id">
                         <div class="form-body">
-                        <div class="form-group">
+                            <div class="form-group">
                                 <label>Tipo Gobierno <span class="required">*</span></label>
-                                <select  id="entidad_tipogobierno" name="entidad_tipogobierno" class="form-control">
-                                @foreach ($tipogobierno as $item)
-                                    <option value="{{ $item->id }}">{{ $item->tipogobierno }}</option>
-                                @endforeach
+                                <select id="entidad_tipogobierno" name="entidad_tipogobierno" class="form-control">
+                                    @foreach ($tipogobierno as $item)
+                                        <option value="{{ $item->id }}">{{ $item->tipogobierno }}</option>
+                                    @endforeach
                                 </select>
                                 <span class="help-block"></span>
                             </div>
@@ -112,12 +114,14 @@
                             </div>
                             <div class="form-group">
                                 <label>Unidad Ejecutora <span class="required">*</span></label>
-                                <input id="entidad_nombre" name="entidad_nombre" class="form-control" type="text" onkeyup="this.value=this.value.toUpperCase()">
+                                <input id="entidad_nombre" name="entidad_nombre" class="form-control" type="text"
+                                    onkeyup="this.value=this.value.toUpperCase()">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
                                 <label>Abreviatura <span class="required">*</span></label>
-                                <input id="entidad_abreviado" name="entidad_abreviado" class="form-control" type="text" onkeyup="this.value=this.value.toUpperCase()">
+                                <input id="entidad_abreviado" name="entidad_abreviado" class="form-control"
+                                    type="text" onkeyup="this.value=this.value.toUpperCase()">
                                 <span class="help-block"></span>
                             </div>
                         </div>
@@ -125,15 +129,14 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                    <button type="button" id="btnSaveentidad" onclick="saveentidad()" class="btn btn-primary">Guardar</button>
+                    <button type="button" id="btnSaveentidad" onclick="saveentidad()"
+                        class="btn btn-primary">Guardar</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!-- End Bootstrap modal -->
-
-    
-    @endsection
+@endsection
 
 @section('js')
     {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
@@ -161,28 +164,16 @@
                 $(this).parent().removeClass('has-error');
                 $(this).next().empty();
             });
-            /* $("#entidad").change(function(){
-                $("#opcionesx").html('Gerencia');
-            }); */
-            /* $("#entidadgerencia").change(function(){
-                $("#opcionesx").html('Oficina');
-                if($(this).val()==0){
-                    $("#opcionesx").html('Gerencia');
-                }
-            }); */
             listarDT();
-            //cargar_gerencia('')
         });
 
         function listarDT() {
             table_principal = $('#dtPrincipal').DataTable({
                 "ajax": "{{ url('/') }}/Entidad/listar/" + $('#tipogobierno').val(),
                 "columns": [{
-                    data: 'codigo',
-                },/* {
-                    data: 'nombretipogobierno',
-                }, */{
-                    data: 'unidad_ejecutora',
+                    data: 'codigo_ue',
+                }, {
+                    data: 'nombre_ejecutora',
                 }, {
                     data: 'abreviatura',
                 }, {
@@ -191,35 +182,9 @@
                 }],
                 responsive: true,
                 autoWidth: false,
-                order: false,
+                orderable: true,
                 destroy: true,
-                language: {
-                    "lengthMenu": "Mostrar " +
-                        `<select class="custom-select custom-select-sm form-control form-control-sm">
-                        <option value = '10'> 10</option>
-                        <option value = '25'> 25</option>
-                        <option value = '50'> 50</option>
-                        <option value = '100'>100</option>
-                        <option value = '-1'>Todos</option>
-                        </select>` + " registros por página",
-                    "info": "Mostrando la página _PAGE_ de _PAGES_",
-                    "infoEmpty": "No records available",
-                    "infoFiltered": "(Filtrado de _MAX_ registros totales)",
-                    "emptyTable": "No hay datos disponibles en la tabla.",
-                    "info": "Del _START_ al _END_ de _TOTAL_ registros ",
-                    "infoEmpty": "Mostrando 0 registros de un total de 0. registros",
-                    "infoFiltered": "(filtrados de un total de _MAX_ )",
-                    "infoPostFix": "",
-                    "loadingRecords": "Cargando...",
-                    "processing": "Procesando...",
-                    "search": "Buscar:",
-                    "searchPlaceholder": "Dato para buscar",
-                    "zeroRecords": "No se han encontrado coincidencias.",
-                    "paginate": {
-                        "next": "siguiente",
-                        "previous": "anterior"
-                    }
-                }
+                language: table_language
             });
         }
 
@@ -231,43 +196,48 @@
             save_method = 'add';
             $('#form_entidad')[0].reset();
             $('#form_entidad .form-group').removeClass('has-error');
-            $('#form_entidad .help-block').empty();     
-            $('#entidad_tipogobierno').val( $('#tipogobierno').val());
+            $('#form_entidad .help-block').empty();
+            $('#entidad_tipogobierno').val($('#tipogobierno').val());
             $('#modal_form_entidad').modal('show');
             $('#modal_form_entidad .modal-title').text('Crear Nueva Entidad');
 
-        };     
+        };
+
         function edit(id) {
             save_method = 'update';
             $('#form_entidad')[0].reset();
             $('#form_entidad .form-group').removeClass('has-error');
-            $('#form_entidad .help-block').empty();     
-            $('#entidad_tipogobierno').val( $('#tipogobierno').val());
+            $('#form_entidad .help-block').empty();
+            $('#entidad_tipogobierno').val($('#tipogobierno').val());
             $.ajax({
-                url: "{{ url('/') }}/Entidad/ajax_edit_entidad/"+id,
+                url: "{{ url('/') }}/Entidad/ajax_edit_entidad/" + id,
                 type: "GET",
-                data: {"entidad":id},
+                data: {
+                    "entidad": id
+                },
                 dataType: "JSON",
                 success: function(data) {
                     console.log(data);
                     $("#entidad_id").val(data.entidad.id);
-                    $("#entidad_codigo").val(data.entidad.codigo);
+                    $("#entidad_codigo").val(data.entidad.codigo_ue);
                     $("#entidad_tipogobierno").val(data.entidad.tipogobierno);
-                    $("#entidad_nombre").val(data.entidad.unidad_ejecutora);
+                    $("#entidad_nombre").val(data.entidad.nombre_ejecutora);
                     $("#entidad_abreviado").val(data.entidad.abreviatura);
-                    
+
                     $('#modal_form_entidad').modal('show');
                     $('#modal_form_entidad .modal-title').text('Modificar Entidad');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     toastr.error("El registro no se pudo crear verifique las validaciones.", 'Mensaje');
                 }
-            });      
-        };     
+            });
+        };
+
         function saveentidad() {
             $('#btnSaveentidad').text('guardando...');
             $('#btnSaveentidad').attr('disabled', true);
-            var url=save_method=="add"?"{{route('entidad.ajax.addentidad')}}":"{{route('entidad.ajax.updateentidad')}}";
+            var url = save_method == "add" ? "{{ route('entidad.ajax.addentidad') }}" :
+                "{{ route('entidad.ajax.updateentidad') }}";
             $.ajax({
                 url: url,
                 type: "POST",
@@ -317,6 +287,5 @@
                 }
             });
         };
-    
     </script>
 @endsection

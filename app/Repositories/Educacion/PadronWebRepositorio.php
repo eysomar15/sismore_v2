@@ -4,6 +4,7 @@ namespace App\Repositories\Educacion;
 
 use App\Models\Educacion\NivelModalidad;
 use App\Models\Educacion\PadronWeb;
+use App\Models\Parametro\Anio;
 use Illuminate\Support\Facades\DB;
 
 class PadronWebRepositorio
@@ -12,6 +13,7 @@ class PadronWebRepositorio
     {
         $query = DB::table('edu_padronweb as v1')
             ->where('v1.importacion_id', $importacion_id)
+            ->where('v1.estadoinsedu_id', 3)
             ->distinct()
             ->select('v1.institucioneducativa_id')
             ->get();
@@ -19,13 +21,21 @@ class PadronWebRepositorio
     }
     public static function count_localesescolares($importacion_id)
     {
-        $query = DB::table('edu_padronweb as v1')
+        /* $query = DB::table('edu_padronweb as v1')
             ->join('edu_institucioneducativa as v2', 'v2.id', '=', 'v1.institucioneducativa_id')
             ->where('v1.importacion_id', $importacion_id)
+            ->where('v1.estadoinsedu_id', '3')
             ->distinct()
             ->select('v2.codLocal')
             ->get();
-        return $query->count();
+        return $query->count(); */
+        $query = DB::table(DB::raw("(
+            select distinct `v2`.`codLocal`
+            from `edu_padronweb` as `v1`
+            inner join `edu_institucioneducativa` as `v2` on `v2`.`id` = `v1`.`institucioneducativa_id`
+            where `v1`.`importacion_id` = $importacion_id and `v1`.`estadoinsedu_id` = 3
+        ) as tb"))->select(DB::raw('count(codLocal) conteo'))->get();
+        return $query->first()->conteo;
     }
     public static function count_matriculados($importacion_id)
     {
@@ -49,16 +59,16 @@ class PadronWebRepositorio
             select ugel as ugel_id, sum(codlocal) as codlocal,sum(codmodular) as codmodular from (
                 select ugel,count(codlocal) as codlocal,0 as codmodular from (
                 select distinct v2.Ugel_id as ugel, v2.codLocal as codlocal,"" as codmodular  from `edu_padronweb` as `v1`
-                inner join `edu_institucioneducativa` as `v2` on `v2`.`id` = `v1`.`institucioneducativa_id` 
+                inner join `edu_institucioneducativa` as `v2` on `v2`.`id` = `v1`.`institucioneducativa_id`
                 where `v1`.`importacion_id` = ' . $importacion_id . ' ) as tt
                 group  by ugel
                 union
                 select ugel,0 as codlocal,count(codModular) as codmodular from (
                 select distinct v2.Ugel_id as ugel,"" as codlocal, v2.codModular as codmodular   from `edu_padronweb` as `v1`
-                inner join `edu_institucioneducativa` as `v2` on `v2`.`id` = `v1`.`institucioneducativa_id` 
-                where `v1`.`importacion_id` = ' . $importacion_id . ' ) as tt 
+                inner join `edu_institucioneducativa` as `v2` on `v2`.`id` = `v1`.`institucioneducativa_id`
+                where `v1`.`importacion_id` = ' . $importacion_id . ' ) as tt
                 group  by ugel
-            ) as td 
+            ) as td
             group by ugel_id
             ) as v1'))
             ->join('edu_ugel as v2', 'v2.id', '=', 'v1.ugel_id')
@@ -692,9 +702,9 @@ class PadronWebRepositorio
             ->where('v3.tipo', 'EBR')
             ->groupBy('name')
             ->select(
-                DB::raw('case 
-                when `v3`.`id`=2 || v3.id=1 || v3.id=14 then "Inicial" 
-                else v3.nombre 
+                DB::raw('case
+                when `v3`.`id`=2 || v3.id=1 || v3.id=14 then "Inicial"
+                else v3.nombre
                 end as `name`'),
                 DB::raw('cast(SUM(v1.total_alumno) as SIGNED) as y'),
                 DB::raw('FORMAT(cast(SUM(v1.total_alumno)  as SIGNED),0) as conteo'),
@@ -715,9 +725,9 @@ class PadronWebRepositorio
             ->where('v3.tipo', 'EBR')
             ->groupBy('name')
             ->select(
-                DB::raw('case 
-                when `v3`.`id`=2 || v3.id=1 || v3.id=14 then "Inicial" 
-                else v3.nombre 
+                DB::raw('case
+                when `v3`.`id`=2 || v3.id=1 || v3.id=14 then "Inicial"
+                else v3.nombre
                 end as `name`'),
                 DB::raw('cast(SUM(v1.total_docente) as SIGNED) as y'),
                 DB::raw('FORMAT(cast(SUM(v1.total_docente)  as SIGNED),0) as conteo'),
@@ -739,8 +749,8 @@ class PadronWebRepositorio
             ->groupBy('name')
             ->select(
                 DB::raw('case
-                            when `v7`.`id`=1||v7.id=2 then "Publico" 
-                            else v7.nombre 
+                            when `v7`.`id`=1||v7.id=2 then "Publico"
+                            else v7.nombre
                         end as `name`'),
                 DB::raw('cast(SUM(v1.total_alumno) as SIGNED) as y'),
                 DB::raw('FORMAT(cast(SUM(v1.total_alumno)  as SIGNED),0) as conteo'),
@@ -761,8 +771,8 @@ class PadronWebRepositorio
             ->groupBy('name')
             ->select(
                 DB::raw('case
-                            when `v7`.`id`=1||v7.id=2 then "Público" 
-                            else v7.nombre 
+                            when `v7`.`id`=1||v7.id=2 then "Público"
+                            else v7.nombre
                         end as `name`'),
                 DB::raw('cast(SUM(v1.total_docente) as SIGNED) as y'),
                 DB::raw('FORMAT(cast(SUM(v1.total_docente)  as SIGNED),0) as conteo'),
@@ -775,20 +785,16 @@ class PadronWebRepositorio
     }
 
 
-    public static function listar_totalServicosLocalesSecciones()
+    public static function listar_totalServicosLocalesSecciones($importacion)
     {
-        $fechaMax = DB::table('edu_padronweb as v1')
-            ->join('par_importacion as v3', 'v3.id', '=', 'v1.importacion_id')
-            ->select(DB::raw('max(v3.fechaActualizacion) as fecha'))
-            ->where('v3.estado', 'PR')
-            ->get()->first()->fecha;
+        $ids = $importacion->first()->id;
         $tabla = "
-        select 
+        select
             v3.tipo,
             v3.nombre nivel,
-            v2.codLocal locales,    
-            sum(IF(v5.nombre!='Privada',1,0)) publico_locales,
-            sum(IF(v5.nombre='Privada',1,0)) privado_locales,
+            v2.codLocal locales,
+            sum(IF(v5.nombre!='Privada' and v2.codLocal,1,0)) publico_locales,
+            sum(IF(v5.nombre='Privada' and v2.codLocal,1,0)) privado_locales,
             count(v1.id) servicios,
             sum(IF(v5.nombre!='Privada',1,0)) publico_servicios,
             sum(IF(v5.nombre='Privada',1,0)) privado_servicios,
@@ -796,14 +802,14 @@ class PadronWebRepositorio
             sum(IF(v5.nombre!='Privada',v1.total_seccion,0)) publico_secciones ,
             sum(IF(v5.nombre='Privada',v1.total_seccion,0)) privado_secciones
         from edu_padronweb v1
-        inner join edu_institucioneducativa v2 on v2.id=v1.institucioneducativa_id 
-        inner join edu_nivelmodalidad v3 on v3.id=v2.NivelModalidad_id 
+        inner join edu_institucioneducativa v2 on v2.id=v1.institucioneducativa_id
+        inner join edu_nivelmodalidad v3 on v3.id=v2.NivelModalidad_id
         inner join edu_tipogestion as v4 on v4.id=v2.TipoGestion_id
         inner join edu_tipogestion as v5 on v5.id=v4.dependencia
         inner join par_importacion as v6 on v6.id=v1.importacion_id
-        where v6.estado='PR' and v6.fechaActualizacion='$fechaMax'
+        where v6.estado='PR' and v6.id=$ids and v1.estadoinsedu_id=3
         group by v3.tipo, v3.nombre ,v2.codLocal";
-        if ($fechaMax) {
+        if ($importacion->count() > 0) {
             $foot = DB::table(DB::raw("(" . $tabla . ") as xx"))
                 ->select(
                     DB::raw("SUM(publico_locales)+SUM(privado_locales) ttlc"),
@@ -851,8 +857,34 @@ class PadronWebRepositorio
                 ->get();
 
 
-            return ['head' => $head, 'body' => $body, 'foot' => $foot, 'fecha' => date('d/m/Y', strtotime($fechaMax))];
+            return ['head' => $head, 'body' => $body, 'foot' => $foot, 'fecha' => date('d/m/Y', strtotime($importacion->first()->fecha))];
         }
         return [];
+    }
+
+    public static function buscariiee($codigo_modular)
+    {
+        $query = DB::table('edu_padronweb as v1')
+            ->join('edu_institucioneducativa as v2', 'v2.id', '=', 'v1.institucioneducativa_id')
+            ->join('par_centropoblado as v3', 'v3.id', '=', 'v2.centropoblado_id')
+            ->join('par_ubigeo as v4', 'v4.id', '=', 'v3.ubigeo_id')
+            ->join('par_ubigeo as v5', 'v5.id', '=', 'v4.dependencia')
+            ->join('edu_nivelmodalidad as v6', 'v6.id', '=', 'v2.nivelmodalidad_id')
+            ->take(1)
+            ->where('v2.codModular',$codigo_modular)
+            ->select(
+                'v2.codModular as codigo_modular',
+                'v5.nombre as provincia',
+                'v4.nombre as distrito',
+                'v3.nombre as centro_poblado',
+                'v2.codLocal as codigo_local',
+                'v2.nombreInstEduc as iiee',
+                'v6.codigo as codigo_nivel',
+                'v6.nombre as nivel_modalidad',
+                'v2.id as idiiee',
+                'v2.es_eib as estado',
+            )
+            ->get();
+        return $query;
     }
 }

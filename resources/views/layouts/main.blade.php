@@ -13,13 +13,15 @@
     <link rel="shortcut icon" href="{{ asset('/') }}public/assets/images/favicon.ico">
 
     <!-- Plugins css-->
-    <link href="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet"
+        type="text/css" />
 
     <!-- App css -->
     <link href="{{ asset('/') }}public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"
         id="bootstrap-stylesheet" />
     <link href="{{ asset('/') }}public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/') }}public/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet" />
+    <link href="{{ asset('/') }}public/assets/css/app.min.css" rel="stylesheet" type="text/css"
+        id="app-stylesheet" />
 
     {{-- {{assets('/')}} --}}
     <!-- estilos personalizados XD-->
@@ -40,33 +42,57 @@
             <div class="content-page">
                 <div class="content">
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                @if ($titlePage != '')
-                                    <div class="page-title-box">
-                                        <h4 class="page-title">{{ $titlePage }}</h4>
-                                        <div class="page-title-right">
-                                            <ol class="breadcrumb p-0 m-0">
-                                                @isset($breadcrumb)
-                                                    @foreach ($breadcrumb as $key => $item)
-                                                        @if ($key == count($breadcrumb) - 1)
-                                                            <li class="breadcrumb-item">{{ $item['titulo'] }}</li>
-                                                        @else
-                                                            <li class="breadcrumb-item"><a
-                                                                    href="{{ $item['url'] }}">{{ $item['titulo'] }}</a></li>
-                                                        @endif
-                                                    @endforeach
-                                                @endisset
-                                            </ol>
+                        @if (session('sistema_id') != 5)
+                            <div class="row">
+                                <div class="col-12">
+                                    @if ($titlePage != '')
+                                        <div class="page-title-box">
+                                            <h4 class="page-title">{{ $titlePage }}</h4>
+                                            <div class="page-title-right">
+                                                <ol class="breadcrumb p-0 m-0">
+                                                    @isset($breadcrumb)
+                                                        @foreach ($breadcrumb as $key => $item)
+                                                            @if ($key == count($breadcrumb) - 1)
+                                                                <li class="breadcrumb-item">{{ $item['titulo'] }}</li>
+                                                            @else
+                                                                <li class="breadcrumb-item"><a
+                                                                        href="{{ $item['url'] }}">{{ $item['titulo'] }}</a>
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    @endisset
+                                                </ol>
+                                            </div>
+                                            <div class="clearfix"></div>
                                         </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                @else
-                                    <br>
-                                @endif
+                                    @else
+                                        <br>
+                                    @endif
 
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="row">
+                                <div class="col-12">
+                                    @if ($titlePage != '')
+                                        <div class="page-title-box">
+                                            <h4 class="page-title">Ejecución Presupuestal De La Región Ucayali</h4>
+                                            <div class="page-title-right">
+                                                <ol class="breadcrumb p-0 m-0">
+                                                    @if (isset($impI))
+                                                        Actualizado al 23 Setiembre 2022{{-- date('d/m/Y',strtotime($impG->fechaActualizacion)) --}}
+                                                    @endif
+                                                </ol>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    @else
+                                        <br>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+
 
                         @yield('content')
                     </div>
@@ -121,15 +147,16 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <label>DNI<span class="required">*</span></label>
-                                                        <input id="dnip" name="dnip" class="form-control" type="text"
-                                                            maxlength="8"
+                                                        <input id="dnip" name="dnip" class="form-control"
+                                                            type="text" maxlength="8"
                                                             onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;">
                                                         <span class="help-block"></span>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label>Nombres<span class="required">*</span></label>
                                                         <input id="nombrep" name="nombrep" class="form-control"
-                                                            type="text" onkeyup="this.value=this.value.toUpperCase()">
+                                                            type="text"
+                                                            onkeyup="this.value=this.value.toUpperCase()">
                                                         <span class="help-block"></span>
                                                     </div>
                                                 </div>
@@ -140,7 +167,8 @@
                                                     <div class="col-md-6">
                                                         <label>Apellidos<span class="required">*</span></label>
                                                         <input id="apellidosp" name="apellidosp" class="form-control"
-                                                            type="text" onkeyup="this.value=this.value.toUpperCase()">
+                                                            type="text"
+                                                            onkeyup="this.value=this.value.toUpperCase()">
                                                         <span class="help-block"></span>
                                                     </div>
                                                     <div class="col-md-6">
@@ -233,6 +261,7 @@
 
 
 
+    {{-- <script src="{{ asset('/') }}public/assets/jquery-ui/external/jquery/jquery.js"></script> --}}
     <!-- Vendor js -->
     <script src="{{ asset('/') }}public/assets/js/vendor.min.js"></script>
 
@@ -241,10 +270,10 @@
     <script src="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.js"></script>
 
     <!-- Chat app -->
-    <script src="{{ asset('/') }}public/assets/js/pages/jquery.chat.js"></script>
+    {{-- <script src="{{ asset('/') }}public/assets/js/pages/jquery.chat.js"></script> --}}
 
     <!-- Todo app -->
-    <script src="{{ asset('/') }}public/assets/js/pages/jquery.todo.js"></script>
+    {{-- <script src="{{ asset('/') }}public/assets/js/pages/jquery.todo.js"></script> --}}
 
     <script src="{{ asset('/') }}public/assets/libs/toastr/toastr.min.js"></script>
     <script src="{{ asset('/') }}public/assets/js/bootbox.js"></script>
@@ -266,6 +295,9 @@
     <!-- App js -->
     <script src="{{ asset('/') }}public/assets/js/app.min.js"></script>
     <script>
+        var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263',
+            '#6AF9C4'
+        ];
         var table_language = {
             "lengthMenu": "Mostrar " +
                 `<select class="custom-select custom-select-sm form-control form-control-sm">

@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Educacion;
 
 use App\Http\Controllers\Controller;
+use App\Models\Educacion\InstitucionEducativa;
 use App\Repositories\Educacion\InstEducativaRepositorio;
+use App\Repositories\Educacion\InstitucionEducativaRepositorio;
 use App\Utilities\Utilitario;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InstEducativaController extends Controller
 {
@@ -94,5 +98,42 @@ class InstEducativaController extends Controller
             ["data" => json_encode($puntos), "categoria_nombres" => json_encode($categoria_nombres)],
             compact('titulo_y', 'titulo', 'subTitulo', 'nombreGraficoBarra')
         );
+    }
+
+    public function completariiee(Request $rq)
+    {
+        $term = $rq->get('term');
+        $query = InstitucionEducativa::where(DB::raw("concat(' ',codModular,nombreInstEduc)"), 'like', "%$term%")->orderBy('nombreInstEduc', 'asc')->get();
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                "label" => $value->codModular . ' | ' . $value->nombreInstEduc,
+                "id" => $value->id
+            ];
+        }
+        return $data; //response()->json('data');
+    }
+
+    public function completariiee2(Request $rq)
+    {
+        $term = $rq->get('term');
+        $query = InstitucionEducativaRepositorio::buscariiee2($term);
+        $data = [];
+        foreach ($query as $value) {
+            $data[] = [
+                "label" => $value->codigo_modular . ' | ' . $value->iiee,
+                "id" => $value->id,
+                "provincia" => $value->provincia,
+                "distrito" => $value->distrito,
+                "centro_poblado" => $value->centro_poblado,
+                "codigo_local" => $value->codigo_local,
+                "iiee" => $value->iiee,
+                "codigo_nivel" => $value->codigo_nivel,
+                "nivel_modalidad" => $value->nivel_modalidad,
+                "estado" => $value->estado,
+                "ugel" => $value->ugel,
+            ];
+        }
+        return $data; //response()->json('data');
     }
 }

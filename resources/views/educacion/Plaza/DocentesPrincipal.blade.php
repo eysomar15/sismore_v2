@@ -3,6 +3,27 @@
 @section('css')
     <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
         type="text/css" />
+
+    <style>
+        .tablex thead th {
+            padding: 2px;
+            text-align: center;
+        }
+
+        .tablex thead td {
+            padding: 2px;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+
+        .tablex tbody td,
+        .tablex tbody th,
+        .tablex tfoot td,
+        .tablex tfoot th {
+            padding: 5px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -18,17 +39,26 @@
                             {{-- <input type="hidden" id="importacion_id" name="importacion_id"> --}}
                             <div class="row">
                                 <div class="col-md-6">
-                                    <p class="titulo_Indicadores  mb-0">REPORTE DE PLAZAS DOCENTES</p>
+                                    <p class="titulo_Indicadores  mb-0">RESUMEN DE PLAZAS</p>
                                 </div>
                                 <div class="col-md-6 text-right">
                                     <div class="form-group row">
-                                        <div class="col-md-4"></div>
-                                        <label class="col-md-4 col-form-label">Año:</label>
-                                        <div class="col-md-4">
+                                        <label class="col-md-2 col-form-label">Año</label>
+                                        <div class="col-md-3">
                                             <select id="anio" name="anio" class="form-control"
                                                 onchange="cargardatos();">
                                                 @foreach ($anios as $item)
                                                     <option value="{{ $item->anio }}"> {{ $item->anio }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <label class="col-md-2 col-form-label">Ugel</label>
+                                        <div class="col-md-5">
+                                            <select id="ugel" name="ugel" class="form-control"
+                                                onchange="cargardatos()">
+                                                <option value="0">Todos</option>
+                                                @foreach ($ugels as $ugel)
+                                                    <option value="{{ $ugel['id'] }}">{{ $ugel['nombre'] }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -132,7 +162,7 @@
                     <div class="card-header border-primary bg-transparent p-0">
                         <h3 class="card-title text-primary "></h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div id="anal7"></div>
                     </div>
                 </div>
@@ -142,7 +172,7 @@
                     <div class="card-header border-primary bg-transparent p-0">
                         <h3 class="card-title text-primary "></h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div id="anal8"></div>
                     </div>
                 </div>
@@ -156,7 +186,31 @@
                     <div class="card-header border-primary bg-transparent p-0">
                         <h3 class="card-title text-primary "></h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
+                        <div id="anal9"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="anal10"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
+                    </div>
+                    <div class="card-body p-0">
                         <div id="anal1"></div>
                     </div>
                 </div>
@@ -166,7 +220,7 @@
                     <div class="card-header border-primary bg-transparent p-0">
                         <h3 class="card-title text-primary "></h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div id="anal2"></div>
                     </div>
                 </div>
@@ -180,7 +234,7 @@
                     <div class="card-header border-primary bg-transparent p-0">
                         <h3 class="card-title text-primary "></h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div id="anal3"></div>
                     </div>
                 </div>
@@ -190,7 +244,7 @@
                     <div class="card-header border-primary bg-transparent p-0">
                         <h3 class="card-title text-primary "></h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div id="anal4"></div>
                     </div>
                 </div>
@@ -204,7 +258,7 @@
                     <div class="card-header border-primary bg-transparent p-0">
                         <h3 class="card-title text-primary "></h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div id="anal5"></div>
                     </div>
                 </div>
@@ -214,7 +268,7 @@
                     <div class="card-header border-primary bg-transparent p-0">
                         <h3 class="card-title text-primary "></h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div id="anal6"></div>
                     </div>
                 </div>
@@ -226,15 +280,73 @@
         <div class="row">
             <div class="col-xl-12">
                 <div class="card card-border card-primary">
-                    <div class="card-header border-primary bg-transparent p-0">
-                        <h3 class="card-title text-primary ">TOTAL DE PLAZAS DE CONTRATADOS Y NOMBRADOS
+                    <div class="card-header border-primary bg-transparent pb-0 m-0">
+                        <h3 class="card-title ">TOTAL DE PLAZAS DE CONTRATADOS Y NOMBRADOS
                             {{-- SEGUN UGEL Y --}} NIVEL EDUCATIVO</h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista1">
                         </div>
+                        {{-- <p class="text-muted font-13 m-0 p-0 text-right">
+                            Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span
+                                id="fechaActualizacion"></span>
+                        </p> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent pb-0 m-0">
+                        <h3 class="card-title ">TOTAL DE PLAZAS SEGÚN TIPO DE TRABAJADOR Y POR UGEL</h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div class="table-responsive" id="vista2">
+                        </div>
+                        {{-- <p class="text-muted font-13 m-0 p-0 text-right">
+                            Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span
+                                id="fechaActualizacion"></span>
+                        </p> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent pb-0 m-0">
+                        <h3 class="card-title ">TOTAL DE PLAZAS SEGÚN UGEL Y SITUACION LABORAL</h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div class="table-responsive" id="vista3">
+                        </div>
+                        {{-- <p class="text-muted font-13 m-0 p-0 text-right">
+                            Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span
+                                id="fechaActualizacion"></span>
+                        </p> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent pb-0 m-0">
+                        <h3 class="card-title ">TOTAL DE PLAZAS SEGÚN UGEL Y SITUACION LABORAL</h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div class="table-responsive" id="vista4">
+                        </div>
                         <p class="text-muted font-13 m-0 p-0 text-right">
-                            Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span id="fechaActualizacion"></span>
+                            Fuente: Sistema de Administración y Control de Plazas – NEXUS, ultima actualizacion del <span
+                                id="fechaActualizacion"></span>
                         </p>
                     </div>
                 </div>
@@ -274,9 +386,10 @@
         var nombre_mes = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE",
             "NOVIEMBRE", "DICIEMBRE"
         ];
-        $(document).ready(function() {
+        $(document).ready(function() { //paleta_colores
             Highcharts.setOptions({
-                colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
+                //colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
+                colors: Highcharts.map(paleta_colores, function(color) {
                     return {
                         radialGradient: {
                             cx: 0.5,
@@ -321,7 +434,8 @@
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
                 success: function(data) {
-                    gSimpleColumn('anal1', data.info.v1, '', 'PLAZAS SEGUN UNIDAD DE GESTION EDUCATIVA<br>Fuente:NEXUS', '');
+                    gSimpleColumn('anal1', data.info.v1, '',
+                        'PLAZAS SEGUN UNIDAD DE GESTION EDUCATIVA<br>Fuente:NEXUS', '');
 
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -335,7 +449,8 @@
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
                 success: function(data) {
-                    gSimpleColumn('anal2', data.info.v2, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                    gSimpleColumn('anal2', data.info.v2, '',
+                        'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -347,7 +462,8 @@
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
                 success: function(data) {
-                    gSimpleColumn('anal3', data.info.v3, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                    gSimpleColumn('anal3', data.info.v3, '',
+                        'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -360,7 +476,8 @@
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
                 success: function(data) {
-                    gSimpleColumn('anal4', data.info.v4, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                    gSimpleColumn('anal4', data.info.v4, '',
+                        'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -373,7 +490,8 @@
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
                 success: function(data) {
-                    gSimpleColumn('anal5', data.info.v5, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                    gSimpleColumn('anal5', data.info.v5, '',
+                        'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -386,7 +504,8 @@
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
                 success: function(data) {
-                    gSimpleColumn('anal6', data.info.v6, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                    gSimpleColumn('anal6', data.info.v6, '',
+                        'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -399,7 +518,8 @@
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
                 success: function(data) {
-                    gSimpleColumn('anal7', data.info.v7, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                    gSimpleColumn('anal7', data.info.v7, '',
+                        'PLAZAS DE EDUCACIÓN POR AÑOS<br>Fuente:NEXUS', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -412,7 +532,36 @@
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
                 success: function(data) {
-                    gSimpleColumn('anal8', data.info.v8, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
+                    gSimpleColumn('anal8', data.info.v8, '',
+                        'PLAZAS DE EDUCACIÓN POR MESES<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra9') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal9', data.info.v9, '',
+                        'PLAZAS DE PERSONAL DE EDUCACIÓN POR AÑOS<br>Fuente:NEXUS', '');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.gra10') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    gSimpleColumn('anal10', data.info.v10, '',
+                        'PLAZAS DE PERSONAL DE EDUCACIÓN POR MESES<br>Fuente:NEXUS', '');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -425,7 +574,50 @@
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
                 success: function(data) {
+                    $('#fechaActualizacion').html(data.info.fecha);
                     $('#vista1').html(data.info.DT.table);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.dt2') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    $('#fechaActualizacion').html(data.info.fecha);
+                    $('#vista2').html(data.info.DT.table);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+
+
+            $.ajax({
+                url: "{{ route('nexus.contratacion.dt3') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    $('#fechaActualizacion').html(data.info.fecha);
+                    $('#vista3').html(data.info.DT.table);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+            $.ajax({
+                url: "{{ route('nexus.contratacion.dt4') }}",
+                type: 'POST',
+                data: $('#form_parametros').serialize(),
+                dataType: 'JSON',
+                success: function(data) {
+                    $('#fechaActualizacion').html(data.info.fecha);
+                    $('#vista4').html(data.info.DT.table);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -481,7 +673,7 @@
             return d + "/" + m + "/" + y
         }
 
-        function cargarVista() {
+        /* function cargarVista() {
             $.ajax({
                 url: "{{ url('/') }}/Plaza/Docentes/" + $('#importacion_id').val() + "/" + $('#anio').val(),
                 type: 'get',
@@ -503,16 +695,16 @@
                     gSimpleColumn('anal8', data.info.v8, '', 'PLAZAS DOCENTE ' + $('#anio').val() + ' POR MES',
                         '');
                     $('#vista1').html(data.info.DT.table);
-                    /* $('#tabla1').DataTable({
+                     $('#tabla1').DataTable({
                         "order": false,
                         "language": table_language
-                    }); */
+                    });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 },
             });
-        }
+        } */
 
         function gSimpleColumn(div, datax, titulo, subtitulo, tituloserie) {
             Highcharts.chart(div, {

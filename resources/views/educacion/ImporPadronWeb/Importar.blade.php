@@ -113,7 +113,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap">
+                                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="font-size: 12px">
                                         <thead class="text-primary">
                                             <tr>
                                                 <th>N°</th>
@@ -150,6 +150,15 @@
             $('.upload_file').on('submit', upload);
 
             table_principal = $('#datatable').DataTable({
+                responsive: true,
+                autoWidth: false,
+                order: true,
+                language: table_language,
+                ajax: "{{ route('ImporPadronWeb.listar.importados') }}",
+                type: "POST",
+            });
+
+            /* table_principal = $('#datatable').DataTable({
                 "ajax": "{{ route('ImporPadronWeb.listar.importados') }}", //ece.listar.importados
                 "columns": [{
                         data: 'fechaActualizacion'
@@ -188,7 +197,7 @@
                 }).nodes().each(function(cell, i) {
                     cell.innerHTML = i + 1;
                 });
-            }).draw();
+            }).draw(); */
         });
 
         function upload(e) {

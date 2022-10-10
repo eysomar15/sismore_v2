@@ -1,5 +1,5 @@
 {{-- <div class="table-responsive"> --}}
-    <table id="tabla1" class="table table-striped table-bordered" style="font-size:12px;" width="100%">
+    <table id="tabla1" class="table table-striped table-bordered mb-0 tablex" style="font-size:11px;" width="100%">
         <thead>
             <tr class="bg-primary text-white text-center">
                 <th>TIPO TRABAJADOR</th>
@@ -10,18 +10,18 @@
                 <th colspan="1">TOTAL</th>
             </tr>
             <tr class="bg-primary text-white text-center">
-                <th>UGEL</th>
-                <th><span title="CONTRATADO">C</span></th>
-                <th><span title="NOMBRADO">N</span></th>
+                <th>NIVEL_MODALIDAD</th>
+                <th><span title="CONTRATADO">CONTRATADO</span></th>
+                <th><span title="NOMBRADO">NOMBRADO</span></th>
                 <th>TOTAL</th>
-                <th><span title="CONTRATADO">C</span></th>
-                <th><span title="NOMBRADO">N</span></th>
+                <th><span title="CONTRATADO">CONTRATADO</span></th>
+                <th><span title="NOMBRADO">NOMBRADO</span></th>
                 <th>TOTAL</th>
-                <th><span title="CONTRATADO">C</span></th>
-                <th><span title="NOMBRADO">N</span></th>
+                <th><span title="CONTRATADO">CONTRATADO</span></th>
+                <th><span title="NOMBRADO">NOMBRADO</span></th>
                 <th>TOTAL</th>
-                <th><span title="CONTRATADO">C</span></th>
-                <th><span title="NOMBRADO">N</span></th>
+                <th><span title="CONTRATADO">CONTRATADO</span></th>
+                <th><span title="NOMBRADO">NOMBRADO</span></th>
                 <th>TOTAL</th>
                 <th>TOTAL</th>
             </tr>
@@ -50,24 +50,24 @@
                             <td class="text-left">{{ $body->nivel }}</td>
                             <td>{{ valor($body->ACONTRATADO) }}</td>
                             <td>{{ valor($body->ANOMBRADO) }}</td>
-                            <td>{{ valor($body->ADMINISTRATIVO) }}</td>
+                            <th>{{ valor($body->ADMINISTRATIVO) }}</th>
                             <td>{{ valor($body->DCONTRATADO) }}</td>
                             <td>{{ valor($body->DNOMBRADO) }}</td>
-                            <td>{{ valor($body->DOCENTE) }}</td>
+                            <th>{{ valor($body->DOCENTE) }}</th>
                             <td>{{ valor($body->CCONTRATADO) }}</td>
                             <td>{{ valor($body->CNOMBRADO) }}</td>
-                            <td>{{ valor($body->CAS) }}</td>
+                            <th>{{ valor($body->CAS) }}</th>
                             <td>{{ valor($body->PCONTRATADO) }}</td>
                             <td>{{ valor($body->PNOMBRADO) }}</td>
-                            <td>{{ valor($body->PEC) }}</td>
-                            <td>{{ valor($body->TOTAL) }}</td>
+                            <th>{{ valor($body->PEC) }}</th>
+                            <th>{{ valor($body->TOTAL) }}</th>
                         </tr>
                     {{-- @endif --}}
                 @endforeach
             {{-- @endforeach --}}
         </tbody>
         <tfoot>
-            <tr class="text-center">
+            <tr class="text-center bg-primary text-white">
                 <th width="200" class="text-left">TOTAL</th>
                 <th>{{ number_format($foot->ACONTRATADO, 0) }}</th>
                 <th>{{ number_format($foot->ANOMBRADO, 0) }}</th>

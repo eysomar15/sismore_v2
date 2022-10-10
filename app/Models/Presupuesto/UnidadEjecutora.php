@@ -12,9 +12,10 @@ class UnidadEjecutora extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'codigo',
+        'codigo_ue',
         'tipogobierno',
         'unidad_ejecutora',
+        'nombre_ejecutora',
         'abreviatura',
     ];
 }
