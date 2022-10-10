@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Educacion\InstitucionEducativa;
 use App\Models\Educacion\PadronEIB;
+use App\Models\Parametro\Lengua;
 use App\Repositories\Educacion\InstitucionEducativaRepositorio;
 use App\Repositories\Educacion\PadronEIBRepositorio;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +21,8 @@ class PadronEIBController extends Controller
     public function principal()
     {
         $mensaje = "";
-        return view('educacion.PadronEIB.Principal', compact('mensaje'));
+        $lenguas = Lengua::where('estado', 0)->get();
+        return view('educacion.PadronEIB.Principal', compact('mensaje','lenguas'));
     }
 
     public function ListarDTImportFuenteTodos(Request $rq)
@@ -42,7 +44,7 @@ class PadronEIBController extends Controller
                 $value->institucion_educativa,
                 $value->nivel_modalidad,
                 $value->forma_atencion,
-                $value->lengua_uno,
+                $value->lengua1,
                 $btn1  . $btn4 . $btn3,
             );
         }
@@ -54,7 +56,7 @@ class PadronEIBController extends Controller
         );
         return response()->json($result);
     }
-/*
+    /*
     private function _validate_ajaxopt1($rq)
     {
         $data = array();
@@ -160,10 +162,10 @@ class PadronEIBController extends Controller
             'anio_id' => 8,
             'institucioneducativa_id' => $rq->iiee_id,
             'forma_atencion' => $rq->formaatencion,
-            'cod_lengua' => $rq->codigolengua,
-            'lengua_uno' => $rq->lenguauno,
-            'lengua_dos' => $rq->lenguados,
-            'lengua_3' => $rq->lengua3,
+            //'cod_lengua' => $rq->codigolengua,
+            'lengua1_id' => $rq->lengua1,
+            'lengua2_id' => $rq->lengua2,
+            'lengua3_id' => $rq->lengua3,
             'ingreso' => 1,
         ];
         $eib = PadronEIB::Create($data);
@@ -181,10 +183,10 @@ class PadronEIBController extends Controller
         $eib = PadronEIB::find($request->id);
         $eib->institucioneducativa_id = $request->iiee_id;
         $eib->forma_atencion = $request->formaatencion;
-        $eib->cod_lengua = $request->codigolengua;
-        $eib->lengua_uno = $request->lenguauno;
-        $eib->lengua_dos = $request->lenguados;
-        $eib->lengua_3 = $request->lengua3;
+        //$eib->cod_lengua = $request->codigolengua;
+        $eib->lengua1_id = $request->lengua1;
+        $eib->lengua2_id = $request->lengua2;
+        $eib->lengua3_id = $request->lengua3;
         $eib->save();
 
         return response()->json(array('status' => true));
@@ -205,6 +207,7 @@ class PadronEIBController extends Controller
             $eib->ugel = $iiee->first()->ugel;
             $eib->label = $iiee->first()->codigo_modular . ' | ' . $iiee->first()->iiee;
         }
+        //ib->lengua1=Lengua::find($eib->lengua1_id)->id;
         return response()->json(compact('eib'));
     }
     public function ajax_delete($id)

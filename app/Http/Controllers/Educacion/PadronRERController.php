@@ -60,10 +60,11 @@ class PadronRERController extends Controller
             $data[] = array(
                 $key + 1,
                 $value->ugel,
+                $value->rer,
                 $value->modulariiee,
                 $value->iiee,
                 $value->nivel,
-                $value->rer,
+
                 $value->tipo_transporte,
                 $btn1 . $btn4 . $btn3,
             );

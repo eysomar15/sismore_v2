@@ -70,10 +70,10 @@
                                         <tr class="bg-primary text-white">
                                             <th>Nº</th>
                                             <th>Ugel</th>
+                                            <th>Red Educativa Rural</th>
                                             <th>Cod.Modular</th>
                                             <th>Institución Educativa</th>
                                             <th>Nivel</th>
-                                            <th>Red Educativa Rural</th>
                                             <th>Tipo Transporte</th>
                                             <th>Aciones</th>
                                         </tr>

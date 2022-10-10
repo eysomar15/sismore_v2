@@ -22,9 +22,9 @@ class PadronEIB extends Model
         'institucioneducativa_id',
         'forma_atencion',
         'cod_lengua',
-        'lengua_uno',
-        'lengua_dos',
-        'lengua_3',
+        'lengua1_id',
+        'lengua2_id',
+        'lengua3_id',
         'ingreso',
     ];
 }

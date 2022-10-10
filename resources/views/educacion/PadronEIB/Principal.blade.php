@@ -188,7 +188,7 @@
                                 </div>
                             </div> --}}
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Codigo Local <span class="required">*</span></label>
@@ -197,26 +197,30 @@
                                         <span class="help-block"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Forma de Atencion<span class="required">*</span></label>
-                                        <input id="formaatencion" name="formaatencion" class="form-control"
-                                            type="text" onkeyup="this.value=this.value.toUpperCase()" value="">
-                                        <span class="help-block"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6">
                                         <label>Codigo Lengua<span class="required">*</span></label>
                                         <input id="codigolengua" name="codigolengua" class="form-control" type="text"
                                             onkeyup="this.value=this.value.toUpperCase()" value="">
                                         <span class="help-block"></span>
                                     </div>
+                                </div>
+                            </div> --}}
+
+                            <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-6">
-                                        <label>Lengua uno<span class="required">*</span></label>
-                                        <input id="lenguauno" name="lenguauno" class="form-control" type="text"
-                                            onkeyup="this.value=this.value.toUpperCase()" value="">
+                                        <label>Forma de Atencion<span class="required">*</span></label>
+                                        <input id="formaatencion" name="formaatencion" class="form-control"
+                                            type="text" onkeyup="this.value=this.value.toUpperCase()" value="">
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Lengua 1<span class="required">*</span></label>
+                                        <select id="lengua1" name="lengua1" class="form-control">
+                                            <option value="">SELECCIONAR</option>
+                                            @foreach ($lenguas as $item)
+                                                <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                            @endforeach
+                                        </select>
                                         <span class="help-block"></span>
                                     </div>
                                 </div>
@@ -225,15 +229,23 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Lengua dos<span class="required">*</span></label>
-                                        <input id="lenguados" name="lenguados" class="form-control" type="text"
-                                            onkeyup="this.value=this.value.toUpperCase()" value="">
+                                        <label>Lengua 2<span class="required">*</span></label>
+                                        <select id="lengua2" name="lengua2" class="form-control">
+                                            <option value="">SELECCIONAR</option>
+                                            @foreach ($lenguas as $item)
+                                                <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                            @endforeach
+                                        </select>
                                         <span class="help-block"></span>
                                     </div>
                                     <div class="col-md-6">
                                         <label>Lengua 3<span class="required">*</span></label>
-                                        <input id="lengua3" name="lengua3" class="form-control" type="text"
-                                            onkeyup="this.value=this.value.toUpperCase()" value="">
+                                        <select id="lengua3" name="lengua3" class="form-control">
+                                            <option value="">SELECCIONAR</option>
+                                            @foreach ($lenguas as $item)
+                                                <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                            @endforeach
+                                        </select>
                                         <span class="help-block"></span>
                                     </div>
                                 </div>
@@ -337,7 +349,7 @@
                                 </div>
                             </div> --}}
 
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Codigo Local <span class="required">*</span></label>
@@ -346,26 +358,31 @@
                                         <span class="help-block"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Forma de Atencion<span class="required">*</span></label>
-                                        <input id="vformaatencion" name="vformaatencion" class="form-control"
-                                            type="text" value="" readonly>
-                                        <span class="help-block"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-6">
                                         <label>Codigo Lengua<span class="required">*</span></label>
                                         <input id="vcodigolengua" name="vcodigolengua" class="form-control"
                                             type="text" value="" readonly>
                                         <span class="help-block"></span>
                                     </div>
+                                </div>
+                            </div> --}}
+
+                            <div class="form-group">
+                                <div class="row">
+
                                     <div class="col-md-6">
-                                        <label>Lengua uno<span class="required">*</span></label>
-                                        <input id="vlenguauno" name="vlenguauno" class="form-control" type="text"
-                                            value="" readonly>
+                                        <label>Forma de Atencion<span class="required">*</span></label>
+                                        <input id="vformaatencion" name="vformaatencion" class="form-control"
+                                            type="text" value="" readonly>
+                                        <span class="help-block"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Lengua 1<span class="required">*</span></label>
+                                        <select id="vlengua1" name="vlengua1" class="form-control" disabled>
+                                            <option value="0">SELECCIONAR</option>
+                                            @foreach ($lenguas as $item)
+                                                <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                            @endforeach
+                                        </select>
                                         <span class="help-block"></span>
                                     </div>
                                 </div>
@@ -374,15 +391,23 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label>Lengua dos<span class="required">*</span></label>
-                                        <input id="vlenguados" name="vlenguados" class="form-control" type="text"
-                                            value="" readonly>
+                                        <label>Lengua 2<span class="required">*</span></label>
+                                        <select id="vlengua2" name="vlengua2" class="form-control" disabled>
+                                            <option value="0">SELECCIONAR</option>
+                                            @foreach ($lenguas as $item)
+                                                <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                            @endforeach
+                                        </select>
                                         <span class="help-block"></span>
                                     </div>
                                     <div class="col-md-6">
                                         <label>Lengua 3<span class="required">*</span></label>
-                                        <input id="vlengua3" name="vlengua3" class="form-control" type="text"
-                                            value="" readonly>
+                                        <select id="vlengua3" name="vlengua3" class="form-control" disabled>
+                                            <option value="0">SELECCIONAR</option>
+                                            @foreach ($lenguas as $item)
+                                                <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                            @endforeach
+                                        </select>
                                         <span class="help-block"></span>
                                     </div>
                                 </div>
@@ -522,7 +547,7 @@
                             //columns: [0, ':visible'],
                             //columns: ':visible',
                         },
-                        orientation:'landscape',
+                        orientation: 'landscape',
                         /* customize: function(win) {
                             $(win.document.body)
                                 .css('font-size', '10pt')
@@ -627,9 +652,9 @@
                     $('[name="nivelmodalidad"]').val(data.eib.nivel_modalidad);
                     $('[name="formaatencion"]').val(data.eib.forma_atencion);
                     $('[name="codigolengua"]').val(data.eib.cod_lengua);
-                    $('[name="lenguauno"]').val(data.eib.lengua_uno);
-                    $('[name="lenguados"]').val(data.eib.lengua_dos);
-                    $('[name="lengua3"]').val(data.eib.lengua_3);
+                    $('[name="lengua1"]').val(data.eib.lengua1_id);
+                    $('[name="lengua2"]').val(data.eib.lengua2_id);
+                    $('[name="lengua3"]').val(data.eib.lengua3_id);
                     $('#modal_form').modal('show');
                     $('.modal-title').text('Modificar Asignacion');
                 },
@@ -683,9 +708,9 @@
                     $('[name="vnivelmodalidad"]').val(data.eib.nivel_modalidad);
                     $('[name="vformaatencion"]').val(data.eib.forma_atencion);
                     $('[name="vcodigolengua"]').val(data.eib.cod_lengua);
-                    $('[name="vlenguauno"]').val(data.eib.lengua_uno);
-                    $('[name="vlenguados"]').val(data.eib.lengua_dos);
-                    $('[name="vlengua3"]').val(data.eib.lengua_3);
+                    $('[name="vlengua1"]').val(data.eib.lengua1_id);
+                    $('[name="vlengua2"]').val(data.eib.lengua2_id);
+                    $('[name="vlengua3"]').val(data.eib.lengua3_id);
                     $('#modal_ver').modal('show');
                     $('.modal-title').text('Vista General');
                 },

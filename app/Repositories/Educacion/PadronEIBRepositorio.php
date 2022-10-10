@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Educacion;
 
+use App\Models\Educacion\PadronEIB;
 use Illuminate\Support\Facades\DB;
 
 class PadronEIBRepositorio
@@ -9,7 +10,7 @@ class PadronEIBRepositorio
 
     public static function listaImportada($id)
     {
-        $query = DB::table(DB::raw("(
+        /* $query = DB::table(DB::raw("(
             select
                 v1.id,
                 v2.anio,
@@ -40,7 +41,41 @@ class PadronEIBRepositorio
             join par_ubigeo v8 on v8.id=v7.dependencia
             join edu_nivelmodalidad v9 on v9.id=v3.NivelModalidad_id
             where v1.importacion_id=$id order by v1.id desc
-        ) as tb"))->get();
+        ) as tb"))->get(); */
+        $query = PadronEIB::select(
+            'edu_padron_eib.id',
+            'v2.anio',
+            'v5.nombre as dre',
+            'v4.nombre as ugel',
+            //DB::raw("UCAYALI as departamento"),
+            'v8.nombre as provincia',
+            'v7.nombre as distrito',
+            'v6.nombre as centro_poblado',
+            'v3.codModular as cod_mod',
+            'v3.codLocal as cod_local',
+            'v3.nombreInstEduc as institucion_educativa',
+            'v9.codigo as cod_nivelmod',
+            'v9.nombre as nivel_modalidad',
+            'edu_padron_eib.forma_atencion',
+            'edu_padron_eib.cod_lengua',
+            'va.nombre as lengua1',
+            'vb.nombre as lengua2',
+            'vc.nombre as lengua3',
+        )
+            ->join('par_anio as v2', 'v2.id', '=', 'edu_padron_eib.anio_id')
+            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'edu_padron_eib.institucioneducativa_id')
+            ->join('edu_ugel as v4', 'v4.id', '=', 'v3.Ugel_id')
+            ->join('edu_ugel as v5', 'v5.id', '=', 'v4.dependencia')
+            ->join('par_centropoblado as v6', 'v6.id', '=', 'v3.CentroPoblado_id')
+            ->join('par_ubigeo as v7', 'v7.id', '=', 'v6.Ubigeo_id')
+            ->join('par_ubigeo as v8', 'v8.id', '=', 'v7.dependencia')
+            ->join('edu_nivelmodalidad as v9', 'v9.id', '=', 'v3.NivelModalidad_id')
+            ->join('par_lengua as va', 'va.id', '=', 'edu_padron_eib.lengua1_id','left')
+            ->join('par_lengua as vb', 'vb.id', '=', 'edu_padron_eib.lengua2_id','left')
+            ->join('par_lengua as vc', 'vc.id', '=', 'edu_padron_eib.lengua3_id','left')
+            ->where('edu_padron_eib.importacion_id', $id)
+            ->orderBy('edu_padron_eib.id','desc')
+            ->get();
         return $query;
     }
 }

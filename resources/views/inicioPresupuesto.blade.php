@@ -234,8 +234,8 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body">
-                            <div id="anal1" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                        <div class="card-body p-0">
+                            <div id="anal1"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -245,8 +245,8 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body">
-                            <div id="anal4" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                        <div class="card-body p-0">
+                            <div id="anal4"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -260,8 +260,8 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body">
-                            <div id="anal2" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                        <div class="card-body p-0">
+                            <div id="anal2"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -270,8 +270,8 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body">
-                            <div id="anal5" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                        <div class="card-body p-0">
+                            <div id="anal5"></div>{{-- style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -284,8 +284,8 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body">
-                            <div id="anal3" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                        <div class="card-body p-0">
+                            <div id="anal3"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -294,8 +294,8 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body">
-                            <div id="anal6" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                        <div class="card-body p-0">
+                            <div id="anal6"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -308,8 +308,8 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body p-0 m-0">{{-- style="min-width:400px;height:300px;margin:0 auto;" --}}
-                            <div id="anal7"></div>
+                        <div class="card-body p-0">
+                            <div id="anal7"></div>{{-- style="min-width:400px;height:300px;margin:0 auto;" --}}
                             {{-- <figure class="highcharts-figure">
                                 <div id="anal7"></div>
                             </figure> --}}
@@ -1142,7 +1142,13 @@
                  }, */
 
                 series: series,
-
+                legend: {
+                    align: 'center',//right//left//center
+                    verticalAlign: 'top',
+                    layout: 'vertical',
+                    /* x: 0,
+                    y: 100 */
+                },
                 /* responsive: {
                     rules: [{
                         condition: {
@@ -1150,13 +1156,13 @@
                         },
                         chartOptions: {
                             legend: {
-                                //layout: 'vertical', //horizontal
-                                //align: 'center', //center
-                                //verticalAlign: 'middle'//bottom
+                                layout: 'vertical', //horizontal
+                                align: 'right', //center//right//left
+                                verticalAlign: 'top'//bottom//middle
                             }
                         }
                     }]
-                } */
+                }, */
                 credits: false,
 
             });
