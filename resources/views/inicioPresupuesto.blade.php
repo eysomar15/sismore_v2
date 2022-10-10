@@ -931,6 +931,18 @@
                     //name: 'Share',
                     data: datos,
                 }],
+                legend: {
+                    //align: 'center', //right//left//center
+                    //verticalAlign: 'bottom', //top//middle//bottom
+                    //layout: 'horizontal', //horizontal//vertical//proximate
+                    itemStyle: {
+                        "color": "#333333",
+                        "cursor": "pointer",
+                        "fontSize": "10px",
+                        "fontWeight": "bold",
+                        "textOverflow": "ellipsis"
+                    },
+                },
                 credits: false,
             });
         }
@@ -1107,9 +1119,10 @@
                     } */
                 },
                 yAxis: {
-                    /* title: {
+                    title: {
+                        enabled: false,
                         text: 'Number of Employees'
-                    } */
+                    }
                     /* allowDecimals: false,
                     min: 0,
                     title: {
@@ -1123,15 +1136,61 @@
                     verticalAlign: 'middle'
                 },
 
-                /* plotOptions: {
-                    spline: {
+                plotOptions: {
+                    /* series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:,.0f}',
+                            //format: '{point.y:.1f}%',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                        },
+                    } */
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:,.0f}',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                        },
+                        /*  point: {
+                             cursor: 'pointer',
+                             events: {
+                                 click: function() {
+                                     //alert('Category: ' + this.category + ', value: ' + this.y);
+                                     alert(this.options);
+                                     //location.href = 'https://en.wikipedia.org/wiki/' +this.options.key;
+                                     //alert('hola ronald');
+                                 },
+                             },
+                         }, */
+
+
+                    }
+                    /* spline: {
                         marker: {
                             radius: 4,
                             lineColor: '#666666',
                             lineWidth: 1
                         }
-                    }
-                }, */
+                    } */
+                },
                 /*  plotOptions: {
                      series: {
                          label: {
@@ -1143,11 +1202,16 @@
 
                 series: series,
                 legend: {
-                    align: 'center',//right//left//center
-                    verticalAlign: 'top',
-                    layout: 'vertical',
-                    /* x: 0,
-                    y: 100 */
+                    align: 'center', //right//left//center
+                    verticalAlign: 'bottom', //top//middle//bottom
+                    layout: 'horizontal', //horizontal//vertical//proximate
+                    itemStyle: {
+                        "color": "#333333",
+                        "cursor": "pointer",
+                        "fontSize": "10px",
+                        "fontWeight": "bold",
+                        "textOverflow": "ellipsis"
+                    },
                 },
                 /* responsive: {
                     rules: [{

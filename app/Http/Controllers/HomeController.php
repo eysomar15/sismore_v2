@@ -169,11 +169,11 @@ class HomeController extends Controller
             ->groupBy('id', 'name')
             ->orderBy('v4.pos', 'asc')
             ->get();
-        foreach ($info as $key => $value) {
+        /* foreach ($info as $key => $value) {
             if ($value->name == 'GOBIERNO NACIONAL') $value->name = 'GOB. NACIONAL';
             if ($value->name == 'GOBIERNOS REGIONALES') $value->name = 'GOB. REGIONALES';
             if ($value->name == 'GOBIERNOS LOCALES') $value->name = 'GOB. LOCALES';
-        }
+        } */
         return response()->json(compact('info'));
     }
 
@@ -193,11 +193,11 @@ class HomeController extends Controller
             ->groupBy('id', 'name')
             ->orderBy('v4.pos', 'asc')
             ->get();
-        foreach ($info as $key => $value) {
+        /* foreach ($info as $key => $value) {
             if ($value->name == 'GOBIERNO NACIONAL') $value->name = 'GOB. NACIONAL';
             if ($value->name == 'GOBIERNOS REGIONALES') $value->name = 'GOB. REGIONALES';
             if ($value->name == 'GOBIERNOS LOCALES') $value->name = 'GOB. LOCALES';
-        }
+        } */
         return response()->json(compact('info'));
     }
 
@@ -215,11 +215,11 @@ class HomeController extends Controller
             ->groupBy('id', 'name')
             ->orderBy('v4.pos', 'asc')
             ->get();
-        foreach ($info as $key => $value) {
+        /* foreach ($info as $key => $value) {
             if ($value->name == 'GOBIERNO NACIONAL') $value->name = 'GOB. NACIONAL';
             if ($value->name == 'GOBIERNOS REGIONALES') $value->name = 'GOB. REGIONALES';
             if ($value->name == 'GOBIERNOS LOCALES') $value->name = 'GOB. LOCALES';
-        }
+        } */
         return response()->json(compact('info'));
     }
     public function presupuestografica4($importacion_id)
