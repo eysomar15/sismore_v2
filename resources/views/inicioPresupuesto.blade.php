@@ -240,7 +240,6 @@
                     </div>
                 </div>
                 <div class="col-xl-6">
-
                     <div class="card card-border card-primary">
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
@@ -325,8 +324,8 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body">
-                            <div id="anal8" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                        <div class="card-body p-0">
+                            <div id="anal8"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -339,8 +338,8 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body">
-                            <div id="anal9" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                        <div class="card-body p-0">
+                            <div id="anal9"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -401,11 +400,14 @@
                 url: "{{ url('/') }}/Home/Presupuesto/gra1/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     //console.log(data)
                     gPie('anal1', data.info,
                         '',
-                        'Distribución del Presupuesto  de la Región Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
+                        'Distribución del Presupuesto  de la Región Ucayali', /* <br><b class="fuentex">Fuente: SIAF-MEF</b> */
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
@@ -421,15 +423,18 @@
                 url: "{{ url('/') }}/Home/Presupuesto/gra2/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     //console.log(data)
                     gPie('anal2', data.info,
                         '',
-                        'Distribución del Presupuesto en Inversiones.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
+                        'Distribución del Presupuesto en Inversiones.',
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 2");
                     console.log(jqXHR);
                 },
             });
@@ -441,15 +446,18 @@
                 url: "{{ url('/') }}/Home/Presupuesto/gra3/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal3').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     //console.log(data)
                     gPie('anal3', data.info,
                         '',
-                        'Ingreso Presupuestal de la Region Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
+                        'Ingreso Presupuestal de la Region Ucayali',
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 3");
                     console.log(jqXHR);
                 },
             });
@@ -465,7 +473,7 @@
                     $('#anal7').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    console.log(data)
+                    //console.log(data)
                     /* gColumnDrilldown('anal7', data.base, data.base2,
                         '',
                         'Evolución Del Presupuesto Del Sector Público De La Región De Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
@@ -475,11 +483,11 @@
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Evolución Del Presupuesto Del Sector Público De La Región De Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
+                        'Evolución del PIM del Sector Público de la región de Ucayali',
                         'Año');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 4");
+                    console.log("ERROR GRAFICA 7");
                     console.log(jqXHR);
                 },
             });
@@ -491,15 +499,25 @@
                 url: "{{ url('/') }}/Home/Presupuesto/gra5/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal8').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     console.log(data)
-                    gSimpleColumn('anal8', data.base,
+                    /* gSimpleColumn('anal8', data.base,
                         '',
-                        'Evaluación Del Presupuesto En Inversión Pública En La Región De Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
-                        '');
+                        'Evaluación Del Presupuesto En Inversión Pública En La Región De Ucayali',
+                        ''); */
+                    glineal(
+                        'anal8',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Evolución del PIM en Inversión Pública de la región de Ucayali',
+                        'Año');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 4");
+                    console.log("ERROR GRAFICA 8");
                     console.log(jqXHR);
                 },
             });
@@ -511,15 +529,24 @@
                 url: "{{ url('/') }}/Home/Presupuesto/gra6/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal9').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
-                    console.log(data)
-                    gSimpleColumn('anal9', data.base,
+                    /* gSimpleColumn('anal9', data.base,
                         '',
-                        'Recaudación De Ingresos Según Tipo De Género.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
-                        '');
+                        'Recaudación De Ingresos Según Tipo De Género',
+                        ''); */
+                    glineal(
+                        'anal9',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Recaudación De Ingresos Según Tipo De Género',
+                        'Año');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 4");
+                    console.log("ERROR GRAFICA 9");
                     console.log(jqXHR);
                 },
             });
@@ -531,6 +558,9 @@
                 url: "{{ url('/') }}/Home/Presupuesto/tabla1/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     //console.log(data.data['categoria'])
                     gAnidadaColumn(
@@ -538,11 +568,11 @@
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Ejecución Presupuestal Según Tipo De Gobierno.<br><b class="fuentex">Fuente: SIAF-MEF</b>'
+                        'Ejecución Presupuestal Según Tipo De Gobierno'
                     );
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 4");
                     console.log(jqXHR);
                 },
             });
@@ -554,6 +584,9 @@
                 url: "{{ url('/') }}/Home/Presupuesto/tabla2/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal5').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     //console.log(data.data['categoria'])
                     gAnidadaColumn(
@@ -561,11 +594,11 @@
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Ejecución Presupuestal en Inversiones Según Tipo De Gobierno.<br><b class="fuentex">Fuente: SIAF-MEF</b>'
+                        'Ejecución Presupuestal en Inversiones Según Tipo De Gobierno'
                     );
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 5");
                     console.log(jqXHR);
                 },
             });
@@ -577,18 +610,21 @@
                 url: "{{ url('/') }}/Home/Presupuesto/tabla3/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal6').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
-                    console.log(data)
+                    //console.log(data)
                     gAnidadaColumn(
                         'anal6',
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Recaudación De Ingresos Según Tipo De Gobierno.<br><b class="fuentex">Fuente: SIAF-MEF</b>'
+                        'Recaudación De Ingresos Según Tipo De Gobierno'
                     );
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 6");
                     console.log(jqXHR);
                 },
             });
@@ -901,9 +937,12 @@
                         dataLabels: {
                             enabled: true,
                             //format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                            //format: '{point.y:,.0f} ( {point.percentage:.1f}% )',
-                            format: '{point.percentage:.1f}%',
-                            connectorColor: 'silver'
+                            format: '{point.y:,.0f} ({point.percentage:.1f}%)',
+                            //format: '{point.percentage:.1f}%',
+                            connectorColor: 'silver',
+                            style:{
+                                fontWeight:'normal',
+                            }
                         }
                     },
                     series: {
@@ -939,7 +978,7 @@
                         "color": "#333333",
                         "cursor": "pointer",
                         "fontSize": "10px",
-                        "fontWeight": "bold",
+                        "fontWeight": "normal",
                         "textOverflow": "ellipsis"
                     },
                 },
@@ -1029,8 +1068,28 @@
                                     return this.y;
                                 }
                             },
+                            style:{
+                                fontWeight:'normal',
+                            }
                         },
+                        /* label:{
+                            style:{
+                                fontWeight:'normal',
+                            }
+                        } */
                     }
+                },
+                legend: {
+                    //align: 'center', //right//left//center
+                    //verticalAlign: 'bottom', //top//middle//bottom
+                    //layout: 'horizontal', //horizontal//vertical//proximate
+                    itemStyle: {
+                        "color": "#333333",
+                        "cursor": "pointer",
+                        "fontSize": "10px",
+                        "fontWeight": "normal",
+                        "textOverflow": "ellipsis"
+                    },
                 },
                 credits: false,
             });
@@ -1168,6 +1227,9 @@
                                     return this.y;
                                 }
                             },
+                            style:{
+                                fontWeight:'normal',
+                            }
                         },
                         /*  point: {
                              cursor: 'pointer',
@@ -1209,7 +1271,7 @@
                         "color": "#333333",
                         "cursor": "pointer",
                         "fontSize": "10px",
-                        "fontWeight": "bold",
+                        "fontWeight": "normal", //bold
                         "textOverflow": "ellipsis"
                     },
                 },

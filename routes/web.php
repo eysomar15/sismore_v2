@@ -347,6 +347,10 @@ Route::post('/PadronEIB/ajax_update/', [PadronEIBController::class, 'ajax_update
 Route::get('/PadronEIB/ajax_delete/{id}', [PadronEIBController::class, 'ajax_delete']);
 Route::get('/PadronEIB/IIEE/autocompletar', [InstEducativaController::class, 'completariiee2'])->name('padroneib.completar.iiee');
 
+Route::get('/PadronRER/Avance', [PadronRERController::class, 'avance'])->name('padronrer.avance');
+Route::get('/PadronRER/Grafica1', [PadronRERController::class, 'grafica1'])->name('padronrer.avance.graficas1');
+Route::get('/PadronRER/Grafica2', [PadronRERController::class, 'grafica2'])->name('padronrer.avance.graficas2');
+
 Route::get('/INDICADOR/SINRUTA', function () {
     //return 'Ruta no definida';
     return view('paginavacio');

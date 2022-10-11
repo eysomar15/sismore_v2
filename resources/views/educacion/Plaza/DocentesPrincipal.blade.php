@@ -388,8 +388,8 @@
         ];
         $(document).ready(function() { //paleta_colores
             Highcharts.setOptions({
-                //colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
-                colors: Highcharts.map(paleta_colores, function(color) {
+                colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
+                //colors: Highcharts.map(paleta_colores, function(color) {
                     return {
                         radialGradient: {
                             cx: 0.5,
@@ -433,6 +433,9 @@
                 type: 'POST',
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#anal1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     gSimpleColumn('anal1', data.info.v1, '',
                         'PLAZAS SEGUN UNIDAD DE GESTION EDUCATIVA<br>Fuente:NEXUS', '');
@@ -448,6 +451,9 @@
                 type: 'POST',
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#anal2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     gSimpleColumn('anal2', data.info.v2, '',
                         'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
@@ -461,6 +467,9 @@
                 type: 'POST',
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#anal3').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     gSimpleColumn('anal3', data.info.v3, '',
                         'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
@@ -475,6 +484,9 @@
                 type: 'POST',
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#anal4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     gSimpleColumn('anal4', data.info.v4, '',
                         'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
@@ -489,6 +501,9 @@
                 type: 'POST',
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#anal5').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     gSimpleColumn('anal5', data.info.v5, '',
                         'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
@@ -503,6 +518,9 @@
                 type: 'POST',
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#anal6').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     gSimpleColumn('anal6', data.info.v6, '',
                         'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO<br>Fuente:NEXUS', '');
@@ -517,6 +535,9 @@
                 type: 'POST',
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#anal7').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     gSimpleColumn('anal7', data.info.v7, '',
                         'PLAZAS DE EDUCACIÓN POR AÑOS<br>Fuente:NEXUS', '');
@@ -531,6 +552,9 @@
                 type: 'POST',
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#anal8').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     gSimpleColumn('anal8', data.info.v8, '',
                         'PLAZAS DE EDUCACIÓN POR MESES<br>Fuente:NEXUS', '');
@@ -545,6 +569,9 @@
                 type: 'POST',
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#anal9').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     gSimpleColumn('anal9', data.info.v9, '',
                         'PLAZAS DE PERSONAL DE EDUCACIÓN POR AÑOS<br>Fuente:NEXUS', '');
@@ -559,6 +586,9 @@
                 type: 'POST',
                 data: $('#form_parametros').serialize(),
                 dataType: 'JSON',
+                beforeSend: function() {
+                    $('#anal10').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     gSimpleColumn('anal10', data.info.v10, '',
                         'PLAZAS DE PERSONAL DE EDUCACIÓN POR MESES<br>Fuente:NEXUS', '');
@@ -673,39 +703,6 @@
             return d + "/" + m + "/" + y
         }
 
-        /* function cargarVista() {
-            $.ajax({
-                url: "{{ url('/') }}/Plaza/Docentes/" + $('#importacion_id').val() + "/" + $('#anio').val(),
-                type: 'get',
-                dataType: 'JSON',
-                success: function(data) {
-                    $('.opt1').html(data.info.opt1.toLocaleString('en-IN'));
-                    $('.opt2').html(data.info.opt2.toLocaleString('en-IN'));
-                    $('.opt3').html(data.info.opt3.toLocaleString('en-IN'));
-                    $('.opt4').html(data.info.opt4.toLocaleString('en-IN'));
-
-                    gSimpleColumn('anal1', data.info.v1, '', 'PLAZAS SEGUN UNIDAD DE GESTION EDUCATIVA', '');
-                    gSimpleColumn('anal2', data.info.v2, '', 'PLAZAS SEGUN TIPO DE NIVEL EDUCATIVO', '');
-                    gSimpleColumn('anal3', data.info.v3, '', 'PLAZAS SEGUN TIPO DE TRABAJADOR', '');
-                    gSimpleColumn('anal4', data.info.v4, '', 'PLAZAS DOCENTES SEGUN TIPO DE NIVEL EDUCATIVO',
-                        '');
-                    gSimpleColumn('anal5', data.info.v5, '', 'PLAZAS DOCENTE SEGUN SITUACION LABORAL', '');
-                    gSimpleColumn('anal6', data.info.v6, '', 'PLAZAS DOCENTE SEGUN REGIMEN LABORAL', '');
-                    gSimpleColumn('anal7', data.info.v7, '', 'PLAZAS DOCENTE SEGUN AÑO', '');
-                    gSimpleColumn('anal8', data.info.v8, '', 'PLAZAS DOCENTE ' + $('#anio').val() + ' POR MES',
-                        '');
-                    $('#vista1').html(data.info.DT.table);
-                     $('#tabla1').DataTable({
-                        "order": false,
-                        "language": table_language
-                    });
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                },
-            });
-        } */
-
         function gSimpleColumn(div, datax, titulo, subtitulo, tituloserie) {
             Highcharts.chart(div, {
                 chart: {
@@ -734,7 +731,7 @@
                     label: {
                         enabled: false
                     },
-                    colorByPoint: true,
+                    colorByPoint: false,
                     data: datax,
                 }],
                 tooltip: {
@@ -749,6 +746,9 @@
                         dataLabels: {
                             enabled: true,
                             /* format: '{point.y:.1f}%', */
+                            style:{
+                                fontWeight:'normal',
+                            }
                         },
                     }
                 },

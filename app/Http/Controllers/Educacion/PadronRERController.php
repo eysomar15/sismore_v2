@@ -199,4 +199,42 @@ class PadronRERController extends Controller
         $rer->save();
         return response()->json(array('status' => true));
     }
+
+    public function avance()
+    {
+        $mensaje = "";
+        $data['rer'] = RER::where('estado', 0)->count();
+        $data['pres'] = RER::select(DB::raw('sum(presupuesto) as vv'))->first()->vv;
+        $data['iiee'] = PadronRER::all()->count();
+        $data['alumnos'] = PadronRER::select(DB::raw('sum(total_estudiantes) as vv'))->first()->vv;
+        $data['docentes'] = PadronRER::select(DB::raw('sum(total_docentes) as vv'))->first()->vv;
+        //return $data;
+        return view('educacion.PadronRER.Avance', compact('mensaje', 'data'));
+    }
+
+    public function grafica1()
+    {
+        $info = DB::table(DB::raw('(select distinct
+                                        v4.nombre as name,
+                                        v2.codigo_rer as codigo
+                                    from edu_padron_rer v1
+                                    inner join edu_rer as v2 on v2.id=v1.rer_id
+                                    inner join edu_institucioneducativa as v3 on v3.id=v1.institucioneducativa_id
+                                    inner join edu_ugel as v4 on v4.id=v3.Ugel_id) as tx'))
+            ->select('name', DB::raw('count(codigo) as y'))
+            ->groupBy('name')->orderBy('y','desc')
+            ->get();
+        return response()->json(compact('info'));
+    }
+
+    public function grafica2()
+    {
+        $info = PadronRER::select('v4.nombre as name', DB::raw('count(v2.codigo_rer) as y'))
+            ->join('edu_rer as v2', 'v2.id', '=', 'edu_padron_rer.rer_id')
+            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'edu_padron_rer.institucioneducativa_id')
+            ->join('edu_nivelmodalidad as v4', 'v4.id', '=', 'v3.NivelModalidad_id')
+            ->groupBy('name')->orderBy('y', 'desc')
+            ->get();
+        return response()->json(compact('info'));
+    }
 }

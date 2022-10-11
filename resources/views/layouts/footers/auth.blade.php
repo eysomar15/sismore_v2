@@ -5,7 +5,8 @@
         <script>
           document.write(new Date().getFullYear())
       </script>
-      Derechos Reservados GRU-DREU
+      {{-- Derechos Reservados GRU-DREU --}}
+      2022 Derechos Reservados GRU/GRPP/SGASE
       </div>
   </div>
 </footer>

@@ -214,6 +214,7 @@ class PLazaController extends Controller
         //return [$anios, $tipo, $nivel, $imp, $fecha];
         return view("educacion.Plaza.CoberturaPlaza", compact('anios', 'tipo', 'ugels', 'importacion_id', 'fecha'));
     }
+
     public function cargarcoberturaplazatabla1(Request $rq)
     {
         $ano = (int)$rq->ano;
