@@ -49,13 +49,13 @@ class ImporMatriculaController extends Controller
 
     public function guardar(Request $request)
     {
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 1);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 8);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos prendientes de aprobar para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);
         }
 
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 1);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 8);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos procesados para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);

@@ -1,10 +1,40 @@
 @extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - MATRICULAS SIAGIE'])
 @section('css')
     <!-- Table datatable css -->
+    {{-- <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" /> --}}
+    <!-- Table datatable css -->
     <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
         type="text/css" />
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"> --}}
+    <link href="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/fixedHeader.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/scroller.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
 
+    <style>
+        .tablex thead th {
+            padding: 6px;
+            text-align: center;
+        }
+
+        .tablex thead td {
+            padding: 6px;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+
+        .tablex tbody td,
+        .tablex tbody th,
+        .tablex tfoot td,
+        .tablex tfoot th {
+            padding: 6px;
+        }
+    </style>
 @endsection
 @section('content')
     <div class="content">
@@ -50,7 +80,7 @@
                                     <label class="col-md-2 col-form-label">Fuente de datos</label>
                                     <div class="col-md-10">
                                         <input type="text" class="form-control" readonly="readonly"
-                                            value="SIAGIE - MATRICULA">
+                                            value="INSTITUTOS SUPERIORES">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -127,7 +157,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="font-size: 12px">
+                                    <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap"
+                                        style="font-size: 12px">
                                         <thead class="text-primary">
                                             <tr>
                                                 <th>N°</th>
@@ -166,74 +197,29 @@
                     </div>
                     <div class="modal-body">
                         <div class="table-responsive">
-                            <table id="siagie-matricula" class="table table-striped table-bordered"
-                                style="font-size:12px">
+                            <table id="siagie-matricula" class="table table-striped table-bordered tablex"
+                                style="font-size:10px">
                                 {{-- width:7200px; --}}
                                 <thead class="text-primary">
-                                    <th> DRE </th>
-                                    <th> UGEL </th>
-                                    <th> DEPARTAMENTO </th>
-                                    <th> PROVINCIA </th>
-                                    <th> DISTRITO </th>
-
-                                    <th> CENTRO_POBLADO </th>
-                                    <th> COD_MOD </th>
-                                    <th> INSTITUCION_EDUCATIVA </th>
-                                    <th> COD_NIVELMOD </th>
-                                    <th> NIVEL_MODALIDAD </th>
-
-                                    <th> TIPO_MODALIDAD </th>
-                                    <th> COD_GES_DEP </th>
-                                    <th> GESTION_DEPENDENCIA </th>
-                                    <th> TIPO_GESTION </th>
-                                    <th> TOTAL_ESTUDIANTES </th>
-
-                                    <th> MATRICULA_DEFINITIVA </th>
-                                    <th> MATRICULA_PROCESO </th>
-                                    <th> DNI_VALIDADO </th>
-                                    <th> DNI_SIN_VALIDAR </th>
-                                    <th> REGISTRADO_SIN_DNI </th>
-
-                                    <th> TOTAL_GRADOS </th>
-                                    <th> TOTAL_SECCIONES </th>
-                                    <th> NOMINAS_GENERADAS </th>
-                                    <th> NOMINAS_APROBADAS </th>
-                                    <th> NOMINAS_POR_RECTIFICAR </th>
-
-                                    <th> TRES_ANIOS_HOMBRE </th>
-                                    <th> TRES_ANIOS_MUJER </th>
-                                    <th> CUATRO_ANIOS_HOMBRE </th>
-                                    <th> CUATRO_ANIOS_MUJER </th>
-                                    <th> CINCO_ANIOS_HOMBRE </th>
-
-                                    <th> CINCO_ANIOS_MUJER </th>
-                                    <th> PRIMERO_HOMBRE </th>
-                                    <th> PRIMERO_MUJER </th>
-                                    <th> SEGUNDO_HOMBRE </th>
-                                    <th> SEGUNDO_MUJER </th>
-
-                                    <th> TERCERO_HOMBRE </th>
-                                    <th> TERCERO_MUJER </th>
-                                    <th> CUARTO_HOMBRE </th>
-                                    <th> CUARTO_MUJER </th>
-                                    <th> QUINTO_HOMBRE </th>
-
-                                    <th> QUINTO_MUJER </th>
-                                    <th> SEXTO_HOMBRE </th>
-                                    <th> SEXTO_MUJER </th>
-                                    <th> CERO_ANIOS_HOMBRE </th>
-                                    <th> CERO_ANIOS_MUJER </th>
-
-                                    <th> UN_ANIO_HOMBRE </th>
-                                    <th> UN_ANIO_MUJER </th>
-                                    <th> DOS_ANIOS_HOMBRE </th>
-                                    <th> DOS_ANIOS_MUJER </th>
-                                    <th> MAS_CINCO_ANIOS_HOMBRE </th>
-
-                                    <th> MAS_CINCO_ANIOS_MUJER </th>
-                                    {{-- <th> TOTAL MUJERES </th>
-                                    <th> TOTAL HOMBRES </th> --}}
-
+                                    <th>COD_MOD</th>
+                                    <th>COD_LOCAL</th>
+                                    <th>INSTITUTO_SUPERIOR</th>
+                                    <th>COD_CARRERA</th>
+                                    <th>CARRERA_ESPECIALIDAD</th>
+                                    <th>TIPO_MATRICULA</th>
+                                    <th>SEMESTRE</th>
+                                    <th>CICLO</th>
+                                    <th>TURNO</th>
+                                    <th>SECCION</th>
+                                    <th>CODIGO_ESTUDIANTE</th>
+                                    <th>APELLIDO_PATERNO</th>
+                                    <th>APELLIDO_MATERNO</th>
+                                    <th>NOMBRES</th>
+                                    <th>GENERO</th>
+                                    <th>FECHA_NACIMIENTO</th>
+                                    <th>NACIONALIDAD</th>
+                                    <th>RAZA_ETNIA</th>
+                                    <th>CON_DISCAPACIDAD</th>
                                 </thead>
                                 <tbody>
 
@@ -262,9 +248,9 @@
             table_principal = $('#datatable').DataTable({
                 responsive: true,
                 autoWidth: false,
-                ordered: true,
+                order: true,
                 language: table_language,
-                ajax: "{{ route('ImporMatricula.listar.importados') }}",
+                ajax: "{{ route('imporis.listar.importados') }}",
                 type: "POST",
             });
         });
@@ -296,7 +282,7 @@
                     return xhr;
                 },
                 type: "POST",
-                url: "{{ route('ImporMatricula.guardar') }}",
+                url: "{{ route('imporis.guardar') }}",
                 dataType: "json",
                 contentType: false,
                 processData: false,
@@ -336,7 +322,7 @@
             bootbox.confirm("Seguro desea Eliminar este IMPORTACION?", function(result) {
                 if (result === true) {
                     $.ajax({
-                        url: "{{ url('/') }}/ImporMatricula/eliminar/" + id,
+                        url: "{{ url('/') }}/ImporIS/eliminar/" + id,
                         type: "GET",
                         dataType: "JSON",
                         success: function(data) {
@@ -355,8 +341,8 @@
         };
 
         function monitor(id) {
-            var url = "{{ route('ImporMatricula.listarimportados', 55555) }}";
-            url = url.replace('55555', id);
+            //var url = "{{ route('ImporMatricula.listarimportados', 55555) }}";
+            //url = url.replace('55555', id);
             $('#siagie-matricula').DataTable({
                     "processing": true,
                     "serverSide": true,
@@ -366,178 +352,86 @@
                     "destroy": true,
                     "language": table_language,
                     "ajax": {
-                        "headers": {
+                        /* "headers": {
                             'X-CSRF-TOKEN': $('input[name=_token]').val()
+                        }, */
+                        //"url": url,
+                        "url": "{{ route('imporis.listarimportados') }}",
+                        "data": {
+                            "importacion_id": id
                         },
-                        "url": url,
-                        "type": "POST",
+                        "type": "GET",
                         "dataType": 'JSON',
                     },
                     "columns": [{
-                            data: 'dre',
-                            name: 'dre'
-                        }, {
-                            data: 'ugel',
-                            name: 'ugel'
-                        }, {
-                            data: 'departamento',
-                            name: 'departamento'
-                        }, {
-                            data: 'provincia',
-                            name: 'provincia'
-                        }, {
-                            data: 'distrito',
-                            name: 'distrito' /*  */
-                        }, {
-                            data: 'centropoblado',
-                            name: 'centropoblado'
-                        }, {
-                            data: 'modular',
-                            name: 'modular'
-                        }, {
-                            data: 'iiee',
-                            name: 'iiee'
-                        }, {
-                            data: 'codnivel',
-                            name: 'codnivel'
-                        }, {
-                            data: 'nivel',
-                            name: 'nivel' /*  */
-                        }, {
-                            data: 'tiponivel',
-                            name: 'tiponivel'
-                        }, {
-                            data: 'codgestion',
-                            name: 'codgestion'
-                        }, {
-                            data: 'gestiondependencia',
-                            name: 'gestiondependencia'
+                        data: 'cod_mod',
+                        name: 'cod_mod'
+                    }, {
+                        data: 'cod_local',
+                        name: 'cod_local'
+                    }, {
+                        data: 'instituto_superior',
+                        name: 'instituto_superior'
+                    }, {
+                        data: 'cod_carrera',
+                        name: 'cod_carrera'
+                    }, {
+                        data: 'carrera_especialidad',
+                        name: 'carrera_especialidad' /*  */
+                    }, {
+                        data: 'tipo_matricula',
+                        name: 'tipo_matricula'
+                    }, {
+                        data: 'semestre',
+                        name: 'semestre'
+                    }, {
+                        data: 'ciclo',
+                        name: 'ciclo'
+                    }, {
+                        data: 'turno',
+                        name: 'turno'
+                    }, {
+                        data: 'seccion',
+                        name: 'seccion' /*  */
+                    }, {
+                        data: 'codigo_estudiante',
+                        name: 'codigo_estudiante'
+                    }, {
+                        data: 'apellido_paterno',
+                        name: 'apellido_paterno'
+                    }, {
+                        data: 'apellido_materno',
+                        name: 'apellido_materno'
+                    }, {
+                        data: 'nombres',
+                        name: 'nombres'
+                    }, {
+                        data: 'genero',
+                        name: 'genero' /*  */
+                    }, {
+                        data: 'fecha_nacimiento',
+                        name: 'fecha_nacimiento'
+                    }, {
+                        data: 'nacionalidad',
+                        name: 'nacionalidad'
+                    }, {
+                        data: 'raza_etnia',
+                        name: 'raza_etnia'
+                    }, {
+                        data: 'con_discapacidad',
+                        name: 'con_discapacidad'
+                    }, ],
+                    /* dom: 'Bfrtip',
+                    buttons: [{
+                        extend: "excel",
+                        title: null,
+                        className: "btn-sm",
+                        text: '<i class="fa fa-file-excel"></i> Excel',
+                        titleAttr: 'Excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
                         },
-                        /* {
-                                                   data: 'codtipogestion'
-                                               },  */
-                        {
-                            data: 'tipogestion',
-                            name: 'tipogestion'
-                        }, {
-                            data: 'total_estudiantes',
-                            name: 'total_estudiantes' /*  */
-                        }, {
-                            data: 'matricula_definitiva',
-                            name: 'matricula_definitiva'
-                        }, {
-                            data: 'matricula_proceso',
-                            name: 'matricula_proceso'
-                        }, {
-                            data: 'dni_validado',
-                            name: 'dni_validado'
-                        }, {
-                            data: 'dni_sin_validar',
-                            name: 'dni_sin_validar'
-                        }, {
-                            data: 'registrado_sin_dni',
-                            name: 'registrado_sin_dni' /*  */
-                        }, {
-                            data: 'total_grados',
-                            name: 'total_grados'
-                        }, {
-                            data: 'total_secciones',
-                            name: 'total_secciones'
-                        }, {
-                            data: 'nominas_generadas',
-                            name: 'nominas_generadas'
-                        }, {
-                            data: 'nominas_aprobadas',
-                            name: 'nominas_aprobadas'
-                        }, {
-                            data: 'nominas_por_rectificar',
-                            name: 'nominas_por_rectificar' /*  */
-                        }, {
-                            data: 'tres_anios_hombre',
-                            name: 'tres_anios_hombre'
-                        }, {
-                            data: 'tres_anios_mujer',
-                            name: 'tres_anios_mujer'
-                        }, {
-                            data: 'cuatro_anios_hombre',
-                            name: 'cuatro_anios_hombre'
-                        }, {
-                            data: 'cuatro_anios_mujer',
-                            name: 'cuatro_anios_mujer'
-                        }, {
-                            data: 'cinco_anios_hombre',
-                            name: 'cinco_anios_hombre' /*  */
-                        }, {
-                            data: 'cinco_anios_mujer',
-                            name: 'cinco_anios_mujer'
-                        }, {
-                            data: 'primero_hombre',
-                            name: 'primero_hombre'
-                        }, {
-                            data: 'primero_mujer',
-                            name: 'primero_mujer'
-                        }, {
-                            data: 'segundo_hombre',
-                            name: 'segundo_hombre'
-                        }, {
-                            data: 'segundo_mujer',
-                            name: 'segundo_mujer' /*  */
-                        }, {
-                            data: 'tercero_hombre',
-                            name: 'tercero_hombre'
-                        }, {
-                            data: 'tercero_mujer',
-                            name: 'tercero_mujer'
-                        }, {
-                            data: 'cuarto_hombre',
-                            name: 'cuarto_hombre'
-                        }, {
-                            data: 'cuarto_mujer',
-                            name: 'cuarto_mujer'
-                        }, {
-                            data: 'quinto_hombre',
-                            name: 'quinto_hombre' /*  */
-                        }, {
-                            data: 'quinto_mujer',
-                            name: 'quinto_mujer'
-                        }, {
-                            data: 'sexto_hombre',
-                            name: 'sexto_hombre'
-                        }, {
-                            data: 'sexto_mujer',
-                            name: 'sexto_mujer'
-                        }, {
-                            data: 'cero_anios_hombre',
-                            name: 'cero_anios_hombre'
-                        }, {
-                            data: 'cero_anios_mujer',
-                            name: 'cero_anios_mujer' /*  */
-                        }, {
-                            data: 'un_anio_hombre',
-                            name: 'un_anio_hombre'
-                        }, {
-                            data: 'un_anio_mujer',
-                            name: 'un_anio_mujer'
-                        }, {
-                            data: 'dos_anios_hombre',
-                            name: 'dos_anios_hombre'
-                        }, {
-                            data: 'dos_anios_mujer',
-                            name: 'dos_anios_mujer'
-                        }, {
-                            data: 'mas_cinco_anios_hombre',
-                            name: 'mas_cinco_anios_hombre' /*  */
-                        }, {
-                            data: 'mas_cinco_anios_mujer',
-                            name: 'mas_cinco_anios_mujer'
-                        },
-                        /* {
-                                               data: 'total_hombres'
-                                           }, */
-                        /*  {
-                                                data: 'total_mujer'
-                                            }, */
-                    ],
+                    }], */
                 }
 
             );
@@ -550,9 +444,29 @@
     <!-- Validation init js-->
     <script src="{{ asset('/') }}public/assets/js/pages/form-validation.init.js"></script>
 
+    {{-- <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script> --}}
+
+    <!-- third party js -->
     <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+
     <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
 
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/jszip/jszip.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/pdfmake.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/vfs_fonts.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.html5.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.print.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.scroller.min.js"></script>
 @endsection

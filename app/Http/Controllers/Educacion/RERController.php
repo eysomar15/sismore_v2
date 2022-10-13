@@ -53,9 +53,9 @@ class RERController extends Controller
                 //!$value->anio_implementacion || $value->anio_implementacion == 0 ? '' : $value->anio_implementacion,
                 //!$value->fecha_resolucion || $value->fecha_resolucion == null ? '' : date("d/m/Y", strtotime($value->fecha_resolucion)),
                 "<center>$value->numero_resolucion</center>",
-                '<div style="text-align:right">'.$value->presupuesto.'</div>',
-                "<center>".$iiees->count()."</center>",
-                "<center>".$btn1 . $btn4 . $btn2  . $btn3."</center>",
+                '<div style="text-align:right">' . $value->presupuesto . '</div>',
+                "<center>" . $iiees->count() . "</center>",
+                "<center>" . $btn1 . $btn4 . $btn2  . $btn3 . "</center>",
             );
         }
         $result = array(
@@ -183,5 +183,19 @@ class RERController extends Controller
             ];
         }
         return $data; //response()->json('data');
+    }
+
+    public function ajax_cargar(Request $rq)
+    {
+        $id = $rq->get('ugel');
+        $rer = RER::select('edu_rer.id', 'edu_rer.nombre')
+            ->join('edu_padron_rer as v2', 'v2.rer_id', '=', 'edu_rer.id')
+            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'v2.institucioneducativa_id')
+            ->join('edu_ugel as v4', 'v4.id', '=', 'v3.Ugel_id')
+            ->where('v4.id', $id)
+            ->distinct()
+            ->orderBy('nombre','asc')
+            ->get();
+        return response()->json(compact('rer'));
     }
 }
