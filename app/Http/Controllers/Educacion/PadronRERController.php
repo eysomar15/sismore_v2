@@ -34,6 +34,7 @@ class PadronRERController extends Controller
 
         $ugel = $rq->fugel;
         $rer = $rq->frer;
+        $nivel = $rq->fnivel;
 
         $query = PadronRER::select(
             'edu_padron_rer.*',
@@ -53,6 +54,8 @@ class PadronRERController extends Controller
             $query = $query->where('v5.id', $ugel);
         if ($rer > 0)
             $query = $query->where('v2.id', $rer);
+        if ($nivel > 0)
+            $query = $query->where('v3.NivelModalidad_id', $nivel);
         $query = $query->get();
         $data = [];
         foreach ($query as $key => $value) {
@@ -242,5 +245,20 @@ class PadronRERController extends Controller
             ->groupBy('name')->orderBy('y', 'desc')
             ->get();
         return response()->json(compact('info'));
+    }
+
+    public function ajax_cargarnivel(Request $rq)
+    {
+        $ugel = $rq->ugel; //->get('ugel');
+        $rer = PadronRER::select(
+            'v4.id',
+            'v4.nombre',
+        )
+            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'edu_padron_rer.institucioneducativa_id')
+            ->join('edu_nivelmodalidad as v4', 'v4.id', '=', 'v3.NivelModalidad_id')
+            ->orderBy('v4.nombre', 'asc');
+        $rer = $rer->where('v3.Ugel_id', $ugel);
+        $rer = $rer->distinct()->get();
+        return response()->json(compact('rer'));
     }
 }

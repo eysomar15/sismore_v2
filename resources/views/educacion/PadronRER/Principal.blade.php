@@ -58,11 +58,11 @@
                             @csrf
                             <div class="form">
                                 <div class="form-group row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label class=" col-form-label">Ugel</label>
                                         <div class="">
                                             <select class="form-control" name="fugel" id="fugel"
-                                                onchange="cargarrer();cargartabla();">
+                                                onchange="cargarnivel();cargartabla();">
                                                 <option value="0">TODOS</option>
                                                 @foreach ($ugels as $item)
                                                     <option value="{{ $item->id }}">{{ $item->nombre }}</option>
@@ -70,7 +70,16 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label class="col-form-label">Nivel</label>
+                                        <div class="">
+                                            <select class="form-control" name="fnivel" id="fnivel"
+                                                onchange="cargarrer();cargartabla();">
+                                                <option value="0">TODOS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <label class="col-form-label">Red Educativa</label>
                                         <div class="">
                                             <select class="form-control" name="frer" id="frer"
@@ -447,6 +456,7 @@
                     "data": {
                         "fugel": $('#fugel').val(),
                         "frer": $('#frer').val(),
+                        "fnivel": $('#fnivel').val(),
                     }, //$('#form-filtro').serialize(),
                     "type": "POST",
                     //"dataType": 'JSON',
@@ -614,11 +624,36 @@
             });
         };
 
+
+        function cargarnivel() {
+            $.ajax({
+                url: "{{ route('padronrer.nivelmodalidad.cargar') }}",
+                data: {
+                    'ugel': $('#fugel').val()
+                },
+                type: 'get',
+                success: function(data) {
+                    $('#fnivel option ').remove();
+                    var opt = '<option value="0">TODOS</option>';
+                    $.each(data.rer, function(index, value) {
+                        opt += '<option value="' + value.id + '">' + value.nombre +
+                            '</option>';
+                    });
+                    $('#fnivel').append(opt);
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        }
+
         function cargarrer() {
             $.ajax({
                 url: "{{ route('rer.cargar') }}",
                 data: {
-                    'ugel': $('#fugel').val()
+                    'nivel': $('#fnivel').val(),
+                    'ugel': $('#fugel').val(),
                 },
                 type: 'get',
                 success: function(data) {

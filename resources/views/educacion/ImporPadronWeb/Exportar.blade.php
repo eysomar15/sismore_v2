@@ -37,7 +37,9 @@
                         <div class="card-widgets">
                             <button type="button" class="btn btn-danger btn-xs" onclick="location.reload()"><i
                                     class="fa fa-redo"></i> Actualizar</button>
-                            <button type="button" class="btn btn-success btn-xs" onclick="exportar()"><i class="fa fa-file-excel"></i>
+                            <button type="button" class="btn btn-success btn-xs"
+                                onclick="javascript:location=`{{ route('imporpadronweb.exportar.ok') }}`"><i
+                                    class="fa fa-file-excel"></i>
                                 Excel</button>
                         </div>
                         <h3 class="card-title">REGISTRO DE LA FECHA {{ date('d/m/Y', strtotime($imp->fechaActualizacion)) }}
@@ -355,7 +357,7 @@
             );
         });
 
-        function exportar(){
+        function exportar() {
             alert('ok')
         }
     </script>

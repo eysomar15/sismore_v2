@@ -157,47 +157,6 @@
                 ajax: "{{ route('ImporPadronWeb.listar.importados') }}",
                 type: "POST",
             });
-
-            /* table_principal = $('#datatable').DataTable({
-                "ajax": "{{ route('ImporPadronWeb.listar.importados') }}", //ece.listar.importados
-                "columns": [{
-                        data: 'fechaActualizacion'
-                    },
-                    {
-                        data: 'fechaActualizacion'
-                    },
-                    {
-                        data: 'fuente'
-                    },
-                    {
-                        data: 'nombrecompleto'
-                    },
-                    {
-                        data: 'created_at'
-                    },
-                    {
-                        data: 'comentario'
-                    },
-                    {
-                        data: 'estado'
-                    },
-                    {
-                        data: 'accion'
-                    },
-                ],
-                "responsive": true,
-                "autoWidth": false,
-                "order": false,
-                "language": table_language,
-            });
-            table_principal.on('order.dt search.dt', function() {
-                table_principal.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
-            }).draw(); */
         });
 
         function upload(e) {

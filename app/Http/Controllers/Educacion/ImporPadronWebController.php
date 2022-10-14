@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Educacion;
 
+use App\Exports\ImporPadronWebExport;
+use App\Exports\tablaXExport;
 use App\Http\Controllers\Controller;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\Importacion;
@@ -12,6 +14,7 @@ use App\Repositories\Educacion\ImportacionRepositorio;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 use function PHPUnit\Framework\isNull;
@@ -35,7 +38,7 @@ class ImporPadronWebController extends Controller
     {
         $imp = Importacion::where(['fuenteimportacion_id' => $this->fuente, 'estado' => 'PR'])->orderBy('fechaActualizacion', 'desc')->first();
         $mensaje = "";
-        return view('educacion.ImporPadronWeb.Exportar', compact('mensaje','imp'));
+        return view('educacion.ImporPadronWeb.Exportar', compact('mensaje', 'imp'));
     }
 
     function json_output($status = 200, $msg = 'OK!!', $data = null)
@@ -436,5 +439,11 @@ class ImporPadronWebController extends Controller
     {
         $procesar = DB::select('call edu_pa_procesarPadronWeb(?)', [$importacion_id]);
         return view('correcto');
+    }
+
+    public function download()
+    {
+        $name = 'Padron Web ' . date('Y-m-d') . '.xlsx';
+        return Excel::download(new ImporPadronWebExport, $name);
     }
 }

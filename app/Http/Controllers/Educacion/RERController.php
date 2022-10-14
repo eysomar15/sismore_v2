@@ -187,15 +187,18 @@ class RERController extends Controller
 
     public function ajax_cargar(Request $rq)
     {
-        $id = $rq->get('ugel');
+        $nivel = $rq->get('nivel');
+        $ugel = $rq->get('ugel');
         $rer = RER::select('edu_rer.id', 'edu_rer.nombre')
             ->join('edu_padron_rer as v2', 'v2.rer_id', '=', 'edu_rer.id')
-            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'v2.institucioneducativa_id')
-            ->join('edu_ugel as v4', 'v4.id', '=', 'v3.Ugel_id')
-            ->where('v4.id', $id)
-            ->distinct()
-            ->orderBy('nombre','asc')
-            ->get();
+            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'v2.institucioneducativa_id');
+        if ($nivel != 0)
+            $rer = $rer->where('v3.NivelModalidad_id', $nivel);
+        if ($ugel != 0)
+            $rer = $rer->where('v3.Ugel_id', $ugel);
+        $rer = $rer->distinct();
+        $rer = $rer->orderBy('nombre', 'asc');
+        $rer = $rer->get();
         return response()->json(compact('rer'));
     }
 }

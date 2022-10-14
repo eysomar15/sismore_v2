@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Educacion\InstitucionEducativa;
 use App\Models\Educacion\PadronEIB;
+use App\Models\Educacion\Ugel;
 use App\Models\Parametro\Lengua;
 use App\Repositories\Educacion\InstitucionEducativaRepositorio;
 use App\Repositories\Educacion\PadronEIBRepositorio;
@@ -20,9 +21,10 @@ class PadronEIBController extends Controller
 
     public function principal()
     {
+        $ugels = Ugel::select('id', 'codigo', 'nombre')->where('dependencia', '>', '0')->get();
         $mensaje = "";
         $lenguas = Lengua::where('estado', 0)->get();
-        return view('educacion.PadronEIB.Principal', compact('mensaje','lenguas'));
+        return view('educacion.PadronEIB.Principal', compact('mensaje', 'lenguas', 'ugels'));
     }
 
     public function ListarDTImportFuenteTodos(Request $rq)
@@ -31,7 +33,8 @@ class PadronEIBController extends Controller
         $start = intval($rq->start);
         $length = intval($rq->length);
 
-        $query = PadronEIBRepositorio::listaImportada(518);
+        //$query = PadronEIBRepositorio::listaImportada(518);
+        $query = PadronEIBRepositorio::listaImportada2(518, $rq->get('ugel'), $rq->get('nivel'));
         $data = [];
         foreach ($query as $key => $value) {
             $btn1 = '<a href="#" class="btn btn-info btn-xs" onclick="edit(' . $value->id . ')"  title="MODIFICAR"> <i class="fa fa-pen"></i> </a>';
@@ -53,6 +56,8 @@ class PadronEIBController extends Controller
             "recordsTotal" => $start,
             "recordsFiltered" => $length,
             "data" => $data,
+            "ugel" => $rq->get('ugel'),
+            "nivel" => $rq->get('nivel'),
         );
         return response()->json($result);
     }

@@ -70,12 +70,55 @@ class PadronEIBRepositorio
             ->join('par_ubigeo as v7', 'v7.id', '=', 'v6.Ubigeo_id')
             ->join('par_ubigeo as v8', 'v8.id', '=', 'v7.dependencia')
             ->join('edu_nivelmodalidad as v9', 'v9.id', '=', 'v3.NivelModalidad_id')
-            ->join('par_lengua as va', 'va.id', '=', 'edu_padron_eib.lengua1_id','left')
-            ->join('par_lengua as vb', 'vb.id', '=', 'edu_padron_eib.lengua2_id','left')
-            ->join('par_lengua as vc', 'vc.id', '=', 'edu_padron_eib.lengua3_id','left')
+            ->join('par_lengua as va', 'va.id', '=', 'edu_padron_eib.lengua1_id', 'left')
+            ->join('par_lengua as vb', 'vb.id', '=', 'edu_padron_eib.lengua2_id', 'left')
+            ->join('par_lengua as vc', 'vc.id', '=', 'edu_padron_eib.lengua3_id', 'left')
             ->where('edu_padron_eib.importacion_id', $id)
-            ->orderBy('edu_padron_eib.id','desc')
+            ->orderBy('edu_padron_eib.id', 'desc')
             ->get();
+        return $query;
+    }
+
+    public static function listaImportada2($id, $ugel, $nivel)
+    {
+        $query = PadronEIB::select(
+            'edu_padron_eib.id',
+            'v2.anio',
+            'v5.nombre as dre',
+            'v4.nombre as ugel',
+            //DB::raw("UCAYALI as departamento"),
+            'v8.nombre as provincia',
+            'v7.nombre as distrito',
+            'v6.nombre as centro_poblado',
+            'v3.codModular as cod_mod',
+            'v3.codLocal as cod_local',
+            'v3.nombreInstEduc as institucion_educativa',
+            'v9.codigo as cod_nivelmod',
+            'v9.nombre as nivel_modalidad',
+            'edu_padron_eib.forma_atencion',
+            'edu_padron_eib.cod_lengua',
+            'va.nombre as lengua1',
+            'vb.nombre as lengua2',
+            'vc.nombre as lengua3',
+        )
+            ->join('par_anio as v2', 'v2.id', '=', 'edu_padron_eib.anio_id')
+            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'edu_padron_eib.institucioneducativa_id')
+            ->join('edu_ugel as v4', 'v4.id', '=', 'v3.Ugel_id')
+            ->join('edu_ugel as v5', 'v5.id', '=', 'v4.dependencia')
+            ->join('par_centropoblado as v6', 'v6.id', '=', 'v3.CentroPoblado_id')
+            ->join('par_ubigeo as v7', 'v7.id', '=', 'v6.Ubigeo_id')
+            ->join('par_ubigeo as v8', 'v8.id', '=', 'v7.dependencia')
+            ->join('edu_nivelmodalidad as v9', 'v9.id', '=', 'v3.NivelModalidad_id')
+            ->join('par_lengua as va', 'va.id', '=', 'edu_padron_eib.lengua1_id', 'left')
+            ->join('par_lengua as vb', 'vb.id', '=', 'edu_padron_eib.lengua2_id', 'left')
+            ->join('par_lengua as vc', 'vc.id', '=', 'edu_padron_eib.lengua3_id', 'left')
+            ->where('edu_padron_eib.importacion_id', $id)
+            ->orderBy('edu_padron_eib.id', 'desc');
+        if ($nivel != 0)
+            $query = $query->where('v9.id', $nivel);
+        if ($ugel != 0)
+            $query = $query->where('v4.id', $ugel);
+        $query = $query->get();
         return $query;
     }
 }
