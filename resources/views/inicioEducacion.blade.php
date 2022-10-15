@@ -625,7 +625,7 @@
                     label: {
                         enabled: false
                     },
-                    colorByPoint: true,
+                    colorByPoint: false,
                     data: datax,
                 }],
                 tooltip: {

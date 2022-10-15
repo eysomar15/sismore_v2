@@ -48,7 +48,8 @@
                             <div class="form-group row mb-0">
                                 <label class="col-md-1 col-form-label">Año</label>
                                 <div class="col-md-2">
-                                    <select id="ano" name="ano" class="form-control p-0" onchange="cargartabla0()">
+                                    <select id="ano" name="ano" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         @foreach ($anios as $item)
                                             <option value="{{ $item->ano }}">{{ $item->ano }}</option>
                                         @endforeach
@@ -66,13 +67,15 @@
                                 </div>
                                 <label class="col-md-1 col-form-label">Nivel</label>
                                 <div class="col-md-2">
-                                    <select id="nivel" name="nivel" class="form-control p-0" onchange="cargartabla0()">
+                                    <select id="nivel" name="nivel" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         <option value="0">Todos</option>
                                     </select>
                                 </div>
                                 <label class="col-md-1 col-form-label">Ugel</label>
                                 <div class="col-md-2">
-                                    <select id="ugel" name="ugel" class="form-control p-0" onchange="cargartabla0()">
+                                    <select id="ugel" name="ugel" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         <option value="0">Todos</option>
                                         @foreach ($ugels as $ugel)
                                             <option value="{{ $ugel['id'] }}">{{ $ugel['nombre'] }}</option>
@@ -116,7 +119,8 @@
             <div class="col-xl-12">
                 <div class="card card-border">
                     <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">Total de la CONTRATACIÓN de plazas Según tipo trabajdor con SITUACIÓN laboral</h3>
+                        <h3 class="card-title">Total de la CONTRATACIÓN de plazas Según tipo trabajdor con SITUACIÓN laboral
+                        </h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista2">
@@ -151,6 +155,25 @@
 @section('js')
     <script type="text/javascript">
         $(document).ready(function() {
+            Highcharts.setOptions({
+                //colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
+                colors: Highcharts.map(paleta_colores, function(color) {
+                    return {
+                        radialGradient: {
+                            cx: 0.5,
+                            cy: 0.3,
+                            r: 0.7
+                        },
+                        stops: [
+                            [0, color],
+                            [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
+                        ]
+                    };
+                }),
+                lang: {
+                    thousandsSep: ","
+                }
+            });
             cargartabla0();
         });
 

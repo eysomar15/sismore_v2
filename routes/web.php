@@ -95,7 +95,7 @@ Route::post('/ImporPadronWeb/Aprobar/procesar/{importacion_id}', [ImporPadronWeb
 Route::get('/ImporPadronWeb/Listar/ImportarDT', [ImporPadronWebController::class, 'ListarDTImportFuenteTodos'])->name('ImporPadronWeb.listar.importados');
 Route::post('/ImporPadronWeb/ListaImportada', [ImporPadronWebController::class, 'ListaImportada'])->name('imporpadronweb.listarimportados');
 Route::get('/ImporPadronWeb/Exportar', [ImporPadronWebController::class, 'exportar'])->name('imporpadronweb.exportar');
-Route::get('/ImporPadronWeb/Exportar/PadronWEB', [ImporPadronWebController::class, 'download'])->name('imporpadronweb.exportar.ok');
+Route::get('/ImporPadronWeb/Exportar/PadronWEB', [ImporPadronWebController::class, 'download'])->name('imporpadronweb.download');
 
 
 //Route::get('/PadronWeb/codigo_modular/{codigo_modular}', [PadronWebController::class, 'buscariiee']);//esta por ver
@@ -157,7 +157,7 @@ Route::get('/CuadroAsigPersonal/Listar/ImportarDT', [CuadroAsigPersonalControlle
 
 Route::get('/CuadroAsigPersonal/Exportar', [CuadroAsigPersonalController::class, 'exportar'])->name('cuadroasigpersonal.exportar');
 Route::post('/CuadroAsigPersonal/ListaImportada', [CuadroAsigPersonalController::class, 'ListaImportada'])->name('cuadroasigpersonal.listarimportados');
-Route::get('/ImporPadronWeb/Exportar/PadronWEB', [CuadroAsigPersonalController::class, 'download'])->name('cuadroasigpersonal.download');
+Route::get('/CuadroAsigPersonal/Exportar/Nexus', [CuadroAsigPersonalController::class, 'download'])->name('cuadroasigpersonal.download');
 
 
 

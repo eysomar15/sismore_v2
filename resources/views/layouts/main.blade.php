@@ -295,8 +295,11 @@
     <!-- App js -->
     <script src="{{ asset('/') }}public/assets/js/app.min.js"></script>
     <script>
-        var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263',
+        /* var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263',
             '#6AF9C4'
+        ]; */
+        var paleta_colores = ['#317eeb', '#ef5350', '#33b86c', '#33b86c', '#33b86c', '#6c757d', '#ec407a', '#7e57c2',
+            '#ffd740'
         ];
         var table_language = {
             "lengthMenu": "Mostrar " +

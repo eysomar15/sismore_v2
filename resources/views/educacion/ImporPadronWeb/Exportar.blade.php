@@ -38,7 +38,7 @@
                             <button type="button" class="btn btn-danger btn-xs" onclick="location.reload()"><i
                                     class="fa fa-redo"></i> Actualizar</button>
                             <button type="button" class="btn btn-success btn-xs"
-                                onclick="javascript:location=`{{ route('imporpadronweb.exportar.ok') }}`"><i
+                                onclick="javascript:location=`{{ route('imporpadronweb.download') }}`"><i
                                     class="fa fa-file-excel"></i>
                                 Excel</button>
                         </div>
@@ -51,8 +51,8 @@
 
                                 <div class="table-responsive">
                                     <table id="siagie-matricula" class="table table-striped table-bordered tablex"
-                                        style="font-size:12px">
-                                        <thead class="text-primary">
+                                        style="font-size:12px;width:12600px">
+                                        <thead class="bg-primary text-white">
                                             <th>COD_MOD</th>
                                             <th>COD_LOCAL</th>
                                             <th>INSTITUCION_EDUCATIVA</th>

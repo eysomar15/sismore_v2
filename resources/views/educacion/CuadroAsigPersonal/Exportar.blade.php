@@ -51,8 +51,8 @@
 
                                 <div class="table-responsive">
                                     <table id="siagie-matricula" class="table table-striped table-bordered tablex"
-                                        style="font-size:12px">
-                                        <thead class="text-primary">
+                                        style="font-size:12px;width:12600px">
+                                        <thead class="bg-primary text-white">
                                             <th>UNIDAD_EJECUTORA</th>
                                             <th>UGEL</th>
                                             <th>PROVINCIA</th>

@@ -388,8 +388,8 @@
         ];
         $(document).ready(function() { //paleta_colores
             Highcharts.setOptions({
-                colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
-                //colors: Highcharts.map(paleta_colores, function(color) {
+                //colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
+                colors: Highcharts.map(paleta_colores, function(color) {
                     return {
                         radialGradient: {
                             cx: 0.5,
@@ -556,8 +556,10 @@
                     $('#anal8').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    gSimpleColumn('anal8', data.info.v8, '',
-                        'PLAZAS DE EDUCACIÓN POR MESES<br>Fuente:NEXUS', '');
+                    /* gSimpleColumn('anal8', data.info.v8, '',
+                        'PLAZAS DE EDUCACIÓN POR MESES<br>Fuente:NEXUS', ''); */
+                    glineal('anal8', data.info.v8.categoria, data.info.v8.series, '',
+                        'PLAZAS DE EDUCACIÓN POR MESES<br>Fuente:NEXUS');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -590,8 +592,10 @@
                     $('#anal10').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    gSimpleColumn('anal10', data.info.v10, '',
-                        'PLAZAS DE PERSONAL DE EDUCACIÓN POR MESES<br>Fuente:NEXUS', '');
+                    /* gSimpleColumn('anal10', data.info.v10, '',
+                        'PLAZAS DE PERSONAL DE EDUCACIÓN POR MESES<br>Fuente:NEXUS', ''); */
+                    glineal('anal10', data.info.v10.categoria, data.info.v10.series, '',
+                        'PLAZAS DE EDUCACIÓN POR MESES<br>Fuente:NEXUS');
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -746,8 +750,8 @@
                         dataLabels: {
                             enabled: true,
                             /* format: '{point.y:.1f}%', */
-                            style:{
-                                fontWeight:'normal',
+                            style: {
+                                fontWeight: 'normal',
                             }
                         },
                     }
@@ -784,7 +788,7 @@
                     label: {
                         enabled: false
                     },
-                    colorByPoint: true,
+                    colorByPoint: false,
                     data: datax,
                 }],
                 tooltip: {
@@ -901,6 +905,71 @@
                 },
                 series: datos,
                 credits: false,
+            });
+        }
+
+        function glineal(div, categoria, series, titulo, subtitulo) {
+            Highcharts.chart(div, {
+                chart: {
+                    type: 'spline'
+                },
+                title: {
+                    text: titulo,
+                },
+                subtitle: {
+                    text: subtitulo,
+                },
+                xAxis: {
+                    categories: categoria
+                },
+                yAxis: {
+                    title: {
+                        enabled: false,
+                        text: 'Number of Employees'
+                    },
+                    min:0,
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                plotOptions: {
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            /* formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            }, */
+                            style: {
+                                fontWeight: 'normal',
+                            }
+                        },
+                    }
+                },
+                series: series,
+                legend: {
+                    align: 'center', //right//left//center
+                    verticalAlign: 'bottom', //top//middle//bottom
+                    layout: 'horizontal', //horizontal//vertical//proximate
+                    itemStyle: {
+                        "color": "#333333",
+                        "cursor": "pointer",
+                        "fontSize": "10px",
+                        "fontWeight": "normal", //bold
+                        "textOverflow": "ellipsis"
+                    },
+                },
+                credits: false,
+
             });
         }
     </script>

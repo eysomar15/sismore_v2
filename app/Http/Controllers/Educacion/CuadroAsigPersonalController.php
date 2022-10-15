@@ -310,7 +310,7 @@ class CuadroAsigPersonalController extends Controller
     public function ListaImportada(Request $rq)
     {
         $id = $rq->importacion_id;
-        $data = PlazaRepositorio::listaImportada($id);
+        $data = CuadroAsigPersonal::where('importacion_id', $id)->get(); // PlazaRepositorio::listaImportada($id);
         return DataTables::of($data)->make(true);
     }
 

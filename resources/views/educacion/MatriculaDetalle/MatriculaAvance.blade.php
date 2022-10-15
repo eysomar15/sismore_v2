@@ -53,7 +53,8 @@
                             <div class="form-group row mb-0">
                                 <label class="col-md-1 col-form-label">Año</label>
                                 <div class="col-md-2">
-                                    <select id="ano" name="ano" class="form-control p-0" onchange="cargartabla0()">
+                                    <select id="ano" name="ano" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         @foreach ($anios as $item)
                                             <option value="{{ $item->id }}">{{ $item->anio }}</option>
                                         @endforeach
@@ -61,7 +62,8 @@
                                 </div>
                                 <label class="col-md-1 col-form-label">Ugel</label>
                                 <div class="col-md-2">
-                                    <select id="ugel" name="ugel" class="form-control p-0" onchange="cargartabla0()">
+                                    <select id="ugel" name="ugel" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         <option value="0">Todos</option>
                                         @foreach ($ugels as $ugel)
                                             <option value="{{ $ugel['id'] }}">{{ $ugel['nombre'] }}</option>
@@ -70,7 +72,8 @@
                                 </div>
                                 <label class="col-md-1 col-form-label">Gestion</label>
                                 <div class="col-md-2">
-                                    <select id="gestion" name="gestion" class="form-control p-0" onchange="cargartabla0()">
+                                    <select id="gestion" name="gestion" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         <option value="0">Todos</option>
                                         @foreach ($gestions as $prov)
                                             <option value="{{ $prov['id'] }}">{{ $prov['nombre'] }}</option>
@@ -79,7 +82,8 @@
                                 </div>
                                 <label class="col-md-1 col-form-label">Área</label>
                                 <div class="col-md-2">
-                                    <select id="area" name="area" class="form-control p-0" onchange="cargartabla0()">
+                                    <select id="area" name="area" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         <option value="0">Todos</option>
                                         @foreach ($areas as $prov)
                                             <option value="{{ $prov->id }}">{{ $prov->nombre }}</option>
@@ -183,7 +187,24 @@
 @section('js')
     <script type="text/javascript">
         $(document).ready(function() {
-
+            Highcharts.setOptions({
+                colors: Highcharts.map(paleta_colores, function(color) {
+                    return {
+                        radialGradient: {
+                            cx: 0.5,
+                            cy: 0.3,
+                            r: 0.7
+                        },
+                        stops: [
+                            [0, color],
+                            [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
+                        ]
+                    };
+                }),
+                lang: {
+                    thousandsSep: ","
+                }
+            });
             cargartabla0();
         });
 

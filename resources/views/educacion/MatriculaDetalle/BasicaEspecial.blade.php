@@ -177,7 +177,24 @@
 @section('js')
     <script type="text/javascript">
         $(document).ready(function() {
-
+            Highcharts.setOptions({
+                colors: Highcharts.map(paleta_colores, function(color) {
+                    return {
+                        radialGradient: {
+                            cx: 0.5,
+                            cy: 0.3,
+                            r: 0.7
+                        },
+                        stops: [
+                            [0, color],
+                            [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
+                        ]
+                    };
+                }),
+                lang: {
+                    thousandsSep: ","
+                }
+            });
             cargartabla0();
         });
 
@@ -267,7 +284,7 @@
                     title: {
                         text: titulovetical
                     },
-                    /* min:0, */
+                    min:0,
                 },
                 xAxis: {
                     categories: data['cat'],
