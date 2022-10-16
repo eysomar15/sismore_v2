@@ -1,3 +1,6 @@
+{{-- @extends('layouts.main', ['activePage' => '', 'titlePage' => 'asdasdas']) --}}
+{{-- @extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - SISTEMA NEXUS']) --}}
+
 @section('css')
     <style>
         .tablex thead th {
@@ -274,14 +277,14 @@
             </div>
             {{-- end  row --}}
 
-            {{-- <div class="row">
+            <div class="row">
                 <div class="col-xl-6">
                     <div class="card card-border card-primary">
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
-                            <div id="anal3"></div>
+                            <div id="anal3"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -291,11 +294,11 @@
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
-                            <div id="anal6"></div>
+                            <div id="anal6"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
             {{-- end  row --}}
 
             <div class="row">
@@ -336,26 +339,12 @@
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
-                            <div id="anal9"></div>
+                            <div id="anal9"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
             </div>
             {{-- end  row --}}
-
-            <div class="row">
-                <div class="col-xl-12 principal">
-                    <div class="card card-border">
-                        <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                            <h3 class="card-title"></h3>
-                        </div>
-                        <div class="card-body pb-0 pt-0">
-                            <div class="table-responsive" id="vista1">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
 
         </div>
@@ -364,6 +353,16 @@
 
 
 @section('js')
+    {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts.js"></script> --}}
+    {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts-more.js"></script> --}}
+    {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts/solid-gauge.js"></script> --}}
+
+    {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/data.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/drilldown.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/exporting.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/export-data.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/accessibility.js"></script> --}}
+
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/data.js"></script>
     <script src="https://code.highcharts.com/modules/drilldown.js"></script>
@@ -376,7 +375,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             Highcharts.setOptions({
-                colors: Highcharts.map(paleta_colores, function(color) {
+                colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
                     return {
                         radialGradient: {
                             cx: 0.5,
@@ -443,7 +442,7 @@
             /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 3
              */
-            /* $.ajax({
+            $.ajax({
                 url: "{{ url('/') }}/Home/Presupuesto/gra3/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
@@ -461,7 +460,7 @@
                     console.log("ERROR GRAFICA 3");
                     console.log(jqXHR);
                 },
-            }); */
+            });
 
             /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 4
@@ -524,22 +523,26 @@
             });
 
             /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 9
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 6
              */
             $.ajax({
-                url: "{{ route('graficas.home.presupuesto.7') }}",
+                url: "{{ url('/') }}/Home/Presupuesto/gra6/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
                     $('#anal9').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
+                    /* gSimpleColumn('anal9', data.base,
+                        '',
+                        'Recaudación De Ingresos Según Tipo De Género',
+                        ''); */
                     glineal(
                         'anal9',
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Evolución del PIM en Actividades Pública de la región de Ucayali',
+                        'Recaudación De Ingresos Según Tipo De Género',
                         'Año');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
@@ -603,7 +606,7 @@
             /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 3
              */
-            /* $.ajax({
+            $.ajax({
                 url: "{{ url('/') }}/Home/Presupuesto/tabla3/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
@@ -622,23 +625,6 @@
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 6");
-                    console.log(jqXHR);
-                },
-            }); */
-
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
-             */
-            $.ajax({
-                url: "{{ route('tabla.home.presupuesto') }}",
-                type: "GET",
-                beforeSend: function() {
-                    $('#vista1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
-                },
-                success: function(data) {
-                    $('#vista1').html(data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 },
             });
@@ -954,8 +940,8 @@
                             format: '{point.y:,.0f} ({point.percentage:.1f}%)',
                             //format: '{point.percentage:.1f}%',
                             connectorColor: 'silver',
-                            style: {
-                                fontWeight: 'normal',
+                            style:{
+                                fontWeight:'normal',
                             }
                         }
                     },
@@ -1082,8 +1068,8 @@
                                     return this.y;
                                 }
                             },
-                            style: {
-                                fontWeight: 'normal',
+                            style:{
+                                fontWeight:'normal',
                             }
                         },
                         /* label:{
@@ -1241,8 +1227,8 @@
                                     return this.y;
                                 }
                             },
-                            style: {
-                                fontWeight: 'normal',
+                            style:{
+                                fontWeight:'normal',
                             }
                         },
                         /*  point: {

@@ -527,10 +527,13 @@ Route::get('/Home/Presupuesto/gra3/{importacion_id}', [HomeController::class, 'p
 Route::get('/Home/Presupuesto/gra4/{importacion_id}', [HomeController::class, 'presupuestografica4'])->name('graficas.home.presupuesto.4');
 Route::get('/Home/Presupuesto/gra5/{importacion_id}', [HomeController::class, 'presupuestografica5'])->name('graficas.home.presupuesto.5');
 Route::get('/Home/Presupuesto/gra6/{importacion_id}', [HomeController::class, 'presupuestografica6'])->name('graficas.home.presupuesto.6');
+Route::get('/Home/Presupuesto/gra7', [HomeController::class, 'presupuestografica7'])->name('graficas.home.presupuesto.7');
 
 Route::get('/Home/Presupuesto/tabla1/{importacion_id}', [HomeController::class, 'presupuestotabla1'])->name('tabla.home.presupuesto.1');
 Route::get('/Home/Presupuesto/tabla2/{importacion_id}', [HomeController::class, 'presupuestotabla2'])->name('tabla.home.presupuesto.2');
 Route::get('/Home/Presupuesto/tabla3/{importacion_id}', [HomeController::class, 'presupuestotabla3'])->name('tabla.home.presupuesto.3');
+
+Route::get('/Home/Presupuesto/tabla', [HomeController::class, 'presupuestotabla'])->name('tabla.home.presupuesto');
 
 
 
