@@ -169,6 +169,10 @@ class HomeController extends Controller
             ->groupBy('id', 'name')
             ->orderBy('v4.pos', 'asc')
             ->get();
+        $color = ['#7e57c2', '#317eeb', '#ef5350'];
+        foreach ($info as $key => $value) {
+            $value->color = $color[$key];
+        }
         /* foreach ($info as $key => $value) {
             if ($value->name == 'GOBIERNO NACIONAL') $value->name = 'GOB. NACIONAL';
             if ($value->name == 'GOBIERNOS REGIONALES') $value->name = 'GOB. REGIONALES';
@@ -193,6 +197,10 @@ class HomeController extends Controller
             ->groupBy('id', 'name')
             ->orderBy('v4.pos', 'asc')
             ->get();
+        $color = ['#7e57c2', '#317eeb', '#ef5350'];
+        foreach ($info as $key => $value) {
+            $value->color = $color[$key];
+        }
         /* foreach ($info as $key => $value) {
             if ($value->name == 'GOBIERNO NACIONAL') $value->name = 'GOB. NACIONAL';
             if ($value->name == 'GOBIERNOS REGIONALES') $value->name = 'GOB. REGIONALES';
@@ -215,6 +223,10 @@ class HomeController extends Controller
             ->groupBy('id', 'name')
             ->orderBy('v4.pos', 'asc')
             ->get();
+        $color = ['#7e57c2', '#317eeb', '#ef5350'];
+        foreach ($info as $key => $value) {
+            $value->color = $color[$key];
+        }
         /* foreach ($info as $key => $value) {
             if ($value->name == 'GOBIERNO NACIONAL') $value->name = 'GOB. NACIONAL';
             if ($value->name == 'GOBIERNOS REGIONALES') $value->name = 'GOB. REGIONALES';
@@ -611,17 +623,17 @@ class HomeController extends Controller
         $foot = ['gnp' => 0, 'gnd' => 0, 'gnne' => 0, 'glp' => 0, 'gld' => 0, 'glne' => 0, 'grp' => 0, 'grd' => 0, 'grne' => 0, 'ttp' => 0, 'ttd' => 0, 'ttne' => 0];
         foreach ($body as $key => $value) {
             $foot['gnp'] += $value->gnp;
-            $foot['gnd'] += $value->gnp;
-            $foot['gnne'] += $value->gnp;
-            $foot['glp'] += $value->gnp;
-            $foot['gld'] += $value->gnp;
-            $foot['glne'] += $value->gnp;
-            $foot['grp'] += $value->gnp;
-            $foot['grd'] += $value->gnp;
-            $foot['grne'] += $value->gnp;
-            $foot['ttp'] += $value->gnp;
-            $foot['ttd'] += $value->gnp;
-            $foot['ttne'] += $value->gnp;
+            $foot['gnd'] += $value->gnd;
+            $foot['gnne'] += $value->gnne;
+            $foot['glp'] += $value->glp;
+            $foot['gld'] += $value->gld;
+            $foot['glne'] += $value->glne;
+            $foot['grp'] += $value->grp;
+            $foot['grd'] += $value->grd;
+            $foot['grne'] += $value->grne;
+            $foot['ttp'] += $value->ttp;
+            $foot['ttd'] += $value->ttd;
+            $foot['ttne'] += $value->ttne;
         }
         //return response()->json(compact('data'));
         return view("presupuesto.inicioPresupuestohometabla1", compact('body', 'foot'));

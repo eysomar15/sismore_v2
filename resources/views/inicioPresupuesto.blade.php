@@ -1,12 +1,12 @@
 @section('css')
     <style>
         .tablex thead th {
-            padding: 2px;
+            padding: 4px;
             text-align: center;
         }
 
         .tablex thead td {
-            padding: 2px;
+            padding: 4px;
             text-align: center;
             vertical-align: middle;
             font-weight: bold;
@@ -16,7 +16,7 @@
         .tablex tbody th,
         .tablex tfoot td,
         .tablex tfoot th {
-            padding: 2px;
+            padding: 4px;
         }
 
         .fuentex {
@@ -24,7 +24,7 @@
             font-weight: bold;
         }
 
-        .highcharts-figure,
+        /* .highcharts-figure,
         .highcharts-data-table table {
             min-width: 310px;
             max-width: 800px;
@@ -69,7 +69,7 @@
 
         .highcharts-data-table tr:hover {
             background: #f1f7ff;
-        }
+        } */
     </style>
 @endsection
 {{-- <div>
@@ -322,7 +322,7 @@
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
-                            <div id="anal8"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                            <div id="anal9"></div>
                         </div>
                     </div>
                 </div>
@@ -336,12 +336,14 @@
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
-                            <div id="anal9"></div>
+                            <div id="anal8"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
             </div>
             {{-- end  row --}}
+
+
 
             <div class="row">
                 <div class="col-xl-12 principal">

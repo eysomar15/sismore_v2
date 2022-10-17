@@ -370,7 +370,7 @@
         };
 
         function monitor(id) {
-            var url = "{{ route('CuadroAsigPersonal.listarimportados', 55555) }}";
+            var url = "{{ route('cuadroasigpersonal.listarimportados', 55555) }}";
             url = url.replace('55555', id);
             $('#siagie-matricula').DataTable({
                     "processing": true,
