@@ -14,16 +14,12 @@ class BaseGastosController extends Controller
         $this->middleware('auth');
     }
 
-    /* home */
-
-    /* fin home */
-
     /* nivel gobiernos */
     public function nivelgobiernos()
     {
         $gobs = TipoGobierno::where('id', '!=', 4)->orderBy('pos', 'asc')->get();
         $mensaje = "";
-        return view('presupuesto.BaseGastos.NivelGobiernos', compact('mensaje', 'gobs'));
+        return view('Presupuesto.BaseGastos.NivelGobiernos', compact('mensaje', 'gobs'));
     }
 
     public function cargarsector(Request $rq)
@@ -105,7 +101,7 @@ class BaseGastosController extends Controller
             $foot['pim_2021'] += $value->pim_2021;
             $foot['pim_2022'] += $value->pim_2022;
         }
-        return view("presupuesto.BaseGastos.NivelGobiernosTabla1", compact('body', 'foot'));
+        return view("Presupuesto.BaseGastos.NivelGobiernosTabla1", compact('body', 'foot'));
     }
 
     public function nivelgobiernostabla02(Request $rq)
@@ -123,7 +119,8 @@ class BaseGastosController extends Controller
             $foot['pim_2021'] += $value->pim_2021;
             $foot['pim_2022'] += $value->pim_2022;
         }
-        return view("presupuesto.BaseGastos.NivelGobiernosTabla2", compact('body', 'foot'));
+        return view("Presupuesto.BaseGastos.NivelGobiernosTabla2", compact('body', 'foot'));
     }
     /* fin nivel gobiernos */
+
 }

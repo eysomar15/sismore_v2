@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => 'Padron Red Educativa Rural'])
+@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ''])
 
 @section('css')
     <!-- Table datatable css -->

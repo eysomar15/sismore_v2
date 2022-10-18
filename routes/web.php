@@ -31,6 +31,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Parametro\ClasificadorController;
 use App\Http\Controllers\Parametro\FuenteImportacionController;
 use App\Http\Controllers\Presupuesto\BaseGastosController;
+use App\Http\Controllers\Presupuesto\BaseIngresosController;
 use App\Http\Controllers\Presupuesto\ImporGastosController;
 use App\Http\Controllers\Presupuesto\ImporIngresosController;
 use App\Http\Controllers\Trabajo\ActividadController;
@@ -561,11 +562,18 @@ Route::get('/presupuesto/Principal/vista2', [MatriculaDetalleController::class, 
 Route::get('/SiafGastos/NivelGobiernos', [BaseGastosController::class, 'nivelgobiernos'])->name('basegastos.nivelgobiernos');
 Route::get('/SiafGastos/ajax_sector', [BaseGastosController::class, 'cargarsector'])->name('basegastos.cargarsector');
 Route::get('/SiafGastos/ajax_unidadejecutora', [BaseGastosController::class, 'cargarue'])->name('basegastos.cargarue');
-
 Route::get('/SiafGastos/grafico01', [BaseGastosController::class, 'nivelgobiernosgrafica01'])->name('basegastos.nivelgobiernos.grafica01');
 Route::get('/SiafGastos/grafico02', [BaseGastosController::class, 'nivelgobiernosgrafica02'])->name('basegastos.nivelgobiernos.grafica02');
 Route::get('/SiafGastos/tabla01', [BaseGastosController::class, 'nivelgobiernostabla01'])->name('basegastos.nivelgobiernos.tabla01');
 Route::get('/SiafGastos/tabla02', [BaseGastosController::class, 'nivelgobiernostabla02'])->name('basegastos.nivelgobiernos.tabla02');
+
+
+Route::get('/SiafIngresos/IngresoPresupuestal', [BaseIngresosController::class, 'ingresopresupuestal'])->name('baseingresos.ingresopresupuestal');
+Route::get('/SiafIngresos/Ingreso/grafico01', [BaseIngresosController::class, 'ingresopresupuestalgrafica1'])->name('baseingresos.ingresopresupuestal.grafica01');
+Route::get('/SiafIngresos/Ingreso/grafico02', [BaseIngresosController::class, 'ingresopresupuestalgrafica2'])->name('baseingresos.ingresopresupuestal.grafica02');
+Route::get('/SiafIngresos/Ingreso/grafico03', [BaseIngresosController::class, 'ingresopresupuestalgrafica3'])->name('baseingresos.ingresopresupuestal.grafica03');
+
+
 
 /**************************************** FIN PRESUPUESTO ***************************************************/
 
