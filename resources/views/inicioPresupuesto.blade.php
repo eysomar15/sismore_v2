@@ -306,9 +306,6 @@
                         </div>
                         <div class="card-body p-0">
                             <div id="anal7"></div>{{-- style="min-width:400px;height:300px;margin:0 auto;" --}}
-                            {{-- <figure class="highcharts-figure">
-                                <div id="anal7"></div>
-                            </figure> --}}
                         </div>
                     </div>
                 </div>
@@ -358,7 +355,7 @@
                     </div>
                 </div>
             </div>
-
+            {{-- end  row --}}
 
         </div>
     </div>
@@ -366,6 +363,7 @@
 
 
 @section('js')
+    {{-- highcharts --}}
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/data.js"></script>
     <script src="https://code.highcharts.com/modules/drilldown.js"></script>
@@ -476,11 +474,6 @@
                     $('#anal7').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    //console.log(data)
-                    /* gColumnDrilldown('anal7', data.base, data.base2,
-                        '',
-                        'Evolución Del Presupuesto Del Sector Público De La Región De Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
-                        'Año'); */
                     glineal(
                         'anal7',
                         data.data['categoria'],
