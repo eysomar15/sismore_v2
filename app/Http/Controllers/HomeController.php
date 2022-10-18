@@ -169,20 +169,11 @@ class HomeController extends Controller
         $dx1 = [];
         $dx2 = [];
         $dx3 = [];
-        //$data['categoria'][] = [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,]; //$ba->ano;
         foreach ($base as $key => $ba) {
             $data['categoria'][] = $ba->ano;
             $dx1[] = $ba->pim1;
             $dx2[] = $ba->pim2;
             $dx3[] = $ba->pim3;
-            /* if ($ba->tipo == 'GOBIERNO NACIONAL') {
-                $data['categoria'][] = $ba->ano;
-                $dx1[] = $ba->pim1;
-            }
-            if ($ba->tipo == 'GOBIERNOS REGIONALES')
-                $dx2[] = $ba->pim2;
-            if ($ba->tipo == 'GOBIERNOS LOCALES')
-                $dx3[] = $ba->pim3; */
         }
         $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#7e57c2',  'data' => $dx1];
         $data['series'][] = ['name' => 'GOBIERNOS REGIONALES', 'color' => '#317eeb',  'data' => $dx2];
@@ -198,7 +189,6 @@ class HomeController extends Controller
         $dx1 = [];
         $dx2 = [];
         $dx3 = [];
-        //$data['categoria'][] = [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,]; //$ba->ano;
         foreach ($base as $key => $ba) {
             if ($ba->tipo == 'GOBIERNO NACIONAL') {
                 $data['categoria'][] = $ba->ano;
@@ -223,7 +213,6 @@ class HomeController extends Controller
         $dx1 = [];
         $dx2 = [];
         $dx3 = [];
-        //$data['categoria'][] = [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,]; //$ba->ano;
         foreach ($base as $key => $ba) {
             if ($ba->tipo == 'GOBIERNO NACIONAL') {
                 $data['categoria'][] = $ba->ano;
@@ -263,7 +252,6 @@ class HomeController extends Controller
     public function presupuestotabla1($importacion_id)
     {
         $info = BaseGastosRepositorio::pim_pia_devengado_tipogobierno($importacion_id);
-        //$gobiernos = TipoGobierno::all();
         $data['categoria'] = ['GOBIERNO NACIONAL', 'GOBIERNOS REGIONALES', 'GOBIERNOS LOCALES'];
         $data['series'] = [];
         $dx1 = [];
@@ -277,9 +265,6 @@ class HomeController extends Controller
         //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
         $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb', 'data' => $dx2];
         $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
-
-        //$data['categoria'] = ['GOB. NACIONAL', 'GOB. REGIONALES', 'GOB. LOCALES'];
-
         return response()->json(compact('data'));
     }
 
@@ -305,7 +290,6 @@ class HomeController extends Controller
     public function presupuestotabla3($importacion_id)
     {
         $info = BaseIngresosRepositorio::pim_pia_devengado_tipogobierno($importacion_id);
-        //$gobiernos = TipoGobierno::all();
         $data['categoria'] = ['GOBIERNO NACIONAL', 'GOBIERNOS REGIONALES', 'GOBIERNOS LOCALES'];
         $data['series'] = [];
         $dx1 = [];

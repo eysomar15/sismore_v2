@@ -80,7 +80,6 @@ class BaseGastosRepositorio
         $query = BaseGastos::select(
             'v3.id',
             'v2.anio as ano',
-            /* 'v6.tipogobierno as tipo', */
             DB::raw("sum(IF(v6.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos.pim,0)) as pim1"),
             DB::raw("sum(IF(v6.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos.pim,0)) as pim2"),
             DB::raw("sum(IF(v6.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos.pim,0)) as pim3"),
@@ -91,7 +90,7 @@ class BaseGastosRepositorio
             ->join('pres_unidadejecutora as v5', 'v5.id', '=', 'v4.unidadejecutora_id')
             ->join('pres_tipo_gobierno as v6', 'v6.id', '=', 'v5.tipogobierno')
             ->where('v3.estado', 'PR')
-            ->groupBy('id', 'ano'/* , 'tipo' */)
+            ->groupBy('id', 'ano')
             ->get();
         return $query;
     }
@@ -123,7 +122,6 @@ class BaseGastosRepositorio
         $query = BaseGastos::select(
             'v3.id',
             'v2.anio as ano',
-            /* 'v6.tipogobierno as tipo', */
             DB::raw("sum(IF(v6.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos.pim,0)) as pim1"),
             DB::raw("sum(IF(v6.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos.pim,0)) as pim2"),
             DB::raw("sum(IF(v6.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos.pim,0)) as pim3"),
@@ -136,7 +134,7 @@ class BaseGastosRepositorio
             ->join('pres_producto_proyecto as v7', 'v7.id', '=', 'pres_base_gastos.productoproyecto_id')
             ->where('v3.estado', 'PR')
             ->where('v7.codigo', '3')
-            ->groupBy('id', 'ano'/* , 'tipo' */)
+            ->groupBy('id', 'ano')
             ->get();
         return $query;
     }

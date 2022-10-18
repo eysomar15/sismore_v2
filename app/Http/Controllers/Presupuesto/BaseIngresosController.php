@@ -70,26 +70,16 @@ class BaseIngresosController extends Controller
         $dx1 = [];
         $dx2 = [];
         $dx3 = [];
-        //$data['categoria'][] = [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,]; //$ba->ano;
         foreach ($info as $key => $ba) {
             $data['categoria'][] = $ba->ano;
             $dx1[] = $ba->pim1;
             $dx2[] = $ba->pim2;
             $dx3[] = $ba->pim3;
-            /* if ($ba->tipo == 'GOBIERNO NACIONAL') {
-                $data['categoria'][] = $ba->ano;
-                $dx1[] = $ba->pim1;
-            }
-            if ($ba->tipo == 'GOBIERNOS REGIONALES')
-                $dx2[] = $ba->pim2;
-            if ($ba->tipo == 'GOBIERNOS LOCALES')
-                $dx3[] = $ba->pim3; */
         }
         $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#7e57c2',  'data' => $dx1];
         $data['series'][] = ['name' => 'GOBIERNOS REGIONALES', 'color' => '#317eeb',  'data' => $dx2];
         $data['series'][] = ['name' => 'GOBIERNOS LOCALES', 'color' => '#ef5350', 'data' => $dx3];
         return response()->json(compact('data'));
-        //return response()->json(compact('info'));
     }
 
     /* fin IngresoPresupuestal */
