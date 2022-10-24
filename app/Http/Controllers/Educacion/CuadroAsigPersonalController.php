@@ -335,6 +335,8 @@ class CuadroAsigPersonalController extends Controller
     }
     public function download()
     {
+        ini_set('memory_limit', '-1');
+        set_time_limit(0);
         $name = 'NEXUS ' . date('Y-m-d') . '.xlsx';
         return Excel::download(new ImporPadronNexusExport, $name);
     }

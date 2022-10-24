@@ -3,12 +3,13 @@
 namespace App\Exports;
 
 use App\Models\Educacion\CuadroAsigPersonal;
+use App\Models\Educacion\ImporPadronWeb;
 use App\Models\Educacion\Importacion;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class ImporPadronNexusExport implements FromView,ShouldAutoSize
+class ImporPadronNexusExport implements FromView, ShouldAutoSize
 {
     public function view(): View
     {

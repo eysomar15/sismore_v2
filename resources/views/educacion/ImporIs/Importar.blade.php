@@ -1,4 +1,4 @@
-@extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - MATRICULAS SIAGIE'])
+@extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - INSTITUTOS SUPERIORES'])
 @section('css')
     <!-- Table datatable css -->
     {{-- <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
@@ -84,6 +84,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-md-2 col-form-label">Tipo</label>
+
+                                    <div class="col-md-10">
+                                        <select id="plantilla" name="plantilla" class="form-control" required>
+                                            <option value="">SELECCIONAR PLANTILLA</option>
+                                            <option value="30">PLANTILLA ADMISION</option>
+                                            <option value="29">PLANTILLA MATRICULA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                {{-- <div class="form-group row">
                                     <label class="col-md-2 col-form-label">Año Matricula</label>
 
                                     <div class="col-md-10">
@@ -93,7 +104,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group row">
                                     <label class="col-md-2 col-form-label">Fecha Versión</label>
@@ -186,6 +197,61 @@
         </div> <!-- End row -->
 
         <!-- Bootstrap modal -->
+        <div id="modal-siagie-matricula1" class="modal fade centrarmodal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table id="siagie-matricula1" class="table table-striped table-bordered tablex"
+                                style="font-size:10px">
+                                {{-- width:7200px; --}}
+                                <thead class="text-primary">
+                                    <th>COD_MOD</th>
+                                    <th>COD_LOCAL</th>
+                                    <th>INSTITUTO_SUPERIOR</th>
+                                    <th>COD_CARRERA</th>
+                                    <th>CARRERA_ESPECIALIDAD</th>
+                                    <th>MODALIDAD</th>
+                                    <th>TIPO_MODALIDAD</th>
+                                    <th>DOCUMENTO</th>
+                                    <th>APELLIDO_PATERNO</th>
+                                    <th>APELLIDO_MATERNO</th>
+                                    <th>NOMBRES</th>
+                                    <th>GENERO</th>
+                                    <th>FECHA_NACIMIENTO</th>
+                                    <th>NACIONALIDAD</th>
+                                    <th>RAZA_ETNIA</th>
+                                    <th>DEPARTAMENTO</th>
+                                    <th>PROVINCIA</th>
+                                    <th>DISTRITO</th>
+                                    <th>CON_DISCAPACIDAD</th>
+                                    <th>COD_MODULAR_IE</th>
+                                    <th>INSTITUCION_EDUCATIVA</th>
+                                    <th>ANIO_EGRESO</th>
+                                    <th>INGRESO</th>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Bootstrap modal -->
+
+        <!-- Bootstrap modal -->
         <div id="modal-siagie-matricula" class="modal fade centrarmodal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -231,9 +297,9 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cerrar</button>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+                </div>
+            </div>
+        </div>
         <!-- End Bootstrap modal -->
 
     </div>
@@ -256,6 +322,10 @@
         });
 
         function upload(e) {
+            var plantilla = $('#plantilla').val();
+            //if (plantilla == 0) alert('seleccione una tipo de plantilla');
+            var url = plantilla == 30 ? "{{ route('imporis.guardar.admision') }}" :
+                "{{ route('imporis.guardar.matricula') }}";
             e.preventDefault();
             let form = $(this),
                 wrapper = $('.pwrapper'),
@@ -282,7 +352,7 @@
                     return xhr;
                 },
                 type: "POST",
-                url: "{{ route('imporis.guardar') }}",
+                url: url,
                 dataType: "json",
                 contentType: false,
                 processData: false,
@@ -340,101 +410,222 @@
             });
         };
 
-        function monitor(id) {
-            //var url = "{{ route('ImporMatricula.listarimportados', 55555) }}";
-            //url = url.replace('55555', id);
-            $('#siagie-matricula').DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    "responsive": false,
-                    "autoWidth": false,
-                    "ordered": true,
-                    "destroy": true,
-                    "language": table_language,
-                    "ajax": {
-                        /* "headers": {
-                            'X-CSRF-TOKEN': $('input[name=_token]').val()
-                        }, */
-                        //"url": url,
-                        "url": "{{ route('imporis.listarimportados') }}",
-                        "data": {
-                            "importacion_id": id
-                        },
-                        "type": "GET",
-                        "dataType": 'JSON',
+        function monitor1(id) {
+            $('#siagie-matricula1').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "responsive": false,
+                "autoWidth": false,
+                "ordered": true,
+                "destroy": true,
+                "language": table_language,
+                "ajax": {
+                    "url": "{{ route('imporis.listarimportados') }}",
+                    "data": {
+                        "importacion_id": id,
+                        "fuenteImportacion_id": 30,
                     },
-                    "columns": [{
+                    "type": "GET",
+                    "dataType": 'JSON',
+                },
+                "columns": [{
                         data: 'cod_mod',
                         name: 'cod_mod'
-                    }, {
+                    },
+                    {
                         data: 'cod_local',
                         name: 'cod_local'
-                    }, {
+                    },
+                    {
                         data: 'instituto_superior',
                         name: 'instituto_superior'
-                    }, {
+                    },
+                    {
                         data: 'cod_carrera',
                         name: 'cod_carrera'
-                    }, {
+                    },
+                    {
                         data: 'carrera_especialidad',
-                        name: 'carrera_especialidad' /*  */
-                    }, {
-                        data: 'tipo_matricula',
-                        name: 'tipo_matricula'
-                    }, {
-                        data: 'semestre',
-                        name: 'semestre'
-                    }, {
-                        data: 'ciclo',
-                        name: 'ciclo'
-                    }, {
-                        data: 'turno',
-                        name: 'turno'
-                    }, {
-                        data: 'seccion',
-                        name: 'seccion' /*  */
-                    }, {
-                        data: 'codigo_estudiante',
-                        name: 'codigo_estudiante'
-                    }, {
+                        name: 'carrera_especialidad'
+                    },
+                    {
+                        data: 'modalidad',
+                        name: 'modalidad'
+                    },
+                    {
+                        data: 'tipo_modalidad',
+                        name: 'tipo_modalidad'
+                    },
+                    {
+                        data: 'documento',
+                        name: 'documento'
+                    },
+                    {
                         data: 'apellido_paterno',
                         name: 'apellido_paterno'
-                    }, {
+                    },
+                    {
                         data: 'apellido_materno',
                         name: 'apellido_materno'
-                    }, {
+                    },
+                    {
                         data: 'nombres',
                         name: 'nombres'
-                    }, {
+                    },
+                    {
                         data: 'genero',
-                        name: 'genero' /*  */
-                    }, {
+                        name: 'genero'
+                    },
+                    {
                         data: 'fecha_nacimiento',
                         name: 'fecha_nacimiento'
-                    }, {
+                    },
+                    {
                         data: 'nacionalidad',
                         name: 'nacionalidad'
-                    }, {
+                    },
+                    {
                         data: 'raza_etnia',
                         name: 'raza_etnia'
-                    }, {
+                    },
+                    {
+                        data: 'departamento',
+                        name: 'departamento'
+                    },
+                    {
+                        data: 'provincia',
+                        name: 'provincia'
+                    },
+                    {
+                        data: 'distrito',
+                        name: 'distrito'
+                    },
+                    {
                         data: 'con_discapacidad',
                         name: 'con_discapacidad'
-                    }, ],
-                    /* dom: 'Bfrtip',
-                    buttons: [{
-                        extend: "excel",
-                        title: null,
-                        className: "btn-sm",
-                        text: '<i class="fa fa-file-excel"></i> Excel',
-                        titleAttr: 'Excel',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
-                        },
-                    }], */
-                }
+                    },
+                    {
+                        data: 'cod_modular_ie',
+                        name: 'cod_modular_ie'
+                    },
+                    {
+                        data: 'institucion_educativa',
+                        name: 'institucion_educativa'
+                    },
+                    {
+                        data: 'anio_egreso',
+                        name: 'anio_egreso'
+                    },
+                    {
+                        data: 'ingreso',
+                        name: 'ingreso'
+                    },
+                ],
+                /* dom: 'Bfrtip',
+                buttons: [{
+                    extend: "excel",
+                    title: null,
+                    className: "btn-sm",
+                    text: '<i class="fa fa-file-excel"></i> Excel',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+                    },
+                }], */
+            });
 
-            );
+            $('#modal-siagie-matricula1').modal('show');
+            $('#modal-siagie-matricula1 .modal-title').text('Importado Admision');
+        }
+
+        function monitor2(id) {
+            $('#siagie-matricula').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "responsive": false,
+                "autoWidth": false,
+                "ordered": true,
+                "destroy": true,
+                "language": table_language,
+                "ajax": {
+                    "url": "{{ route('imporis.listarimportados') }}",
+                    "data": {
+                        "importacion_id": id,
+                        "fuenteImportacion_id": 29,
+                    },
+                    "type": "GET",
+                    "dataType": 'JSON',
+                },
+                "columns": [{
+                    data: 'cod_mod',
+                    name: 'cod_mod'
+                }, {
+                    data: 'cod_local',
+                    name: 'cod_local'
+                }, {
+                    data: 'instituto_superior',
+                    name: 'instituto_superior'
+                }, {
+                    data: 'cod_carrera',
+                    name: 'cod_carrera'
+                }, {
+                    data: 'carrera_especialidad',
+                    name: 'carrera_especialidad'
+                }, {
+                    data: 'tipo_matricula',
+                    name: 'tipo_matricula'
+                }, {
+                    data: 'semestre',
+                    name: 'semestre'
+                }, {
+                    data: 'ciclo',
+                    name: 'ciclo'
+                }, {
+                    data: 'turno',
+                    name: 'turno'
+                }, {
+                    data: 'seccion',
+                    name: 'seccion'
+                }, {
+                    data: 'codigo_estudiante',
+                    name: 'codigo_estudiante'
+                }, {
+                    data: 'apellido_paterno',
+                    name: 'apellido_paterno'
+                }, {
+                    data: 'apellido_materno',
+                    name: 'apellido_materno'
+                }, {
+                    data: 'nombres',
+                    name: 'nombres'
+                }, {
+                    data: 'genero',
+                    name: 'genero' /*  */
+                }, {
+                    data: 'fecha_nacimiento',
+                    name: 'fecha_nacimiento'
+                }, {
+                    data: 'nacionalidad',
+                    name: 'nacionalidad'
+                }, {
+                    data: 'raza_etnia',
+                    name: 'raza_etnia'
+                }, {
+                    data: 'con_discapacidad',
+                    name: 'con_discapacidad'
+                }, ],
+                /* dom: 'Bfrtip',
+                buttons: [{
+                    extend: "excel",
+                    title: null,
+                    className: "btn-sm",
+                    text: '<i class="fa fa-file-excel"></i> Excel',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+                    },
+                }], */
+            });
 
             $('#modal-siagie-matricula').modal('show');
             $('#modal-siagie-matricula .modal-title').text('Importado');

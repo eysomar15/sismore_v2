@@ -311,6 +311,7 @@ class ImporMatriculaController extends Controller
 
         return response()->json(array('status' => true));
     }
+
     public function download()
     {
         $name = 'SIAGIE MATRICULAS ' . date('Y-m-d') . '.xlsx';

@@ -383,7 +383,9 @@ class HomeController extends Controller
             $importables['nexus_minedu'] = $imp3 == null;
             return  view('home', compact('importacion_id', 'importables'));
         }
-    }
+    }//https://automatizacion.teambsac.com/
+    //https://beta.pucallsystem.com/dongato/login
+
 
     public function educaciongrafica1()
     {

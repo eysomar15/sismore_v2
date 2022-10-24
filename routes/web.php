@@ -125,7 +125,8 @@ Route::get('/ImporMatricula/Exportar', [ImporMatriculaController::class, 'export
 Route::get('/ImporMatricula/Exportar/PadronSiagie', [ImporMatriculaController::class, 'download'])->name('impormatricula.download');
 
 Route::get('/ImporIS/Importar', [ImporISController::class, 'importar'])->name('imporis.importar');
-Route::post('/ImporIS/Importar', [ImporISController::class, 'guardar'])->name('imporis.guardar');
+Route::post('/ImporIS/Admision/Importar', [ImporISController::class, 'guardaradmision'])->name('imporis.guardar.admision');
+Route::post('/ImporIS/Matricula/Importar', [ImporISController::class, 'guardarmatricula'])->name('imporis.guardar.matricula');
 Route::get('/ImporIS/ListaImportada', [ImporISController::class, 'ListaImportada'])->name('imporis.listarimportados');
 Route::get('/ImporIS/ListaImportada_DataTable/{importacion_id}', [ImporISController::class, 'ListaImportada_DataTable'])->name('imporis.ListaImportada_DataTable');
 Route::get('/ImporIS/Listar/ImportarDT', [ImporISController::class, 'ListarDTImportFuenteTodos'])->name('imporis.listar.importados');
@@ -537,8 +538,6 @@ Route::get('/Home/Presupuesto/tabla3/{importacion_id}', [HomeController::class, 
 
 Route::get('/Home/Presupuesto/tabla', [HomeController::class, 'presupuestotabla'])->name('tabla.home.presupuesto');
 
-
-
 Route::get('/IMPORGASTOS/Gastos/Importar', [ImporGastosController::class, 'importar'])->name('pres.gastos.importar');
 Route::post('/IMPORGASTOS/Gastos/Importar', [ImporGastosController::class, 'importarGuardar'])->name('imporgastos.gastos.guardar');
 Route::get('/IMPORGASTOS/Listar/ImportarDT', [ImporGastosController::class, 'ListarDTImportFuenteTodos'])->name('imporgastos.listar.importados');
@@ -566,12 +565,15 @@ Route::get('/SiafGastos/grafico01', [BaseGastosController::class, 'nivelgobierno
 Route::get('/SiafGastos/grafico02', [BaseGastosController::class, 'nivelgobiernosgrafica02'])->name('basegastos.nivelgobiernos.grafica02');
 Route::get('/SiafGastos/tabla01', [BaseGastosController::class, 'nivelgobiernostabla01'])->name('basegastos.nivelgobiernos.tabla01');
 Route::get('/SiafGastos/tabla02', [BaseGastosController::class, 'nivelgobiernostabla02'])->name('basegastos.nivelgobiernos.tabla02');
+Route::get('/SiafGastos/Exportar/excel/principal01', [BaseGastosController::class, 'download'])->name('basegastos.download.excel.principal01');
 
 
 Route::get('/SiafIngresos/IngresoPresupuestal', [BaseIngresosController::class, 'ingresopresupuestal'])->name('baseingresos.ingresopresupuestal');
 Route::get('/SiafIngresos/Ingreso/grafico01', [BaseIngresosController::class, 'ingresopresupuestalgrafica1'])->name('baseingresos.ingresopresupuestal.grafica01');
 Route::get('/SiafIngresos/Ingreso/grafico02', [BaseIngresosController::class, 'ingresopresupuestalgrafica2'])->name('baseingresos.ingresopresupuestal.grafica02');
 Route::get('/SiafIngresos/Ingreso/grafico03', [BaseIngresosController::class, 'ingresopresupuestalgrafica3'])->name('baseingresos.ingresopresupuestal.grafica03');
+
+
 
 
 

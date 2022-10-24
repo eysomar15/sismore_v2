@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Presupuesto;
 
+use App\Exports\BaseGastosExport;
 use App\Http\Controllers\Controller;
 use App\Models\Presupuesto\TipoGobierno;
 use App\Repositories\Presupuesto\BaseGastosRepositorio;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BaseGastosController extends Controller
 {
@@ -123,4 +125,10 @@ class BaseGastosController extends Controller
     }
     /* fin nivel gobiernos */
 
+
+    public function download()
+    {
+        $name = 'tabla ' . date('Y-m-d') . '.xlsx';
+        return Excel::download(new BaseGastosExport(1), $name);
+    }
 }

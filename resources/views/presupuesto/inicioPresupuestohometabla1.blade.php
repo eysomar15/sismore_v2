@@ -1,9 +1,9 @@
-<table id="tabla0" class="table table-striped table-bordered tablex" style="font-size:11px;">
+<table id="tabla1" class="table table-striped table-bordered tablex" style="font-size:11px;">
     <thead>
         <tr class="bg-primary text-white text-center">
             <th>TIPO DE GOBIERNO</th>
             <th colspan="3">GOBIERNO NACIONAL</th>
-            <th colspan="3">GOIERNOS LOCALES</th>
+            <th colspan="3">GOBIERNOS LOCALES</th>
             <th colspan="3">GOBIERNOS REGIONALES</th>
             <th colspan="3">TOTAL</th>
         </tr>

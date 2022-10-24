@@ -1,4 +1,15 @@
 @section('css')
+    <!-- Table datatable css -->
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/fixedHeader.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/scroller.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
     <style>
         .tablex thead th {
             padding: 4px;
@@ -25,51 +36,51 @@
         }
 
         /* .highcharts-figure,
-        .highcharts-data-table table {
-            min-width: 310px;
-            max-width: 800px;
-            margin: 1em auto;
-        }
+                        .highcharts-data-table table {
+                            min-width: 310px;
+                            max-width: 800px;
+                            margin: 1em auto;
+                        }
 
-        #anal7 {
-            height: 400px;
-        }
+                        #anal7 {
+                            height: 400px;
+                        }
 
-        .highcharts-data-table table {
-            font-family: Verdana, sans-serif;
-            border-collapse: collapse;
-            border: 1px solid #ebebeb;
-            margin: 10px auto;
-            text-align: center;
-            width: 100%;
-            max-width: 500px;
-        }
+                        .highcharts-data-table table {
+                            font-family: Verdana, sans-serif;
+                            border-collapse: collapse;
+                            border: 1px solid #ebebeb;
+                            margin: 10px auto;
+                            text-align: center;
+                            width: 100%;
+                            max-width: 500px;
+                        }
 
-        .highcharts-data-table caption {
-            padding: 1em 0;
-            font-size: 1.2em;
-            color: #555;
-        }
+                        .highcharts-data-table caption {
+                            padding: 1em 0;
+                            font-size: 1.2em;
+                            color: #555;
+                        }
 
-        .highcharts-data-table th {
-            font-weight: 600;
-            padding: 0.5em;
-        }
+                        .highcharts-data-table th {
+                            font-weight: 600;
+                            padding: 0.5em;
+                        }
 
-        .highcharts-data-table td,
-        .highcharts-data-table th,
-        .highcharts-data-table caption {
-            padding: 0.5em;
-        }
+                        .highcharts-data-table td,
+                        .highcharts-data-table th,
+                        .highcharts-data-table caption {
+                            padding: 0.5em;
+                        }
 
-        .highcharts-data-table thead tr,
-        .highcharts-data-table tr:nth-child(even) {
-            background: #f8f8f8;
-        }
+                        .highcharts-data-table thead tr,
+                        .highcharts-data-table tr:nth-child(even) {
+                            background: #f8f8f8;
+                        }
 
-        .highcharts-data-table tr:hover {
-            background: #f1f7ff;
-        } */
+                        .highcharts-data-table tr:hover {
+                            background: #f1f7ff;
+                        } */
     </style>
 @endsection
 {{-- <div>
@@ -131,7 +142,8 @@
                             </div>
                             <div class="media-body align-self-center">
                                 <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card2['pim'], 0) }}">
+                                    <h4 class="font-20 my-0 font-weight-bold"
+                                        title="{{ number_format($card2['pim'], 0) }}">
                                         <span data-plugin="counterup">
                                             {{ number_format($card2['pim'] / 1000000, 0) }}
                                         </span> M
@@ -211,8 +223,9 @@
                                 <span class="float-right">{{ number_format($card4['eje'], 2) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
-                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $card4['eje'] }}"
-                                    aria-valuemin="0" aria-valuemax="100" style="width: {{ $card4['eje'] }}%">
+                                <div class="progress-bar bg-danger" role="progressbar"
+                                    aria-valuenow="{{ $card4['eje'] }}" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{ $card4['eje'] }}%">
                                     <span class="sr-only">{{ $card4['eje'] }}% Complete</span>
                                 </div>
                             </div>
@@ -344,8 +357,14 @@
 
             <div class="row">
                 <div class="col-xl-12 principal">
-                    <div class="card card-border">
-                        <div class="card-header border-primary bg-transparent pb-0 mb-0">
+                    <div class="card card-border">{{--  bg-transparent pb-0 mb-0 --}}
+                        <div class="card-header border-primary">
+                            <div class="card-widgets">{{-- impormatricula.download --}}
+                                <button type="button" class="btn btn-success btn-xs"
+                                    onclick="javascript:location=`{{ route('basegastos.download.excel.principal01') }}`"><i
+                                        class="fa fa-file-excel"></i>
+                                    Excel</button>
+                            </div>
                             <h3 class="card-title"></h3>
                         </div>
                         <div class="card-body pb-0 pt-0">
@@ -370,6 +389,27 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <!-- third party js -->
+    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/jszip/jszip.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/pdfmake.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/vfs_fonts.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.html5.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.print.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.scroller.min.js"></script>
 
 
 
