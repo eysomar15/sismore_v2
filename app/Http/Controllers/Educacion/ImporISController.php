@@ -316,6 +316,7 @@ class ImporISController extends Controller
                 $key + 1,
                 date("d/m/Y", strtotime($value->fechaActualizacion)),
                 $is ? $is->nombre : $value->fuente,
+                $value->fuenteImportacion_id == 29 ? 'MATRICULA' : 'ADMISION',
                 $nom . ' ' . $ape,
                 date("d/m/Y", strtotime($value->created_at)),
                 $value->comentario,

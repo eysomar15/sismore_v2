@@ -89,8 +89,8 @@
                                     <div class="col-md-10">
                                         <select id="plantilla" name="plantilla" class="form-control" required>
                                             <option value="">SELECCIONAR PLANTILLA</option>
-                                            <option value="30">PLANTILLA ADMISION</option>
-                                            <option value="29">PLANTILLA MATRICULA</option>
+                                            <option value="30">ADMISION</option>
+                                            <option value="29">MATRICULA</option>
                                         </select>
                                     </div>
                                 </div>
@@ -175,6 +175,7 @@
                                                 <th>N°</th>
                                                 <th>Version</th>
                                                 <th>Fuente</th>
+                                                <th>Plantilla</th>
                                                 <th>Usuario</th>
                                                 <th>Registro</th>
                                                 <th>Comentario</th>
@@ -314,7 +315,7 @@
             table_principal = $('#datatable').DataTable({
                 responsive: true,
                 autoWidth: false,
-                order: true,
+                ordered: true,
                 language: table_language,
                 ajax: "{{ route('imporis.listar.importados') }}",
                 type: "POST",

@@ -2,13 +2,11 @@
 
 namespace App\Exports;
 
-use App\Models\Educacion\ImporPadronWeb;
-use App\Models\Educacion\Importacion;
-use App\Repositories\Educacion\ImportacionRepositorio;
 use App\Repositories\Presupuesto\BaseGastosRepositorio;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithEvents;
 
 class BaseGastosExport implements FromView, ShouldAutoSize
 {
@@ -21,8 +19,6 @@ class BaseGastosExport implements FromView, ShouldAutoSize
 
     public function view(): View
     {
-        //$imp = Importacion::where(['fuenteimportacion_id' => 1, 'estado' => 'PR'])->orderBy('fechaActualizacion', 'desc')->first();
-        //$imp = ImportacionRepositorio::objMaxFuenteFechaActualizacion(13);
         $body = BaseGastosRepositorio::pim_ejecutado_noejecutado_tipogobierno();
         $foot = ['gnp' => 0, 'gnd' => 0, 'gnne' => 0, 'glp' => 0, 'gld' => 0, 'glne' => 0, 'grp' => 0, 'grd' => 0, 'grne' => 0, 'ttp' => 0, 'ttd' => 0, 'ttne' => 0];
         foreach ($body as $key => $value) {
@@ -39,7 +35,8 @@ class BaseGastosExport implements FromView, ShouldAutoSize
             $foot['ttd'] += $value->ttd;
             $foot['ttne'] += $value->ttne;
         }
-        //return view('educacion.ImporPadronWeb.excel', ['padrons' => ImporPadronWeb::where('importacion_id', $imp->id)->get()]);
         return view("presupuesto.inicioPresupuestohometabla1excel", compact('body', 'foot'));
     }
+
+
 }

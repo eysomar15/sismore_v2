@@ -244,7 +244,7 @@ class ImportacionRepositorio
             ->join('adm_usuario as v4', 'v4.id', '=', 'v1.usuarioId_Aprueba', 'left')
             ->whereIn('v1.fuenteImportacion_id', $fuenteImportacion_id)
             ->where('v1.estado', '!=', 'EL')
-            ->orderBy('v1.fechaActualizacion', 'desc')
+            ->orderBy('v1.id', 'desc')
             ->select('v1.*', 'v2.nombre as fuente', 'v3.nombre as cnombre', 'v3.apellidos as capellidos', 'v4.nombre as anombre', 'v4.apellidos as aapellidos')
             ->get();
         return $query;
