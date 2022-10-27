@@ -463,16 +463,16 @@ class HomeController extends Controller
         //$imp = Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', '7')->where('estado', 'PR')->first();
         $importacion_id = ImportacionRepositorio::Max_porfuente('7');
         if ($importacion_id) {
-            $data[] = ['name' => 'Centros Poblados', 'y' => CentroPobladoDatassRepositorio::listar_centroPoblado($importacion_id)->conteo];
-            $data[] = ['name' => 'Sistema de agua', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 20, $importacion_id)['indicador'][0]->y];
-            $data[] = ['name' => 'Disposicion Escretas', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 23, $importacion_id)['indicador2'][0]->y];
-            $data[] = ['name' => 'Sistema Cloración', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 21, $importacion_id)['indicador2'][0]->y];
+            $data[] = ['name' => 'Centros Poblados - CP', 'y' => CentroPobladoDatassRepositorio::listar_centroPoblado($importacion_id)->conteo];
+            $data[] = ['name' => 'CP. Con Sistema de agua', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 20, $importacion_id)['indicador'][0]->y];
+            $data[] = ['name' => 'CP. Con Disposicion Escretas', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 23, $importacion_id)['indicador2'][0]->y];
+            $data[] = ['name' => 'CP. Con Sistema Cloración', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 21, $importacion_id)['indicador2'][0]->y];
 
             $sumas = CentroPobladoDatassRepositorio::sumas_dashboard($importacion_id);
-            $data2[] = ['name' => 'población', 'y' => $sumas->poblacion];/* total_poblacion */
-            $data2[] = ['name' => 'Cobertura de Agua', 'y' => $sumas->con_agua];/* poblacion_con_servicio_agua */
-            $data2[] = ['name' => 'viviendas', 'y' => $sumas->con_conexion];/* total_viviendas */
-            $data2[] = ['name' => 'Conexion de Agua', 'y' => $sumas->con_conexion];/* viviendas_con_conexion */
+            $data2[] = ['name' => 'Población Ambito Rural', 'y' => $sumas->poblacion];/* total_poblacion */
+            $data2[] = ['name' => 'Con Cobertura de Agua', 'y' => $sumas->con_agua];/* poblacion_con_servicio_agua */
+            $data2[] = ['name' => 'Viviendas', 'y' => $sumas->con_conexion];/* total_viviendas */
+            $data2[] = ['name' => 'Con Servicio de Agua', 'y' => $sumas->con_conexion];/* viviendas_con_conexion */
 
             $grafica[] = CentroPobladoRepositotio::listarporprovincias($importacion_id);/* total de centro poblado por provincia */
             $grafica[] = CentroPobladoRepositotio::listarporprovinciasconsistemaagua($importacion_id);/* total de centro poblado con servicio de agua(sistema_agua) */

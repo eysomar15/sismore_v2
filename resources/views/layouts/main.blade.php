@@ -20,6 +20,7 @@
     <link href="{{ asset('/') }}public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"
         id="bootstrap-stylesheet" />
     <link href="{{ asset('/') }}public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    
     <link href="{{ asset('/') }}public/assets/css/app.min.css" rel="stylesheet" type="text/css"
         id="app-stylesheet" />
 
