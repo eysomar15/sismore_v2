@@ -506,6 +506,15 @@ class PlazaRepositorio
             $query = $query->where('v7.id', $ugel);
         $query = $query->get();
         return $query;
+        /* $data['categoria'] = [];
+        $data['series'] = [];
+        $dx1 = [];
+        foreach ($query as $key => $ba) {
+            $data['categoria'][] = $ba->name;
+            $dx1[] = $ba->y;
+        }
+        $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#317eeb', 'showInLegend' => false, 'data' => $dx1];
+        return $data; */
 
         /* $query = DB::table('edu_plaza as v1')
             ->join('edu_situacionlab as v2', 'v2.id', '=', 'v1.situacionLab_id')
@@ -581,7 +590,16 @@ class PlazaRepositorio
         if ($ugel != 0)
             $query = $query->where('v7.id', $ugel);
         $query = $query->get();
-        return $query;
+
+        $data['categoria'] = [];
+        $data['series'] = [];
+        $dx1 = [];
+        foreach ($query as $key => $ba) {
+            $data['categoria'][] = $ba->name;
+            $dx1[] = $ba->y;
+        }
+        $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#317eeb', 'showInLegend' => false, 'data' => $dx1];
+        return $data;
         /* foreach ($query as $key => $value) {
             $value->name = "" . $value->name;
             $value->y = (int)$value->y;
@@ -695,7 +713,16 @@ class PlazaRepositorio
         if ($ugel != 0)
             $query = $query->where('v7.id', $ugel);
         $query = $query->get();
-        return $query;
+        //return $query;
+        $data['categoria'] = [];
+        $data['series'] = [];
+        $dx1 = [];
+        foreach ($query as $key => $ba) {
+            $data['categoria'][] = $ba->name;
+            $dx1[] = $ba->y;
+        }
+        $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#317eeb', 'showInLegend' => false, 'data' => $dx1];
+        return $data;
         /* foreach ($query as $key => $value) {
             $value->name = "" . $value->name;
             $value->y = (int)$value->y;

@@ -464,7 +464,6 @@
 
     </div>
 </div>
-{{-- @php echo $info['g1']['categoriax'] @endphp, @php echo $info['g1']['datax'] @endphp --}}
 
 
 
@@ -625,7 +624,7 @@
                     label: {
                         enabled: false
                     },
-                    colorByPoint: true,
+                    colorByPoint: false,
                     data: datax,
                 }],
                 tooltip: {

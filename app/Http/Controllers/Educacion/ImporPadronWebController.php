@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers\Educacion;
 
+use App\Exports\ImporPadronWebExport;
+use App\Exports\tablaXExport;
 use App\Http\Controllers\Controller;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\Importacion;
 use App\Models\Educacion\ImporPadronWeb;
 use App\Repositories\Educacion\ImporPadronWebRepositorio;
 use App\Utilities\Utilitario;
-use Carbon\Carbon;
 use App\Repositories\Educacion\ImportacionRepositorio;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\DataTables;
 
 use function PHPUnit\Framework\isNull;
 
 class ImporPadronWebController extends Controller
 {
+    public $fuente = 1;
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -27,6 +32,13 @@ class ImporPadronWebController extends Controller
     {
         $mensaje = "";
         return view('educacion.ImporPadronWeb.Importar', compact('mensaje'));
+    }
+
+    public function exportar()
+    {
+        $imp = Importacion::where(['fuenteimportacion_id' => $this->fuente, 'estado' => 'PR'])->orderBy('fechaActualizacion', 'desc')->first();
+        $mensaje = "";
+        return view('educacion.ImporPadronWeb.Exportar', compact('mensaje', 'imp'));
     }
 
     function json_output($status = 200, $msg = 'OK!!', $data = null)
@@ -401,12 +413,11 @@ class ImporPadronWebController extends Controller
         //return view('ImportarEducacion.PadronWebLista_importada',compact('importacion_id'));
     }
 
-    public function ListaImportada($importacion_id)
+    public function ListaImportada(Request $rq)
     {
-        //$padronWebLista = PadronWeb::all();
-        //return view('ImportarEducacion.PadronWebList',compact('padronWebLista'));
-
-        return view('Educacion.ImporPadronWeb.ListaImportada', compact('importacion_id'));
+        $importacion_id = $rq->importacion_id; //get('importacion_id');
+        $data = ImporPadronWeb::where('importacion_id', $importacion_id)->get();
+        return DataTables::of($data)->make(true);
     }
 
     public function ListaImportada_DataTable($importacion_id)
@@ -428,5 +439,11 @@ class ImporPadronWebController extends Controller
     {
         $procesar = DB::select('call edu_pa_procesarPadronWeb(?)', [$importacion_id]);
         return view('correcto');
+    }
+
+    public function download()
+    {
+        $name = 'Padron Web ' . date('Y-m-d') . '.xlsx';
+        return Excel::download(new ImporPadronWebExport, $name);
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Educacion\InstitucionEducativa;
 use App\Models\Educacion\RER;
 use App\Models\Educacion\PadronRER;
+use App\Models\Educacion\Ugel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,8 +21,9 @@ class PadronRERController extends Controller
 
     public function principal()
     {
+        $ugels = Ugel::select('id', 'codigo', 'nombre')->where('dependencia', '>', '0')->get();
         $mensaje = "";
-        return view('educacion.PadronRER.Principal', compact('mensaje'));
+        return view('educacion.PadronRER.Principal', compact('mensaje', 'ugels'));
     }
 
     public function ListarDTImportFuenteTodos(Request $rq)
@@ -29,6 +31,10 @@ class PadronRERController extends Controller
         $draw = intval($rq->draw);
         $start = intval($rq->start);
         $length = intval($rq->length);
+
+        $ugel = $rq->fugel;
+        $rer = $rq->frer;
+        $nivel = $rq->fnivel;
 
         $query = PadronRER::select(
             'edu_padron_rer.*',
@@ -43,17 +49,18 @@ class PadronRERController extends Controller
             ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'edu_padron_rer.institucioneducativa_id')
             ->join('edu_nivelmodalidad as v4', 'v4.id', '=', 'v3.NivelModalidad_id')
             ->join('edu_ugel as v5', 'v5.id', '=', 'v3.Ugel_id')
-            ->orderBy('edu_padron_rer.id', 'desc')->get();
+            ->orderBy('edu_padron_rer.id', 'desc');
+        if ($ugel > 0)
+            $query = $query->where('v5.id', $ugel);
+        if ($rer > 0)
+            $query = $query->where('v2.id', $rer);
+        if ($nivel > 0)
+            $query = $query->where('v3.NivelModalidad_id', $nivel);
+        $query = $query->get();
         $data = [];
         foreach ($query as $key => $value) {
 
             $btn1 = '<a href="#" class="btn btn-info btn-xs" onclick="edit(' . $value->id . ')"  title="MODIFICAR"> <i class="fa fa-pen"></i> </a>';
-
-            /* if ($value->estado == 0) {
-                $btn2 = '&nbsp;<a class="btn btn-sm btn-dark btn-xs" href="javascript:void(0)" title="Desactivar" onclick="estado(' . $value->id . ',' . $value->estado . ')"><i class="fa fa-power-off"></i></a> ';
-            } else {
-                $btn2 = '&nbsp;<a class="btn btn-sm btn-default btn-xs"  title="Activar" onclick="estado(' . $value->id . ',' . $value->estado . ')"><i class="fa fa-check"></i></a> ';
-            } */
             $btn3 = '&nbsp;<a href="#" class="btn btn-danger btn-xs" onclick="borrar(' . $value->id . ')"  title="ELIMINAR"> <i class="fa fa-trash"></i> </a>';
             $btn4 = '&nbsp;<button type="button" onclick="ver(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
 
@@ -74,6 +81,8 @@ class PadronRERController extends Controller
             "recordsTotal" => $start,
             "recordsFiltered" => $length,
             "data" => $data,
+            "ugel" => $ugel,
+            "rer" => $rer,
         );
         return response()->json($result);
     }
@@ -198,5 +207,58 @@ class PadronRERController extends Controller
         $rer->estado = $rer->estado == 1 ? 0 : 1;
         $rer->save();
         return response()->json(array('status' => true));
+    }
+
+    public function avance()
+    {
+        $mensaje = "";
+        $data['rer'] = RER::where('estado', 0)->count();
+        $data['pres'] = RER::select(DB::raw('sum(presupuesto) as vv'))->first()->vv;
+        $data['iiee'] = PadronRER::all()->count();
+        $data['alumnos'] = PadronRER::select(DB::raw('sum(total_estudiantes) as vv'))->first()->vv;
+        $data['docentes'] = PadronRER::select(DB::raw('sum(total_docentes) as vv'))->first()->vv;
+        //return $data;
+        return view('educacion.PadronRER.Avance', compact('mensaje', 'data'));
+    }
+
+    public function grafica1()
+    {
+        $info = DB::table(DB::raw('(select distinct
+                                        v4.nombre as name,
+                                        v2.codigo_rer as codigo
+                                    from edu_padron_rer v1
+                                    inner join edu_rer as v2 on v2.id=v1.rer_id
+                                    inner join edu_institucioneducativa as v3 on v3.id=v1.institucioneducativa_id
+                                    inner join edu_ugel as v4 on v4.id=v3.Ugel_id) as tx'))
+            ->select('name', DB::raw('count(codigo) as y'))
+            ->groupBy('name')->orderBy('y', 'desc')
+            ->get();
+        return response()->json(compact('info'));
+    }
+
+    public function grafica2()
+    {
+        $info = PadronRER::select('v4.nombre as name', DB::raw('count(v2.codigo_rer) as y'))
+            ->join('edu_rer as v2', 'v2.id', '=', 'edu_padron_rer.rer_id')
+            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'edu_padron_rer.institucioneducativa_id')
+            ->join('edu_nivelmodalidad as v4', 'v4.id', '=', 'v3.NivelModalidad_id')
+            ->groupBy('name')->orderBy('y', 'desc')
+            ->get();
+        return response()->json(compact('info'));
+    }
+
+    public function ajax_cargarnivel(Request $rq)
+    {
+        $ugel = $rq->ugel; //->get('ugel');
+        $rer = PadronRER::select(
+            'v4.id',
+            'v4.nombre',
+        )
+            ->join('edu_institucioneducativa as v3', 'v3.id', '=', 'edu_padron_rer.institucioneducativa_id')
+            ->join('edu_nivelmodalidad as v4', 'v4.id', '=', 'v3.NivelModalidad_id')
+            ->orderBy('v4.nombre', 'asc');
+        $rer = $rer->where('v3.Ugel_id', $ugel);
+        $rer = $rer->distinct()->get();
+        return response()->json(compact('rer'));
     }
 }

@@ -25,6 +25,8 @@ use App\Repositories\Educacion\PadronWebRepositorio;
 use App\Repositories\Educacion\PlazaRepositorio;
 use App\Repositories\Educacion\TabletaRepositorio;
 use App\Repositories\Educacion\UgelRepositorio;
+use App\Repositories\Presupuesto\BaseGastosRepositorio;
+use App\Repositories\Presupuesto\BaseIngresosRepositorio;
 use App\Repositories\Vivienda\CentroPobladoDatassRepositorio;
 use App\Repositories\Vivienda\CentroPobladoRepositotio;
 use Illuminate\Http\Request;
@@ -125,127 +127,68 @@ class HomeController extends Controller
     {
         $impG = Importacion::where('fuenteimportacion_id', '13')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
         $impI = Importacion::where('fuenteimportacion_id', '15')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
-        //return $impI;
 
-        $opt1 = BaseGastos::where('importacion_id', $impG->id)->select(DB::raw('sum(pim) as pim'), DB::raw('100*sum(devengado)/sum(pim) as eje'))->first();
+        $opt1 = BaseGastosRepositorio::total_pim($impG->id);
         $card1['pim'] = $opt1->pim;
         $card1['eje'] = $opt1->eje;
 
-        $opt1 = BaseGastos::where('pres_base_gastos.importacion_id', $impG->id)
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
-            ->select(
-                'v4.id',
-                'v4.tipogobierno as gobiernos',
-                DB::raw('sum(pres_base_gastos.pim) as pim'),
-                DB::raw('100*sum(pres_base_gastos.devengado)/sum(pres_base_gastos.pim) as eje')
-            )
-            ->groupBy('id', 'gobiernos')
-            ->orderBy('v4.id', 'asc')
-            ->get();
+        $opt1 = BaseGastosRepositorio::pim_tipogobierno($impG->id);
         $card2['pim'] = $opt1[1]->pim;
         $card2['eje'] = $opt1[1]->eje;
         $card3['pim'] = $opt1[2]->pim;
         $card3['eje'] = $opt1[2]->eje;
         $card4['pim'] = $opt1[0]->pim;
         $card4['eje'] = $opt1[0]->eje;
-        //return $opt1;
 
         return view('home', compact('sistema_id', 'card1', 'card2', 'card3', 'card4', 'impG', 'impI'));
     }
 
     public function presupuestografica1($importacion_id)
     {
-        $info = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
-            ->select(
-                'v4.id',
-                'v4.tipogobierno as name',
-                DB::raw('sum(pres_base_gastos.pim) as y'),
-            )
-            ->groupBy('id', 'name')
-            ->orderBy('v4.pos', 'asc')
-            ->get();
-        foreach ($info as $key => $value) {
-            if ($value->name == 'GOBIERNO NACIONAL') $value->name = 'GOB. NACIONAL';
-            if ($value->name == 'GOBIERNOS REGIONALES') $value->name = 'GOB. REGIONALES';
-            if ($value->name == 'GOBIERNOS LOCALES') $value->name = 'GOB. LOCALES';
-        }
+        $info = BaseGastosRepositorio::pim_tipogobierno2($importacion_id);
         return response()->json(compact('info'));
     }
 
     public function presupuestografica2($importacion_id)
     {
-        $info = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
-            ->join('pres_producto_proyecto as v5', 'v5.id', '=', 'pres_base_gastos.productoproyecto_id')
-            ->select(
-                'v4.id',
-                'v4.tipogobierno as name',
-                DB::raw('sum(pres_base_gastos.pim) as y'),
-            )
-            ->where('v5.codigo', '2')
-            ->groupBy('id', 'name')
-            ->orderBy('v4.pos', 'asc')
-            ->get();
-        foreach ($info as $key => $value) {
-            if ($value->name == 'GOBIERNO NACIONAL') $value->name = 'GOB. NACIONAL';
-            if ($value->name == 'GOBIERNOS REGIONALES') $value->name = 'GOB. REGIONALES';
-            if ($value->name == 'GOBIERNOS LOCALES') $value->name = 'GOB. LOCALES';
-        }
+        $info = BaseGastosRepositorio::inversiones_pim_tipogobierno($importacion_id);
         return response()->json(compact('info'));
     }
 
     public function presupuestografica3($importacion_id)
     {
-        $info = BaseIngresos::where('pres_base_ingresos.importacion_id', $importacion_id)
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_ingresos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
-            ->select(
-                'v4.id',
-                'v4.tipogobierno as name',
-                DB::raw('sum(pres_base_ingresos.pim) as y'),
-            )
-            ->groupBy('id', 'name')
-            ->orderBy('v4.pos', 'asc')
-            ->get();
-        foreach ($info as $key => $value) {
-            if ($value->name == 'GOBIERNO NACIONAL') $value->name = 'GOB. NACIONAL';
-            if ($value->name == 'GOBIERNOS REGIONALES') $value->name = 'GOB. REGIONALES';
-            if ($value->name == 'GOBIERNOS LOCALES') $value->name = 'GOB. LOCALES';
-        }
+        $info = BaseIngresosRepositorio::pim_tipogobierno($importacion_id);
         return response()->json(compact('info'));
     }
+
     public function presupuestografica4($importacion_id)
     {
-        $base = BaseGastos::select(
-            'v3.id',
-            'v2.anio as ano',
-            'v6.tipogobierno as tipo',
-            DB::raw("sum(IF(v6.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos.pim,0)) as pim1"),
-            DB::raw("sum(IF(v6.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos.pim,0)) as pim2"),
-            DB::raw("sum(IF(v6.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos.pim,0)) as pim3"),
-        )
-            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
-            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_gastos.importacion_id')
-            ->join('pres_pliego as v4', 'v4.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v5', 'v5.id', '=', 'v4.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v6', 'v6.id', '=', 'v5.tipogobierno')
-            ->where('v3.estado', 'PR')
-            ->groupBy('id', 'ano', 'tipo')
-            ->get();
+        $base = BaseGastosRepositorio::pim_anios_tipogobierno();
         $data['categoria'] = [];
         $data['series'] = [];
         $dx1 = [];
         $dx2 = [];
         $dx3 = [];
-        //$data['categoria'][] = [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,]; //$ba->ano;
+        foreach ($base as $key => $ba) {
+            $data['categoria'][] = $ba->ano;
+            $dx1[] = $ba->pim1;
+            $dx2[] = $ba->pim2;
+            $dx3[] = $ba->pim3;
+        }
+        $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#7e57c2',  'data' => $dx1];
+        $data['series'][] = ['name' => 'GOBIERNOS REGIONALES', 'color' => '#317eeb',  'data' => $dx2];
+        $data['series'][] = ['name' => 'GOBIERNOS LOCALES', 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('data'));
+    }
+
+    public function presupuestografica5($importacion_id)
+    {
+        $base = BaseGastosRepositorio::inversion_pim_anios_tipogobierno();
+        $data['categoria'] = [];
+        $data['series'] = [];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
         foreach ($base as $key => $ba) {
             if ($ba->tipo == 'GOBIERNO NACIONAL') {
                 $data['categoria'][] = $ba->ano;
@@ -262,112 +205,53 @@ class HomeController extends Controller
         return response()->json(compact('data'));
     }
 
-    public function presupuestografica4x($importacion_id)
+    public function presupuestografica6($importacion_id)
     {
-        $base = BaseGastos::select(
-            'v3.id',
-            'v2.anio as name',
-            'v2.anio as drilldown',
-            DB::raw("sum(pres_base_gastos.pim) as pim"),
-            DB::raw('ROUND(sum(pres_base_gastos.devengado),2) as devengado'),
-            DB::raw("ROUND(100*sum(pres_base_gastos.devengado)/sum(pres_base_gastos.pim),1) as y")
-        )
-            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
-            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_gastos.importacion_id')
-            ->where('v3.estado', 'PR')
-            ->groupBy('id', 'name')
-            ->get();
-
-        /* $info = BaseGastos::where('v5.estado', 'PR')
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
-            ->join('par_importacion as v5', 'v5.id', '=', 'pres_base_gastos.importacion_id')
-            ->select(
-                DB::raw('year(v5.fechaActualizacion) as ano'),
-                'v4.id',
-                'v4.tipogobierno as name',
-                DB::raw('sum(pres_base_gastos.pia) as pia'),
-                DB::raw('sum(pres_base_gastos.pim) as pim'),
-                DB::raw('sum(pres_base_gastos.devengado) as ejecutado'),
-                DB::raw('ROUND(100*sum(pres_base_gastos.devengado)/sum(pres_base_gastos.pim),1) as pejecutado'),
-            )
-            ->groupBy('ano', 'id', 'name')
-            //->orderBy('v4.pos', 'asc')
-            ->get(); */
-
+        $base = BaseIngresosRepositorio::pim_anios_tipogobierno($importacion_id);
         $data['categoria'] = [];
         $data['series'] = [];
-        $base2 = [];
         $dx1 = [];
         $dx2 = [];
         $dx3 = [];
         foreach ($base as $key => $ba) {
-            /* $ba->name =  $ba->name;
-            $data2 = []; */
-            /* foreach ($info as $inf) {
-                if ($inf->ano == $ba->name)
-                    $data2[] = [$inf->name, $inf->pia];
+            if ($ba->tipo == 'GOBIERNO NACIONAL') {
+                $data['categoria'][] = $ba->ano;
+                $dx1[] = $ba->pim1;
             }
-            $base2[] = ['name' => $ba->name, 'id' => $ba->drilldown, 'data' => $data2]; */
-
-            $data['categoria'][] = $ba->name;
-            $dx2[] = $ba->pim; // ['name' => $ba->pim, 'drilldown' => $ba->drilldown]; //pim
-            $dx3[] = $ba->devengado; // ['name' => $ba->devengado, 'drilldown' => $ba->drilldown]; //devengado
+            if ($ba->tipo == 'GOBIERNOS REGIONALES')
+                $dx2[] = $ba->pim2;
+            if ($ba->tipo == 'GOBIERNOS LOCALES')
+                $dx3[] = $ba->pim3;
         }
-        $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb',  'data' => $dx2];
-        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
+        $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#7e57c2',  'data' => $dx1];
+        $data['series'][] = ['name' => 'GOBIERNOS REGIONALES', 'color' => '#317eeb',  'data' => $dx2];
+        $data['series'][] = ['name' => 'GOBIERNOS LOCALES', 'color' => '#ef5350', 'data' => $dx3];
         return response()->json(compact('data'));
     }
 
-    public function presupuestografica5($importacion_id)
+    public function presupuestografica7()
     {
-        $base = BaseGastos::select(
-            'v2.anio as name',
-            //DB::raw("sum(pres_base_gastos.pim) as y"),
-            DB::raw("ROUND(100*sum(pres_base_gastos.devengado)/sum(pres_base_gastos.pim),1) as y")
-        )
-            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
-            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_gastos.importacion_id')
-            ->join('pres_producto_proyecto as v4', 'v4.id', '=', 'pres_base_gastos.productoproyecto_id')
-            ->where('v3.estado', 'PR')
-            ->where('v4.codigo', '2')
-            ->groupBy('name')
-            ->get();
-        return response()->json(compact('base'));
-    }
-    public function presupuestografica6($importacion_id)
-    {
-        $base = BaseIngresos::select(
-            'v2.anio as name',
-            //DB::raw("sum(pres_base_ingresos.pim) as y"),
-            DB::raw("ROUND(100*sum(pres_base_ingresos.recaudado)/sum(pres_base_ingresos.pim),1) as y")
-        )
-            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_ingresos.anio_id')
-            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_ingresos.importacion_id')
-            ->where('v3.estado', 'PR')
-            ->groupBy('name')
-            ->get();
-        return response()->json(compact('base'));
+        $base = BaseGastosRepositorio::activades_pim_anios_tipogobierno();
+        $data['categoria'] = [];
+        $data['series'] = [];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
+        foreach ($base as $key => $ba) {
+            $data['categoria'][] = $ba->ano;
+            $dx1[] = $ba->pim1;
+            $dx2[] = $ba->pim2;
+            $dx3[] = $ba->pim3;
+        }
+        $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#7e57c2',  'data' => $dx1];
+        $data['series'][] = ['name' => 'GOBIERNOS REGIONALES', 'color' => '#317eeb',  'data' => $dx2];
+        $data['series'][] = ['name' => 'GOBIERNOS LOCALES', 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('data'));
     }
 
     public function presupuestotabla1($importacion_id)
     {
-        $info = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
-            ->select(
-                'v4.id',
-                'v4.tipogobierno as name',
-                DB::raw('sum(pres_base_gastos.pia) as y1'),
-                DB::raw('sum(pres_base_gastos.pim) as y2'),
-                DB::raw('sum(pres_base_gastos.devengado) as y3'),
-            )
-            ->groupBy('id', 'name')
-            ->orderBy('v4.pos', 'asc')
-            ->get();
-        //$gobiernos = TipoGobierno::all();
+        $info = BaseGastosRepositorio::pim_pia_devengado_tipogobierno($importacion_id);
         $data['categoria'] = ['GOBIERNO NACIONAL', 'GOBIERNOS REGIONALES', 'GOBIERNOS LOCALES'];
         $data['series'] = [];
         $dx1 = [];
@@ -381,31 +265,12 @@ class HomeController extends Controller
         //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
         $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb', 'data' => $dx2];
         $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
-
-        //$data['categoria'] = ['GOB. NACIONAL', 'GOB. REGIONALES', 'GOB. LOCALES'];
-
         return response()->json(compact('data'));
     }
 
     public function presupuestotabla2($importacion_id)
     {
-        $info = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
-            ->join('pres_producto_proyecto as v5', 'v5.id', '=', 'pres_base_gastos.productoproyecto_id')
-            ->select(
-                'v4.id',
-                'v4.tipogobierno as name',
-                DB::raw('sum(pres_base_gastos.pia) as y1'),
-                DB::raw('sum(pres_base_gastos.pim) as y2'),
-                DB::raw('sum(pres_base_gastos.devengado) as y3'),
-            )
-            ->where('v5.codigo', '2')
-            ->groupBy('id', 'name')
-            ->orderBy('v4.pos', 'asc')
-            ->get();
-        //$gobiernos = TipoGobierno::all();
+        $info = BaseGastosRepositorio::inversion_pim_pia_devengado_tipogobierno($importacion_id);
         $data['categoria'] = ['GOBIERNO NACIONAL', 'GOBIERNOS REGIONALES', 'GOBIERNOS LOCALES'];
         $data['series'] = [];
         $dx1 = [];
@@ -424,22 +289,7 @@ class HomeController extends Controller
 
     public function presupuestotabla3($importacion_id)
     {
-        $info = BaseIngresos::where('pres_base_ingresos.importacion_id', $importacion_id)
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_ingresos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
-            ->select(
-                'v4.id',
-                'v4.tipogobierno as name',
-                DB::raw('sum(pres_base_ingresos.pia) as y1'),
-                DB::raw('sum(pres_base_ingresos.pim) as y2'),
-                DB::raw('sum(pres_base_ingresos.recaudado) as y3'),
-            )
-            ->groupBy('id', 'name')
-            ->orderBy('v4.pos', 'asc')
-            ->get();
-        //return $info;
-        //$gobiernos = TipoGobierno::all();
+        $info = BaseIngresosRepositorio::pim_pia_devengado_tipogobierno($importacion_id);
         $data['categoria'] = ['GOBIERNO NACIONAL', 'GOBIERNOS REGIONALES', 'GOBIERNOS LOCALES'];
         $data['series'] = [];
         $dx1 = [];
@@ -454,6 +304,27 @@ class HomeController extends Controller
         $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb', 'data' => $dx2];
         $data['series'][] = ['name' => 'RECAUDACIÓN', 'color' => '#ef5350', 'data' => $dx3];
         return response()->json(compact('data'));
+    }
+
+    public function presupuestotabla()
+    {
+        $body = BaseGastosRepositorio::pim_ejecutado_noejecutado_tipogobierno();
+        $foot = ['gnp' => 0, 'gnd' => 0, 'gnne' => 0, 'glp' => 0, 'gld' => 0, 'glne' => 0, 'grp' => 0, 'grd' => 0, 'grne' => 0, 'ttp' => 0, 'ttd' => 0, 'ttne' => 0];
+        foreach ($body as $key => $value) {
+            $foot['gnp'] += $value->gnp;
+            $foot['gnd'] += $value->gnd;
+            $foot['gnne'] += $value->gnne;
+            $foot['glp'] += $value->glp;
+            $foot['gld'] += $value->gld;
+            $foot['glne'] += $value->glne;
+            $foot['grp'] += $value->grp;
+            $foot['grd'] += $value->grd;
+            $foot['grne'] += $value->grne;
+            $foot['ttp'] += $value->ttp;
+            $foot['ttd'] += $value->ttd;
+            $foot['ttne'] += $value->ttne;
+        }
+        return view("presupuesto.inicioPresupuestohometabla1", compact('body', 'foot'));
     }
 
 
@@ -512,7 +383,9 @@ class HomeController extends Controller
             $importables['nexus_minedu'] = $imp3 == null;
             return  view('home', compact('importacion_id', 'importables'));
         }
-    }
+    }//https://automatizacion.teambsac.com/
+    //https://beta.pucallsystem.com/dongato/login
+
 
     public function educaciongrafica1()
     {

@@ -236,6 +236,20 @@ class ImportacionRepositorio
         return $query;
     }
 
+    public static function Listar_FuenteTodos2($fuenteImportacion_id)
+    {
+        $query = DB::table('par_importacion as v1')
+            ->join('par_fuenteimportacion as v2', 'v2.id', '=', 'v1.fuenteImportacion_id')
+            ->join('adm_usuario as v3', 'v3.id', '=', 'v1.usuarioId_Crea')
+            ->join('adm_usuario as v4', 'v4.id', '=', 'v1.usuarioId_Aprueba', 'left')
+            ->whereIn('v1.fuenteImportacion_id', $fuenteImportacion_id)
+            ->where('v1.estado', '!=', 'EL')
+            ->orderBy('v1.id', 'desc')
+            ->select('v1.*', 'v2.nombre as fuente', 'v3.nombre as cnombre', 'v3.apellidos as capellidos', 'v4.nombre as anombre', 'v4.apellidos as aapellidos')
+            ->get();
+        return $query;
+    }
+
     public static function Listar_FuenteTodos_PEIB($fuenteImportacion_id)
     {
         $query = DB::table('par_importacion as v1')
@@ -289,6 +303,12 @@ class ImportacionRepositorio
             )
             ->take(1)
             ->get();
+        return $query;
+    }
+
+    public static function objMaxFuenteFechaActualizacion($fuente)
+    {
+        $query = Importacion::where(['fuenteimportacion_id' => $fuente, 'estado' => 'PR'])->orderBy('fechaActualizacion', 'desc')->first();
         return $query;
     }
 }

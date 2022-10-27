@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Educacion;
 
+use App\Exports\ImporPadronNexusExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Imports\tablaXImport;
@@ -14,10 +15,12 @@ use App\Repositories\Educacion\PlazaRepositorio;
 use App\Utilities\Utilitario;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class CuadroAsigPersonalController extends Controller
 {
+    public $fuente = 2;
     public function __construct()
     {
         $this->middleware('auth');
@@ -27,6 +30,13 @@ class CuadroAsigPersonalController extends Controller
     {
         $mensaje = "";
         return view('educacion.CuadroAsigPersonal.Importar', compact('mensaje'));
+    }
+
+    public function exportar()
+    {
+        $imp = Importacion::where(['fuenteimportacion_id' => $this->fuente, 'estado' => 'PR'])->orderBy('fechaActualizacion', 'desc')->first();
+        $mensaje = "";
+        return view('educacion.CuadroAsigPersonal.Exportar', compact('mensaje', 'imp'));
     }
 
     function json_output($status = 200, $msg = 'OK!!', $data = null)
@@ -297,12 +307,11 @@ class CuadroAsigPersonalController extends Controller
             ->toJson();
     }
 
-    public function ListaImportada(Request $request, $importacion_id)
+    public function ListaImportada(Request $rq)
     {
-        $data = PlazaRepositorio::listaImportada($importacion_id);
-        //return response()->json($data);
+        $id = $rq->importacion_id;
+        $data = CuadroAsigPersonal::where('importacion_id', $id)->get(); // PlazaRepositorio::listaImportada($id);
         return DataTables::of($data)->make(true);
-        /* return view('Educacion.CuadroAsigPersonal.ListaImportada', compact('importacion_id')); */
     }
 
     public function ListaImportada_DataTable($importacion_id)
@@ -324,7 +333,13 @@ class CuadroAsigPersonalController extends Controller
         $procesar = DB::select('call edu_pa_procesarCuadroAsigPersonal(?,?)', [$importacion_id, auth()->user()->id]);
         return view('correcto');
     }
-
+    public function download()
+    {
+        ini_set('memory_limit', '-1');
+        set_time_limit(0);
+        $name = 'NEXUS ' . date('Y-m-d') . '.xlsx';
+        return Excel::download(new ImporPadronNexusExport, $name);
+    }
 
     //**************************************************************************************** */
     public function Principal()

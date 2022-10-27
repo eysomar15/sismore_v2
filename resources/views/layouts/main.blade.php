@@ -80,8 +80,14 @@
                                             <h4 class="page-title">Ejecución Presupuestal De La Región Ucayali</h4>
                                             <div class="page-title-right">
                                                 <ol class="breadcrumb p-0 m-0">
-                                                    @if (isset($impI))
-                                                        Actualizado al 23 Setiembre 2022{{-- date('d/m/Y',strtotime($impG->fechaActualizacion)) --}}
+                                                    @if (isset($impG))
+                                                        @php
+                                                            $mes = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+                                                        @endphp
+                                                        Actualizado al
+                                                        {{ date('d', strtotime($impG->fechaActualizacion)); }} de
+                                                        {{ $mes[date('m', strtotime($impG->fechaActualizacion)) - 1]; }} del
+                                                        {{ date('Y', strtotime($impG->fechaActualizacion));}}
                                                     @endif
                                                 </ol>
                                             </div>
@@ -296,8 +302,11 @@
     <!-- App js -->
     <script src="{{ asset('/') }}public/assets/js/app.min.js"></script>
     <script>
-        var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263',
-            '#6AF9C4'
+        /* var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263',
+                        '#6AF9C4'
+                    ]; */
+        var paleta_colores = ['#317eeb', '#ef5350', '#33b86c', '#33b86c', '#33b86c', '#6c757d', '#ec407a', '#7e57c2',
+            '#ffd740'
         ];
         var table_language = {
             "lengthMenu": "Mostrar " +

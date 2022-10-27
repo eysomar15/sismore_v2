@@ -1,5 +1,7 @@
 @extends('layouts.main', ['titlePage' => ''])
 @section('css')
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
     <style>
         .tablex thead th {
             padding: 6px;
@@ -26,11 +28,16 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card card-fill bg-primary  mb-0">
-                    <div class="card-header bg-transparent">
-                        <h3 class="card-title text-white text-center">AVANCE MATRICULA SEGÚN SIAGIE- MINEDO ACTUALIZADO AL
+                    <div class="card-header bg-transparent p-3">
+                        <div class="card-widgets">
+                            <button type="button" class="btn btn-purple btn-xs" onclick="location.reload()"><i
+                                    class="fa fa-redo"></i> Actualizar</button>
+
+                        </div>
+                        <h3 class="card-title text-white text-center">AVANCE MATRICULA SEGÚN SIAGIE- MINEDU ACTUALIZADO AL
                             {{ $fecha }}
-                            <a href="javascript:location.reload()" class="btn btn-warning" title="ACTUALIZAR PAGINA"><i
-                                    class="fa fa-redo"></i></a>
+                            {{-- <a href="javascript:location.reload()" class="btn btn-danger btn-xs" title="ACTUALIZAR PAGINA"><i
+                                    class="fa fa-redo"></i> Actualizar</a> --}}
                         </h3>
                     </div>
                 </div>
@@ -39,14 +46,15 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body p-2">
                         <form id="form_opciones" name="form_opciones" action="POST">
                             @csrf
                             <input type="hidden" id="importacion" name="importacion" value="{{ $importacion_id }}">
                             <div class="form-group row mb-0">
                                 <label class="col-md-1 col-form-label">Año</label>
                                 <div class="col-md-2">
-                                    <select id="ano" name="ano" class="form-control" onchange="cargartabla0()">
+                                    <select id="ano" name="ano" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         @foreach ($anios as $item)
                                             <option value="{{ $item->id }}">{{ $item->anio }}</option>
                                         @endforeach
@@ -54,7 +62,8 @@
                                 </div>
                                 <label class="col-md-1 col-form-label">Ugel</label>
                                 <div class="col-md-2">
-                                    <select id="ugel" name="ugel" class="form-control" onchange="cargartabla0()">
+                                    <select id="ugel" name="ugel" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         <option value="0">Todos</option>
                                         @foreach ($ugels as $ugel)
                                             <option value="{{ $ugel['id'] }}">{{ $ugel['nombre'] }}</option>
@@ -63,16 +72,18 @@
                                 </div>
                                 <label class="col-md-1 col-form-label">Gestion</label>
                                 <div class="col-md-2">
-                                    <select id="gestion" name="gestion" class="form-control" onchange="cargartabla0()">
+                                    <select id="gestion" name="gestion" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         <option value="0">Todos</option>
                                         @foreach ($gestions as $prov)
                                             <option value="{{ $prov['id'] }}">{{ $prov['nombre'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <label class="col-md-1 col-form-label">Área Geogra</label>
+                                <label class="col-md-1 col-form-label">Área</label>
                                 <div class="col-md-2">
-                                    <select id="area" name="area" class="form-control" onchange="cargartabla0()">
+                                    <select id="area" name="area" class="form-control p-0"
+                                        onchange="cargartabla0()">
                                         <option value="0">Todos</option>
                                         @foreach ($areas as $prov)
                                             <option value="{{ $prov->id }}">{{ $prov->nombre }}</option>
@@ -176,7 +187,24 @@
 @section('js')
     <script type="text/javascript">
         $(document).ready(function() {
-
+            Highcharts.setOptions({
+                colors: Highcharts.map(paleta_colores, function(color) {
+                    return {
+                        radialGradient: {
+                            cx: 0.5,
+                            cy: 0.3,
+                            r: 0.7
+                        },
+                        stops: [
+                            [0, color],
+                            [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
+                        ]
+                    };
+                }),
+                lang: {
+                    thousandsSep: ","
+                }
+            });
             cargartabla0();
         });
 
@@ -225,13 +253,11 @@
                 type: "GET",
                 //dataType: "JSON",
                 success: function(data) {
-                    //console.log(data);
                     $('#modal_rojos').modal('show');
                     $('#modal_rojos .modal-title').text('Avance de Matricula por Institución Educativa');
 
                     $('#vistarojo').html(data);
 
-                    //$('#tabla1rojos').DataTable();
                     $('#tabla1rojos').DataTable({
                         "language": table_language,
                     });
@@ -306,6 +332,10 @@
             });
         }
     </script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
 
     <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts-more.js"></script>

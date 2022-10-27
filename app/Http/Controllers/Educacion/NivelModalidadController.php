@@ -25,4 +25,5 @@ class NivelModalidadController extends Controller
         $query = NivelModalidadRepositorio::buscarportipo($tipo);
         return $query;
     }
+
 }

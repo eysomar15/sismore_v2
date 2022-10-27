@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Educacion;
 
+use App\Exports\ImporPadronSiagieExport;
 use App\Http\Controllers\Controller;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\ImporMatricula;
@@ -16,6 +17,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 use function PHPUnit\Framework\isNull;
@@ -29,11 +31,19 @@ class ImporMatriculaController extends Controller
 
     public function importar()
     {
-        /* $matricula = Matricula::where('importacion_id', 416)->first();
-        return $matricula; */
+        $imp = Importacion::where(['fuenteimportacion_id' => 8, 'estado' => 'PR'])->orderBy('fechaActualizacion', 'desc')->first();
+        $mat = Matricula::where('importacion_id', $imp->id)->first();
         $mensaje = "";
         $anios = Anio::orderBy('anio', 'desc')->get();
-        return view('educacion.ImporMatricula.Importar', compact('mensaje', 'anios'));
+        return view('educacion.ImporMatricula.Importar', compact('mensaje', 'anios','mat'));
+    }
+
+    public function exportar()
+    {
+        $imp = Importacion::where(['fuenteimportacion_id' => 8, 'estado' => 'PR'])->orderBy('fechaActualizacion', 'desc')->first();
+        $mat = Matricula::where('importacion_id', $imp->id)->first();
+        $mensaje = "";
+        return view('educacion.ImporMatricula.Exportar', compact('mensaje', 'imp', 'mat'));
     }
 
     function json_output($status = 200, $msg = 'OK!!', $data = null)
@@ -49,13 +59,13 @@ class ImporMatriculaController extends Controller
 
     public function guardar(Request $request)
     {
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 1);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 8);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos prendientes de aprobar para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);
         }
 
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 1);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 8);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos procesados para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);
@@ -261,9 +271,10 @@ class ImporMatriculaController extends Controller
             ->toJson();
     }
 
-    public function ListaImportada(Request $request, $importacion_id) //(Request $request, $importacion_id)
+    public function ListaImportada(Request $rq) //(Request $request, $importacion_id)
     {
-        $data = MatriculaDetalleRepositorio::listaImportada($importacion_id);
+        //$data = MatriculaDetalleRepositorio::listaImportada($importacion_id);
+        $data = ImporMatricula::where('matricula_id', $rq->matricula_id)->get();
         //return response()->json($data);
         return DataTables::of($data)->make(true);
     }
@@ -271,7 +282,6 @@ class ImporMatriculaController extends Controller
     public function ListaImportada_DataTable($importacion_id)
     {
         $padronWebLista = ImporMatriculaRepositorio::Listar_Por_Importacion_id($importacion_id);
-
         return  datatables()->of($padronWebLista)->toJson();;
     }
 
@@ -300,5 +310,11 @@ class ImporMatriculaController extends Controller
         $matricula->save();
 
         return response()->json(array('status' => true));
+    }
+
+    public function download()
+    {
+        $name = 'SIAGIE MATRICULAS ' . date('Y-m-d') . '.xlsx';
+        return Excel::download(new ImporPadronSiagieExport, $name);
     }
 }

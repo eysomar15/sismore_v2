@@ -1,15 +1,23 @@
-{{-- @extends('layouts.main', ['activePage' => '', 'titlePage' => 'asdasdas']) --}}
-{{-- @extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - SISTEMA NEXUS']) --}}
-
 @section('css')
+    <!-- Table datatable css -->
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/fixedHeader.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/scroller.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
     <style>
         .tablex thead th {
-            padding: 2px;
+            padding: 4px;
             text-align: center;
         }
 
         .tablex thead td {
-            padding: 2px;
+            padding: 4px;
             text-align: center;
             vertical-align: middle;
             font-weight: bold;
@@ -19,7 +27,7 @@
         .tablex tbody th,
         .tablex tfoot td,
         .tablex tfoot th {
-            padding: 2px;
+            padding: 4px;
         }
 
         .fuentex {
@@ -27,52 +35,52 @@
             font-weight: bold;
         }
 
-        .highcharts-figure,
-        .highcharts-data-table table {
-            min-width: 310px;
-            max-width: 800px;
-            margin: 1em auto;
-        }
+        /* .highcharts-figure,
+                        .highcharts-data-table table {
+                            min-width: 310px;
+                            max-width: 800px;
+                            margin: 1em auto;
+                        }
 
-        #anal7 {
-            height: 400px;
-        }
+                        #anal7 {
+                            height: 400px;
+                        }
 
-        .highcharts-data-table table {
-            font-family: Verdana, sans-serif;
-            border-collapse: collapse;
-            border: 1px solid #ebebeb;
-            margin: 10px auto;
-            text-align: center;
-            width: 100%;
-            max-width: 500px;
-        }
+                        .highcharts-data-table table {
+                            font-family: Verdana, sans-serif;
+                            border-collapse: collapse;
+                            border: 1px solid #ebebeb;
+                            margin: 10px auto;
+                            text-align: center;
+                            width: 100%;
+                            max-width: 500px;
+                        }
 
-        .highcharts-data-table caption {
-            padding: 1em 0;
-            font-size: 1.2em;
-            color: #555;
-        }
+                        .highcharts-data-table caption {
+                            padding: 1em 0;
+                            font-size: 1.2em;
+                            color: #555;
+                        }
 
-        .highcharts-data-table th {
-            font-weight: 600;
-            padding: 0.5em;
-        }
+                        .highcharts-data-table th {
+                            font-weight: 600;
+                            padding: 0.5em;
+                        }
 
-        .highcharts-data-table td,
-        .highcharts-data-table th,
-        .highcharts-data-table caption {
-            padding: 0.5em;
-        }
+                        .highcharts-data-table td,
+                        .highcharts-data-table th,
+                        .highcharts-data-table caption {
+                            padding: 0.5em;
+                        }
 
-        .highcharts-data-table thead tr,
-        .highcharts-data-table tr:nth-child(even) {
-            background: #f8f8f8;
-        }
+                        .highcharts-data-table thead tr,
+                        .highcharts-data-table tr:nth-child(even) {
+                            background: #f8f8f8;
+                        }
 
-        .highcharts-data-table tr:hover {
-            background: #f1f7ff;
-        }
+                        .highcharts-data-table tr:hover {
+                            background: #f1f7ff;
+                        } */
     </style>
 @endsection
 {{-- <div>
@@ -134,7 +142,8 @@
                             </div>
                             <div class="media-body align-self-center">
                                 <div class="text-right">
-                                    <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card2['pim'], 0) }}">
+                                    <h4 class="font-20 my-0 font-weight-bold"
+                                        title="{{ number_format($card2['pim'], 0) }}">
                                         <span data-plugin="counterup">
                                             {{ number_format($card2['pim'] / 1000000, 0) }}
                                         </span> M
@@ -214,8 +223,9 @@
                                 <span class="float-right">{{ number_format($card4['eje'], 2) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
-                                <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $card4['eje'] }}"
-                                    aria-valuemin="0" aria-valuemax="100" style="width: {{ $card4['eje'] }}%">
+                                <div class="progress-bar bg-danger" role="progressbar"
+                                    aria-valuenow="{{ $card4['eje'] }}" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{ $card4['eje'] }}%">
                                     <span class="sr-only">{{ $card4['eje'] }}% Complete</span>
                                 </div>
                             </div>
@@ -240,7 +250,6 @@
                     </div>
                 </div>
                 <div class="col-xl-6">
-
                     <div class="card card-border card-primary">
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
@@ -278,14 +287,14 @@
             </div>
             {{-- end  row --}}
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-xl-6">
                     <div class="card card-border card-primary">
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
-                            <div id="anal3"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                            <div id="anal3"></div>
                         </div>
                     </div>
                 </div>
@@ -295,11 +304,11 @@
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
-                            <div id="anal6"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                            <div id="anal6"></div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             {{-- end  row --}}
 
             <div class="row">
@@ -310,9 +319,6 @@
                         </div>
                         <div class="card-body p-0">
                             <div id="anal7"></div>{{-- style="min-width:400px;height:300px;margin:0 auto;" --}}
-                            {{-- <figure class="highcharts-figure">
-                                <div id="anal7"></div>
-                            </figure> --}}
                         </div>
                     </div>
                 </div>
@@ -325,8 +331,8 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body">
-                            <div id="anal8" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                        <div class="card-body p-0">
+                            <div id="anal9"></div>
                         </div>
                     </div>
                 </div>
@@ -339,14 +345,36 @@
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
-                        <div class="card-body">
-                            <div id="anal9" style="min-width:400px;height:300px;margin:0 auto;"></div>
+                        <div class="card-body p-0">
+                            <div id="anal8"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
             </div>
             {{-- end  row --}}
 
+
+
+            <div class="row">
+                <div class="col-xl-12 principal">
+                    <div class="card card-border">{{--  bg-transparent pb-0 mb-0 --}}
+                        <div class="card-header border-primary">
+                            <div class="card-widgets">{{-- impormatricula.download --}}
+                                <button type="button" class="btn btn-success btn-xs"
+                                    onclick="javascript:location=`{{ route('basegastos.download.excel.principal01') }}`"><i
+                                        class="fa fa-file-excel"></i>
+                                    Excel</button>
+                            </div>
+                            <h3 class="card-title"></h3>
+                        </div>
+                        <div class="card-body pb-0 pt-0">
+                            <div class="table-responsive" id="vista1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- end  row --}}
 
         </div>
     </div>
@@ -354,16 +382,7 @@
 
 
 @section('js')
-    {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts.js"></script> --}}
-    {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts/highcharts-more.js"></script> --}}
-    {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts/solid-gauge.js"></script> --}}
-
-    {{-- <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/data.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/drilldown.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/exporting.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/export-data.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/highcharts-modules/accessibility.js"></script> --}}
-
+    {{-- highcharts --}}
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/data.js"></script>
     <script src="https://code.highcharts.com/modules/drilldown.js"></script>
@@ -371,12 +390,33 @@
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
+    <!-- third party js -->
+    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/jszip/jszip.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/pdfmake.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/vfs_fonts.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.html5.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.print.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.scroller.min.js"></script>
+
 
 
     <script type="text/javascript">
         $(document).ready(function() {
             Highcharts.setOptions({
-                colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
+                colors: Highcharts.map(paleta_colores, function(color) {
                     return {
                         radialGradient: {
                             cx: 0.5,
@@ -401,11 +441,14 @@
                 url: "{{ url('/') }}/Home/Presupuesto/gra1/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     //console.log(data)
                     gPie('anal1', data.info,
                         '',
-                        'Distribución del Presupuesto  de la Región Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
+                        'Distribución del Presupuesto  de la Región Ucayali', /* <br><b class="fuentex">Fuente: SIAF-MEF</b> */
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
@@ -421,15 +464,18 @@
                 url: "{{ url('/') }}/Home/Presupuesto/gra2/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     //console.log(data)
                     gPie('anal2', data.info,
                         '',
-                        'Distribución del Presupuesto en Inversiones.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
+                        'Distribución del Presupuesto en Inversiones.',
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 2");
                     console.log(jqXHR);
                 },
             });
@@ -437,22 +483,25 @@
             /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 3
              */
-            $.ajax({
+            /* $.ajax({
                 url: "{{ url('/') }}/Home/Presupuesto/gra3/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal3').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     //console.log(data)
                     gPie('anal3', data.info,
                         '',
-                        'Ingreso Presupuestal de la Region Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
+                        'Ingreso Presupuestal de la Region Ucayali',
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 3");
                     console.log(jqXHR);
                 },
-            });
+            }); */
 
             /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 4
@@ -465,21 +514,16 @@
                     $('#anal7').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    console.log(data)
-                    /* gColumnDrilldown('anal7', data.base, data.base2,
-                        '',
-                        'Evolución Del Presupuesto Del Sector Público De La Región De Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
-                        'Año'); */
                     glineal(
                         'anal7',
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Evolución Del Presupuesto Del Sector Público De La Región De Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
+                        'Evolución del PIM del Sector Público de la región de Ucayali',
                         'Año');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 4");
+                    console.log("ERROR GRAFICA 7");
                     console.log(jqXHR);
                 },
             });
@@ -491,35 +535,50 @@
                 url: "{{ url('/') }}/Home/Presupuesto/gra5/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal8').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     console.log(data)
-                    gSimpleColumn('anal8', data.base,
+                    /* gSimpleColumn('anal8', data.base,
                         '',
-                        'Evaluación Del Presupuesto En Inversión Pública En La Región De Ucayali.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
-                        '');
+                        'Evaluación Del Presupuesto En Inversión Pública En La Región De Ucayali',
+                        ''); */
+                    glineal(
+                        'anal8',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Evolución del PIM en Inversión Pública de la región de Ucayali',
+                        'Año');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 4");
+                    console.log("ERROR GRAFICA 8");
                     console.log(jqXHR);
                 },
             });
 
             /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 6
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 9
              */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra6/{{ $impI->id }}",
+                url: "{{ route('graficas.home.presupuesto.7') }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal9').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
-                    console.log(data)
-                    gSimpleColumn('anal9', data.base,
+                    glineal(
+                        'anal9',
+                        data.data['categoria'],
+                        data.data['series'],
                         '',
-                        'Recaudación De Ingresos Según Tipo De Género.<br><b class="fuentex">Fuente: SIAF-MEF</b>',
-                        '');
+                        'Evolución del PIM en Actividades Pública de la región de Ucayali',
+                        'Año');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 4");
+                    console.log("ERROR GRAFICA 9");
                     console.log(jqXHR);
                 },
             });
@@ -531,6 +590,9 @@
                 url: "{{ url('/') }}/Home/Presupuesto/tabla1/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     //console.log(data.data['categoria'])
                     gAnidadaColumn(
@@ -538,11 +600,11 @@
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Ejecución Presupuestal Según Tipo De Gobierno.<br><b class="fuentex">Fuente: SIAF-MEF</b>'
+                        'Ejecución Presupuestal Según Tipo De Gobierno'
                     );
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 4");
                     console.log(jqXHR);
                 },
             });
@@ -554,6 +616,9 @@
                 url: "{{ url('/') }}/Home/Presupuesto/tabla2/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal5').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
                     //console.log(data.data['categoria'])
                     gAnidadaColumn(
@@ -561,11 +626,11 @@
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Ejecución Presupuestal en Inversiones Según Tipo De Gobierno.<br><b class="fuentex">Fuente: SIAF-MEF</b>'
+                        'Ejecución Presupuestal en Inversiones Según Tipo De Gobierno'
                     );
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 5");
                     console.log(jqXHR);
                 },
             });
@@ -573,22 +638,42 @@
             /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 3
              */
-            $.ajax({
+            /* $.ajax({
                 url: "{{ url('/') }}/Home/Presupuesto/tabla3/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal6').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
                 success: function(data) {
-                    console.log(data)
+                    //console.log(data)
                     gAnidadaColumn(
                         'anal6',
                         data.data['categoria'],
                         data.data['series'],
                         '',
-                        'Recaudación De Ingresos Según Tipo De Gobierno.<br><b class="fuentex">Fuente: SIAF-MEF</b>'
+                        'Recaudación De Ingresos Según Tipo De Gobierno'
                     );
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
+                    console.log("ERROR GRAFICA 6");
+                    console.log(jqXHR);
+                },
+            }); */
+
+            /*
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
+             */
+            $.ajax({
+                url: "{{ route('tabla.home.presupuesto') }}",
+                type: "GET",
+                beforeSend: function() {
+                    $('#vista1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    $('#vista1').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 },
             });
@@ -901,9 +986,12 @@
                         dataLabels: {
                             enabled: true,
                             //format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                            //format: '{point.y:,.0f} ( {point.percentage:.1f}% )',
-                            format: '{point.percentage:.1f}%',
-                            connectorColor: 'silver'
+                            format: '{point.y:,.0f} ({point.percentage:.1f}%)',
+                            //format: '{point.percentage:.1f}%',
+                            connectorColor: 'silver',
+                            style: {
+                                fontWeight: 'normal',
+                            }
                         }
                     },
                     series: {
@@ -931,6 +1019,18 @@
                     //name: 'Share',
                     data: datos,
                 }],
+                legend: {
+                    //align: 'center', //right//left//center
+                    //verticalAlign: 'bottom', //top//middle//bottom
+                    //layout: 'horizontal', //horizontal//vertical//proximate
+                    itemStyle: {
+                        "color": "#333333",
+                        "cursor": "pointer",
+                        "fontSize": "10px",
+                        "fontWeight": "normal",
+                        "textOverflow": "ellipsis"
+                    },
+                },
                 credits: false,
             });
         }
@@ -1017,8 +1117,28 @@
                                     return this.y;
                                 }
                             },
+                            style: {
+                                fontWeight: 'normal',
+                            }
                         },
+                        /* label:{
+                            style:{
+                                fontWeight:'normal',
+                            }
+                        } */
                     }
+                },
+                legend: {
+                    //align: 'center', //right//left//center
+                    //verticalAlign: 'bottom', //top//middle//bottom
+                    //layout: 'horizontal', //horizontal//vertical//proximate
+                    itemStyle: {
+                        "color": "#333333",
+                        "cursor": "pointer",
+                        "fontSize": "10px",
+                        "fontWeight": "normal",
+                        "textOverflow": "ellipsis"
+                    },
                 },
                 credits: false,
             });
@@ -1107,9 +1227,10 @@
                     } */
                 },
                 yAxis: {
-                    /* title: {
+                    title: {
+                        enabled: false,
                         text: 'Number of Employees'
-                    } */
+                    }
                     /* allowDecimals: false,
                     min: 0,
                     title: {
@@ -1123,15 +1244,64 @@
                     verticalAlign: 'middle'
                 },
 
-                /* plotOptions: {
-                    spline: {
+                plotOptions: {
+                    /* series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:,.0f}',
+                            //format: '{point.y:.1f}%',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                        },
+                    } */
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:,.0f}',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                            style: {
+                                fontWeight: 'normal',
+                            }
+                        },
+                        /*  point: {
+                             cursor: 'pointer',
+                             events: {
+                                 click: function() {
+                                     //alert('Category: ' + this.category + ', value: ' + this.y);
+                                     alert(this.options);
+                                     //location.href = 'https://en.wikipedia.org/wiki/' +this.options.key;
+                                     //alert('hola ronald');
+                                 },
+                             },
+                         }, */
+
+
+                    }
+                    /* spline: {
                         marker: {
                             radius: 4,
                             lineColor: '#666666',
                             lineWidth: 1
                         }
-                    }
-                }, */
+                    } */
+                },
                 /*  plotOptions: {
                      series: {
                          label: {
@@ -1143,11 +1313,16 @@
 
                 series: series,
                 legend: {
-                    align: 'center',//right//left//center
-                    verticalAlign: 'top',
-                    layout: 'vertical',
-                    /* x: 0,
-                    y: 100 */
+                    align: 'center', //right//left//center
+                    verticalAlign: 'bottom', //top//middle//bottom
+                    layout: 'horizontal', //horizontal//vertical//proximate
+                    itemStyle: {
+                        "color": "#333333",
+                        "cursor": "pointer",
+                        "fontSize": "10px",
+                        "fontWeight": "normal", //bold
+                        "textOverflow": "ellipsis"
+                    },
                 },
                 /* responsive: {
                     rules: [{

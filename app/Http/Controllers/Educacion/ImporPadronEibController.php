@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\ImporPadronEib;
 use App\Models\Educacion\Importacion;
+use App\Models\Educacion\PadronEIB;
 use App\Models\Parametro\Anio;
 use App\Repositories\Educacion\ImportacionRepositorio;
 use App\Repositories\Educacion\PadronEIBRepositorio;
@@ -247,5 +248,19 @@ class ImporPadronEibController extends Controller
         $entidad->save();
 
         return response()->json(array('status' => true));
+    }
+
+    public function ajax_cargarnivel(Request $rq)
+    {
+        $id = $rq->get('ugel');
+        $rer = PadronEIB::select('v3.id', 'v3.nombre')
+            ->join('edu_institucioneducativa as v2', 'v2.id', '=', 'edu_padron_eib.institucioneducativa_id')
+            ->join('edu_nivelmodalidad as v3', 'v3.id', '=', 'v2.NivelModalidad_id')
+            ->where('edu_padron_eib.importacion_id', 518)
+            ->where('v2..Ugel_id', $id)
+            ->distinct()
+            ->orderBy('nombre', 'asc')
+            ->get();
+        return response()->json(compact('rer'));
     }
 }

@@ -9,6 +9,7 @@ class Lengua extends Model
 {
     use HasFactory;
     protected $table = 'par_lengua';
+    public $timestamps = false;
 
     protected $fillable = [
         'nombre',

@@ -45,48 +45,99 @@
 
 @section('content')
     <div class="content">
-        <form class="">
-            @csrf
+        {{-- <form class="">@csrf </form> --}}
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card card-border">
-                        <div class="card-header bg-transparent pb-0">
-                            <div class="card-widgets">
-                                <button type="button" class="btn btn-danger btn-xs" onclick="location.reload()"><i
-                                        class="fa fa-redo"></i> Actualizar</button>
-                                <button type="button" class="btn btn-primary btn-xs" onclick="add()"><i
-                                        class="fa fa-plus"></i>
-                                    Asignar</button>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card card-border">
+                    <div class="card-header bg-transparent pb-0">
+                        <h3 class="card-title">FILTRO</h3>
+                    </div>
+                    <div class="card-body pt-2 pb-0">
+                        <form class="form-horizontal" id="form-filtro">
+                            @csrf
+                            <div class="form">
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <label class=" col-form-label">Ugel</label>
+                                        <div class="">
+                                            <select class="form-control" name="fugel" id="fugel"
+                                                onchange="cargarnivel();cargartabla();">
+                                                <option value="0">TODOS</option>
+                                                @foreach ($ugels as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-form-label">Nivel</label>
+                                        <div class="">
+                                            <select class="form-control" name="fnivel" id="fnivel"
+                                                onchange="cargarrer();cargartabla();">
+                                                <option value="0">TODOS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-form-label">Red Educativa</label>
+                                        <div class="">
+                                            <select class="form-control" name="frer" id="frer"
+                                                onchange="cargartabla();">
+                                                <option value="0">TODOS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 class="card-title">Institución Educativas </h3>
+                        </form>
+                    </div>
+                    <!-- card-body -->
+                </div>
+                <!-- card -->
+            </div>
+            <!-- col -->
+        </div>
+        <!-- End row -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-border">
+                    <div class="card-header bg-transparent pb-0">
+                        <div class="card-widgets">
+                            <button type="button" class="btn btn-danger btn-xs" onclick="location.reload()"><i
+                                    class="fa fa-redo"></i> Actualizar</button>
+                            <button type="button" class="btn btn-primary btn-xs" onclick="add()"><i class="fa fa-plus"></i>
+                                Asignar</button>
+                        </div>
+                        <h3 class="card-title">Institución Educativas </h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="tbprincipal" class="table table-striped table-bordered tablex"
+                                style="font-size: 12px">
+                                <thead class="cabecera-dataTable">
+                                    <tr class="bg-primary text-white">
+                                        <th>Nº</th>
+                                        <th>Ugel</th>
+                                        <th>Red Educativa Rural</th>
+                                        <th>Cod.Modular</th>
+                                        <th>Institución Educativa</th>
+                                        <th>Nivel</th>
+                                        <th>Tipo Transporte</th>
+                                        <th>Aciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
 
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="tbprincipal" class="table table-striped table-bordered tablex"
-                                    style="font-size: 12px">
-                                    <thead class="cabecera-dataTable">
-                                        <tr class="bg-primary text-white">
-                                            <th>Nº</th>
-                                            <th>Ugel</th>
-                                            <th>Red Educativa Rural</th>
-                                            <th>Cod.Modular</th>
-                                            <th>Institución Educativa</th>
-                                            <th>Nivel</th>
-                                            <th>Tipo Transporte</th>
-                                            <th>Aciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-
-                        </div>
                     </div>
                 </div>
-            </div> <!-- End row -->
-        </form>
+            </div>
+        </div> <!-- End row -->
+
     </div>
 
     <!-- Bootstrap modal -->
@@ -365,10 +416,16 @@
             });
 
 
+            cargartabla();
+        });
+
+        function cargartabla() {
+            //console.log($('#form-filtro').serialize())
             table_principal = $('#tbprincipal').DataTable({
                 responsive: true,
                 autoWidth: false,
                 ordered: true,
+                destroy: true,
                 language: table_language,
                 dom: 'Bfrtip',
                 buttons: [{
@@ -378,14 +435,14 @@
                     text: '<i class="fa fa-file-excel"></i> Excel',
                     titleAttr: 'Excel',
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5, 6],
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7],
                     },
                 }, {
                     extend: "pdf",
                     className: "btn-sm",
                     title: "Padron Red Educativa Rural",
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5, 6],
+                        columns: [0, 1, 2, 3, 4, 5, 6, 7],
                     },
                     orientation: 'landscape',
                     text: '<i class="fa fa-file-pdf"></i> PDF',
@@ -396,12 +453,18 @@
                         'X-CSRF-TOKEN': $('input[name=_token]').val()
                     },
                     "url": "{{ route('mantenimiento.padronrer.listar.importados') }}",
+                    "data": {
+                        "fugel": $('#fugel').val(),
+                        "frer": $('#frer').val(),
+                        "fnivel": $('#fnivel').val(),
+                    }, //$('#form-filtro').serialize(),
                     "type": "POST",
                     //"dataType": 'JSON',
                 },
 
             });
-        });
+            //table_principal.reload(null,true)
+        }
 
         function add() {
             save_method = 'add';
@@ -560,5 +623,53 @@
                 }
             });
         };
+
+
+        function cargarnivel() {
+            $.ajax({
+                url: "{{ route('padronrer.nivelmodalidad.cargar') }}",
+                data: {
+                    'ugel': $('#fugel').val()
+                },
+                type: 'get',
+                success: function(data) {
+                    $('#fnivel option ').remove();
+                    var opt = '<option value="0">TODOS</option>';
+                    $.each(data.rer, function(index, value) {
+                        opt += '<option value="' + value.id + '">' + value.nombre +
+                            '</option>';
+                    });
+                    $('#fnivel').append(opt);
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        }
+
+        function cargarrer() {
+            $.ajax({
+                url: "{{ route('rer.cargar') }}",
+                data: {
+                    'nivel': $('#fnivel').val(),
+                    'ugel': $('#fugel').val(),
+                },
+                type: 'get',
+                success: function(data) {
+                    $('#frer option ').remove();
+                    var opt = '<option value="0">TODOS</option>';
+                    $.each(data.rer, function(index, value) {
+                        opt += '<option value="' + value.id + '">' + value.nombre +
+                            '</option>';
+                    });
+                    $('#frer').append(opt);
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                },
+            });
+        }
     </script>
 @endsection
