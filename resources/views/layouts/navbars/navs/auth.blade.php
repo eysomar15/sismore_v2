@@ -70,21 +70,36 @@
              </span>
          </a>
 
+
+
          <a href="{{ route('home') }}" class="logo text-center logo-light">
              <span class="logo-lg">
-                 <img src="{{ asset('/') }}public/assets/images/logo-light-blanco.png" alt="" height="28">
+                 <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="68">
                  {{-- inicial --}}
                  <!-- <span class="logo-lg-text-dark">SISMORE</span> -->
+                
              </span>
              <span class="logo-sm">
                  <!-- <span class="logo-lg-text-dark">M</span> -->
                  <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="28">
              </span>
          </a>
+
      </div>
-
-
+ 
+     
+    <div class="logo-box2">
+        {{-- <h3 style="color:white"><strong>S I S M O R E</strong> </h3>
+        <h5 style="color:white">SISTEMA DE MONITOREO REGIONAL</h5> --}}
+ 
+        <strong style="color:white; font-size: xx-large;">S I S M O R E</strong> 
+        <br>
+        <strong style="color:white ;">SISTEMA DE MONITOREO REGIONAL</strong> 
+    </div>
+    
      <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
+
+       
          <li>
              <button class="button-menu-mobile waves-effect waves-light">
                  <i class="mdi mdi-menu"></i>
