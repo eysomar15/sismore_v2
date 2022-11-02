@@ -32,8 +32,11 @@ use App\Http\Controllers\Parametro\ClasificadorController;
 use App\Http\Controllers\Parametro\FuenteImportacionController;
 use App\Http\Controllers\Presupuesto\BaseGastosController;
 use App\Http\Controllers\Presupuesto\BaseIngresosController;
+use App\Http\Controllers\Presupuesto\ImporActividadesProyectosController;
 use App\Http\Controllers\Presupuesto\ImporGastosController;
 use App\Http\Controllers\Presupuesto\ImporIngresosController;
+use App\Http\Controllers\Presupuesto\ImporProyectosController;
+use App\Http\Controllers\Presupuesto\ImporSiafWebController;
 use App\Http\Controllers\Trabajo\ActividadController;
 use App\Http\Controllers\Trabajo\AnuarioEstadisticoController;
 use App\Http\Controllers\Trabajo\IndicadorTrabajoController;
@@ -550,8 +553,26 @@ Route::get('/IMPORINGRESO/Listar/ImportarDT', [ImporIngresosController::class, '
 Route::get('/IMPORINGRESO/eliminar/{id}', [ImporIngresosController::class, 'eliminar']);
 Route::post('/IMPORINGRESO/ListaImportada/{importacion_id}', [ImporIngresosController::class, 'ListaImportada'])->name('imporingresos.listarimportados');
 
-Route::get('/PRES/Covid/Importar', [ImporGastosController::class, 'importar'])->name('pres.covid.importar');
-Route::get('/PRES/Regiones/Importar', [ImporGastosController::class, 'importar'])->name('pres.regiones.importar');
+Route::get('/IMPORSIAFWEB/SiafWeb/Importar', [ImporSiafWebController::class, 'importar'])->name('imporsiafweb.importar');
+Route::post('/IMPORSIAFWEB/SiafWeb/Importar', [ImporSiafWebController::class, 'importarGuardar'])->name('imporsiafweb.guardar');
+Route::get('/IMPORSIAFWEB/Listar/ImportarDT', [ImporSiafWebController::class, 'ListarDTImportFuenteTodos'])->name('imporsiafweb.listar.importados');
+Route::get('/IMPORSIAFWEB/eliminar/{id}', [ImporSiafWebController::class, 'eliminar']);
+Route::post('/IMPORSIAFWEB/ListaImportada/{importacion_id}', [ImporSiafWebController::class, 'ListaImportada'])->name('imporsiafweb.listarimportados');
+
+Route::get('/IMPORPROYECTOS/Proyectos/Importar', [ImporProyectosController::class, 'importar'])->name('imporproyectos.importar');
+Route::post('/IMPORPROYECTOS/Proyectos/Importar', [ImporProyectosController::class, 'importarGuardar'])->name('imporproyectos.guardar');
+Route::get('/IMPORPROYECTOS/Listar/ImportarDT', [ImporProyectosController::class, 'ListarDTImportFuenteTodos'])->name('imporproyectos.listar.importados');
+Route::get('/IMPORPROYECTOS/eliminar/{id}', [ImporProyectosController::class, 'eliminar']);
+Route::post('/IMPORPROYECTOS/ListaImportada/{importacion_id}', [ImporProyectosController::class, 'ListaImportada'])->name('imporproyectos.listarimportados');
+
+Route::get('/IMPORACTSPROYS/ActsProys/Importar', [ImporActividadesProyectosController::class, 'importar'])->name('imporactividadesproyectos.importar');
+Route::post('/IMPORACTSPROYS/ActsProys/Importar', [ImporActividadesProyectosController::class, 'importarGuardar'])->name('imporactividadesproyectos.guardar');
+Route::get('/IMPORACTSPROYS/Listar/ImportarDT', [ImporActividadesProyectosController::class, 'ListarDTImportFuenteTodos'])->name('imporactividadesproyectos.listar.importados');
+Route::get('/IMPORACTSPROYS/eliminar/{id}', [ImporActividadesProyectosController::class, 'eliminar']);
+Route::post('/IMPORACTSPROYS/ListaImportada/{importacion_id}', [ImporActividadesProyectosController::class, 'ListaImportada'])->name('imporactividadesproyectos.listarimportados');
+
+Route::get('/PRES/Covid/Importar', [ImporGastosController::class, 'importar'])->name('pres.covid.importar');    //no sirve
+Route::get('/PRES/Regiones/Importar', [ImporGastosController::class, 'importar'])->name('pres.regiones.importar');//no sirve
 
 
 Route::get('/presupuesto/Principal', [MatriculaDetalleController::class, 'cargarpresupuestoxxx'])->name('educacion.xxx');

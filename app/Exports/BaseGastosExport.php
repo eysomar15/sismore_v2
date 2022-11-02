@@ -7,8 +7,9 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class BaseGastosExport implements FromView, ShouldAutoSize
+class BaseGastosExport implements FromView, ShouldAutoSize, WithEvents
 {
     public $importacion_id;
 
@@ -38,5 +39,86 @@ class BaseGastosExport implements FromView, ShouldAutoSize
         return view("presupuesto.inicioPresupuestohometabla1excel", compact('body', 'foot'));
     }
 
+    public function  registerEvents(): array
+    {
+        $head = [
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'ffffff'],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                //'rotation' => 90,
+                'startColor' => [
+                    'argb' => '317eeb',
+                ],
+                'endColor' => [
+                    'argb' => '317eeb',
+                ],
 
+            ],
+        ];
+        $foot = [
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'ffffff'],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                //'rotation' => 90,
+                'startColor' => [
+                    'argb' => '317eeb',
+                ],
+                'endColor' => [
+                    'argb' => '317eeb',
+                ],
+
+            ],
+        ];
+        $body = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ],
+        ];
+        $bodya = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+        ];
+        $border = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['rgb' => 'EBE8E4'],
+                ],
+
+            ],
+        ];
+        $opt = [AfterSheet::class => function (AfterSheet $event) use ($head, $foot, $body, $bodya, $border) {
+            $event->sheet->getStyle('A1:M2')->applyFromArray($head);
+            $event->sheet->getStyle('A12:M12')->applyFromArray($foot);
+            $event->sheet->getStyle('B3:M11')->applyFromArray($body);
+            $event->sheet->getStyle('A3:A11')->applyFromArray($bodya);
+            $event->sheet->getStyle('A1:M12')->applyFromArray($border);
+        }];
+
+        return $opt;
+
+        /* return [AfterSheet::class => function (AfterSheet $event) use ($head, $foot, $body, $bodya, $border) {
+            $event->sheet->getStyle('A1:M2')->applyFromArray($head);
+            $event->sheet->getStyle('A12:M12')->applyFromArray($foot);
+            $event->sheet->getStyle('B3:M11')->applyFromArray($body);
+            $event->sheet->getStyle('A3:A11')->applyFromArray($bodya);
+            $event->sheet->getStyle('A1:M12')->applyFromArray($border);
+        }]; */
+    }
 }

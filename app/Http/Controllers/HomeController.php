@@ -327,8 +327,6 @@ class HomeController extends Controller
         return view("presupuesto.inicioPresupuestohometabla1", compact('body', 'foot'));
     }
 
-
-
     public function vivienda($sistema_id)
     {
         //$imp = Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', '7')->where('estado', 'PR')->first();
@@ -357,7 +355,6 @@ class HomeController extends Controller
         }
     }
 
-
     public function educacion($sistema_id)
     {
         $imp = ImportacionRepositorio::Max_yearPadronWeb(); //padron web
@@ -383,35 +380,38 @@ class HomeController extends Controller
             $importables['nexus_minedu'] = $imp3 == null;
             return  view('home', compact('importacion_id', 'importables'));
         }
-    }//https://automatizacion.teambsac.com/
-    //https://beta.pucallsystem.com/dongato/login
-
+    }
 
     public function educaciongrafica1()
     {
         $info = MatriculaDetalleRepositorio::estudiantes_matriculadosEBR_EBE_anual();
         return response()->json(compact('info'));
     }
+
     public function educaciongrafica2()
     {
         $info = PlazaRepositorio::docentes_conteo_anual();
         return response()->json(compact('info'));
     }
+
     public function educaciongrafica3()
     {
         $info = MatriculaDetalleRepositorio::estudiantes_matriculados_segungenero();
         return response()->json(compact('info'));
     }
+
     public function educaciongrafica4()
     {
         $info = PlazaRepositorio::docentes_segungenero_anual();
         return response()->json(compact('info'));
     }
+
     public function educaciongrafica5()
     {
         $info = MatriculaDetalleRepositorio::estudiantes_matriculados_segunareageografica();
         return response()->json(compact('info'));
     }
+
     public function educaciongrafica6()
     {
         $info =  PlazaRepositorio::docentes_segunareageograficas();
