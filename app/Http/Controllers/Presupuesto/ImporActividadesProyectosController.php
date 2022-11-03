@@ -117,7 +117,7 @@ class ImporActividadesProyectosController extends Controller
                         'compromiso_mensual' => $row['compromiso_mensual'],
                         'devengado' => $row['devengado'],
                         'girado' => $row['girado'],
-                        'avance' => $row['avance'],
+                        'avance' => (float)$row['avance'],
                     ]);
                 }
             }

@@ -7,8 +7,10 @@ use App\Models\Administracion\UsuarioPerfil;
 use App\Models\Educacion\CentroPoblado;
 use App\Models\Educacion\Importacion;
 use App\Models\Educacion\Matricula;
+use App\Models\Presupuesto\BaseActividadesProyectos;
 use App\Models\Presupuesto\BaseGastos;
 use App\Models\Presupuesto\BaseIngresos;
+use App\Models\Presupuesto\BaseSiafWeb;
 use App\Models\Presupuesto\TipoGobierno;
 use App\Models\Vivienda\CentroPobladoDatass;
 use App\Repositories\Administracion\MenuRepositorio;
@@ -25,8 +27,10 @@ use App\Repositories\Educacion\PadronWebRepositorio;
 use App\Repositories\Educacion\PlazaRepositorio;
 use App\Repositories\Educacion\TabletaRepositorio;
 use App\Repositories\Educacion\UgelRepositorio;
+use App\Repositories\Presupuesto\BaseActividadesProyectosRepositorio;
 use App\Repositories\Presupuesto\BaseGastosRepositorio;
 use App\Repositories\Presupuesto\BaseIngresosRepositorio;
+use App\Repositories\Presupuesto\BaseSiafWebRepositorio;
 use App\Repositories\Vivienda\CentroPobladoDatassRepositorio;
 use App\Repositories\Vivienda\CentroPobladoRepositotio;
 use Illuminate\Http\Request;
@@ -122,8 +126,31 @@ class HomeController extends Controller
         return view('home', compact('sistema_id'));
     }
 
-
     public function presupuesto($sistema_id)
+    {
+        $impSW = Importacion::where('fuenteimportacion_id', '24')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
+        $baseSW = BaseSiafWeb::where('importacion_id', $impSW->id)->first();
+        $anio = $baseSW->anio;
+        $opt1 = BaseSiafWebRepositorio::pia_pim_certificado_devengado($baseSW->id);
+        //return $opt1;
+        $card1['pim'] = $opt1->pia;
+        $card1['eje'] = $opt1->eje_pia;
+        $card2['pim'] = $opt1->pim;
+        $card2['eje'] = $opt1->eje_pim;
+        $card3['pim'] = $opt1->cer;
+        $card3['eje'] = $opt1->eje_cer;
+        $card4['pim'] = $opt1->dev;
+        $card4['eje'] = $opt1->eje_dev;
+
+        $impAP = Importacion::where('fuenteimportacion_id', '16')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
+        $baseAP = BaseActividadesProyectos::where('importacion_id', $impAP->id)->first();
+        $opt2 = BaseActividadesProyectosRepositorio::listar_regiones($baseAP->id);
+        //return $opt2;
+
+        return view('home', compact('sistema_id', 'card1', 'card2', 'card3', 'card4', 'impSW', 'anio', 'baseAP'));
+    }
+
+    public function presupuesto_($sistema_id)
     {
         $impG = Importacion::where('fuenteimportacion_id', '13')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
         $impI = Importacion::where('fuenteimportacion_id', '15')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
@@ -150,6 +177,101 @@ class HomeController extends Controller
     }
 
     public function presupuestografica2($importacion_id)
+    {/*formato: [hc-key, value] */
+        /* $datax = [
+            ['465', '15', 'Provincia de Lima', 'pe-145', 18],
+            ['440', '1', 'Amazonas', 'pe-am', 15],
+            ['441', '2', 'Ancash', 'pe-an', 29],
+            ['442', '3', 'Apurimac', 'pe-ap', 24],
+            ['443', '4', 'Arequipa', 'pe-ar', 25],
+            ['444', '5', 'Ayacucho', 'pe-ay', 17],
+            ['445', '6', 'Cajamarca', 'pe-cj', 30],
+            ['464', '7', 'Callao', 'pe-3341', 32],
+            ['446', '8', 'Cusco', 'pe-cs', 11],
+            ['447', '9', 'Huancavelica', 'pe-hv', 19],
+            ['448', '10', 'Huanuco', 'pe-hc', 31],
+            ['449', '11', 'Ica', 'pe-ic', 10],
+            ['450', '12', 'Junin', 'pe-ju', 20],
+            ['451', '13', 'La Libertad', 'pe-ll', 33],
+            ['452', '14', 'Lambayeque', 'pe-lb', 22],
+            ['463', '15', 'Lima', 'pe-lr', 21],
+            ['453', '16', 'Loreto', 'pe-lo', 16],
+            ['454', '17', 'Madre de Dios', 'pe-md', 13],
+            ['455', '18', 'Moquegua', 'pe-mq', 27],
+            ['456', '19', 'Pasco', 'pe-pa', 34],
+            ['457', '20', 'Piura', 'pe-pi', 35],
+            ['458', '21', 'Puno', 'pe-cl', 26],
+            ['459', '22', 'San Martin', 'pe-sm', 14],
+            ['460', '23', 'Tacna', 'pe-ta', 28],
+            ['461', '24', 'Tumbes', 'pe-tu', 23],
+            ['462', '25', 'Ucayali', 'pe-uc', 12],
+        ]; */
+        $datax = [
+            465 => 'pe-145',
+            440 => 'pe-am',
+            441 => 'pe-an',
+            442 => 'pe-ap',
+            443 => 'pe-ar',
+            444 => 'pe-ay',
+            445 => 'pe-cj',
+            464 => 'pe-3341',
+            446 => 'pe-cs',
+            447 => 'pe-hv',
+            448 => 'pe-hc',
+            449 => 'pe-ic',
+            450 => 'pe-ju',
+            451 => 'pe-ll',
+            452 => 'pe-lb',
+            463 => 'pe-lr',
+            453 => 'pe-lo',
+            454 => 'pe-md',
+            455 => 'pe-mq',
+            456 => 'pe-pa',
+            457 => 'pe-pi',
+            458 => 'pe-cl',
+            459 => 'pe-sm',
+            460 => 'pe-ta',
+            461 => 'pe-tu',
+            462 => 'pe-uc',
+        ];
+
+        /* $data = [
+            ['pe-ic', 10],
+            ['pe-cs', 11],
+            ['pe-uc', 12],
+            ['pe-md', 13],
+            ['pe-sm', 14],
+            ['pe-am', 15],
+            ['pe-lo', 16],
+            ['pe-ay', 17],
+            ['pe-145', 18],
+            ['pe-hv', 19],
+            ['pe-ju', 20],
+            ['pe-lr', 21],
+            ['pe-lb', 22],
+            ['pe-tu', 23],
+            ['pe-ap', 24],
+            ['pe-ar', 25],
+            ['pe-cl', 26],
+            ['pe-mq', 27],
+            ['pe-ta', 28],
+            ['pe-an', 29],
+            ['pe-cj', 30],
+            ['pe-hc', 31],
+            ['pe-3341', 32],
+            ['pe-ll', 33],
+            ['pe-pa', 34],
+            ['pe-pi', 35]
+        ]; */
+        $data = [];
+        $info = BaseActividadesProyectosRepositorio::listar_regiones($importacion_id);
+        foreach ($info as $key => $value1) {
+            $hc_key = $datax[$value1->codigo];
+            $data[] = [$hc_key, $key + 1];
+        }
+        return response()->json(compact('info', 'data'));
+    }
+    public function presupuestografica2_($importacion_id)
     {
         $info = BaseGastosRepositorio::inversiones_pim_tipogobierno($importacion_id);
         return response()->json(compact('info'));
