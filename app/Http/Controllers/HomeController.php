@@ -268,6 +268,8 @@ class HomeController extends Controller
         foreach ($info as $key => $value1) {
             $hc_key = $datax[$value1->codigo];
             $data[] = [$hc_key, $key + 1];
+            if ($value1->codigo == 462)
+                $value1->color = '#ef5350';
         }
         return response()->json(compact('info', 'data'));
     }

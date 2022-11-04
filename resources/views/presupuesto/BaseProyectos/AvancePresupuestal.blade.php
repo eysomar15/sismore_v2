@@ -1,3 +1,4 @@
+@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ''])
 @section('css')
     <!-- Table datatable css -->
     <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
@@ -34,53 +35,6 @@
             font-size: 10px;
             font-weight: bold;
         }
-
-        /* .highcharts-figure,
-                                                                                                                                .highcharts-data-table table {
-                                                                                                                                    min-width: 310px;
-                                                                                                                                    max-width: 800px;
-                                                                                                                                    margin: 1em auto;
-                                                                                                                                }
-
-                                                                                                                                #anal7 {
-                                                                                                                                    height: 400px;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table table {
-                                                                                                                                    font-family: Verdana, sans-serif;
-                                                                                                                                    border-collapse: collapse;
-                                                                                                                                    border: 1px solid #ebebeb;
-                                                                                                                                    margin: 10px auto;
-                                                                                                                                    text-align: center;
-                                                                                                                                    width: 100%;
-                                                                                                                                    max-width: 500px;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table caption {
-                                                                                                                                    padding: 1em 0;
-                                                                                                                                    font-size: 1.2em;
-                                                                                                                                    color: #555;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table th {
-                                                                                                                                    font-weight: 600;
-                                                                                                                                    padding: 0.5em;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table td,
-                                                                                                                                .highcharts-data-table th,
-                                                                                                                                .highcharts-data-table caption {
-                                                                                                                                    padding: 0.5em;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table thead tr,
-                                                                                                                                .highcharts-data-table tr:nth-child(even) {
-                                                                                                                                    background: #f8f8f8;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table tr:hover {
-                                                                                                                                    background: #f1f7ff;
-                                                                                                                                } */
     </style>
 @endsection
 {{-- <div>
@@ -99,7 +53,6 @@
             </div>
         </div> --}}
             <!-- end row -->
-
             <div class="row">
 
                 <div class="col-md-6 col-xl-3">
@@ -367,7 +320,7 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 1
              */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra2/{{ $baseAP->id }}",
+                url: "{{ url('/') }}/BaseProyectos/mapa1/{{ $baseP->id }}",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
@@ -1083,6 +1036,7 @@
                 },
                 yAxis: {
                     min: 0,
+                    max: 110,
                     title: {
                         text: '', // 'Population (millions)',
                         align: 'high'
@@ -1092,7 +1046,7 @@
                     } */
                 },
                 tooltip: {
-                    valueSuffix: ' %'
+                    valueSuffix: ' %' //millions
                 },
                 plotOptions: {
                     bar: {
@@ -1141,6 +1095,7 @@
                     label: {
                         enabled: false
                     },
+                    //colorByPoint: false,
                     data: series,
                     /* [{
                                                 name: "Chrome",
