@@ -398,7 +398,7 @@
                         'anal3',
                         data.info,
                         '',
-                        'RANKIN MENSUAL DE LA EJECUCIÓN DE GASTOS',
+                        'RANKIN(PUESTOS) MENSUAL DE LA EJECUCIÓN DE GASTOS',
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
@@ -742,6 +742,8 @@
                                     return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
                                 } else if (this.y > 1000) {
                                     return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else if (this.y < -1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
                                 } else {
                                     return this.y;
                                 }
@@ -923,7 +925,13 @@
                     crosshair: true
                 }],
                 yAxis: [{ // Primary yAxis
-                        max: 2500000000,
+                        max: 2000000000,
+                        labels: {
+                            enabled: false,
+                        },
+                        title: {
+                            enabled: false,
+                        },
                         /* labels: {
                             format: '{value}°C',
                             style: {
@@ -939,6 +947,12 @@
                         //opposite: true,
                     }, { // Secondary yAxis
                         gridLineWidth: 0,
+                        labels: {
+                            enabled: false,
+                        },
+                        title: {
+                            enabled: false,
+                        },
                         /* title: {
                             text: 'Rainfall',
                             style: {
@@ -951,8 +965,8 @@
                                 color: Highcharts.getOptions().colors[0]
                             }
                         }, */
-                        min: -50,
-                        //max:110,
+                        min: -100,
+                        max:150,
                         opposite: true,
                     },
                     /* { // Tertiary yAxis
@@ -988,6 +1002,8 @@
                                     return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
                                 } else if (this.y > 1000) {
                                     return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else if (this.y <101) {
+                                    return this.y  + "%";
                                 } else {
                                     return this.y;
                                 }
@@ -1001,7 +1017,7 @@
                 tooltip: {
                     shared: true,
                 },
-                /* legend: {
+                legend: {
                     itemStyle: {
                         "color": "#333333",
                         "cursor": "pointer",
@@ -1009,7 +1025,7 @@
                         "fontWeight": "normal",
                         "textOverflow": "ellipsis"
                     },
-                }, */
+                },
                 credits: false,
             });
         }
@@ -1359,7 +1375,7 @@
                     enabled: false,
                 },
                 yAxis: {
-                    min: 0,
+                    //min: 0,
                     title: {
                         text: '', // 'Population (millions)',
                         align: 'high'

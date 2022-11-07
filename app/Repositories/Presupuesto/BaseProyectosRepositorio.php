@@ -41,10 +41,28 @@ class BaseProyectosRepositorio
         $query = BaseProyectosDetalle::whereIn('pres_base_proyectos_detalle.baseproyectos_id', $reg)
             ->join('pres_base_proyectos as v2', 'v2.id', '=', 'pres_base_proyectos_detalle.baseproyectos_id')
             ->select(
-                'v2.mes as name',
+                'v2.mes as mes',
+                'v3.departamento as dep',
                 DB::raw('round(100*sum(pres_base_proyectos_detalle.devengado)/sum(pres_base_proyectos_detalle.pim),2) as y'),
             )
-            ->groupBy('name')
+            ->orderBy('mes','asc')
+            ->orderBy('eje','desc')
+            ->get();
+        return $query;
+    }
+
+    public static function listado_ejecucion($reg) //base detallee
+    {
+        $query = BaseProyectosDetalle::whereIn('pres_base_proyectos_detalle.baseproyectos_id', $reg)
+            ->join('pres_base_actividadesproyectos as v2', 'v2.id', '=', 'pres_base_proyectos_detalle.baseproyectos_id')
+            ->join('pres_gobiernos_regionales as v3', 'v3.id', '=', 'pres_base_proyectos_detalle.gobiernosregionales_id')
+            ->select(
+                'v2.mes as mes',
+                'v3.departamento as dep',
+                DB::raw('round(100*(pres_base_proyectos_detalle.devengado)/(pres_base_proyectos_detalle.pim),5) as eje'),
+            )
+            ->orderBy('mes','asc')
+            ->orderBy('eje','desc')
             ->get();
         return $query;
     }

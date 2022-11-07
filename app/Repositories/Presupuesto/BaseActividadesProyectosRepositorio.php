@@ -38,15 +38,18 @@ class BaseActividadesProyectosRepositorio
         return $array;
     }
 
-    public static function suma_ejecucion($reg) //base detallee
+    public static function listado_ejecucion($reg) //base detallee
     {
         $query = BaseActividadesProyectosDetalle::whereIn('pres_base_actividadesproyectos_detalle.baseactividadesproyectos_id', $reg)
             ->join('pres_base_actividadesproyectos as v2', 'v2.id', '=', 'pres_base_actividadesproyectos_detalle.baseactividadesproyectos_id')
+            ->join('pres_gobiernos_regionales as v3', 'v3.id', '=', 'pres_base_actividadesproyectos_detalle.gobiernosregionales_id')
             ->select(
-                'v2.mes as name',
-                DB::raw('round(100*sum(pres_base_actividadesproyectos_detalle.devengado)/sum(pres_base_actividadesproyectos_detalle.pim),2) as y'),
+                'v2.mes as mes',
+                'v3.departamento as dep',
+                DB::raw('round(100*(pres_base_actividadesproyectos_detalle.devengado)/(pres_base_actividadesproyectos_detalle.pim),5) as eje'),
             )
-            ->groupBy('name')
+            ->orderBy('mes','asc')
+            ->orderBy('eje','desc')
             ->get();
         return $query;
     }

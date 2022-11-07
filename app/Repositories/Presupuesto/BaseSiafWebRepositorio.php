@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class BaseSiafWebRepositorio
 {
-    public static function pia_pim_certificado_devengado($base)
+    public static function pia_pim_certificado_devengado($base, $tipo)
     {
         $query = BaseSiafWebDetalle::where('basesiafweb_id', $base)
             ->select(
@@ -20,8 +20,10 @@ class BaseSiafWebRepositorio
                 DB::raw('round(100*sum(devengado)/sum(pim),2) as eje_pim'),
                 DB::raw('round(100*sum(certificado)/sum(pim),2) as eje_cer'),
                 DB::raw('round(100*sum(devengado)/sum(certificado),2) as eje_dev')
-            )
-            ->first();
+            );
+        if ($tipo != 0)
+            $query = $query->where('productoproyecto_id', $tipo);
+        $query = $query->first();
         return $query;
     }
 
@@ -38,7 +40,7 @@ class BaseSiafWebRepositorio
         return $array;
     }
 
-    public static function suma_pim($reg) //base detallee
+    public static function suma_pim($reg, $tipo) //base detallee
     {
         $query = BaseSiafWebDetalle::whereIn('pres_base_siafweb_detalle.basesiafweb_id', $reg)
             ->join('pres_base_siafweb as v2', 'v2.id', '=', 'pres_base_siafweb_detalle.basesiafweb_id')
@@ -46,25 +48,30 @@ class BaseSiafWebRepositorio
                 'v2.mes as name',
                 DB::raw('sum(pres_base_siafweb_detalle.pim) as y'),
             )
-            ->groupBy('name')
-            ->get();
+            ->groupBy('name');
+        if ($tipo != 0)
+            $query = $query->where('pres_base_siafweb_detalle.productoproyecto_id', $tipo);
+        $query = $query->get();
         return $query;
     }
 
-    public static function suma_certificado($reg) //base detallee
+    public static function suma_certificado($reg, $tipo) //base detallee
     {
         $query = BaseSiafWebDetalle::whereIn('pres_base_siafweb_detalle.basesiafweb_id', $reg)
             ->join('pres_base_siafweb as v2', 'v2.id', '=', 'pres_base_siafweb_detalle.basesiafweb_id')
             ->select(
                 'v2.mes as name',
+                //DB::raw('round(sum(pres_base_siafweb_detalle.certificado),2) as y'),
                 DB::raw('sum(pres_base_siafweb_detalle.certificado) as y'),
             )
-            ->groupBy('name')
-            ->get();
+            ->groupBy('name');
+        if ($tipo != 0)
+            $query = $query->where('pres_base_siafweb_detalle.productoproyecto_id', $tipo);
+        $query = $query->get();
         return $query;
     }
 
-    public static function suma_devengado($reg) //base detallee
+    public static function suma_devengado($reg, $tipo) //base detallee
     {
         $query = BaseSiafWebDetalle::whereIn('pres_base_siafweb_detalle.basesiafweb_id', $reg)
             ->join('pres_base_siafweb as v2', 'v2.id', '=', 'pres_base_siafweb_detalle.basesiafweb_id')
@@ -72,12 +79,14 @@ class BaseSiafWebRepositorio
                 'v2.mes as name',
                 DB::raw('sum(pres_base_siafweb_detalle.devengado) as y'),
             )
-            ->groupBy('name')
-            ->get();
+            ->groupBy('name');
+        if ($tipo != 0)
+            $query = $query->where('pres_base_siafweb_detalle.productoproyecto_id', $tipo);
+        $query = $query->get();
         return $query;
     }
 
-    public static function suma_xxxx($reg) //base detallee
+    public static function suma_xxxx($reg, $tipo) //base detallee
     {
         $query = BaseSiafWebDetalle::whereIn('pres_base_siafweb_detalle.basesiafweb_id', $reg)
             ->join('pres_base_siafweb as v2', 'v2.id', '=', 'pres_base_siafweb_detalle.basesiafweb_id')
@@ -89,7 +98,11 @@ class BaseSiafWebRepositorio
                 DB::raw('round(100*sum(pres_base_siafweb_detalle.certificado)/sum(pres_base_siafweb_detalle.pim),1) as y4'),
                 DB::raw('round(100*sum(pres_base_siafweb_detalle.devengado)/sum(pres_base_siafweb_detalle.pim),1) as y5'),
             )
-            ->groupBy('name')
+            ->groupBy('name');
+        if ($tipo != 0)
+            $query = $query->where('pres_base_siafweb_detalle.productoproyecto_id', $tipo);
+        $query = $query
+
             ->get();
         return $query;
     }

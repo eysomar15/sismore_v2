@@ -131,7 +131,7 @@ class HomeController extends Controller
         $impSW = Importacion::where('fuenteimportacion_id', '24')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
         $baseSW = BaseSiafWeb::where('importacion_id', $impSW->id)->first();
         $anio = $baseSW->anio;
-        $opt1 = BaseSiafWebRepositorio::pia_pim_certificado_devengado($baseSW->id);
+        $opt1 = BaseSiafWebRepositorio::pia_pim_certificado_devengado($baseSW->id, 0);
         //return $opt1;
         $card1['pim'] = $opt1->pia;
         $card1['eje'] = $opt1->eje_pia;
@@ -284,10 +284,20 @@ class HomeController extends Controller
     {
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseActividadesProyectosRepositorio::baseids_fecha_max(date('Y'));
-        $info = BaseActividadesProyectosRepositorio::suma_ejecucion($array);
-        foreach ($info as $key => $value) {
-            $value->name = $mes[$value->name - 1];
+        $base = BaseActividadesProyectosRepositorio::listado_ejecucion($array);
+        $info = [];
+        for ($i = 1; $i < 13; $i++) {
+            $puesto = 1;
+            foreach ($base as $key => $value) {
+                if ($value->mes == $i) {
+                    if ($value->dep == 25) {
+                        $info[] = ['name' => $mes[$i - 1], 'y' => $puesto];
+                    }
+                    $puesto++;
+                }
+            }
         }
+
         return response()->json(compact('info'));
     }
 
@@ -295,7 +305,7 @@ class HomeController extends Controller
     {
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
-        $info = BaseSiafWebRepositorio::suma_pim($array);
+        $info = BaseSiafWebRepositorio::suma_pim($array, 0);
         foreach ($info as $key => $value) {
             $value->name = $mes[$value->name - 1];
         }
@@ -306,9 +316,13 @@ class HomeController extends Controller
     {
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
-        $info = BaseSiafWebRepositorio::suma_certificado($array);
+        $info = BaseSiafWebRepositorio::suma_certificado($array, 0);
+        $monto = 0;
         foreach ($info as $key => $value) {
             $value->name = $mes[$value->name - 1];
+            $value->y -= $monto;
+            $monto = $value->y + $monto;
+            $value->y = round($value->y, 2);
         }
         return response()->json(compact('info'));
     }
@@ -317,9 +331,13 @@ class HomeController extends Controller
     {
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
-        $info = BaseSiafWebRepositorio::suma_devengado($array);
+        $info = BaseSiafWebRepositorio::suma_devengado($array, 0);
+        $monto = 0;
         foreach ($info as $key => $value) {
             $value->name = $mes[$value->name - 1];
+            $value->y -= $monto;
+            $monto = $value->y + $monto;
+            $value->y = round($value->y, 2);
         }
         return response()->json(compact('info'));
     }
@@ -328,25 +346,25 @@ class HomeController extends Controller
     {
         $info['categoria'] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
-        $query = BaseSiafWebRepositorio::suma_xxxx($array);
+        $query = BaseSiafWebRepositorio::suma_xxxx($array, 0);
         $info['series'] = [];
-        $dx1 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        //$dx1 = [null, null, null, null, null, null, null, null, null, null, null, null];
         $dx2 = [null, null, null, null, null, null, null, null, null, null, null, null];
         $dx3 = [null, null, null, null, null, null, null, null, null, null, null, null];
         $dx4 = [null, null, null, null, null, null, null, null, null, null, null, null];
         $dx5 = [null, null, null, null, null, null, null, null, null, null, null, null];
         foreach ($query as $key => $value) {
-            $dx1[$key] = $value->y1; //pia
+            //$dx1[$key] = $value->y1; //pia
             $dx2[$key] = $value->y2; //pim
             $dx3[$key] = $value->y3; //devengado
             $dx4[$key] = $value->y4; //devengado
             $dx5[$key] = $value->y5; //devengado
         }
-        $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'PIM', 'color' => '#7C7D7D', 'data' => $dx1];
+        //$info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'PIM', 'color' => '#7C7D7D', 'data' => $dx1];
         $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'CERTIFICADO', 'color' => '#317eeb', 'data' => $dx2];
         $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
         $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%AVANCE CERT', 'tooltip' => ['valueSuffix' => ' %'], 'color' => '#ef5350', 'data' => $dx4];
-        $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%EJECUCION',  'tooltip' => ['valueSuffix' => ' %'], 'color' => '#ef5350', 'data' => $dx5];
+        $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%EJECUCIÓN',  'tooltip' => ['valueSuffix' => ' %'], 'color' => '#ef5350', 'data' => $dx5];
         return response()->json(compact('info'));
     }
 

@@ -599,6 +599,10 @@ Route::get('/SiafIngresos/Ingreso/grafico03', [BaseIngresosController::class, 'i
 Route::get('/BaseProyectos/AvancePresupuestal', [BaseProyectosController::class, 'avancepresupuestal'])->name('baseproyectos.avancepresupuestal');
 Route::get('/BaseProyectos/mapa1/{importacion_id}', [BaseProyectosController::class, 'avancepresupuestalmapa1'])->name('baseproyectos.mapa.1');
 Route::get('/BaseProyectos/gra3', [BaseProyectosController::class, 'avancepresupuestalgrafica3'])->name('baseproyectos.grafica.1');
+Route::get('/BaseProyectos/gra4', [BaseProyectosController::class, 'avancepresupuestalgrafica4'])->name('baseproyectos.grafica.2');
+Route::get('/BaseProyectos/gra5', [BaseProyectosController::class, 'avancepresupuestalgrafica5'])->name('baseproyectos.grafica.3');
+Route::get('/BaseProyectos/gra6', [BaseProyectosController::class, 'avancepresupuestalgrafica6'])->name('baseproyectos.grafica.4');
+Route::get('/BaseProyectos/gra7', [BaseProyectosController::class, 'avancepresupuestalgrafica7'])->name('baseproyectos.grafica.5');
 //Route::get('/Home/Presupuesto/gra3', [HomeController::class, 'presupuestografica3'])->name('graficas.home.presupuesto.3');
 
 /**************************************** FIN PRESUPUESTO ***************************************************/
