@@ -86,4 +86,15 @@ class BaseProyectosController extends Controller
         }
         return response()->json(compact('info', 'data'));
     }
+
+    public function avancepresupuestalgrafica3()
+    {
+        $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+        $array = BaseProyectosRepositorio::baseids_fecha_max(date('Y'));
+        $info = BaseProyectosRepositorio::suma_ejecucion($array);
+        foreach ($info as $key => $value) {
+            $value->name = $mes[$value->name - 1];
+        }
+        return response()->json(compact('info'));
+    }
 }

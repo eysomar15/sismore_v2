@@ -345,6 +345,28 @@
             });
 
 
+            $.ajax({
+                url: "{{ url('/') }}/BaseProyectos/gra3",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal3').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    gSimpleColumn(
+                        'anal3',
+                        data.info,
+                        '',
+                        'RANKIN MENSUAL DE LA EJECUCIÓN DE GASTOS',
+                        '');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 3");
+                    console.log(jqXHR);
+                },
+            });
+
+
 
         });
     </script>

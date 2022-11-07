@@ -263,6 +263,7 @@ class HomeController extends Controller
             ['pe-pa', 34],
             ['pe-pi', 35]
         ]; */
+
         $data = [];
         $info = BaseActividadesProyectosRepositorio::listar_regiones($importacion_id);
         foreach ($info as $key => $value1) {
@@ -279,13 +280,77 @@ class HomeController extends Controller
         return response()->json(compact('info'));
     }
 
-    public function presupuestografica3($importacion_id)
+    public function presupuestografica3()
     {
-        $info = BaseIngresosRepositorio::pim_tipogobierno($importacion_id);
+        $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+        $array = BaseActividadesProyectosRepositorio::baseids_fecha_max(date('Y'));
+        $info = BaseActividadesProyectosRepositorio::suma_ejecucion($array);
+        foreach ($info as $key => $value) {
+            $value->name = $mes[$value->name - 1];
+        }
         return response()->json(compact('info'));
     }
 
-    public function presupuestografica4($importacion_id)
+    public function presupuestografica4()
+    {
+        $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+        $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
+        $info = BaseSiafWebRepositorio::suma_pim($array);
+        foreach ($info as $key => $value) {
+            $value->name = $mes[$value->name - 1];
+        }
+        return response()->json(compact('info'));
+    }
+
+    public function presupuestografica5()
+    {
+        $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+        $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
+        $info = BaseSiafWebRepositorio::suma_certificado($array);
+        foreach ($info as $key => $value) {
+            $value->name = $mes[$value->name - 1];
+        }
+        return response()->json(compact('info'));
+    }
+
+    public function presupuestografica6()
+    {
+        $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+        $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
+        $info = BaseSiafWebRepositorio::suma_devengado($array);
+        foreach ($info as $key => $value) {
+            $value->name = $mes[$value->name - 1];
+        }
+        return response()->json(compact('info'));
+    }
+
+    public function presupuestografica7()
+    {
+        $info['categoria'] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
+        $query = BaseSiafWebRepositorio::suma_xxxx($array);
+        $info['series'] = [];
+        $dx1 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        $dx2 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        $dx3 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        $dx4 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        $dx5 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        foreach ($query as $key => $value) {
+            $dx1[$key] = $value->y1; //pia
+            $dx2[$key] = $value->y2; //pim
+            $dx3[$key] = $value->y3; //devengado
+            $dx4[$key] = $value->y4; //devengado
+            $dx5[$key] = $value->y5; //devengado
+        }
+        $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'PIM', 'color' => '#7C7D7D', 'data' => $dx1];
+        $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'CERTIFICADO', 'color' => '#317eeb', 'data' => $dx2];
+        $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
+        $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%AVANCE CERT', 'tooltip' => ['valueSuffix' => ' %'], 'color' => '#ef5350', 'data' => $dx4];
+        $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%EJECUCION',  'tooltip' => ['valueSuffix' => ' %'], 'color' => '#ef5350', 'data' => $dx5];
+        return response()->json(compact('info'));
+    }
+
+    public function presupuestografica4_($importacion_id)
     {
         $base = BaseGastosRepositorio::pim_anios_tipogobierno();
         $data['categoria'] = [];
@@ -305,7 +370,7 @@ class HomeController extends Controller
         return response()->json(compact('data'));
     }
 
-    public function presupuestografica5($importacion_id)
+    public function presupuestografica5_($importacion_id)
     {
         $base = BaseGastosRepositorio::inversion_pim_anios_tipogobierno();
         $data['categoria'] = [];
@@ -329,7 +394,7 @@ class HomeController extends Controller
         return response()->json(compact('data'));
     }
 
-    public function presupuestografica6($importacion_id)
+    public function presupuestografica6_($importacion_id)
     {
         $base = BaseIngresosRepositorio::pim_anios_tipogobierno($importacion_id);
         $data['categoria'] = [];
@@ -353,7 +418,7 @@ class HomeController extends Controller
         return response()->json(compact('data'));
     }
 
-    public function presupuestografica7()
+    public function presupuestografica7_()
     {
         $base = BaseGastosRepositorio::activades_pim_anios_tipogobierno();
         $data['categoria'] = [];

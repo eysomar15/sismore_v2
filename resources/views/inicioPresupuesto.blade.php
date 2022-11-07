@@ -34,53 +34,6 @@
             font-size: 10px;
             font-weight: bold;
         }
-
-        /* .highcharts-figure,
-                                                                                                                                .highcharts-data-table table {
-                                                                                                                                    min-width: 310px;
-                                                                                                                                    max-width: 800px;
-                                                                                                                                    margin: 1em auto;
-                                                                                                                                }
-
-                                                                                                                                #anal7 {
-                                                                                                                                    height: 400px;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table table {
-                                                                                                                                    font-family: Verdana, sans-serif;
-                                                                                                                                    border-collapse: collapse;
-                                                                                                                                    border: 1px solid #ebebeb;
-                                                                                                                                    margin: 10px auto;
-                                                                                                                                    text-align: center;
-                                                                                                                                    width: 100%;
-                                                                                                                                    max-width: 500px;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table caption {
-                                                                                                                                    padding: 1em 0;
-                                                                                                                                    font-size: 1.2em;
-                                                                                                                                    color: #555;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table th {
-                                                                                                                                    font-weight: 600;
-                                                                                                                                    padding: 0.5em;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table td,
-                                                                                                                                .highcharts-data-table th,
-                                                                                                                                .highcharts-data-table caption {
-                                                                                                                                    padding: 0.5em;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table thead tr,
-                                                                                                                                .highcharts-data-table tr:nth-child(even) {
-                                                                                                                                    background: #f8f8f8;
-                                                                                                                                }
-
-                                                                                                                                .highcharts-data-table tr:hover {
-                                                                                                                                    background: #f1f7ff;
-                                                                                                                                } */
     </style>
 @endsection
 {{-- <div>
@@ -292,6 +245,49 @@
             </div>
             {{-- end  row --}}
 
+
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="anal5"></div>
+                            {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="anal6"></div>
+                            {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- end  row --}}
+
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="anal7"></div>
+                            {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {{-- end  row --}}
+
         </div>
     </div>
 @endsection
@@ -374,7 +370,6 @@
                     $('#anal2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    console.log(data)
                     maps01('anal1',
                         data.data,
                         '',
@@ -387,6 +382,112 @@
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/gra3",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal3').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    gSimpleColumn(
+                        'anal3',
+                        data.info,
+                        '',
+                        'RANKIN MENSUAL DE LA EJECUCIÓN DE GASTOS',
+                        '');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 3");
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/gra4",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    gSimpleColumn('anal4',
+                        data.info,
+                        '',
+                        'ACUMULADO MENSUAL DEL PIM A TODA FUENTE DE FINANCIAMIENTO',
+                        '');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 3");
+                    console.log(jqXHR);
+                },
+            });
+
+
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/gra5",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal5').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    gSimpleColumn(
+                        'anal5',
+                        data.info,
+                        '',
+                        'CERTIFICADO MENSUAL A TODA FUENTE DE FINANCIAMIENTO ',
+                        '');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 5");
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/gra6",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal6').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    gSimpleColumn(
+                        'anal6',
+                        data.info,
+                        '',
+                        'DEVENGADO MENSUAL A TODA FUENTE DE FINANCIAMIENTO',
+                        '');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 6");
+                    console.log(jqXHR);
+                },
+            });
+
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/gra7",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal7').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    console.log(data)
+                    //gSimpleColumn('anal6', data.info, '', '', '');
+                    gAnidadaColumn('anal7',
+                        data.info.categoria,
+                        data.info.series,
+                        '',
+                        'CERTIFICADO Y DEVENGADO ACUMULADO Y EJECUCIÓN MENSUAL');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 7");
                     console.log(jqXHR);
                 },
             });
@@ -598,7 +699,7 @@
                     type: 'column',
                 },
                 title: {
-                    enabled: false,
+                    enabled: true,
                     text: titulo,
                 },
                 subtitle: {
@@ -608,7 +709,8 @@
                     type: 'category',
                 },
                 yAxis: {
-                    /* max: 100, */
+                    //max: 1600000000,
+                    //min:100000,
                     title: {
                         enabled: false,
                         text: 'Porcentaje',
@@ -625,7 +727,8 @@
 
                 }],
                 tooltip: {
-                    pointFormat: '<span style="color:{point.color}">\u25CF</span> Hay: <b>{point.y}%</b><br/>',
+                    //pointFormat: '<span style="color:{point.color}">\u25CF</span> Hay: <b>{point.y}%</b><br/>',
+                    pointFormat: '<span style="color:{point.color}">\u25CF</span> Hay: <b>{point.y}</b><br/>',
                     shared: true
                 },
                 plotOptions: {
@@ -633,7 +736,20 @@
                         borderWidth: 0,
                         dataLabels: {
                             enabled: true,
-                            format: '{point.y}%',
+                            //format: '{point.y}%',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                            style: {
+                                fontSize: '10px',
+                                fontWeight: 'normal',
+                            }
                         },
                         point: {
                             cursor: 'pointer',
@@ -794,6 +910,113 @@
         function gAnidadaColumn(div, categoria, series, titulo, subtitulo) {
             Highcharts.chart(div, {
                 chart: {
+                    zoomType: 'xy',
+                },
+                title: {
+                    text: titulo, //'Browser market shares in January, 2018'
+                },
+                subtitle: {
+                    text: subtitulo,
+                },
+                xAxis: [{
+                    categories: categoria,
+                    crosshair: true
+                }],
+                yAxis: [{ // Primary yAxis
+                        max: 2500000000,
+                        /* labels: {
+                            format: '{value}°C',
+                            style: {
+                                color: Highcharts.getOptions().colors[2]
+                            }
+                        },
+                        title: {
+                            text: 'Temperature',
+                            style: {
+                                color: Highcharts.getOptions().colors[2]
+                            }
+                        }, */
+                        //opposite: true,
+                    }, { // Secondary yAxis
+                        gridLineWidth: 0,
+                        /* title: {
+                            text: 'Rainfall',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        },
+                        labels: {
+                            format: '{value} mm',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        }, */
+                        min: -50,
+                        //max:110,
+                        opposite: true,
+                    },
+                    /* { // Tertiary yAxis
+                                       gridLineWidth: 0,
+                                       title: {
+                                           text: 'Sea-Level Pressure',
+                                           style: {
+                                               color: Highcharts.getOptions().colors[1]
+                                           }
+                                       },
+                                       labels: {
+                                           format: '{value} mb',
+                                           style: {
+                                               color: Highcharts.getOptions().colors[1]
+                                           }
+                                       },
+                                       opposite: true
+                                   } */
+                ],
+                series: series,
+                plotOptions: {
+                    /* columns: {
+                        stacking: 'normal'
+                    }, */
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:,.0f}',
+                            //format: '{point.y:.1f}%',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                            style: {
+                                fontWeight: 'normal',
+                            }
+                        },
+                    },
+                },
+                tooltip: {
+                    shared: true,
+                },
+                /* legend: {
+                    itemStyle: {
+                        "color": "#333333",
+                        "cursor": "pointer",
+                        "fontSize": "10px",
+                        "fontWeight": "normal",
+                        "textOverflow": "ellipsis"
+                    },
+                }, */
+                credits: false,
+            });
+        }
+
+        function gAnidadaColumn_(div, categoria, series, titulo, subtitulo) {
+            Highcharts.chart(div, {
+                chart: {
                     type: 'column',
                 },
                 title: {
@@ -802,17 +1025,71 @@
                 subtitle: {
                     text: subtitulo,
                 },
-                xAxis: {
-                    categories: categoria
-                },
-                yAxis: {
+                xAxis: [{
+                    categories: categoria,
+                    crosshair: true
+                }],
+                /* yAxis: [{
                     allowDecimals: false,
                     min: 0,
                     title: {
                         enabled: false,
                         text: 'Porcentaje',
                     }
-                },
+                }, {
+                    allowDecimals: false,
+                    min: 0,
+                    title: {
+                        enabled: false,
+                        text: 'Porcentaje',
+                    }
+                }], */
+                yAxis: [{ // Primary yAxis
+                    labels: {
+                        format: '{value}°C',
+                        style: {
+                            color: Highcharts.getOptions().colors[2]
+                        }
+                    },
+                    title: {
+                        text: 'Temperature',
+                        style: {
+                            color: Highcharts.getOptions().colors[2]
+                        }
+                    },
+                    opposite: true
+
+                }, { // Secondary yAxis
+                    gridLineWidth: 0,
+                    title: {
+                        text: 'Rainfall',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    labels: {
+                        format: '{value} mm',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    }
+
+                }, { // Tertiary yAxis
+                    gridLineWidth: 0,
+                    title: {
+                        text: 'Sea-Level Pressure',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    labels: {
+                        format: '{value} mb',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
+                }],
                 series: series,
                 plotOptions: {
                     columns: {

@@ -530,10 +530,10 @@ Route::get('/Importado/resumen', [ImportacionController::class, 'resumenimportad
 /**************************************** PRESUPUESTO ************************************************/
 Route::get('/Home/Presupuesto/gra1/{importacion_id}', [HomeController::class, 'presupuestografica1'])->name('graficas.home.presupuesto.1');
 Route::get('/Home/Presupuesto/gra2/{importacion_id}', [HomeController::class, 'presupuestografica2'])->name('graficas.home.presupuesto.2');
-Route::get('/Home/Presupuesto/gra3/{importacion_id}', [HomeController::class, 'presupuestografica3'])->name('graficas.home.presupuesto.3');
-Route::get('/Home/Presupuesto/gra4/{importacion_id}', [HomeController::class, 'presupuestografica4'])->name('graficas.home.presupuesto.4');
-Route::get('/Home/Presupuesto/gra5/{importacion_id}', [HomeController::class, 'presupuestografica5'])->name('graficas.home.presupuesto.5');
-Route::get('/Home/Presupuesto/gra6/{importacion_id}', [HomeController::class, 'presupuestografica6'])->name('graficas.home.presupuesto.6');
+Route::get('/Home/Presupuesto/gra3', [HomeController::class, 'presupuestografica3'])->name('graficas.home.presupuesto.3');
+Route::get('/Home/Presupuesto/gra4', [HomeController::class, 'presupuestografica4'])->name('graficas.home.presupuesto.4');
+Route::get('/Home/Presupuesto/gra5', [HomeController::class, 'presupuestografica5'])->name('graficas.home.presupuesto.5');
+Route::get('/Home/Presupuesto/gra6', [HomeController::class, 'presupuestografica6'])->name('graficas.home.presupuesto.6');
 Route::get('/Home/Presupuesto/gra7', [HomeController::class, 'presupuestografica7'])->name('graficas.home.presupuesto.7');
 
 Route::get('/Home/Presupuesto/tabla1/{importacion_id}', [HomeController::class, 'presupuestotabla1'])->name('tabla.home.presupuesto.1');
@@ -596,9 +596,10 @@ Route::get('/SiafIngresos/Ingreso/grafico02', [BaseIngresosController::class, 'i
 Route::get('/SiafIngresos/Ingreso/grafico03', [BaseIngresosController::class, 'ingresopresupuestalgrafica3'])->name('baseingresos.ingresopresupuestal.grafica03');
 
 
-
 Route::get('/BaseProyectos/AvancePresupuestal', [BaseProyectosController::class, 'avancepresupuestal'])->name('baseproyectos.avancepresupuestal');
 Route::get('/BaseProyectos/mapa1/{importacion_id}', [BaseProyectosController::class, 'avancepresupuestalmapa1'])->name('baseproyectos.mapa.1');
+Route::get('/BaseProyectos/gra3', [BaseProyectosController::class, 'avancepresupuestalgrafica3'])->name('baseproyectos.grafica.1');
+//Route::get('/Home/Presupuesto/gra3', [HomeController::class, 'presupuestografica3'])->name('graficas.home.presupuesto.3');
 
 /**************************************** FIN PRESUPUESTO ***************************************************/
 
