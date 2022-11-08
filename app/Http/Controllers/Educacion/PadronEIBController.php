@@ -24,6 +24,9 @@ class PadronEIBController extends Controller
         $ugels = Ugel::select('id', 'codigo', 'nombre')->where('dependencia', '>', '0')->get();
         $mensaje = "";
         $lenguas = Lengua::where('estado', 0)->get();
+
+
+
         return view('educacion.PadronEIB.Principal', compact('mensaje', 'lenguas', 'ugels'));
     }
 

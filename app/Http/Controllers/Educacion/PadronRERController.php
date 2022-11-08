@@ -7,6 +7,8 @@ use App\Models\Educacion\InstitucionEducativa;
 use App\Models\Educacion\RER;
 use App\Models\Educacion\PadronRER;
 use App\Models\Educacion\Ugel;
+use App\Repositories\Educacion\MatriculaRepositorio;
+use App\Repositories\Educacion\PlazaRepositorio;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -215,8 +217,8 @@ class PadronRERController extends Controller
         $data['rer'] = RER::where('estado', 0)->count();
         $data['pres'] = RER::select(DB::raw('sum(presupuesto) as vv'))->first()->vv;
         $data['iiee'] = PadronRER::all()->count();
-        $data['alumnos'] = PadronRER::select(DB::raw('sum(total_estudiantes) as vv'))->first()->vv;
-        $data['docentes'] = PadronRER::select(DB::raw('sum(total_docentes) as vv'))->first()->vv;
+        $data['alumnos'] = MatriculaRepositorio::conteo_alumnos_rer(); // PadronRER::select(DB::raw('sum(total_estudiantes) as vv'))->first()->vv;
+        $data['docentes'] =PlazaRepositorio::conteo_docentes_rer();// PadronRER::select(DB::raw('sum(total_docentes) as vv'))->first()->vv;
         //return $data;
         return view('educacion.PadronRER.Avance', compact('mensaje', 'data'));
     }

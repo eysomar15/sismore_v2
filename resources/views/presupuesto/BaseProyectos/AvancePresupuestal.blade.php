@@ -725,7 +725,7 @@
 
                 }],
                 tooltip: {
-                    pointFormat: '<span style="color:{point.color}">\u25CF</span> Hay: <b>{point.y}%</b><br/>',
+                    pointFormat: '<span style="color:{point.color}">\u25CF</span> Hay: <b>{point.y}</b><br/>',
                     shared: true
                 },
                 plotOptions: {
@@ -754,8 +754,13 @@
                             cursor: 'pointer',
                             events: {
                                 click: function() {
+                                    console.log(Object.values(this.options));
+                                    console.log(this.options.key);
+                                    console.log(this.options.y);
+                                    console.log(this.options.name);
+                                    console.log(this.options.color);
                                     //alert('Category: ' + this.category + ', value: ' + this.y);
-                                    alert(this.options);
+                                    //alert(object.values(this.options));
                                     //location.href = 'https://en.wikipedia.org/wiki/' +this.options.key;
                                     //alert('hola ronald');
                                 },
@@ -922,7 +927,7 @@
                     crosshair: true
                 }],
                 yAxis: [{ // Primary yAxis
-                        //max: 2500000000,
+                        max: 800000000,
                         labels:{enabled:false,},
                         title:{enabled:false,},
                         /* labels: {

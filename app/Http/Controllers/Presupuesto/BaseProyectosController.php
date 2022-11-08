@@ -130,6 +130,7 @@ class BaseProyectosController extends Controller
             $value->y -= $monto;
             $monto = $value->y + $monto;
             $value->y = round($value->y, 2);
+            $value->color = ($value->y < 0 ? '#ef5350' : '#317eeb');
         }
         return response()->json(compact('info'));
     }
@@ -145,6 +146,7 @@ class BaseProyectosController extends Controller
             $value->y -= $monto;
             $monto = $value->y + $monto;
             $value->y = round($value->y, 2);
+            $value->color = ($value->y < 0 ? '#ef5350' : '#317eeb');
         }
         return response()->json(compact('info'));
     }
@@ -170,7 +172,7 @@ class BaseProyectosController extends Controller
         //$info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'PIM', 'color' => '#7C7D7D', 'data' => $dx1];
         $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'CERTIFICADO', 'color' => '#317eeb', 'data' => $dx2];
         $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
-        $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%AVANCE CERT', 'tooltip' => ['valueSuffix' => ' %'], 'color' => '#ef5350', 'data' => $dx4];
+        $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%AVANCE CERT', 'tooltip' => ['valueSuffix' => ' %'], 'color' => '#317eeb', 'data' => $dx4];
         $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%EJECUCIÓN',  'tooltip' => ['valueSuffix' => ' %'], 'color' => '#ef5350', 'data' => $dx5];
         return response()->json(compact('info'));
     }
