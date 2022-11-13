@@ -397,6 +397,13 @@ Route::get('/presupuesto/Principal/vista1', [MatriculaDetalleController::class, 
 Route::get('/presupuesto/Principal/vista2', [MatriculaDetalleController::class, 'cargarpresupuestoview2'])->name('educacion.view2');
 Route::get('/presupuesto/Principal/vista3', [MatriculaDetalleController::class, 'cargarpresupuestoview3'])->name('educacion.view3');
 
+Route::get('/presupuesto/pres/vista1', [MatriculaDetalleController::class, 'cargarpresupuestoview11'])->name('presupuesto.view1');//Unidades Ejecutoras - UNIDADES EJECUTORAS
+Route::get('/presupuesto/pres/vista2', [MatriculaDetalleController::class, 'cargarpresupuestoview12'])->name('presupuesto.view2');//Proyectos - Proyectos
+Route::get('/presupuesto/pres/vista3', [MatriculaDetalleController::class, 'cargarpresupuestoview13'])->name('presupuesto.view3');//Programas Presupuestales - PROGRAMAS PRESUPUESTALES
+Route::get('/presupuesto/pres/vista4', [MatriculaDetalleController::class, 'cargarpresupuestoview14'])->name('presupuesto.view4');//Fuente de Financiamiento - FUENTE DE FIN. Y GENERICA
+Route::get('/presupuesto/pres/vista5', [MatriculaDetalleController::class, 'cargarpresupuestoview15'])->name('presupuesto.view5');//Actividades - Actividades
+
+
 Route::get('/INDICADOR/SINRUTA', function () {
     //return 'Ruta no definida';
     return view('paginavacio');

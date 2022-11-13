@@ -5,16 +5,15 @@ namespace App\Models\Presupuesto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BaseGastos extends Model
+class Sector extends Model
 {
     use HasFactory;
-    protected $table = 'pres_base_gastos';
+    protected $table = 'pres_sector';
     public $timestamps = false;
 
     protected $fillable = [
-        'importacion_id',
-        'anio',
-        'mes',
-        'dia',
+        'codigo',
+        'tipogobierno_id',
+        'nombre',
     ];
 }

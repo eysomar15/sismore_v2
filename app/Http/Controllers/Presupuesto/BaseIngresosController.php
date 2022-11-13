@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Presupuesto;
 
 use App\Http\Controllers\Controller;
 use App\Models\Educacion\Importacion;
+use App\Models\Presupuesto\BaseGastos;
 use App\Models\Presupuesto\TipoGobierno;
 use App\Repositories\Presupuesto\BaseGastosRepositorio;
 use App\Repositories\Presupuesto\BaseIngresosRepositorio;
@@ -20,13 +21,14 @@ class BaseIngresosController extends Controller
     public function ingresopresupuestal()
     {
         $impG = Importacion::where('fuenteimportacion_id', '13')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
+        $bg_id = BaseGastos::where('importacion_id', $impG->id)->first();
         $impI = Importacion::where('fuenteimportacion_id', '15')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
 
-        $opt1 = BaseGastosRepositorio::total_pim($impG->id);
+        $opt1 = BaseGastosRepositorio::total_pim($bg_id->id);
         $card1['pim'] = $opt1->pim;
         $card1['eje'] = $opt1->eje;
 
-        $opt1 = BaseGastosRepositorio::pim_tipogobierno($impG->id);
+        $opt1 = BaseGastosRepositorio::pim_tipogobierno($bg_id->id);
         $card2['pim'] = $opt1[1]->pim;
         $card2['eje'] = $opt1[1]->eje;
         $card3['pim'] = $opt1[2]->pim;

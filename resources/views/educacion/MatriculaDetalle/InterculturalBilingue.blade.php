@@ -118,8 +118,8 @@
             <div class="col-md-3 col-xl-3">
                 <div class="card-box">
                     <div class="media">
-                        <div class="avatar-md bg-info rounded-circle mr-2">
-                            <i class=" ion ion-md-person avatar-title font-26 text-white"></i>
+                        <div class="avatar-md bg-success rounded-circle mr-2">
+                            <i class=" ion ion-md-home avatar-title font-26 text-white"></i>
                         </div>
                         <div class="media-body align-self-center">
                             <div class="text-right">

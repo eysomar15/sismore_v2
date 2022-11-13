@@ -6,7 +6,7 @@
             <th>Institución Educativa</th>
             <th>{{ $nfi }}</th>
             <th>{{ $nff }}</th>
-            <th>Avance</th>
+            <th>Retirados / Nuevos Matriculados</th>
         </tr>
     </thead>
     <tbody>

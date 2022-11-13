@@ -329,7 +329,7 @@
             $.ajax({
                 url: "{{ route('basegastos.cargarue') }}",
                 data: {
-                    'gobierno': $('#fgobierno').val(),
+                    //'gobierno': $('#fgobierno').val(),
                     'sector': $('#fsector').val(),
                 },
                 type: 'get',

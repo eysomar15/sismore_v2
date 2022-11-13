@@ -3,18 +3,36 @@
 namespace App\Repositories\Presupuesto;
 
 use App\Models\Presupuesto\BaseGastos;
+use App\Models\Presupuesto\BaseGastosDetalle;
 use Illuminate\Support\Facades\DB;
 
 class BaseGastosRepositorio
 {
     public static function total_pim($imp)
     {
-        $query = BaseGastos::where('importacion_id', $imp)->select(DB::raw('sum(pim) as pim'), DB::raw('100*sum(devengado)/sum(pim) as eje'))->first();
+        $query = BaseGastosDetalle::where('basegastos_id', $imp)->select(DB::raw('sum(pim) as pim'), DB::raw('100*sum(devengado)/sum(pim) as eje'))->first();
         return $query;
     }
 
     public static function pim_tipogobierno($imp)
     {
+        $query = BaseGastosDetalle::select(
+            'v5.id',
+            'v5.tipogobierno as gobiernos',
+            DB::raw('sum(pres_base_gastos_detalle.pim) as pim'),
+            DB::raw('100*sum(pres_base_gastos_detalle.devengado)/sum(pres_base_gastos_detalle.pim) as eje')
+        )
+            ->join('pres_base_gastos as w1', 'w1.id', '=', 'pres_base_gastos_detalle.basegastos_id')
+            ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->where('w2.estado', 'PR')
+            ->where('pres_base_gastos_detalle.basegastos_id', $imp);
+        $query = $query->groupBy('id', 'gobiernos')->get();
+        return $query;
+/*
         $query = BaseGastos::where('pres_base_gastos.importacion_id', $imp)
             ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
             ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
@@ -27,7 +45,7 @@ class BaseGastosRepositorio
             )
             ->groupBy('id', 'gobiernos')
             ->orderBy('v4.id', 'asc')
-            ->get();
+            ->get(); */
         return $query;
     }
 
@@ -210,7 +228,7 @@ class BaseGastosRepositorio
         return $query;
     }
 
-    public static function cargarsector($tipogobierno)
+    public static function cargarsector($tipogobierno) //no usando
     {
         $query = BaseGastos::select('v7.*')
             ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
@@ -225,7 +243,7 @@ class BaseGastosRepositorio
         return $query;
     }
 
-    public static function cargarue($tipogobierno, $sector)
+    public static function cargarue($tipogobierno, $sector) //no usando
     {
         $query = BaseGastos::select('v5.id', 'v5.unidad_ejecutora')
             ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
@@ -242,114 +260,114 @@ class BaseGastosRepositorio
 
     public static function pim_anio_categoriagasto($gob, $sec, $ue)
     {
-        $query = BaseGastos::select(
-            'v3.id',
-            'v2.anio as ano',
-            DB::raw("sum(IF(v8.id=1,pres_base_gastos.pim,0)) as pim1"),
-            DB::raw("sum(IF(v8.id=2,pres_base_gastos.pim,0)) as pim2"),
-            DB::raw("sum(IF(v8.id=3,pres_base_gastos.pim,0)) as pim3"),
+        $query = BaseGastosDetalle::select(
+            'w2.id',
+            'w1.anio as ano',
+            DB::raw("sum(IF(v6.id=1,pres_base_gastos_detalle.pim,0)) as pim1"),
+            DB::raw("sum(IF(v6.id=2,pres_base_gastos_detalle.pim,0)) as pim2"),
+            DB::raw("sum(IF(v6.id=3,pres_base_gastos_detalle.pim,0)) as pim3"),
         )
-            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
-            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_gastos.importacion_id')
-            ->join('pres_pliego as v4', 'v4.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v5', 'v5.id', '=', 'v4.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v6', 'v6.id', '=', 'v5.tipogobierno')
-            ->join('pres_sector as v7', 'v7.id', '=', 'pres_base_gastos.sector_id')
-            ->join('pres_categoriagasto as v8', 'v8.id', '=', 'pres_base_gastos.categoriagasto_id')
-            ->where('v3.estado', 'PR');
-        if ($gob != 0) $query = $query->where('v6.id', $gob);
-        if ($sec != 0) $query = $query->where('v7.id', $sec);
-        if ($ue != 0) $query = $query->where('v5.id', $ue);
+            ->join('pres_base_gastos as w1', 'w1.id', '=', 'pres_base_gastos_detalle.basegastos_id')
+            ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->join('pres_categoriagasto as v6', 'v6.id', '=', 'pres_base_gastos_detalle.categoriagasto_id')
+            ->where('w2.estado', 'PR');
+        if ($gob != 0) $query = $query->where('v5.id', $gob);
+        if ($sec != 0) $query = $query->where('v4.id', $sec);
+        if ($ue != 0) $query = $query->where('v2.id', $ue);
         $query = $query->groupBy('id', 'ano')->get();
         return $query;
     }
 
     public static function pim_anio_categoriapresupuestal($gob, $sec, $ue)
     {
-        $query = BaseGastos::select(
-            'v3.id',
-            'v2.anio as ano',
-            DB::raw("sum(IF(v8.id=38,pres_base_gastos.pim,0)) as pim1"),
-            DB::raw("sum(IF(v8.id=39,pres_base_gastos.pim,0)) as pim2"),
-            DB::raw("sum(IF(v8.id!=38 and v8.id!=39,pres_base_gastos.pim,0)) as pim3"),
+        $query = BaseGastosDetalle::select(
+            'w2.id',
+            'w1.anio as ano',
+            DB::raw("sum(IF(v6.id=38,pres_base_gastos_detalle.pim,0)) as pim1"),
+            DB::raw("sum(IF(v6.id=39,pres_base_gastos_detalle.pim,0)) as pim2"),
+            DB::raw("sum(IF(v6.id!=38 and v6.id!=39,pres_base_gastos_detalle.pim,0)) as pim3"),
         )
-            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
-            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_gastos.importacion_id')
-            ->join('pres_pliego as v4', 'v4.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v5', 'v5.id', '=', 'v4.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v6', 'v6.id', '=', 'v5.tipogobierno')
-            ->join('pres_sector as v7', 'v7.id', '=', 'pres_base_gastos.sector_id')
-            ->join('pres_categoriapresupuestal as v8', 'v8.id', '=', 'pres_base_gastos.categoriapresupuestal_id')
-            ->where('v3.estado', 'PR');
-        if ($gob != 0) $query = $query->where('v6.id', $gob);
-        if ($sec != 0) $query = $query->where('v7.id', $sec);
-        if ($ue != 0) $query = $query->where('v5.id', $ue);
+            ->join('pres_base_gastos as w1', 'w1.id', '=', 'pres_base_gastos_detalle.basegastos_id')
+            ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->join('pres_categoriapresupuestal as v6', 'v6.id', '=', 'pres_base_gastos_detalle.categoriapresupuestal_id')
+            ->where('w2.estado', 'PR');
+        if ($gob != 0) $query = $query->where('v5.id', $gob);
+        if ($sec != 0) $query = $query->where('v4.id', $sec);
+        if ($ue != 0) $query = $query->where('v2.id', $ue);
         $query = $query->groupBy('id', 'ano')->get();
         return $query;
     }
 
     public static function pim_anio_fuentefimanciamiento($gob, $sec, $ue)
     {
-        $query = BaseGastos::select(
-            'v10.codigo as cod',
-            'v10.nombre as ff',
-            DB::raw("sum(IF(v2.anio=2014,pres_base_gastos.pim,0)) as pim_2014"),
-            DB::raw("sum(IF(v2.anio=2015,pres_base_gastos.pim,0)) as pim_2015"),
-            DB::raw("sum(IF(v2.anio=2016,pres_base_gastos.pim,0)) as pim_2016"),
-            DB::raw("sum(IF(v2.anio=2017,pres_base_gastos.pim,0)) as pim_2017"),
-            DB::raw("sum(IF(v2.anio=2018,pres_base_gastos.pim,0)) as pim_2018"),
-            DB::raw("sum(IF(v2.anio=2019,pres_base_gastos.pim,0)) as pim_2019"),
-            DB::raw("sum(IF(v2.anio=2020,pres_base_gastos.pim,0)) as pim_2020"),
-            DB::raw("sum(IF(v2.anio=2021,pres_base_gastos.pim,0)) as pim_2021"),
-            DB::raw("sum(IF(v2.anio=2022,pres_base_gastos.pim,0)) as pim_2022"),
+        $query = BaseGastosDetalle::select(
+            'v8.codigo as cod',
+            'v8.nombre as ff',
+            DB::raw("sum(IF(w1.anio=2014,pres_base_gastos_detalle.pim,0)) as pim_2014"),
+            DB::raw("sum(IF(w1.anio=2015,pres_base_gastos_detalle.pim,0)) as pim_2015"),
+            DB::raw("sum(IF(w1.anio=2016,pres_base_gastos_detalle.pim,0)) as pim_2016"),
+            DB::raw("sum(IF(w1.anio=2017,pres_base_gastos_detalle.pim,0)) as pim_2017"),
+            DB::raw("sum(IF(w1.anio=2018,pres_base_gastos_detalle.pim,0)) as pim_2018"),
+            DB::raw("sum(IF(w1.anio=2019,pres_base_gastos_detalle.pim,0)) as pim_2019"),
+            DB::raw("sum(IF(w1.anio=2020,pres_base_gastos_detalle.pim,0)) as pim_2020"),
+            DB::raw("sum(IF(w1.anio=2021,pres_base_gastos_detalle.pim,0)) as pim_2021"),
+            DB::raw("sum(IF(w1.anio=2022,pres_base_gastos_detalle.pim,0)) as pim_2022"),
         )
-            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
-            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_gastos.importacion_id')
-            ->join('pres_pliego as v4', 'v4.id', '=', 'pres_base_gastos.pliego_id') //
-            ->join('pres_unidadejecutora as v5', 'v5.id', '=', 'v4.unidadejecutora_id') //
-            ->join('pres_tipo_gobierno as v6', 'v6.id', '=', 'v5.tipogobierno') //
-            ->join('pres_sector as v7', 'v7.id', '=', 'pres_base_gastos.sector_id') //
-            ->join('pres_recursos_gastos as v8', 'v8.id', '=', 'pres_base_gastos.recursosgastos_id')
-            ->join('pres_rubro as v9', 'v9.id', '=', 'v8.rubro_id')
-            ->join('pres_fuentefinanciamiento as v10', 'v10.id', '=', 'v9.fuentefinanciamiento_id')
-            ->where('v3.estado', 'PR');
-        if ($gob != 0) $query = $query->where('v6.id', $gob);
-        if ($sec != 0) $query = $query->where('v7.id', $sec);
-        if ($ue != 0) $query = $query->where('v5.id', $ue);
+            ->join('pres_base_gastos as w1', 'w1.id', '=', 'pres_base_gastos_detalle.basegastos_id')
+            ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->join('pres_recursos_gastos as v6', 'v6.id', '=', 'pres_base_gastos_detalle.recursosgastos_id')
+            ->join('pres_rubro as v7', 'v7.id', '=', 'v6.rubro_id')
+            ->join('pres_fuentefinanciamiento as v8', 'v8.id', '=', 'v7.fuentefinanciamiento_id')
+            ->where('w2.estado', 'PR');
+        if ($gob != 0) $query = $query->where('v5.id', $gob);
+        if ($sec != 0) $query = $query->where('v4.id', $sec);
+        if ($ue != 0) $query = $query->where('v2.id', $ue);
         $query = $query->groupBy('cod', 'ff')->get();
         return $query;
     }
 
     public static function pim_anio_generica($gob, $sec, $ue)
     {
-        $query = BaseGastos::select(
-            'v12.codigo as cod',
-            'v12.nombre as ff',
-            DB::raw("sum(IF(v2.anio=2014,pres_base_gastos.pim,0)) as pim_2014"),
-            DB::raw("sum(IF(v2.anio=2015,pres_base_gastos.pim,0)) as pim_2015"),
-            DB::raw("sum(IF(v2.anio=2016,pres_base_gastos.pim,0)) as pim_2016"),
-            DB::raw("sum(IF(v2.anio=2017,pres_base_gastos.pim,0)) as pim_2017"),
-            DB::raw("sum(IF(v2.anio=2018,pres_base_gastos.pim,0)) as pim_2018"),
-            DB::raw("sum(IF(v2.anio=2019,pres_base_gastos.pim,0)) as pim_2019"),
-            DB::raw("sum(IF(v2.anio=2020,pres_base_gastos.pim,0)) as pim_2020"),
-            DB::raw("sum(IF(v2.anio=2021,pres_base_gastos.pim,0)) as pim_2021"),
-            DB::raw("sum(IF(v2.anio=2022,pres_base_gastos.pim,0)) as pim_2022"),
+        $query = BaseGastosDetalle::select(
+            'v0.codigo as cod',
+            'v0.nombre as ff',
+            DB::raw("sum(IF(w1.anio=2014,pres_base_gastos_detalle.pim,0)) as pim_2014"),
+            DB::raw("sum(IF(w1.anio=2015,pres_base_gastos_detalle.pim,0)) as pim_2015"),
+            DB::raw("sum(IF(w1.anio=2016,pres_base_gastos_detalle.pim,0)) as pim_2016"),
+            DB::raw("sum(IF(w1.anio=2017,pres_base_gastos_detalle.pim,0)) as pim_2017"),
+            DB::raw("sum(IF(w1.anio=2018,pres_base_gastos_detalle.pim,0)) as pim_2018"),
+            DB::raw("sum(IF(w1.anio=2019,pres_base_gastos_detalle.pim,0)) as pim_2019"),
+            DB::raw("sum(IF(w1.anio=2020,pres_base_gastos_detalle.pim,0)) as pim_2020"),
+            DB::raw("sum(IF(w1.anio=2021,pres_base_gastos_detalle.pim,0)) as pim_2021"),
+            DB::raw("sum(IF(w1.anio=2022,pres_base_gastos_detalle.pim,0)) as pim_2022"),
         )
-            ->join('par_anio as v2', 'v2.id', '=', 'pres_base_gastos.anio_id')
-            ->join('par_importacion as v3', 'v3.id', '=', 'pres_base_gastos.importacion_id')
-            ->join('pres_pliego as v4', 'v4.id', '=', 'pres_base_gastos.pliego_id') //
-            ->join('pres_unidadejecutora as v5', 'v5.id', '=', 'v4.unidadejecutora_id') //
-            ->join('pres_tipo_gobierno as v6', 'v6.id', '=', 'v5.tipogobierno') //
-            ->join('pres_sector as v7', 'v7.id', '=', 'pres_base_gastos.sector_id') //
-            ->join('pres_especificadetalle_gastos as v8', 'v8.id', '=', 'pres_base_gastos.especificadetalle_id')
-            ->join('pres_especifica_gastos as v9', 'v9.id', '=', 'v8.especifica_id')
-            ->join('pres_subgenericadetalle_gastos as v10', 'v10.id', '=', 'v9.subgenericadetalle_id')
-            ->join('pres_subgenerica_gastos as v11', 'v11.id', '=', 'v10.subgenerica_id')
-            ->join('pres_generica_gastos as v12', 'v12.id', '=', 'v11.generica_id')
-            ->where('v3.estado', 'PR');
-        if ($gob != 0) $query = $query->where('v6.id', $gob);
-        if ($sec != 0) $query = $query->where('v7.id', $sec);
-        if ($ue != 0) $query = $query->where('v5.id', $ue);
+            ->join('pres_base_gastos as w1', 'w1.id', '=', 'pres_base_gastos_detalle.basegastos_id')
+            ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->join('pres_especificadetalle_gastos as v6', 'v6.id', '=', 'pres_base_gastos_detalle.especificadetalle_id')
+            ->join('pres_especifica_gastos as v7', 'v7.id', '=', 'v6.especifica_id')
+            ->join('pres_subgenericadetalle_gastos as v8', 'v8.id', '=', 'v7.subgenericadetalle_id')
+            ->join('pres_subgenerica_gastos as v9', 'v9.id', '=', 'v8.subgenerica_id')
+            ->join('pres_generica_gastos as v0', 'v0.id', '=', 'v9.generica_id')
+            ->where('w2.estado', 'PR');
+        if ($gob != 0) $query = $query->where('v5.id', $gob);
+        if ($sec != 0) $query = $query->where('v4.id', $sec);
+        if ($ue != 0) $query = $query->where('v2.id', $ue);
         $query = $query->groupBy('cod', 'ff')->get();
         return $query;
     }

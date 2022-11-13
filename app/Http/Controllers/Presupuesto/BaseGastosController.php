@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Presupuesto;
 
 use App\Exports\BaseGastosExport;
 use App\Http\Controllers\Controller;
+use App\Models\Presupuesto\Sector;
 use App\Models\Presupuesto\TipoGobierno;
+use App\Models\Presupuesto\UnidadEjecutora;
 use App\Repositories\Presupuesto\BaseGastosRepositorio;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -26,13 +28,16 @@ class BaseGastosController extends Controller
 
     public function cargarsector(Request $rq)
     {
-        $sectors = BaseGastosRepositorio::cargarsector($rq->get('gobierno'));
+        $sectors = Sector::where('tipogobierno_id', $rq->get('gobierno'))->get(); //BaseGastosRepositorio::cargarsector($rq->get('gobierno'));
         return response()->json(compact('sectors'));
     }
 
     public function cargarue(Request $rq)
     {
-        $ues = BaseGastosRepositorio::cargarue($rq->get('gobierno'), $rq->get('sector'));
+        $ues = UnidadEjecutora::select('pres_unidadejecutora.*')
+            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_unidadejecutora.pliego_id')
+            ->where('v2.sector_id', $rq->get('sector'))
+            ->get(); //BaseGastosRepositorio::cargarue($rq->get('gobierno'), $rq->get('sector'));
         return response()->json(compact('ues'));
     }
 
