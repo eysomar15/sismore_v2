@@ -19,7 +19,7 @@ use Yajra\DataTables\DataTables;
 
 class ImporGastosController extends Controller
 {
-
+    public $fuente = 13;
     public function __construct()
     {
         $this->middleware('auth');
@@ -50,13 +50,13 @@ class ImporGastosController extends Controller
         $archivo = $request->file('file');
         $array = (new tablaXImport)->toArray($archivo); */
 
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 13);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, $this->fuente);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos prendientes de aprobar para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);
         }
 
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 13);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, $this->fuente);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos procesados para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);
@@ -79,8 +79,8 @@ class ImporGastosController extends Controller
                     $cadena =  $cadena .
                         $row['anio'] .
                         $row['mes'] .
-                        $row['cod_tipo_gob'] .
-                        $row['tipo_gobierno'] .
+                        $row['cod_niv_gob'] .
+                        $row['nivel_gobierno'] .
                         $row['cod_sector'] .
                         $row['sector'] .
                         $row['cod_pliego'] .
@@ -142,7 +142,7 @@ class ImporGastosController extends Controller
 
         try {
             $importacion = Importacion::Create([
-                'fuenteImportacion_id' => 13, // valor predeterminado
+                'fuenteImportacion_id' => $this->fuente, // valor predeterminado
                 'usuarioId_Crea' => auth()->user()->id,
                 'usuarioId_Aprueba' => null,
                 'fechaActualizacion' => $request['fechaActualizacion'],
@@ -156,8 +156,8 @@ class ImporGastosController extends Controller
                         'importacion_id' => $importacion->id,
                         'anio' => $row['anio'],
                         'mes' => $row['mes'],
-                        'cod_tipo_gob' => $row['cod_tipo_gob'],
-                        'tipo_gobierno' => $row['tipo_gobierno'],
+                        'cod_niv_gob' => $row['cod_niv_gob'],
+                        'nivel_gobierno' => $row['nivel_gobierno'],
                         'cod_sector' => $row['cod_sector'],
                         'sector' => $row['sector'],
                         'cod_pliego' => $row['cod_pliego'],
@@ -221,15 +221,15 @@ class ImporGastosController extends Controller
             $this->json_output(400, $mensaje);
         }
 
-        /* try {
-            $procesar = DB::select('call edu_pa_procesarImporMatricula(?,?)', [$importacion->id, $importacion->usuarioId_Crea]);
+        try {
+            $procesar = DB::select('call pres_pa_procesarImporGastos(?,?)', [$importacion->id, $importacion->usuarioId_Crea]);
         } catch (Exception $e) {
             $importacion->estado = 'EL';
             $importacion->save();
 
             $mensaje = "Error al procesar la normalizacion de datos." . $e->getMessage();
             $this->json_output(400, $mensaje);
-        } */
+        }
 
         $mensaje = "Archivo excel subido y Procesado correctamente .";
         $this->json_output(200, $mensaje, '');
@@ -242,7 +242,7 @@ class ImporGastosController extends Controller
         $start = intval($rq->start);
         $length = intval($rq->length);
 
-        $query = ImportacionRepositorio::Listar_FuenteTodos('13');
+        $query = ImportacionRepositorio::Listar_FuenteTodos($this->fuente);
         $data = [];
         foreach ($query as $key => $value) {
             $nom = '';
