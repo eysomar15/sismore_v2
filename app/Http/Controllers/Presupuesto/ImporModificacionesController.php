@@ -177,15 +177,15 @@ class ImporModificacionesController extends Controller
             $this->json_output(400, $mensaje);
         }
 
-        /* try {
-            $procesar = DB::select('call pres_pa_procesarImporGastos(?,?)', [$importacion->id, $importacion->usuarioId_Crea]);
+        try {
+            $procesar = DB::select('call pres_pa_procesarImporModificaciones(?,?)', [$importacion->id, $importacion->usuarioId_Crea]);
         } catch (Exception $e) {
             $importacion->estado = 'EL';
             $importacion->save();
 
             $mensaje = "Error al procesar la normalizacion de datos." . $e->getMessage();
             $this->json_output(400, $mensaje);
-        } */
+        }
 
         $mensaje = "Archivo excel subido y Procesado correctamente .";
         $this->json_output(200, $mensaje, '');
