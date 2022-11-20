@@ -36,6 +36,7 @@ use App\Http\Controllers\Presupuesto\BaseProyectosController;
 use App\Http\Controllers\Presupuesto\ImporActividadesProyectosController;
 use App\Http\Controllers\Presupuesto\ImporGastosController;
 use App\Http\Controllers\Presupuesto\ImporIngresosController;
+use App\Http\Controllers\Presupuesto\ImporModificacionesController;
 use App\Http\Controllers\Presupuesto\ImporProyectosController;
 use App\Http\Controllers\Presupuesto\ImporSiafWebController;
 use App\Http\Controllers\Trabajo\ActividadController;
@@ -613,7 +614,11 @@ Route::get('/BaseProyectos/gra6', [BaseProyectosController::class, 'avancepresup
 Route::get('/BaseProyectos/gra7', [BaseProyectosController::class, 'avancepresupuestalgrafica7'])->name('baseproyectos.grafica.5');
 //Route::get('/Home/Presupuesto/gra3', [HomeController::class, 'presupuestografica3'])->name('graficas.home.presupuesto.3');
 
-
+Route::get('/IMPORMODS/Modificaciones/Importar', [ImporModificacionesController::class, 'importar'])->name('impormodificaciones.importar');
+Route::post('/IMPORMODS/Modificaciones/Importar', [ImporModificacionesController::class, 'importarGuardar'])->name('impormodificaciones.guardar');
+Route::get('/IMPORMODS/Listar/ImportarDT', [ImporModificacionesController::class, 'ListarDTImportFuenteTodos'])->name('impormodificaciones.listar.importados');
+Route::get('/IMPORMODS/eliminar/{id}', [ImporModificacionesController::class, 'eliminar']);
+Route::post('/IMPORMODS/ListaImportada/{importacion_id}', [ImporModificacionesController::class, 'ListaImportada'])->name('impormodificaciones.listarimportados');
 
 
 /**************************************** FIN PRESUPUESTO ***************************************************/
