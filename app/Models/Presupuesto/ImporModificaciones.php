@@ -20,7 +20,6 @@ class ImporModificaciones extends Model
         'fecha_aprobacion',
         'cod_tipo_mod',
         'tipo_modificacion',
-        'cod_doc',
         'documento',
         'referencia',
         'dispositivo_legal',
@@ -32,7 +31,9 @@ class ImporModificaciones extends Model
         'tipo_presupuesto',
         'sec_func',
         'cod_cat_pres',
+        'tipo_prod_proy',
         'cod_prod_proy',
+        'tipo_act_acc_obra',
         'cod_act_acc_obra',
         'meta',
         'cod_fina',
@@ -46,6 +47,5 @@ class ImporModificaciones extends Model
         'cod_esp_det',
         'anulacion',
         'credito',
-
     ];
 }

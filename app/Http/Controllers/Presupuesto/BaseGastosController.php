@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Presupuesto;
 
 use App\Exports\BaseGastosExport;
 use App\Http\Controllers\Controller;
+use App\Models\Educacion\Importacion;
+use App\Models\Presupuesto\BaseGastos;
 use App\Models\Presupuesto\Sector;
 use App\Models\Presupuesto\TipoGobierno;
 use App\Models\Presupuesto\UnidadEjecutora;
@@ -129,6 +131,33 @@ class BaseGastosController extends Controller
         return view("Presupuesto.BaseGastos.NivelGobiernosTabla2", compact('body', 'foot'));
     }
     /* fin nivel gobiernos */
+
+    public function nivelesgobiernos()
+    {
+        $impG = Importacion::where('fuenteimportacion_id', '13')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
+        $bg_id = BaseGastos::where('importacion_id', $impG->id)->first();
+        $impI = Importacion::where('fuenteimportacion_id', '15')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
+
+        $opt1 = BaseGastosRepositorio::total_pim($bg_id->id);
+        $card1['pim'] = $opt1->pim;
+        $card1['eje'] = $opt1->eje;
+
+        $opt1 = BaseGastosRepositorio::pim_tipogobierno($bg_id->id);
+        $card2['pim'] = $opt1[1]->pim;
+        $card2['eje'] = $opt1[1]->eje;
+        $card3['pim'] = $opt1[2]->pim;
+        $card3['eje'] = $opt1[2]->eje;
+        $card4['pim'] = $opt1[0]->pim;
+        $card4['eje'] = $opt1[0]->eje;
+
+        return view('Presupuesto.BaseGastos.NivelesGobiernos', compact('card1', 'card2', 'card3', 'card4', 'impG', 'impI'));
+    }
+
+    public function nivelesgobiernosgrafica1($importacion_id)
+    {
+        $info = BaseGastosRepositorio::pim_tipogobierno2($importacion_id);
+        return response()->json(compact('info'));
+    }
 
 
     public function download()

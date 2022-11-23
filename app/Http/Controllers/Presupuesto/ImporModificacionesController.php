@@ -85,7 +85,6 @@ class ImporModificacionesController extends Controller
                         $row['fecha_aprobacion'] .
                         $row['cod_tipo_mod'] .
                         $row['tipo_modificacion'] .
-                        $row['cod_doc'] .
                         $row['documento'] .
                         $row['referencia'] .
                         $row['dispositivo_legal'] .
@@ -97,7 +96,9 @@ class ImporModificacionesController extends Controller
                         $row['tipo_presupuesto'] .
                         $row['sec_func'] .
                         $row['cod_cat_pres'] .
+                        $row['tipo_prod_proy'] .
                         $row['cod_prod_proy'] .
+                        $row['tipo_act_acc_obra'] .
                         $row['cod_act_acc_obra'] .
                         $row['meta'] .
                         $row['cod_fina'] .
@@ -139,7 +140,6 @@ class ImporModificacionesController extends Controller
                         'fecha_aprobacion' => $row['fecha_aprobacion'],
                         'cod_tipo_mod' => $row['cod_tipo_mod'],
                         'tipo_modificacion' => $row['tipo_modificacion'],
-                        'cod_doc' => $row['cod_doc'],
                         'documento' => $row['documento'],
                         'referencia' => $row['referencia'],
                         'dispositivo_legal' => $row['dispositivo_legal'],
@@ -151,7 +151,9 @@ class ImporModificacionesController extends Controller
                         'tipo_presupuesto' => $row['tipo_presupuesto'],
                         'sec_func' => $row['sec_func'],
                         'cod_cat_pres' => $row['cod_cat_pres'],
+                        'tipo_prod_proy' => $row['tipo_prod_proy'],
                         'cod_prod_proy' => $row['cod_prod_proy'],
+                        'tipo_act_acc_obra' => $row['tipo_act_acc_obra'],
                         'cod_act_acc_obra' => $row['cod_act_acc_obra'],
                         'meta' => $row['meta'],
                         'cod_fina' => $row['cod_fina'],
@@ -164,8 +166,7 @@ class ImporModificacionesController extends Controller
                         'cod_esp' => $row['cod_esp'],
                         'cod_esp_det' => $row['cod_esp_det'],
                         'anulacion' => $row['anulacion'],
-                        'credito' => $row['credito'],
-
+                        'credito' => $row['credito']
                     ]);
                 }
             }

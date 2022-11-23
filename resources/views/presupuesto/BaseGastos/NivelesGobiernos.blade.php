@@ -1,6 +1,16 @@
 @extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ''])
-
 @section('css')
+    <!-- Table datatable css -->
+    <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/fixedHeader.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/') }}public/assets/libs/datatables/scroller.bootstrap4.min.css" rel="stylesheet"
+        type="text/css" />
     <style>
         .tablex thead th {
             padding: 4px;
@@ -28,178 +38,258 @@
     </style>
 @endsection
 
-
 @section('content')
-    <div class="row">
-        <div class="col-md-6 col-xl-3">
-            <div class="card-box">
-                <div class="media">
-                    <div class="avatar-md bg-success rounded-circle mr-2">
-                        <i class="ion ion-logo-usd avatar-title font-26 text-white"></i>
+    <div class="content">
+        <div class="row">
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card-box">
+                    <div class="media">
+                        <div class="avatar-md bg-success rounded-circle mr-2">
+                            {{-- <i class="ion ion-logo-usd avatar-title font-26 text-white"></i> --}}S/
+                        </div>
+                        <div class="media-body align-self-center">
+                            <div class="text-right">
+                                <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card1['pim'], 0) }}">
+                                    <span data-plugin="counterup">
+                                        {{ number_format($card1['pim'], 0) }}
+                                    </span>
+                                </h4>
+                                <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Presupuesto Ucayali</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="media-body align-self-center">
-                        <div class="text-right">
-                            <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card1['pim'], 0) }}">
-                                <span data-plugin="counterup">
-                                    {{ number_format($card1['pim'] , 0) }}
-                                </span>
-                            </h4>
-                            <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Presupuesto Ucayali</p>
+                    <div class="mt-4">
+                        <h6 class="">Ejecución
+                            <span class="float-right">{{ number_format($card1['eje'], 1) }}%</span>
+                        </h6>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{ $card1['eje'] }}"
+                                aria-valuemin="0" aria-valuemax="100" style="width: {{ $card1['eje'] }}%">
+                                <span class="sr-only">{{ number_format($card1['eje'], 2) }}% Complete</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {{-- <div class="mt-4">
-                    <h6 class="">Ejecución
-                        <span class="float-right">{{ number_format($card1['eje'], 1) }}%</span>
-                    </h6>
-                    <div class="progress progress-sm m-0">
-                        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{ $card1['eje'] }}"
-                            aria-valuemin="0" aria-valuemax="100" style="width: {{ $card1['eje'] }}%">
-                            <span class="sr-only">{{ number_format($card1['eje'], 2) }}% Complete</span>
+            </div>
+            <!--FIN CARD-->
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card-box">
+                    <div class="media">
+                        <div class="avatar-md bg-purple rounded-circle mr-2">
+                            <i class="ion ion-logo-usd avatar-title font-26 text-white"></i>
+                        </div>
+                        <div class="media-body align-self-center">
+                            <div class="text-right">
+                                <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card2['pim'], 0) }}">
+                                    <span data-plugin="counterup">
+                                        {{ number_format($card2['pim'], 0) }}
+                                    </span>
+                                </h4>
+                                <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobierno Nacional</p>
+                            </div>
                         </div>
                     </div>
-                </div> --}}
-            </div>
-        </div>
-        <!--FIN CARD-->
-
-        <div class="col-md-6 col-xl-3">
-            <div class="card-box">
-                <div class="media">
-                    <div class="avatar-md bg-purple rounded-circle mr-2">
-                        <i class="ion ion-logo-usd avatar-title font-26 text-white"></i>
-                    </div>
-                    <div class="media-body align-self-center">
-                        <div class="text-right">
-                            <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card2['pim'], 0) }}">
-                                <span data-plugin="counterup">
-                                    {{ number_format($card2['pim'] , 0) }}
-                                </span>
-                            </h4>
-                            <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobierno Nacional</p>
+                    <div class="mt-4">
+                        <h6 class="">Ejecución
+                            <span class="float-right">{{ number_format($card2['eje'], 2) }}%</span>
+                        </h6>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="{{ $card2['eje'] }}"
+                                aria-valuemin="0" aria-valuemax="100" style="width: {{ $card2['eje'] }}%">
+                                <span class="sr-only">{{ $card2['eje'] }}% Complete</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {{-- <div class="mt-4">
-                    <h6 class="">Ejecución
-                        <span class="float-right">{{ number_format($card2['eje'], 1) }}%</span>
-                    </h6>
-                    <div class="progress progress-sm m-0">
-                        <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="{{ $card2['eje'] }}"
-                            aria-valuemin="0" aria-valuemax="100" style="width: {{ $card2['eje'] }}%">
-                            <span class="sr-only">{{ $card2['eje'] }}% Complete</span>
+            </div>
+            <!--FIN CARD-->
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card-box">
+                    <div class="media">
+                        <div class="avatar-md bg-primary rounded-circle mr-2">
+                            <i class="ion ion-logo-usd avatar-title font-26 text-white"></i>
+                        </div>
+                        <div class="media-body align-self-center">
+                            <div class="text-right">
+                                <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card3['pim'], 0) }}">
+                                    <span data-plugin="counterup">
+                                        {{ number_format($card3['pim'], 0) }}
+                                    </span>
+                                </h4>
+                                <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobierno Regional</p>
+                            </div>
                         </div>
                     </div>
-                </div> --}}
-            </div>
-        </div>
-        <!--FIN CARD-->
-
-        <div class="col-md-6 col-xl-3">
-            <div class="card-box">
-                <div class="media">
-                    <div class="avatar-md bg-primary rounded-circle mr-2">
-                        <i class="ion ion-logo-usd avatar-title font-26 text-white"></i>
-                    </div>
-                    <div class="media-body align-self-center">
-                        <div class="text-right">
-                            <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card3['pim'], 0) }}">
-                                <span data-plugin="counterup">
-                                    {{ number_format($card3['pim'] , 0) }}
-                                </span>
-                            </h4>
-                            <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobierno Regional</p>
+                    <div class="mt-4">
+                        <h6 class="">Ejecución
+                            <span class="float-right">{{ number_format($card3['eje'], 1) }}%</span>
+                        </h6>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ $card3['eje'] }}"
+                                aria-valuemin="0" aria-valuemax="100" style="width: {{ $card3['eje'] }}%">
+                                <span class="sr-only">{{ $card3['eje'] }}% Complete</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {{-- <div class="mt-4">
-                    <h6 class="">Ejecución
-                        <span class="float-right">{{ number_format($card3['eje'], 1) }}%</span>
-                    </h6>
-                    <div class="progress progress-sm m-0">
-                        <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ $card3['eje'] }}"
-                            aria-valuemin="0" aria-valuemax="100" style="width: {{ $card3['eje'] }}%">
-                            <span class="sr-only">{{ $card3['eje'] }}% Complete</span>
+            </div>
+            <!--FIN CARD-->
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card-box">
+                    <div class="media">
+                        <div class="avatar-md bg-danger rounded-circle mr-2">
+                            <i class="ion ion-logo-usd avatar-title font-26 text-white"></i>
+                        </div>
+                        <div class="media-body align-self-center">
+                            <div class="text-right">
+                                <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card4['pim'], 0) }}">
+                                    <span data-plugin="counterup">
+                                        {{ number_format($card4['pim'], 0) }}
+                                    </span>
+                                </h4>
+                                <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobiernos Locales</p>
+                            </div>
                         </div>
                     </div>
-                </div> --}}
-            </div>
-        </div>
-        <!--FIN CARD-->
-
-        <div class="col-md-6 col-xl-3">
-            <div class="card-box">
-                <div class="media">
-                    <div class="avatar-md bg-danger rounded-circle mr-2">
-                        <i class="ion ion-logo-usd avatar-title font-26 text-white"></i>
-                    </div>
-                    <div class="media-body align-self-center">
-                        <div class="text-right">
-                            <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card4['pim'], 0) }}">
-                                <span data-plugin="counterup">
-                                    {{ number_format($card4['pim'] , 0) }}
-                                </span>
-                            </h4>
-                            <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobiernos Locales</p>
+                    <div class="mt-4">
+                        <h6 class="">Ejecución
+                            <span class="float-right">{{ number_format($card4['eje'], 1) }}%</span>
+                        </h6>
+                        <div class="progress progress-sm m-0">
+                            <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $card4['eje'] }}"
+                                aria-valuemin="0" aria-valuemax="100" style="width: {{ $card4['eje'] }}%">
+                                <span class="sr-only">{{ $card4['eje'] }}% Complete</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {{-- <div class="mt-4">
-                    <h6 class="">Ejecución
-                        <span class="float-right">{{ number_format($card4['eje'], 1) }}%</span>
-                    </h6>
-                    <div class="progress progress-sm m-0">
-                        <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $card4['eje'] }}"
-                            aria-valuemin="0" aria-valuemax="100" style="width: {{ $card4['eje'] }}%">
-                            <span class="sr-only">{{ $card4['eje'] }}% Complete</span>
-                        </div>
+            </div>
+            <!--FIN CARD-->
+
+
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
                     </div>
-                </div> --}}
+                    <div class="card-body p-0">
+                        <div id="anal1"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="anal4"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                    </div>
+                </div>
             </div>
         </div>
-        <!--FIN CARD-->
+        {{-- end  row --}}
 
+        <div class="row">
+            <div class="col-xl-6">
+
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="anal2"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="anal5"></div>{{-- style="min-width:400px;height:300px;margin:0 auto;" --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="anal7"></div>{{-- style="min-width:400px;height:300px;margin:0 auto;" --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="anal9"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title text-primary "></h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="anal8"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+
+
+        <div class="row">
+            <div class="col-xl-12 principal">
+                <div class="card card-border">{{--  bg-transparent pb-0 mb-0 --}}
+                    <div class="card-header border-primary">
+                        <div class="card-widgets">{{-- impormatricula.download --}}
+                            <button type="button" class="btn btn-success btn-xs"
+                                onclick="javascript:location=`{{ route('basegastos.download.excel.principal01') }}`"><i
+                                    class="fa fa-file-excel"></i>
+                                Excel</button>
+                        </div>
+                        <h3 class="card-title"></h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div class="table-responsive" id="vista1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
 
     </div>
-    <!-- end row -->
-
-    <div class="row">
-        <div class="col-xl-6">
-            <div class="card card-border card-primary">
-                <div class="card-header border-primary bg-transparent p-0">
-                    <h3 class="card-title text-primary "></h3>
-                </div>
-                <div class="card-body p-0">
-                    <div id="anal1"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-6">
-            <div class="card card-border card-primary">
-                <div class="card-header border-primary bg-transparent p-0">
-                    <h3 class="card-title text-primary "></h3>
-                </div>
-                <div class="card-body p-0">
-                    <div id="anal2"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- end  row --}}
-
-    <div class="row">
-        <div class="col-xl-12">
-            <div class="card card-border card-primary">
-                <div class="card-header border-primary bg-transparent p-0">
-                    <h3 class="card-title text-primary "></h3>
-                </div>
-                <div class="card-body p-0">
-                    <div id="anal3"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- end  row --}}
 @endsection
 
 
@@ -211,6 +301,27 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <!-- third party js -->
+    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/jszip/jszip.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/pdfmake.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/pdfmake/vfs_fonts.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.html5.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/buttons.print.min.js"></script>
+
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.scroller.min.js"></script>
 
 
 
@@ -239,19 +350,17 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 1
              */
             $.ajax({
-                url: "{{ route('baseingresos.ingresopresupuestal.grafica01') }}",
-                data: {
-                    'importacion_id': {{ $impI->id }}
-                },
+                url: "{{route('')}}",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
                     $('#anal1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
+                    //console.log(data)
                     gPie('anal1', data.info,
                         '',
-                        'Ingreso Presupuestal de la Region Ucayali',
+                        'Distribución del Presupuesto  de la Región Ucayali', /* <br><b class="fuentex">Fuente: SIAF-MEF</b> */
                         '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
@@ -264,23 +373,18 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 2
              */
             $.ajax({
-                url: "{{ route('baseingresos.ingresopresupuestal.grafica02') }}",
-                data: {
-                    'importacion_id': {{ $impI->id }}
-                },
+                url: "{{ url('/') }}/Home/Presupuesto/gra2/{{ $impG->id }}",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
                     $('#anal2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    gAnidadaColumn(
-                        'anal2',
-                        data.data.categoria,
-                        data.data.series,
+                    //console.log(data)
+                    gPie('anal2', data.info,
                         '',
-                        'Recaudación De Ingresos Según Tipo De Gobierno'
-                    );
+                        'Distribución del Presupuesto en Inversiones.',
+                        '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 2");
@@ -289,30 +393,202 @@
             });
 
             /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 2
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 3
              */
-            $.ajax({
-                url: "{{ route('baseingresos.ingresopresupuestal.grafica03') }}",
+            /* $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/gra3/{{ $impI->id }}",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
                     $('#anal3').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
+                    //console.log(data)
+                    gPie('anal3', data.info,
+                        '',
+                        'Ingreso Presupuestal de la Region Ucayali',
+                        '');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 3");
+                    console.log(jqXHR);
+                },
+            }); */
+
+            /*
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 4
+             */
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/gra4/{{ $impI->id }}",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal7').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
                     glineal(
-                        'anal3',
-                        data.data.categoria,
-                        data.data.series,
+                        'anal7',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Evolución del PIM del Sector Público de la región de Ucayali',
+                        'Año');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 7");
+                    console.log(jqXHR);
+                },
+            });
+
+            /*
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 5
+             */
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/gra5/{{ $impI->id }}",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal8').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    console.log(data)
+                    /* gSimpleColumn('anal8', data.base,
+                        '',
+                        'Evaluación Del Presupuesto En Inversión Pública En La Región De Ucayali',
+                        ''); */
+                    glineal(
+                        'anal8',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Evolución del PIM en Inversión Pública de la región de Ucayali',
+                        'Año');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 8");
+                    console.log(jqXHR);
+                },
+            });
+
+            /*
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 9
+             */
+            $.ajax({
+                url: "{{ route('graficas.home.presupuesto.7') }}",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal9').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    glineal(
+                        'anal9',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Evolución del PIM en Actividades Pública de la región de Ucayali',
+                        'Año');
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 9");
+                    console.log(jqXHR);
+                },
+            });
+
+            /*
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
+             */
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/tabla1/{{ $impG->id }}",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    //console.log(data.data['categoria'])
+                    gAnidadaColumn(
+                        'anal4',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Ejecución Presupuestal Según Tipo De Gobierno'
+                    );
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 4");
+                    console.log(jqXHR);
+                },
+            });
+
+            /*
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
+             */
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/tabla2/{{ $impG->id }}",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal5').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    //console.log(data.data['categoria'])
+                    gAnidadaColumn(
+                        'anal5',
+                        data.data['categoria'],
+                        data.data['series'],
+                        '',
+                        'Ejecución Presupuestal en Inversiones Según Tipo De Gobierno'
+                    );
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 5");
+                    console.log(jqXHR);
+                },
+            });
+
+            /*
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 3
+             */
+            /* $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/tabla3/{{ $impI->id }}",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal6').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    //console.log(data)
+                    gAnidadaColumn(
+                        'anal6',
+                        data.data['categoria'],
+                        data.data['series'],
                         '',
                         'Recaudación De Ingresos Según Tipo De Gobierno'
                     );
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 2");
+                    console.log("ERROR GRAFICA 6");
+                    console.log(jqXHR);
+                },
+            }); */
+
+            /*
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
+             */
+            $.ajax({
+                url: "{{ route('tabla.home.presupuesto') }}",
+                type: "GET",
+                beforeSend: function() {
+                    $('#vista1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    $('#vista1').html(data);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                 },
             });
-
         });
     </script>
 

@@ -598,6 +598,15 @@ Route::get('/SiafGastos/tabla01', [BaseGastosController::class, 'nivelgobiernost
 Route::get('/SiafGastos/tabla02', [BaseGastosController::class, 'nivelgobiernostabla02'])->name('basegastos.nivelgobiernos.tabla02');
 Route::get('/SiafGastos/Exportar/excel/principal01', [BaseGastosController::class, 'download'])->name('basegastos.download.excel.principal01');
 
+Route::get('/GastosP/NivelesGobiernos', [BaseGastosController::class, 'nivelesgobiernos'])->name('basegastos.nivelesgobiernos');
+Route::get('/GastosP/gra1', [HomeController::class, 'nivelesgobiernosgrafica1'])->name('basegastos.nivgob.graficas.1');
+Route::get('/GastosP/gra2', [HomeController::class, 'nivelesgobiernosgrafica2'])->name('basegastos.nivgob.graficas.2');
+Route::get('/GastosP/gra3', [HomeController::class, 'nivelesgobiernosgrafica3'])->name('basegastos.nivgob.graficas.3');
+Route::get('/GastosP/gra4', [HomeController::class, 'nivelesgobiernosgrafica4'])->name('basegastos.nivgob.graficas.4');
+Route::get('/GastosP/gra5', [HomeController::class, 'nivelesgobiernosgrafica5'])->name('basegastos.nivgob.graficas.5');
+Route::get('/GastosP/gra6', [HomeController::class, 'nivelesgobiernosgrafica6'])->name('basegastos.nivgob.graficas.6');
+Route::get('/GastosP/gra7', [HomeController::class, 'nivelesgobiernosgrafica7'])->name('basegastos.nivgob.graficas.7');
+
 
 Route::get('/SiafIngresos/IngresoPresupuestal', [BaseIngresosController::class, 'ingresopresupuestal'])->name('baseingresos.ingresopresupuestal');
 Route::get('/SiafIngresos/Ingreso/grafico01', [BaseIngresosController::class, 'ingresopresupuestalgrafica1'])->name('baseingresos.ingresopresupuestal.grafica01');
