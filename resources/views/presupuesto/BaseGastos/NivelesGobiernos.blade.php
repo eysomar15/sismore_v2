@@ -350,7 +350,10 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 1
              */
             $.ajax({
-                url: "{{route('')}}",
+                url: "{{ route('basegastos.nivgob.graficas.1') }}",
+                data: {
+                    basegastos_id: {{ $bgs->id }}
+                },
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
@@ -373,7 +376,10 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 2
              */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra2/{{ $impG->id }}",
+                url: "{{ route('basegastos.nivgob.graficas.2') }}",
+                data: {
+                    basegastos_id: {{ $bgs->id }}
+                },
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
@@ -419,7 +425,7 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 4
              */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra4/{{ $impI->id }}",
+                url: "{{ route('basegastos.nivgob.graficas.4') }}",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
@@ -428,8 +434,8 @@
                 success: function(data) {
                     glineal(
                         'anal7',
-                        data.data['categoria'],
-                        data.data['series'],
+                        data.data.categoria,
+                        data.data.series,
                         '',
                         'Evolución del PIM del Sector Público de la región de Ucayali',
                         'Año');
@@ -444,7 +450,7 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 5
              */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra5/{{ $impI->id }}",
+                url: "{{ route('basegastos.nivgob.graficas.5') }}",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
@@ -452,14 +458,11 @@
                 },
                 success: function(data) {
                     console.log(data)
-                    /* gSimpleColumn('anal8', data.base,
-                        '',
-                        'Evaluación Del Presupuesto En Inversión Pública En La Región De Ucayali',
-                        ''); */
+                    //gSimpleColumn('anal8', data.base,'','Evaluación Del Presupuesto En Inversión Pública En La Región De Ucayali','');
                     glineal(
                         'anal8',
-                        data.data['categoria'],
-                        data.data['series'],
+                        data.data.categoria,
+                        data.data.series,
                         '',
                         'Evolución del PIM en Inversión Pública de la región de Ucayali',
                         'Año');
@@ -474,7 +477,7 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 9
              */
             $.ajax({
-                url: "{{ route('graficas.home.presupuesto.7') }}",
+                url: "{{ route('basegastos.nivgob.graficas.7') }}",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
@@ -483,8 +486,8 @@
                 success: function(data) {
                     glineal(
                         'anal9',
-                        data.data['categoria'],
-                        data.data['series'],
+                        data.data.categoria,
+                        data.data.series,
                         '',
                         'Evolución del PIM en Actividades Pública de la región de Ucayali',
                         'Año');
@@ -499,7 +502,10 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
              */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/tabla1/{{ $impG->id }}",
+                url: "{{ route('basegastos.nivgob.graficas.8') }}",
+                data: {
+                    basegastos_id: {{ $bgs->id }}
+                },
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
@@ -509,8 +515,8 @@
                     //console.log(data.data['categoria'])
                     gAnidadaColumn(
                         'anal4',
-                        data.data['categoria'],
-                        data.data['series'],
+                        data.data.categoria,
+                        data.data.series,
                         '',
                         'Ejecución Presupuestal Según Tipo De Gobierno'
                     );
@@ -525,7 +531,11 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
              */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/tabla2/{{ $impG->id }}",
+                //url: "{{ url('/') }}/Home/Presupuesto/tabla2/{{ $impG->id }}",
+                url: "{{ route('basegastos.nivgob.graficas.9') }}",
+                data: {
+                    basegastos_id: {{ $bgs->id }}
+                },
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
@@ -535,8 +545,8 @@
                     //console.log(data.data['categoria'])
                     gAnidadaColumn(
                         'anal5',
-                        data.data['categoria'],
-                        data.data['series'],
+                        data.data.categoria,
+                        data.data.series,
                         '',
                         'Ejecución Presupuestal en Inversiones Según Tipo De Gobierno'
                     );
@@ -577,7 +587,8 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
              */
             $.ajax({
-                url: "{{ route('tabla.home.presupuesto') }}",
+                //url: "{{ route('tabla.home.presupuesto') }}",
+                url: "{{ route('basegastos.nivgob.graficas.0') }}",
                 type: "GET",
                 beforeSend: function() {
                     $('#vista1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');

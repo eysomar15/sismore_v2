@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Presupuesto;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImporGastosImport;
 use Illuminate\Http\Request;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\Importacion;
-use App\Models\Presupuesto\ImporGastos;
+use App\Models\Presupuesto\BaseModificacion;
+use App\Models\Presupuesto\BaseModificacionDetalle;
 use App\Models\Presupuesto\ImporModificaciones;
-use App\Repositories\Educacion\ImporGastosRepositorio;
 use App\Repositories\Educacion\ImportacionRepositorio;
 use Exception;
 
@@ -214,7 +213,7 @@ class ImporModificacionesController extends Controller
             }
 
             if (date('Y-m-d', strtotime($value->created_at)) == date('Y-m-d') || session('perfil_id') == 3 || session('perfil_id') == 8 || session('perfil_id') == 9 || session('perfil_id') == 10 || session('perfil_id') == 11)
-                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" id="eliminar' . $value->id . '" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
             else
                 $boton = '';
             $boton2 = '<button type="button" onclick="monitor(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
@@ -240,15 +239,24 @@ class ImporModificacionesController extends Controller
 
     public function ListaImportada(Request $request, $importacion_id)
     {
-        $data = ImporGastosRepositorio::listaImportada($importacion_id);
-        return DataTables::of($data)->make(true);
+        /* $data = ImporGastosRepositorio::listaImportada($importacion_id);
+        return DataTables::of($data)->make(true); */
+        return null;
     }
 
     public function eliminar($id)
     {
-        $entidad = Importacion::find($id);
+        /* $entidad = Importacion::find($id);
         $entidad->estado = 'EL';
-        $entidad->save();
+        $entidad->save(); */
+
+        $bm = BaseModificacion::where('importacion_id', $id)->first();
+        ImporModificaciones::where('importacion_id', $id)->delete();
+        if ($bm) {
+            BaseModificacionDetalle::where('basemodificacion_id', $bm->id)->delete();
+            BaseModificacion::find($bm->id)->delete();
+        }
+        Importacion::find($id)->delete();
 
         return response()->json(array('status' => true));
     }

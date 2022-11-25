@@ -32,59 +32,43 @@ class BaseGastosRepositorio
             ->where('pres_base_gastos_detalle.basegastos_id', $imp);
         $query = $query->groupBy('id', 'gobiernos')->get();
         return $query;
-/*
-        $query = BaseGastos::where('pres_base_gastos.importacion_id', $imp)
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
-            ->select(
-                'v4.id',
-                'v4.tipogobierno as gobiernos',
-                DB::raw('sum(pres_base_gastos.pim) as pim'),
-                DB::raw('100*sum(pres_base_gastos.devengado)/sum(pres_base_gastos.pim) as eje')
-            )
-            ->groupBy('id', 'gobiernos')
-            ->orderBy('v4.id', 'asc')
-            ->get(); */
-        return $query;
     }
 
-    public static function pim_tipogobierno2($imp)
+    public static function pim_tipogobierno2($bg_id)
     {
-        $info = BaseGastos::where('pres_base_gastos.importacion_id', $imp)
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
+        $info = BaseGastosDetalle::where('pres_base_gastos_detalle.basegastos_id', $bg_id)
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
             ->select(
-                'v4.id',
-                'v4.tipogobierno as name',
-                DB::raw('sum(pres_base_gastos.pim) as y'),
+                'v5.id',
+                'v5.tipogobierno as name',
+                DB::raw('sum(pres_base_gastos_detalle.pim) as y'),
             )
             ->groupBy('id', 'name')
-            ->orderBy('v4.pos', 'asc')
+            ->orderBy('v5.pos', 'asc')
             ->get();
-        $color = ['#7e57c2', '#317eeb', '#ef5350'];
-        foreach ($info as $key => $value) {
-            $value->color = $color[$key];
-        }
+
         return $info;
     }
 
-    public static function inversiones_pim_tipogobierno($importacion_id)
+    public static function inversiones_pim_tipogobierno($bg_id)
     {
-        $info = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
-            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
-            ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
-            ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
-            ->join('pres_producto_proyecto as v5', 'v5.id', '=', 'pres_base_gastos.productoproyecto_id')
+        $info = BaseGastosDetalle::where('pres_base_gastos_detalle.basegastos_id', $bg_id)
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->join('pres_producto_proyecto as v6', 'v6.id', '=', 'pres_base_gastos_detalle.productoproyecto_id')
             ->select(
-                'v4.id',
-                'v4.tipogobierno as name',
-                DB::raw('sum(pres_base_gastos.pim) as y'),
+                'v5.id',
+                'v5.tipogobierno as name',
+                DB::raw('sum(pres_base_gastos_detalle.pim) as y'),
             )
-            ->where('v5.codigo', '2')
+            ->where('v6.codigo', '2')
             ->groupBy('id', 'name')
-            ->orderBy('v4.pos', 'asc')
+            ->orderBy('v5.pos', 'asc')
             ->get();
         $color = ['#7e57c2', '#317eeb', '#ef5350'];
         foreach ($info as $key => $value) {
@@ -95,7 +79,24 @@ class BaseGastosRepositorio
 
     public static function pim_anios_tipogobierno()
     {
-        $query = BaseGastos::select(
+        $query = BaseGastosDetalle::select(
+            'w2.id',
+            'w1.anio as ano',
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos_detalle.pim,0)) as pim1"),
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos_detalle.pim,0)) as pim2"),
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos_detalle.pim,0)) as pim3"),
+        )
+            ->join('pres_base_gastos as w1', 'w1.id', '=', 'pres_base_gastos_detalle.basegastos_id')
+            ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->where('w2.estado', 'PR')
+            ->orderBy('ano','asc');
+        $query = $query->groupBy('id', 'ano')->get();
+
+        /* $query = BaseGastos::select(
             'v3.id',
             'v2.anio as ano',
             DB::raw("sum(IF(v6.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos.pim,0)) as pim1"),
@@ -109,13 +110,32 @@ class BaseGastosRepositorio
             ->join('pres_tipo_gobierno as v6', 'v6.id', '=', 'v5.tipogobierno')
             ->where('v3.estado', 'PR')
             ->groupBy('id', 'ano')
-            ->get();
+            ->get(); */
         return $query;
     }
 
     public static function inversion_pim_anios_tipogobierno()
     {
-        $query = BaseGastos::select(
+        $query = BaseGastosDetalle::select(
+            'w2.id',
+            'w1.anio as ano',
+            'v5.tipogobierno as tipo',
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos_detalle.pim,0)) as pim1"),
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos_detalle.pim,0)) as pim2"),
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos_detalle.pim,0)) as pim3"),
+        )
+            ->join('pres_base_gastos as w1', 'w1.id', '=', 'pres_base_gastos_detalle.basegastos_id')
+            ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->join('pres_producto_proyecto as v6', 'v6.id', '=', 'pres_base_gastos_detalle.productoproyecto_id')
+            ->where('w2.estado', 'PR')
+            ->where('v6.codigo', '2')
+            ->orderBy('ano','asc');
+        $query = $query->groupBy('id', 'ano', 'tipo')->get();
+        /* $query = BaseGastos::select(
             'v3.id',
             'v2.anio as ano',
             'v6.tipogobierno as tipo',
@@ -132,12 +152,30 @@ class BaseGastosRepositorio
             ->where('v3.estado', 'PR')
             ->where('v7.codigo', '2')
             ->groupBy('id', 'ano', 'tipo')
-            ->get();
+            ->get(); */
         return $query;
     }
     public static function activades_pim_anios_tipogobierno()
     {
-        $query = BaseGastos::select(
+        $query = BaseGastosDetalle::select(
+            'w2.id',
+            'w1.anio as ano',
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos_detalle.pim,0)) as pim1"),
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos_detalle.pim,0)) as pim2"),
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos_detalle.pim,0)) as pim3"),
+        )
+            ->join('pres_base_gastos as w1', 'w1.id', '=', 'pres_base_gastos_detalle.basegastos_id')
+            ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->join('pres_producto_proyecto as v6', 'v6.id', '=', 'pres_base_gastos_detalle.productoproyecto_id')
+            ->where('w2.estado', 'PR')
+            ->where('v6.codigo', '3')
+            ->orderBy('ano','asc');
+        $query = $query->groupBy('id', 'ano')->get();
+        /* $query = BaseGastos::select(
             'v3.id',
             'v2.anio as ano',
             DB::raw("sum(IF(v6.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos.pim,0)) as pim1"),
@@ -153,12 +191,27 @@ class BaseGastosRepositorio
             ->where('v3.estado', 'PR')
             ->where('v7.codigo', '3')
             ->groupBy('id', 'ano')
-            ->get();
+            ->get(); */
         return $query;
     }
-    public static function pim_pia_devengado_tipogobierno($importacion_id)
+    public static function pim_pia_devengado_tipogobierno($bg_id)
     {
-        $query = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
+        $query = BaseGastosDetalle::where('pres_base_gastos_detalle.basegastos_id', $bg_id)
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->select(
+                'v5.id',
+                'v5.tipogobierno as name',
+                DB::raw('sum(pres_base_gastos_detalle.pia) as y1'),
+                DB::raw('sum(pres_base_gastos_detalle.pim) as y2'),
+                DB::raw('sum(pres_base_gastos_detalle.devengado) as y3'),
+            )
+            ->groupBy('id', 'name')
+            ->orderBy('v5.pos', 'asc')
+            ->get();
+        /* $query = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
             ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
             ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
             ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
@@ -171,13 +224,30 @@ class BaseGastosRepositorio
             )
             ->groupBy('id', 'name')
             ->orderBy('v4.pos', 'asc')
-            ->get();
+            ->get(); */
         return $query;
     }
 
-    public static function inversion_pim_pia_devengado_tipogobierno($importacion_id)
+    public static function inversion_pim_pia_devengado_tipogobierno($bg_id)
     {
-        $query = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
+        $query = BaseGastosDetalle::where('pres_base_gastos_detalle.basegastos_id', $bg_id)
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->join('pres_producto_proyecto as v6', 'v6.id', '=', 'pres_base_gastos_detalle.productoproyecto_id')
+            ->select(
+                'v5.id',
+                'v5.tipogobierno as name',
+                DB::raw('sum(pres_base_gastos_detalle.pia) as y1'),
+                DB::raw('sum(pres_base_gastos_detalle.pim) as y2'),
+                DB::raw('sum(pres_base_gastos_detalle.devengado) as y3'),
+            )
+            ->where('v6.codigo', '2')
+            ->groupBy('id', 'name')
+            ->orderBy('v5.pos', 'asc')
+            ->get();
+        /* $query = BaseGastos::where('pres_base_gastos.importacion_id', $importacion_id)
             ->join('pres_pliego as v2', 'v2.id', '=', 'pres_base_gastos.pliego_id')
             ->join('pres_unidadejecutora as v3', 'v3.id', '=', 'v2.unidadejecutora_id')
             ->join('pres_tipo_gobierno as v4', 'v4.id', '=', 'v3.tipogobierno')
@@ -192,13 +262,42 @@ class BaseGastosRepositorio
             ->where('v5.codigo', '2')
             ->groupBy('id', 'name')
             ->orderBy('v4.pos', 'asc')
-            ->get();
+            ->get(); */
         return $query;
     }
 
     public static function pim_ejecutado_noejecutado_tipogobierno()
     {
-        $query = BaseGastos::select(
+        $query = BaseGastosDetalle::select(
+            'w2.id',
+            'w1.anio as ano',
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos_detalle.pim,0)) as gnp"),
+            DB::raw("ROUND(sum(IF(v5.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos_detalle.devengado,0)),2) as gnd"),
+            DB::raw("ROUND(sum(IF(v5.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos_detalle.pim,0))-sum(IF(v5.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos_detalle.devengado,0)),2) as gnne"),
+
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos_detalle.pim,0)) as glp"),
+            DB::raw("ROUND(sum(IF(v5.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos_detalle.devengado,0)),2) as gld"),
+            DB::raw("ROUND(sum(IF(v5.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos_detalle.pim,0))-sum(IF(v5.tipogobierno='GOBIERNOS LOCALES',pres_base_gastos_detalle.devengado,0)),2) as glne"),
+
+            DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos_detalle.pim,0)) as grp"),
+            DB::raw("ROUND(sum(IF(v5.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos_detalle.devengado,0)),2) as grd"),
+            DB::raw("ROUND(sum(IF(v5.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos_detalle.pim,0))-sum(IF(v5.tipogobierno='GOBIERNOS REGIONALES',pres_base_gastos_detalle.devengado,0)),2) as grne"),
+
+            DB::raw("sum(pres_base_gastos_detalle.pim) as ttp"),
+            DB::raw("ROUND(sum(pres_base_gastos_detalle.devengado),2) as ttd"),
+            DB::raw("ROUND(sum(pres_base_gastos_detalle.pim)-sum(pres_base_gastos_detalle.devengado),2) as ttne"),
+        )
+            ->join('pres_base_gastos as w1', 'w1.id', '=', 'pres_base_gastos_detalle.basegastos_id')
+            ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_gastos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->join('pres_producto_proyecto as v6', 'v6.id', '=', 'pres_base_gastos_detalle.productoproyecto_id')
+            ->where('w2.estado', 'PR');
+        $query = $query->groupBy('id', 'ano')->get();
+
+        /* $query = BaseGastos::select(
             'v3.id',
             'v2.anio as ano',
             DB::raw("sum(IF(v6.tipogobierno='GOBIERNO NACIONAL',pres_base_gastos.pim,0)) as gnp"),
@@ -224,7 +323,7 @@ class BaseGastosRepositorio
             ->join('pres_tipo_gobierno as v6', 'v6.id', '=', 'v5.tipogobierno')
             ->where('v3.estado', 'PR')
             ->groupBy('id', 'ano')
-            ->get();
+            ->get(); */
         return $query;
     }
 
@@ -274,7 +373,8 @@ class BaseGastosRepositorio
             ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
             ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
             ->join('pres_categoriagasto as v6', 'v6.id', '=', 'pres_base_gastos_detalle.categoriagasto_id')
-            ->where('w2.estado', 'PR');
+            ->where('w2.estado', 'PR')
+            ->orderBy('ano','asc');
         if ($gob != 0) $query = $query->where('v5.id', $gob);
         if ($sec != 0) $query = $query->where('v4.id', $sec);
         if ($ue != 0) $query = $query->where('v2.id', $ue);
@@ -302,7 +402,7 @@ class BaseGastosRepositorio
         if ($gob != 0) $query = $query->where('v5.id', $gob);
         if ($sec != 0) $query = $query->where('v4.id', $sec);
         if ($ue != 0) $query = $query->where('v2.id', $ue);
-        $query = $query->groupBy('id', 'ano')->get();
+        $query = $query->groupBy('id', 'ano')->orderBy('ano','asc')->get();
         return $query;
     }
 

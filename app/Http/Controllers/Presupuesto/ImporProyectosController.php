@@ -7,6 +7,8 @@ use App\Imports\ImporGastosImport;
 use Illuminate\Http\Request;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\Importacion;
+use App\Models\Presupuesto\BaseProyectos;
+use App\Models\Presupuesto\BaseProyectosDetalle;
 use App\Models\Presupuesto\ImporGastos;
 use App\Models\Presupuesto\ImporProyectos;
 use App\Models\Presupuesto\ImporSiafWeb;
@@ -165,7 +167,7 @@ class ImporProyectosController extends Controller
             }
 
             if (date('Y-m-d', strtotime($value->created_at)) == date('Y-m-d') || session('perfil_id') == 3 || session('perfil_id') == 8 || session('perfil_id') == 9 || session('perfil_id') == 10 || session('perfil_id') == 11)
-                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" id="eliminar' . $value->id . '" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
             else
                 $boton = '';
             $boton2 = '<button type="button" onclick="monitor(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
@@ -197,9 +199,17 @@ class ImporProyectosController extends Controller
 
     public function eliminar($id)
     {
-        $entidad = Importacion::find($id);
+        /* $entidad = Importacion::find($id);
         $entidad->estado = 'EL';
-        $entidad->save();
+        $entidad->save(); */
+
+        $bp = BaseProyectos::where('importacion_id', $id)->first();
+        ImporProyectos::where('importacion_id', $id)->delete();
+        if ($bp) {
+            BaseProyectosDetalle::where('baseproyectos_id', $bp->id)->delete();
+            BaseProyectos::find($bp->id)->delete();
+        }
+        Importacion::find($id)->delete();
 
         return response()->json(array('status' => true));
     }

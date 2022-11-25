@@ -22,6 +22,5 @@ class BaseProyectosDetalle extends Model
         'devengado',
         'girado',
         'avance',
-
     ];
 }

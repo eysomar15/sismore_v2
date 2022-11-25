@@ -48,9 +48,29 @@ use App\Http\Controllers\Vivienda\CentroPobladoDatassController;
 use App\Http\Controllers\Vivienda\DatassController;
 use App\Http\Controllers\Vivienda\EmapacopsaController;
 use App\Http\Controllers\Vivienda\PadronEmapacopsaController;
+use App\Models\Educacion\Importacion;
+use App\Models\Presupuesto\BaseActividadesProyectos;
+use App\Models\Presupuesto\BaseActividadesProyectosDetalle;
+use App\Models\Presupuesto\BaseGastos;
+use App\Models\Presupuesto\BaseGastosDetalle;
+use App\Models\Presupuesto\BaseIngresos;
+use App\Models\Presupuesto\BaseIngresosDetalle;
+use App\Models\Presupuesto\BaseModificacion;
+use App\Models\Presupuesto\BaseModificacionDetalle;
+use App\Models\Presupuesto\BaseProyectos;
+use App\Models\Presupuesto\BaseProyectosDetalle;
+use App\Models\Presupuesto\BaseSiafWeb;
+use App\Models\Presupuesto\BaseSiafWebDetalle;
+use App\Models\Presupuesto\ImporActividadesProyectos;
+use App\Models\Presupuesto\ImporGastos;
+use App\Models\Presupuesto\ImporIngresos;
+use App\Models\Presupuesto\ImporModificaciones;
+use App\Models\Presupuesto\ImporProyectos;
+use App\Models\Presupuesto\ImporSiafWeb;
 use App\Models\Vivienda\CentroPobladoDatass;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -398,11 +418,11 @@ Route::get('/presupuesto/Principal/vista1', [MatriculaDetalleController::class, 
 Route::get('/presupuesto/Principal/vista2', [MatriculaDetalleController::class, 'cargarpresupuestoview2'])->name('educacion.view2');
 Route::get('/presupuesto/Principal/vista3', [MatriculaDetalleController::class, 'cargarpresupuestoview3'])->name('educacion.view3');
 
-Route::get('/presupuesto/pres/vista1', [MatriculaDetalleController::class, 'cargarpresupuestoview11'])->name('presupuesto.view1');//Unidades Ejecutoras - UNIDADES EJECUTORAS
-Route::get('/presupuesto/pres/vista2', [MatriculaDetalleController::class, 'cargarpresupuestoview12'])->name('presupuesto.view2');//Proyectos - Proyectos
-Route::get('/presupuesto/pres/vista3', [MatriculaDetalleController::class, 'cargarpresupuestoview13'])->name('presupuesto.view3');//Programas Presupuestales - PROGRAMAS PRESUPUESTALES
-Route::get('/presupuesto/pres/vista4', [MatriculaDetalleController::class, 'cargarpresupuestoview14'])->name('presupuesto.view4');//Fuente de Financiamiento - FUENTE DE FIN. Y GENERICA
-Route::get('/presupuesto/pres/vista5', [MatriculaDetalleController::class, 'cargarpresupuestoview15'])->name('presupuesto.view5');//Actividades - Actividades
+Route::get('/presupuesto/pres/vista1', [MatriculaDetalleController::class, 'cargarpresupuestoview11'])->name('presupuesto.view1'); //Unidades Ejecutoras - UNIDADES EJECUTORAS
+Route::get('/presupuesto/pres/vista2', [MatriculaDetalleController::class, 'cargarpresupuestoview12'])->name('presupuesto.view2'); //Proyectos - Proyectos
+Route::get('/presupuesto/pres/vista3', [MatriculaDetalleController::class, 'cargarpresupuestoview13'])->name('presupuesto.view3'); //Programas Presupuestales - PROGRAMAS PRESUPUESTALES
+Route::get('/presupuesto/pres/vista4', [MatriculaDetalleController::class, 'cargarpresupuestoview14'])->name('presupuesto.view4'); //Fuente de Financiamiento - FUENTE DE FIN. Y GENERICA
+Route::get('/presupuesto/pres/vista5', [MatriculaDetalleController::class, 'cargarpresupuestoview15'])->name('presupuesto.view5'); //Actividades - Actividades
 
 
 Route::get('/INDICADOR/SINRUTA', function () {
@@ -587,7 +607,7 @@ Route::get('/IMPORACTSPROYS/eliminar/{id}', [ImporActividadesProyectosController
 Route::post('/IMPORACTSPROYS/ListaImportada/{importacion_id}', [ImporActividadesProyectosController::class, 'ListaImportada'])->name('imporactividadesproyectos.listarimportados');
 
 Route::get('/PRES/Covid/Importar', [ImporGastosController::class, 'importar'])->name('pres.covid.importar');    //no sirve
-Route::get('/PRES/Regiones/Importar', [ImporGastosController::class, 'importar'])->name('pres.regiones.importar');//no sirve
+Route::get('/PRES/Regiones/Importar', [ImporGastosController::class, 'importar'])->name('pres.regiones.importar'); //no sirve
 
 Route::get('/SiafGastos/NivelGobiernos', [BaseGastosController::class, 'nivelgobiernos'])->name('basegastos.nivelgobiernos');
 Route::get('/SiafGastos/ajax_sector', [BaseGastosController::class, 'cargarsector'])->name('basegastos.cargarsector');
@@ -599,13 +619,17 @@ Route::get('/SiafGastos/tabla02', [BaseGastosController::class, 'nivelgobiernost
 Route::get('/SiafGastos/Exportar/excel/principal01', [BaseGastosController::class, 'download'])->name('basegastos.download.excel.principal01');
 
 Route::get('/GastosP/NivelesGobiernos', [BaseGastosController::class, 'nivelesgobiernos'])->name('basegastos.nivelesgobiernos');
-Route::get('/GastosP/gra1', [HomeController::class, 'nivelesgobiernosgrafica1'])->name('basegastos.nivgob.graficas.1');
-Route::get('/GastosP/gra2', [HomeController::class, 'nivelesgobiernosgrafica2'])->name('basegastos.nivgob.graficas.2');
-Route::get('/GastosP/gra3', [HomeController::class, 'nivelesgobiernosgrafica3'])->name('basegastos.nivgob.graficas.3');
-Route::get('/GastosP/gra4', [HomeController::class, 'nivelesgobiernosgrafica4'])->name('basegastos.nivgob.graficas.4');
-Route::get('/GastosP/gra5', [HomeController::class, 'nivelesgobiernosgrafica5'])->name('basegastos.nivgob.graficas.5');
-Route::get('/GastosP/gra6', [HomeController::class, 'nivelesgobiernosgrafica6'])->name('basegastos.nivgob.graficas.6');
-Route::get('/GastosP/gra7', [HomeController::class, 'nivelesgobiernosgrafica7'])->name('basegastos.nivgob.graficas.7');
+Route::get('/GastosP/gra1', [BaseGastosController::class, 'nivelesgobiernosgrafica1'])->name('basegastos.nivgob.graficas.1');
+Route::get('/GastosP/gra2', [BaseGastosController::class, 'nivelesgobiernosgrafica2'])->name('basegastos.nivgob.graficas.2');
+//Route::get('/GastosP/gra3', [HomeController::class, 'nivelesgobiernosgrafica3'])->name('basegastos.nivgob.graficas.3');
+Route::get('/GastosP/gra4', [BaseGastosController::class, 'nivelesgobiernosgrafica4'])->name('basegastos.nivgob.graficas.4');
+Route::get('/GastosP/gra5', [BaseGastosController::class, 'nivelesgobiernosgrafica5'])->name('basegastos.nivgob.graficas.5');
+//Route::get('/GastosP/gra6', [HomeController::class, 'nivelesgobiernosgrafica6'])->name('basegastos.nivgob.graficas.6');
+Route::get('/GastosP/gra7', [BaseGastosController::class, 'nivelesgobiernosgrafica7'])->name('basegastos.nivgob.graficas.7');
+
+Route::get('/GastosP/gra8', [BaseGastosController::class, 'nivelesgobiernosgrafica8'])->name('basegastos.nivgob.graficas.8');
+Route::get('/GastosP/gra9', [BaseGastosController::class, 'nivelesgobiernosgrafica9'])->name('basegastos.nivgob.graficas.9');
+Route::get('/GastosP/gra0', [BaseGastosController::class, 'nivelesgobiernosgrafica0'])->name('basegastos.nivgob.graficas.0');
 
 
 Route::get('/SiafIngresos/IngresoPresupuestal', [BaseIngresosController::class, 'ingresopresupuestal'])->name('baseingresos.ingresopresupuestal');
@@ -629,7 +653,88 @@ Route::get('/IMPORMODS/Listar/ImportarDT', [ImporModificacionesController::class
 Route::get('/IMPORMODS/eliminar/{id}', [ImporModificacionesController::class, 'eliminar']);
 Route::post('/IMPORMODS/ListaImportada/{importacion_id}', [ImporModificacionesController::class, 'ListaImportada'])->name('impormodificaciones.listarimportados');
 
+Route::get('/limpiargasto', function () {
+    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=13 and estado="EL" ORDER BY id DESC) as tb'))->get();
+    foreach ($imps as $key => $imp) {
+        $bg = BaseGastos::where('importacion_id', $imp->id)->first();
+        ImporGastos::where('importacion_id', $imp->id)->delete();
+        if ($bg) {
+            BaseGastosDetalle::where('basegastos_id', $bg->id)->delete();
+            BaseGastos::find($bg->id)->delete();
+        }
+        Importacion::find($imp->id)->delete();
+    }
+    return $imps;
+})->name('xxx1');
+Route::get('/limpiaringreso', function () {
+    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=15 and estado="EL" ORDER BY id DESC) as tb'))->get();
+    foreach ($imps as $key => $imp) {
+        $bi = BaseIngresos::where('importacion_id', $imp->id)->first();
+        ImporIngresos::where('importacion_id', $imp->id)->delete();
+        if ($bi) {
+            BaseIngresosDetalle::where('baseingresos_id', $bi->id)->delete();
+            BaseIngresos::find($bi->id)->delete();
+        }
+        Importacion::find($imp->id)->delete();
+    }
+    return $imps;
+})->name('xxx2');
 
+Route::get('/limpiarmodificacion', function () {
+    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=26 and estado="EL" ORDER BY id DESC) as tb'))->get();
+    foreach ($imps as $key => $imp) {
+        $bi = BaseModificacion::where('importacion_id', $imp->id)->first();
+        ImporModificaciones::where('importacion_id', $imp->id)->delete();
+        if ($bi) {
+            BaseModificacionDetalle::where('basemodificacion_id', $bi->id)->delete();
+            BaseModificacion::find($bi->id)->delete();
+        }
+        Importacion::find($imp->id)->delete();
+    }
+    return $imps;
+})->name('xxx3');
+
+Route::get('/limpiarsiafweb', function () {
+    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=24 and estado="EL" ORDER BY id DESC) as tb'))->get();
+    foreach ($imps as $key => $imp) {
+        $bi = BaseSiafWeb::where('importacion_id', $imp->id)->first();
+        ImporSiafWeb::where('importacion_id', $imp->id)->delete();
+        if ($bi) {
+            BaseSiafWebDetalle::where('basesiafweb_id', $bi->id)->delete();
+            BaseSiafWeb::find($bi->id)->delete();
+        }
+        Importacion::find($imp->id)->delete();
+    }
+    return $imps;
+})->name('xxx4');
+
+Route::get('/limpiarproyectos', function () {
+    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=25 and estado="EL" ORDER BY id DESC) as tb'))->get();
+    foreach ($imps as $key => $imp) {
+        $bi = BaseProyectos::where('importacion_id', $imp->id)->first();
+        ImporProyectos::where('importacion_id', $imp->id)->delete();
+        if ($bi) {
+            BaseProyectosDetalle::where('baseproyectos_id', $bi->id)->delete();
+            BaseProyectos::find($bi->id)->delete();
+        }
+        Importacion::find($imp->id)->delete();
+    }
+    return $imps;
+})->name('xxx5');
+
+Route::get('/limpiaractividadesproyectos', function () {
+    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=16 and estado="EL" ORDER BY id DESC) as tb'))->get();
+    foreach ($imps as $key => $imp) {
+        $bi = BaseActividadesProyectos::where('importacion_id', $imp->id)->first();
+        ImporActividadesProyectos::where('importacion_id', $imp->id)->delete();
+        if ($bi) {
+            BaseActividadesProyectosDetalle::where('baseproyectos_id', $bi->id)->delete();
+            BaseActividadesProyectos::find($bi->id)->delete();
+        }
+        Importacion::find($imp->id)->delete();
+    }
+    return $imps;
+})->name('xxx6');
 /**************************************** FIN PRESUPUESTO ***************************************************/
 
 

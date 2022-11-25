@@ -317,11 +317,16 @@
                         url: "{{ url('/') }}/IMPORINGRESO/eliminar/" + id,
                         type: "GET",
                         dataType: "JSON",
+                        beforeSend: function() {
+                            $('#eliminar' + id).html(
+                                '<span><i class="fa fa-spinner fa-spin"></i></span>');
+                        },
                         success: function(data) {
                             table_principal.ajax.reload();
                             toastr.success('El registro fue eliminado exitosamente.', 'Mensaje');
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
+                            $('#eliminar' + id).html('<span><i class="fa fa-trash"></i></span>');
                             toastr.error(
                                 'No se puede eliminar este registro por seguridad de su base de datos, Contacte al Administrador del Sistema',
                                 'Mensaje');

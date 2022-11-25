@@ -403,10 +403,12 @@
                         ''); */
                     gLineaBasica(
                         'anal3',
+
                         data.info.categoria,
                         data.info.series,
+                        'Puesto',
                         '',
-                        'RANKIN(PUESTOS) MENSUAL DE LA EJECUCIÓN DE GASTOS', '');
+                        'Rankin Mensual De La Ejecución De Gastos Del Gru', '');
                     /* glineal(div, categoria, series, titulo, subtitulo) */
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
@@ -430,10 +432,12 @@
                         ''); */
                     gLineaBasica(
                         'anal4',
+
                         data.info.categoria,
                         data.info.series,
+                        'PIM',
                         '',
-                        'RANKIN(PUESTOS) MENSUAL DE LA EJECUCIÓN DE GASTOS', '');
+                        'Acumulado Mensual Del Pim A Nivel Pliego', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 3");
@@ -1366,7 +1370,7 @@
             });
         }
 
-        function gLineaBasica(div, categoria, series, titulo, subtitulo, titulovetical) {
+        function gLineaBasica(div, categoria, series, nameserie, titulo, subtitulo, titulovetical) {
             Highcharts.chart(div, {
                 title: {
                     text: titulo
@@ -1393,7 +1397,7 @@
                 }, */
                 plotOptions: {
                     series: {
-                         dataLabels: {
+                        dataLabels: {
                             enabled: true,
                             //format: '{point.y:,.0f}',
                             formatter: function() {
@@ -1416,7 +1420,7 @@
                     }
                 },
                 series: [{
-                    name: 'Matriculados',
+                    name: nameserie,
                     showInLegend: false,
                     data: series
                 }],
