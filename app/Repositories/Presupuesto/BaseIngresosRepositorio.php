@@ -8,12 +8,34 @@ use Illuminate\Support\Facades\DB;
 
 class BaseIngresosRepositorio
 {
+    public static function fechasActualicacion_anos_max()
+    {
+        $fechasb = DB::table(DB::raw("(
+            select
+                w1.id
+            from pres_base_ingresos as w1
+            inner join par_importacion as w2 on w2.id = w1.importacion_id
+            inner join (
+                select max(x2.fechaActualizacion) as fecha from pres_base_ingresos as x1
+                inner join par_importacion as x2 on x2.id = x1.importacion_id
+                where x2.estado = 'PR'
+                group by anio
+                        ) as w3 on w3.fecha=w2.fechaActualizacion
+            where w2.estado = 'PR'    ) as tb
+            "))->get();
+        $fechas = [];
+        foreach ($fechasb as $key => $value) {
+            $fechas[] = $value->id;
+        }
+        return $fechas;
+    }
+
     public static function total_pim($imp)
     {
         $query = BaseIngresosDetalle::where('baseingresos_id', $imp)->select(DB::raw('sum(pim) as pim'), DB::raw('100*sum(recaudado)/sum(pim) as eje'))->first();
         return $query;
     }
-/*
+    /*
     public static function pim_tipogobierno($imp)
     {
         $query = BaseGastosDetalle::select(
@@ -58,6 +80,7 @@ class BaseIngresosRepositorio
 
     public static function pim_anios_tipogobierno()
     {
+        $fechas = BaseGastosRepositorio::fechasActualicacion_anos_max();
         $query = BaseIngresosDetalle::where('w2.estado', 'PR')
             ->join('pres_base_ingresos as w1', 'w1.id', '=', 'pres_base_ingresos_detalle.baseingresos_id')
             ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
@@ -72,6 +95,7 @@ class BaseIngresosRepositorio
                 DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS REGIONALES',pres_base_ingresos_detalle.pim,0)) as pim2"),
                 DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS LOCALES',pres_base_ingresos_detalle.pim,0)) as pim3"),
             )
+            ->whereIn('w1.id', $fechas)
             ->groupBy('id', 'ano')
             ->get();
         return $query;

@@ -457,7 +457,6 @@
                     $('#anal8').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    console.log(data)
                     //gSimpleColumn('anal8', data.base,'','Evaluación Del Presupuesto En Inversión Pública En La Región De Ucayali','');
                     glineal(
                         'anal8',

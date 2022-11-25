@@ -133,6 +133,7 @@ class BaseGastosController extends Controller
     }
     /* fin nivel gobiernos */
 
+    /* niveles de gobiernos */
     public function nivelesgobiernos()
     {
         $impG = Importacion::where('fuenteimportacion_id', '13')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
@@ -173,6 +174,7 @@ class BaseGastosController extends Controller
     public function nivelesgobiernosgrafica4()
     {
         $base = BaseGastosRepositorio::pim_anios_tipogobierno();
+        //return $base;
         $data['categoria'] = [];
         $data['series'] = [];
         $dx1 = [];
@@ -292,6 +294,7 @@ class BaseGastosController extends Controller
         }
         return view("presupuesto.inicioPresupuestohometabla1", compact('body', 'foot'));
     }
+    /* fin niveles de gobiernos */
 
 
     public function download()
