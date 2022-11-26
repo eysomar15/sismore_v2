@@ -33,11 +33,11 @@ class BaseIngresosController extends Controller
 
         //$opt1 = BaseGastosRepositorio::pim_tipogobierno($bg_id->id);
         $opt1 = BaseIngresosRepositorio::pim_tipogobierno($bi_id->id);
-        $card2['pim'] = $opt1[1]->y;
+        $card2['pim'] = $opt1[0]->y;
         $card2['eje'] = 100;//$opt1[1]->eje;
-        $card3['pim'] = $opt1[2]->y;
+        $card3['pim'] = $opt1[1]->y;
         $card3['eje'] = 100;//$opt1[2]->eje;
-        $card4['pim'] = $opt1[0]->y;
+        $card4['pim'] = $opt1[2]->y;
         $card4['eje'] = 100;//$opt1[0]->eje;
 
         return view('Presupuesto.BaseIngresos.IngresoPresupuesto', compact('card1', 'card2', 'card3', 'card4', 'impG', 'impI'));
@@ -66,7 +66,7 @@ class BaseIngresosController extends Controller
         }
         //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
         $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb', 'data' => $dx2];
-        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
+        $data['series'][] = ['name' => 'RECAUDADO', 'color' => '#ef5350', 'data' => $dx3];
         return response()->json(compact('data'));
     }
 

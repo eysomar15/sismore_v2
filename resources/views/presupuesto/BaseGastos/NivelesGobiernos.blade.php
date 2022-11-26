@@ -93,7 +93,7 @@
                     </div>
                     <div class="mt-4">
                         <h6 class="">Ejecución
-                            <span class="float-right">{{ number_format($card2['eje'], 2) }}%</span>
+                            <span class="float-right">{{ number_format($card2['eje'], 1) }}%</span>
                         </h6>
                         <div class="progress progress-sm m-0">
                             <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="{{ $card2['eje'] }}"

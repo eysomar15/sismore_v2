@@ -74,12 +74,12 @@
                         </div>
                         <div class="mt-4">
                             <h6 class="">Ejecución(<span style="font-weight: normal">DEV/PIA</span>)
-                                <span class="float-right">{{ number_format($card1['eje'], 2) }}%</span>
+                                <span class="float-right">{{ number_format($card1['eje'], 1) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
                                 <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{ $card1['eje'] }}"
                                     aria-valuemin="0" aria-valuemax="100" style="width: {{ $card1['eje'] }}%">
-                                    <span class="sr-only">{{ number_format($card1['eje'], 2) }}% Complete</span>
+                                    <span class="sr-only">{{ number_format($card1['eje'], 1) }}% Complete</span>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                         </div>
                         <div class="mt-4">
                             <h6 class="">Ejecución(<span style="font-weight: normal">DEV/PIM</span>)
-                                <span class="float-right">{{ number_format($card2['eje'], 2) }}%</span>
+                                <span class="float-right">{{ number_format($card2['eje'], 1) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
                                 <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="{{ $card2['eje'] }}"
@@ -141,7 +141,7 @@
                         </div>
                         <div class="mt-4">
                             <h6 class="">Ejecución(<span style="font-weight: normal">CERT/PIM</span>)
-                                <span class="float-right">{{ number_format($card3['eje'], 2) }}%</span>
+                                <span class="float-right">{{ number_format($card3['eje'], 1) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
                                 <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ $card3['eje'] }}"
@@ -175,7 +175,7 @@
                         </div>
                         <div class="mt-4">
                             <h6 class="">Ejecución(<span style="font-weight: normal">DEV/CERT</span>)
-                                <span class="float-right">{{ number_format($card4['eje'], 2) }}%</span>
+                                <span class="float-right">{{ number_format($card4['eje'], 1) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
                                 <div class="progress-bar bg-danger" role="progressbar"
@@ -395,12 +395,21 @@
                     $('#anal3').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    gSimpleColumn(
+                    gLineaBasica(
+                        'anal3',
+
+                        data.info.categoria,
+                        data.info.series,
+                        'Puesto',
+                        '',
+                        'RANKIN(PUESTOS) MENSUAL DE LA EJECUCIÓN DE GASTOS',
+                        '');
+                    /* gSimpleColumn(
                         'anal3',
                         data.info,
                         '',
                         'RANKIN(PUESTOS) MENSUAL DE LA EJECUCIÓN DE GASTOS',
-                        '');
+                        ''); */
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 3");
@@ -416,11 +425,21 @@
                     $('#anal4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    gSimpleColumn('anal4',
-                        data.info,
+                    gLineaBasica(
+                        'anal4',
+
+                        data.info.categoria,
+                        data.info.series,
+                        'PIM',
                         '',
                         'ACUMULADO MENSUAL DEL PIM A TODA FUENTE DE FINANCIAMIENTO',
                         '');
+
+                    /* gSimpleColumn('anal4',
+                        data.info,
+                        '',
+                        'ACUMULADO MENSUAL DEL PIM A TODA FUENTE DE FINANCIAMIENTO',
+                        ''); */
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 3");
@@ -1410,6 +1429,79 @@
                 credits: {
                     enabled: false
                 },
+            });
+        }
+
+        function gLineaBasica(div, categoria, series, nameserie, titulo, subtitulo, titulovetical) {
+            Highcharts.chart(div, {
+                title: {
+                    text: titulo
+                },
+                subtitle: {
+                    text: subtitulo
+                },
+                yAxis: {
+                    title: {
+                        text: titulovetical
+                    },
+                    //min: 0,
+                },
+                xAxis: {
+                    categories: categoria,
+                    /* accessibility: {
+                        rangeDescription: 'Range: 2010 to 2017'
+                    } */
+                },
+                /* legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                }, */
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:,.0f}',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                            style: {
+                                fontWeight: 'normal',
+                            }
+                        },
+                        /* label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2010 */
+                    }
+                },
+                series: [{
+                    name: nameserie,
+                    showInLegend: false,
+                    data: series
+                }],
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                },
+                credits: false,
+
             });
         }
     </script>

@@ -80,8 +80,8 @@ class ImporIngresosController extends Controller
                     $cadena =  $cadena .
                         $row['anio'] .
                         $row['mes'] .
-                        $row['cod_tipo_gob'] .
-                        $row['tipo_gobierno'] .
+                        $row['cod_niv_gob'] .
+                        $row['nivel_gobierno'] .
                         $row['cod_sector'] .
                         $row['sector'] .
                         $row['cod_pliego'] .
@@ -133,8 +133,8 @@ class ImporIngresosController extends Controller
                         'importacion_id' => $importacion->id,
                         'anio' => $row['anio'],
                         'mes' => $row['mes'],
-                        'cod_tipo_gob' => $row['cod_tipo_gob'],
-                        'tipo_gobierno' => $row['tipo_gobierno'],
+                        'cod_tipo_gob' => $row['cod_niv_gob'],
+                        'tipo_gobierno' => $row['nivel_gobierno'],
                         'cod_sector' => $row['cod_sector'],
                         'sector' => $row['sector'],
                         'cod_pliego' => $row['cod_pliego'],

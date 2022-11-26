@@ -80,7 +80,7 @@ class BaseIngresosRepositorio
 
     public static function pim_anios_tipogobierno()
     {
-        $fechas = BaseGastosRepositorio::fechasActualicacion_anos_max();
+        $fechas = BaseIngresosRepositorio::fechasActualicacion_anos_max();
         $query = BaseIngresosDetalle::where('w2.estado', 'PR')
             ->join('pres_base_ingresos as w1', 'w1.id', '=', 'pres_base_ingresos_detalle.baseingresos_id')
             ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')

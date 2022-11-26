@@ -244,7 +244,7 @@ class BaseGastosRepositorio
             ->join('pres_producto_proyecto as v6', 'v6.id', '=', 'pres_base_gastos_detalle.productoproyecto_id')
             ->where('w2.estado', 'PR')
             ->whereIn('w1.id', $fechas);
-        $query = $query->groupBy('id', 'ano')->get();
+        $query = $query->groupBy('id', 'ano')->orderBy('ano','asc')->get();
 
         return $query;
     }

@@ -92,7 +92,7 @@ class BaseProyectosController extends Controller
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseProyectosRepositorio::baseids_fecha_max(date('Y'));
         $base = BaseProyectosRepositorio::listado_ejecucion($array);
-        $info = [];
+        /* $info = [];
         for ($i = 1; $i < 13; $i++) {
             $puesto = 1;
             foreach ($base as $key => $value) {
@@ -103,8 +103,21 @@ class BaseProyectosController extends Controller
                     $puesto++;
                 }
             }
+        } */
+        $info['categoria'] = $mes;
+        $info['series'] = [null, null, null, null, null, null, null, null, null, null, null, null];
+        for ($i = 1; $i < 13; $i++) {
+            $puesto = 1;
+            foreach ($base as $key => $value) {
+                if ($value->mes == $i) {
+                    if ($value->dep == 25) {
+                        //$info[] = ['name' => $mes[$i - 1], 'y' => $puesto];
+                        $info['series'][$value->mes - 1] = $puesto;
+                    }
+                    $puesto++;
+                }
+            }
         }
-
         return response()->json(compact('info'));
     }
 
@@ -112,9 +125,14 @@ class BaseProyectosController extends Controller
     {
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
-        $info = BaseSiafWebRepositorio::suma_pim($array, 1);
-        foreach ($info as $key => $value) {
+        $base = BaseSiafWebRepositorio::suma_pim($array, 1);
+        /* foreach ($info as $key => $value) {
             $value->name = $mes[$value->name - 1];
+        } */
+        $info['categoria'] = $mes;
+        $info['series'] = [null, null, null, null, null, null, null, null, null, null, null, null];
+        foreach ($base as $key => $value) {
+            $info['series'][$value->name - 1] = $value->y;
         }
         return response()->json(compact('info'));
     }
