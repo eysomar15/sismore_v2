@@ -33,6 +33,7 @@ use App\Http\Controllers\Parametro\FuenteImportacionController;
 use App\Http\Controllers\Presupuesto\BaseGastosController;
 use App\Http\Controllers\Presupuesto\BaseIngresosController;
 use App\Http\Controllers\Presupuesto\BaseProyectosController;
+use App\Http\Controllers\Presupuesto\GobiernosRegionalesController;
 use App\Http\Controllers\Presupuesto\ImporActividadesProyectosController;
 use App\Http\Controllers\Presupuesto\ImporGastosController;
 use App\Http\Controllers\Presupuesto\ImporIngresosController;
@@ -652,6 +653,10 @@ Route::post('/IMPORMODS/Modificaciones/Importar', [ImporModificacionesController
 Route::get('/IMPORMODS/Listar/ImportarDT', [ImporModificacionesController::class, 'ListarDTImportFuenteTodos'])->name('impormodificaciones.listar.importados');
 Route::get('/IMPORMODS/eliminar/{id}', [ImporModificacionesController::class, 'eliminar']);
 Route::post('/IMPORMODS/ListaImportada/{importacion_id}', [ImporModificacionesController::class, 'ListaImportada'])->name('impormodificaciones.listarimportados');
+
+Route::get('/GobsRegs/Principal', [GobiernosRegionalesController::class, 'principal'])->name('gobsregs.principal');
+Route::get('/GobsRegs/cargarmes', [GobiernosRegionalesController::class, 'cargarmes'])->name('gobsregs.cargarmes');
+Route::get('/GobsRegs/tabla01', [GobiernosRegionalesController::class, 'principaltabla01'])->name('gobsregs.tabla01');
 
 Route::get('/limpiargasto', function () {
     $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=13 and estado="EL" ORDER BY id DESC) as tb'))->get();
