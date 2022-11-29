@@ -131,6 +131,8 @@ class BaseGastosController extends Controller
         }
         return view("Presupuesto.BaseGastos.NivelGobiernosTabla2", compact('body', 'foot'));
     }
+
+
     /* fin nivel gobiernos */
 
     /* niveles de gobiernos */

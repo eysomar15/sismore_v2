@@ -92,6 +92,7 @@ class BaseProyectosController extends Controller
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseProyectosRepositorio::baseids_fecha_max(date('Y'));
         $base = BaseProyectosRepositorio::listado_ejecucion($array);
+        //return response()->json(compact('base'));
         /* $info = [];
         for ($i = 1; $i < 13; $i++) {
             $puesto = 1;
@@ -106,12 +107,12 @@ class BaseProyectosController extends Controller
         } */
         $info['categoria'] = $mes;
         $info['series'] = [null, null, null, null, null, null, null, null, null, null, null, null];
+
         for ($i = 1; $i < 13; $i++) {
             $puesto = 1;
             foreach ($base as $key => $value) {
                 if ($value->mes == $i) {
                     if ($value->dep == 25) {
-                        //$info[] = ['name' => $mes[$i - 1], 'y' => $puesto];
                         $info['series'][$value->mes - 1] = $puesto;
                     }
                     $puesto++;

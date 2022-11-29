@@ -321,7 +321,7 @@
                     $('#fmes option ').remove();
                     var opt = ''; // '<option value="0">TODOS</option>';
                     $.each(data.info, function(index, value) {
-                        opt += '<option value="' + value.mes + '">' + value.mes +
+                        opt += '<option value="' + value.mes + '">' + value.nombre +
                             '</option>';
                     });
                     $('#fmes').append(opt);

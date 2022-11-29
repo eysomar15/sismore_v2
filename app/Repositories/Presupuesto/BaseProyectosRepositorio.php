@@ -54,7 +54,7 @@ class BaseProyectosRepositorio
     public static function listado_ejecucion($reg) //base detallee
     {
         $query = BaseProyectosDetalle::whereIn('pres_base_proyectos_detalle.baseproyectos_id', $reg)
-            ->join('pres_base_actividadesproyectos as v2', 'v2.id', '=', 'pres_base_proyectos_detalle.baseproyectos_id')
+            ->join('pres_base_proyectos as v2', 'v2.id', '=', 'pres_base_proyectos_detalle.baseproyectos_id')
             ->join('pres_gobiernos_regionales as v3', 'v3.id', '=', 'pres_base_proyectos_detalle.gobiernosregionales_id')
             ->select(
                 'v2.mes as mes',

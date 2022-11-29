@@ -101,6 +101,29 @@ class BaseIngresosRepositorio
         return $query;
     }
 
+    public static function recaudado_anios_tipogobierno()
+    {
+        $fechas = BaseIngresosRepositorio::fechasActualicacion_anos_max();
+        $query = BaseIngresosDetalle::where('w2.estado', 'PR')
+            ->join('pres_base_ingresos as w1', 'w1.id', '=', 'pres_base_ingresos_detalle.baseingresos_id')
+            ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_ingresos_detalle.unidadejecutora_id')
+            ->join('pres_pliego as v3', 'v3.id', '=', 'v2.pliego_id')
+            ->join('pres_sector as v4', 'v4.id', '=', 'v3.sector_id')
+            ->join('pres_tipo_gobierno as v5', 'v5.id', '=', 'v4.tipogobierno_id')
+            ->select(
+                'w1.id',
+                'w1.anio as ano',
+                DB::raw("sum(IF(v5.tipogobierno='GOBIERNO NACIONAL',pres_base_ingresos_detalle.recaudado,0)) as pim1"),
+                DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS REGIONALES',pres_base_ingresos_detalle.recaudado,0)) as pim2"),
+                DB::raw("sum(IF(v5.tipogobierno='GOBIERNOS LOCALES',pres_base_ingresos_detalle.recaudado,0)) as pim3"),
+            )
+            ->whereIn('w1.id', $fechas)
+            ->groupBy('id', 'ano')
+            ->get();
+        return $query;
+    }
+
     public static function pim_pia_devengado_tipogobierno($baseingresos_id)
     {
         $query = BaseIngresosDetalle::where('pres_base_ingresos_detalle.baseingresos_id', $baseingresos_id)

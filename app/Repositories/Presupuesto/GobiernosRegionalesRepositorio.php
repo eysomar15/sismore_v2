@@ -23,11 +23,15 @@ class GobiernosRegionalesRepositorio
     }
     public static function meses($ano)
     {
+        $nommes = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         $mes = DB::table(DB::raw("(select distinct mes from (
             select mes from pres_base_actividadesproyectos where anio=$ano
             union
             select mes from pres_base_proyectos where anio=$ano
             ) as tb order by mes) as tb"))->orderBy('mes', 'desc')->get();
+        foreach ($mes as $key => $value) {
+            $value->nombre = $nommes[$value->mes - 1];
+        }
         return $mes;
     }
 
@@ -42,7 +46,7 @@ class GobiernosRegionalesRepositorio
 
             $query = BaseActividadesProyectosDetalle::select(
                 'pres_base_actividadesproyectos_detalle.id',
-                'v4.corto',
+                'v4.gobiernoregional as corto',
                 'pres_base_actividadesproyectos_detalle.pia',
                 'pres_base_actividadesproyectos_detalle.pim',
                 'pres_base_actividadesproyectos_detalle.certificacion',
@@ -67,7 +71,7 @@ class GobiernosRegionalesRepositorio
 
             $query = BaseProyectosDetalle::select(
                 'pres_base_proyectos_detalle.id',
-                'v4.corto',
+                'v4.gobiernoregional as corto',
                 'pres_base_proyectos_detalle.pia',
                 'pres_base_proyectos_detalle.pim',
                 'pres_base_proyectos_detalle.certificacion',
@@ -104,7 +108,7 @@ class GobiernosRegionalesRepositorio
                             sum(tb1.pia2) as pia2,sum(tb1.pim2) as pim2,sum(tb1.certificacion2) as certificacion2,sum(tb1.compromiso_anual2) as compromiso_anual2,sum(tb1.devengado2) as devengado2
                         from (
                             select
-                                v4.corto as corto,
+                                v4.gobiernoregional as corto,
                                 v1.pia as pia1,v1.pim as pim1,v1.certificacion as certificacion1,v1.compromiso_anual as compromiso_anual1,v1.devengado as devengado1,
                                      0 as pia2,  0 as pim2,           0 as certificacion2,          0 as compromiso_anual2,    0 as devengado2
                             from pres_base_actividadesproyectos_detalle as v1
@@ -114,7 +118,7 @@ class GobiernosRegionalesRepositorio
                             where v3.estado = 'PR' and v3.fechaActualizacion = '$fechamax'
                             union
                             select
-                                v4.corto as corto,
+                                v4.gobiernoregional as corto,
                                 0 as pia1,  0 as pim1,        0 as certificacion1,   0 as compromiso_anual1,    0 as devengado1,
                                 v1.pia as pia2,v1.pim as pim2,v1.certificacion as certificacion2,v1.compromiso_anual as compromiso_anual2,v1.devengado as devengado2
                                 from pres_base_proyectos_detalle as v1

@@ -200,6 +200,20 @@
         </div>
     </div>
     {{-- end  row --}}
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card card-border card-primary">
+                <div class="card-header border-primary bg-transparent p-0">
+                    <h3 class="card-title text-primary "></h3>
+                </div>
+                <div class="card-body p-0">
+                    <div id="anal4"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- end  row --}}
 @endsection
 
 
@@ -301,6 +315,32 @@
                 success: function(data) {
                     glineal(
                         'anal3',
+                        data.data.categoria,
+                        data.data.series,
+                        '',
+                        'Pim De Ingresos Según Tipo De Gobierno'
+                    );
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 2");
+                    console.log(jqXHR);
+                },
+            });
+
+
+            /*
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 2
+             */
+             $.ajax({
+                url: "{{ route('baseingresos.ingresopresupuestal.grafica04') }}",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    glineal(
+                        'anal4',
                         data.data.categoria,
                         data.data.series,
                         '',

@@ -637,6 +637,7 @@ Route::get('/SiafIngresos/IngresoPresupuestal', [BaseIngresosController::class, 
 Route::get('/SiafIngresos/Ingreso/grafico01', [BaseIngresosController::class, 'ingresopresupuestalgrafica1'])->name('baseingresos.ingresopresupuestal.grafica01');
 Route::get('/SiafIngresos/Ingreso/grafico02', [BaseIngresosController::class, 'ingresopresupuestalgrafica2'])->name('baseingresos.ingresopresupuestal.grafica02');
 Route::get('/SiafIngresos/Ingreso/grafico03', [BaseIngresosController::class, 'ingresopresupuestalgrafica3'])->name('baseingresos.ingresopresupuestal.grafica03');
+Route::get('/SiafIngresos/Ingreso/grafico04', [BaseIngresosController::class, 'ingresopresupuestalgrafica4'])->name('baseingresos.ingresopresupuestal.grafica04');
 
 
 Route::get('/BaseProyectos/AvancePresupuestal', [BaseProyectosController::class, 'avancepresupuestal'])->name('baseproyectos.avancepresupuestal');
