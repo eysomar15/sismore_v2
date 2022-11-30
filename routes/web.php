@@ -40,6 +40,7 @@ use App\Http\Controllers\Presupuesto\ImporIngresosController;
 use App\Http\Controllers\Presupuesto\ImporModificacionesController;
 use App\Http\Controllers\Presupuesto\ImporProyectosController;
 use App\Http\Controllers\Presupuesto\ImporSiafWebController;
+use App\Http\Controllers\Presupuesto\ModificacionesController;
 use App\Http\Controllers\Trabajo\ActividadController;
 use App\Http\Controllers\Trabajo\AnuarioEstadisticoController;
 use App\Http\Controllers\Trabajo\IndicadorTrabajoController;
@@ -659,6 +660,10 @@ Route::get('/GobsRegs/Principal', [GobiernosRegionalesController::class, 'princi
 Route::get('/GobsRegs/cargarmes', [GobiernosRegionalesController::class, 'cargarmes'])->name('gobsregs.cargarmes');
 Route::get('/GobsRegs/tabla01', [GobiernosRegionalesController::class, 'principaltabla01'])->name('gobsregs.tabla01');
 
+Route::get('/Modificaciones/Principal', [ModificacionesController::class, 'principal'])->name('modificaciones.principal');
+Route::get('/Modificaciones/cargarmes', [ModificacionesController::class, 'cargarmes'])->name('modificaciones.cargarmes');
+Route::get('/Modificaciones/tabla01', [ModificacionesController::class, 'principaltabla01'])->name('modificaciones.tabla01');
+
 Route::get('/limpiargasto', function () {
     $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=13 and estado="EL" ORDER BY id DESC) as tb'))->get();
     foreach ($imps as $key => $imp) {
@@ -672,6 +677,7 @@ Route::get('/limpiargasto', function () {
     }
     return $imps;
 })->name('xxx1');
+
 Route::get('/limpiaringreso', function () {
     $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=15 and estado="EL" ORDER BY id DESC) as tb'))->get();
     foreach ($imps as $key => $imp) {

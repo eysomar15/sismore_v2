@@ -67,6 +67,7 @@ class HomeController extends Controller
             session(['dnisismore$' => $usuario->first()->dni]);
             session(['passwordsismore$' => $usuario->first()->password]);
         }
+
         // return session('dnisismore$');
         if ($sistemas->count() == 1)
             return $this->sistema_acceder($sistemas->first()->sistema_id);
@@ -76,6 +77,9 @@ class HomeController extends Controller
 
     public function sistema_acceder($sistema_id)
     {
+        if($sistema_id){}else{
+            return 'hola';
+        }
         // session()->forget('sistema_id');
         // session()->forget('sistema_nombre');
         // session()->forget('menuNivel01');
@@ -98,6 +102,9 @@ class HomeController extends Controller
                 break;
             case (2):
                 return $this->vivienda($sistema_id);
+                break;
+            case (3):
+                return $this->salud($sistema_id);
                 break;
             case (4):
                 return $this->administracion($sistema_id);
@@ -285,30 +292,13 @@ class HomeController extends Controller
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseActividadesProyectosRepositorio::baseids_fecha_max(date('Y'));
         $base = BaseActividadesProyectosRepositorio::listado_ejecucion($array);
-        /* $info = [];
-        for ($i = 1; $i < 13; $i++) {
-            $puesto = 1;
-            foreach ($base as $key => $value) {
-                if ($value->mes == $i) {
-                    if ($value->dep == 25) {
-                        $info[] = ['name' => $mes[$i - 1], 'y' => $puesto];
-                    }
-                    $puesto++;
-                }
-            }
-        } */
-
         $info['categoria'] = $mes;
         $info['series'] = [null, null, null, null, null, null, null, null, null, null, null, null];
-        /* foreach ($base as $key => $value) {
-            $info['series'][$value->mes - 1] = $value->puesto;
-        } */
         for ($i = 1; $i < 13; $i++) {
             $puesto = 1;
             foreach ($base as $key => $value) {
                 if ($value->mes == $i) {
                     if ($value->dep == 25) {
-                        //$info[] = ['name' => $mes[$i - 1], 'y' => $puesto];
                         $info['series'][$value->mes - 1] = $puesto;
                     }
                     $puesto++;
@@ -324,9 +314,6 @@ class HomeController extends Controller
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
         $base = BaseSiafWebRepositorio::suma_pim($array, 0);
-        /* foreach ($base as $key => $value) {
-            $value->name = $mes[$value->name - 1];
-        } */
         $info['categoria'] = $mes;
         $info['series'] = [null, null, null, null, null, null, null, null, null, null, null, null];
         foreach ($base as $key => $value) {
@@ -723,6 +710,31 @@ class HomeController extends Controller
             'porcentajeLocales_tieneInternet'
         ));
     }
+
+    public function salud($sistema_id)
+    {
+        $impSW = Importacion::where('fuenteimportacion_id', '24')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
+        $baseSW = BaseSiafWeb::where('importacion_id', $impSW->id)->first();
+        $anio = $baseSW->anio;
+        $opt1 = BaseSiafWebRepositorio::pia_pim_certificado_devengado($baseSW->id, 0);
+        //return $opt1;
+        $card1['pim'] = $opt1->pia;
+        $card1['eje'] = $opt1->eje_pia;
+        $card2['pim'] = $opt1->pim;
+        $card2['eje'] = $opt1->eje_pim;
+        $card3['pim'] = $opt1->cer;
+        $card3['eje'] = $opt1->eje_cer;
+        $card4['pim'] = $opt1->dev;
+        $card4['eje'] = $opt1->eje_dev;
+
+        $impAP = Importacion::where('fuenteimportacion_id', '16')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
+        $baseAP = BaseActividadesProyectos::where('importacion_id', $impAP->id)->first();
+        $opt2 = BaseActividadesProyectosRepositorio::listar_regiones($baseAP->id);
+        //return $opt2;
+
+        return view('home', compact('sistema_id', 'card1', 'card2', 'card3', 'card4', 'impSW', 'anio', 'baseAP'));
+    }
+
 
     public function AEI_tempo()
     {
