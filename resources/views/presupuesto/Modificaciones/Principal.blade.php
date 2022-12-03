@@ -240,6 +240,7 @@
                 },
                 success: function(data) {
                     $('#vista1').html(data);
+                    $('#tabla1').datatable();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);

@@ -33,6 +33,7 @@ use App\Http\Controllers\Parametro\FuenteImportacionController;
 use App\Http\Controllers\Presupuesto\BaseGastosController;
 use App\Http\Controllers\Presupuesto\BaseIngresosController;
 use App\Http\Controllers\Presupuesto\BaseProyectosController;
+use App\Http\Controllers\Presupuesto\BaseSiafWebController;
 use App\Http\Controllers\Presupuesto\GobiernosRegionalesController;
 use App\Http\Controllers\Presupuesto\ImporActividadesProyectosController;
 use App\Http\Controllers\Presupuesto\ImporGastosController;
@@ -664,89 +665,12 @@ Route::get('/Modificaciones/Principal', [ModificacionesController::class, 'princ
 Route::get('/Modificaciones/cargarmes', [ModificacionesController::class, 'cargarmes'])->name('modificaciones.cargarmes');
 Route::get('/Modificaciones/tabla01', [ModificacionesController::class, 'principaltabla01'])->name('modificaciones.tabla01');
 
-Route::get('/limpiargasto', function () {
-    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=13 and estado="EL" ORDER BY id DESC) as tb'))->get();
-    foreach ($imps as $key => $imp) {
-        $bg = BaseGastos::where('importacion_id', $imp->id)->first();
-        ImporGastos::where('importacion_id', $imp->id)->delete();
-        if ($bg) {
-            BaseGastosDetalle::where('basegastos_id', $bg->id)->delete();
-            BaseGastos::find($bg->id)->delete();
-        }
-        Importacion::find($imp->id)->delete();
-    }
-    return $imps;
-})->name('xxx1');
+Route::get('/SiafGastos/reportes1', [BaseSiafWebController::class, 'reporte1'])->name('basesiafweb.reporte1');
+Route::get('/SiafGastos/reportes1/tb1', [BaseSiafWebController::class, 'reporte1tabla01'])->name('basesiafweb.tabla01');
+Route::get('/SiafGastos/reportes1/tb2', [BaseSiafWebController::class, 'reporte1tabla02'])->name('basesiafweb.tabla02');
+Route::get('/SiafGastos/reportes1/tb3', [BaseSiafWebController::class, 'reporte1tabla03'])->name('basesiafweb.tabla03');
+Route::get('/SiafGastos/reportes1/tb4', [BaseSiafWebController::class, 'reporte1tabla04'])->name('basesiafweb.tabla04');
 
-Route::get('/limpiaringreso', function () {
-    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=15 and estado="EL" ORDER BY id DESC) as tb'))->get();
-    foreach ($imps as $key => $imp) {
-        $bi = BaseIngresos::where('importacion_id', $imp->id)->first();
-        ImporIngresos::where('importacion_id', $imp->id)->delete();
-        if ($bi) {
-            BaseIngresosDetalle::where('baseingresos_id', $bi->id)->delete();
-            BaseIngresos::find($bi->id)->delete();
-        }
-        Importacion::find($imp->id)->delete();
-    }
-    return $imps;
-})->name('xxx2');
-
-Route::get('/limpiarmodificacion', function () {
-    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=26 and estado="EL" ORDER BY id DESC) as tb'))->get();
-    foreach ($imps as $key => $imp) {
-        $bi = BaseModificacion::where('importacion_id', $imp->id)->first();
-        ImporModificaciones::where('importacion_id', $imp->id)->delete();
-        if ($bi) {
-            BaseModificacionDetalle::where('basemodificacion_id', $bi->id)->delete();
-            BaseModificacion::find($bi->id)->delete();
-        }
-        Importacion::find($imp->id)->delete();
-    }
-    return $imps;
-})->name('xxx3');
-
-Route::get('/limpiarsiafweb', function () {
-    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=24 and estado="EL" ORDER BY id DESC) as tb'))->get();
-    foreach ($imps as $key => $imp) {
-        $bi = BaseSiafWeb::where('importacion_id', $imp->id)->first();
-        ImporSiafWeb::where('importacion_id', $imp->id)->delete();
-        if ($bi) {
-            BaseSiafWebDetalle::where('basesiafweb_id', $bi->id)->delete();
-            BaseSiafWeb::find($bi->id)->delete();
-        }
-        Importacion::find($imp->id)->delete();
-    }
-    return $imps;
-})->name('xxx4');
-
-Route::get('/limpiarproyectos', function () {
-    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=25 and estado="EL" ORDER BY id DESC) as tb'))->get();
-    foreach ($imps as $key => $imp) {
-        $bi = BaseProyectos::where('importacion_id', $imp->id)->first();
-        ImporProyectos::where('importacion_id', $imp->id)->delete();
-        if ($bi) {
-            BaseProyectosDetalle::where('baseproyectos_id', $bi->id)->delete();
-            BaseProyectos::find($bi->id)->delete();
-        }
-        Importacion::find($imp->id)->delete();
-    }
-    return $imps;
-})->name('xxx5');
-
-Route::get('/limpiaractividadesproyectos', function () {
-    $imps = DB::table(DB::raw('(SELECT * FROM par_importacion WHERE fuenteImportacion_id=16 and estado="EL" ORDER BY id DESC) as tb'))->get();
-    foreach ($imps as $key => $imp) {
-        $bi = BaseActividadesProyectos::where('importacion_id', $imp->id)->first();
-        ImporActividadesProyectos::where('importacion_id', $imp->id)->delete();
-        if ($bi) {
-            BaseActividadesProyectosDetalle::where('baseproyectos_id', $bi->id)->delete();
-            BaseActividadesProyectos::find($bi->id)->delete();
-        }
-        Importacion::find($imp->id)->delete();
-    }
-    return $imps;
-})->name('xxx6');
 /**************************************** FIN PRESUPUESTO ***************************************************/
 
 
