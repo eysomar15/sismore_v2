@@ -35,13 +35,11 @@ class GobiernosRegionalesController extends Controller
     {
         $info = GobiernosRegionalesRepositorio::meses($rq->ano);
         return response()->json(compact('info'));
-        //return $mes;
     }
 
     public function principaltabla01(Request $rq)
     {
         $body = GobiernosRegionalesRepositorio::tipos_gobiernosregionales($rq->get('ano'), $rq->get('mes'), $rq->get('tipo'));
-        //return $body;
         $foot = ['pia' => 0, 'pim' => 0, 'certificacion' => 0, 'compromiso' => 0, 'devengado' => 0, 'eje' => 0, 'saldo1' => 0, 'saldo2' => 0];
         foreach ($body as $key => $value) {
             $foot['pia'] += $value->pia;
@@ -53,11 +51,11 @@ class GobiernosRegionalesController extends Controller
             $foot['saldo1'] += $value->saldo1;
             $foot['saldo2'] += $value->saldo2;
         }
-        $foot['eje'] = round(100 * $foot['devengado'] / $foot['pim'], 1);
+        $foot['eje'] = $foot['pim'] > 0 ? round(100 * $foot['devengado'] / $foot['pim'], 1) : 0;
         return view("Presupuesto.GobiernosRegionales.PrincipalTabla1", compact('body', 'foot'));
     }
 
-    public function avancepresupuestalmapa1($importacion_id)
+    /* public function avancepresupuestalmapa1($importacion_id)
     {
         $datax = [
             465 => 'pe-145',
@@ -97,25 +95,14 @@ class GobiernosRegionalesController extends Controller
                 $value1->color = '#ef5350';
         }
         return response()->json(compact('info', 'data'));
-    }
+    } */
 
-    public function avancepresupuestalgrafica3()
+    /* public function avancepresupuestalgrafica3()
     {
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseProyectosRepositorio::baseids_fecha_max(date('Y'));
         $base = BaseProyectosRepositorio::listado_ejecucion($array);
-        /* $info = [];
-        for ($i = 1; $i < 13; $i++) {
-            $puesto = 1;
-            foreach ($base as $key => $value) {
-                if ($value->mes == $i) {
-                    if ($value->dep == 25) {
-                        $info[] = ['name' => $mes[$i - 1], 'y' => $puesto];
-                    }
-                    $puesto++;
-                }
-            }
-        } */
+
         $info['categoria'] = $mes;
         $info['series'] = [null, null, null, null, null, null, null, null, null, null, null, null];
         for ($i = 1; $i < 13; $i++) {
@@ -131,25 +118,22 @@ class GobiernosRegionalesController extends Controller
             }
         }
         return response()->json(compact('info'));
-    }
+    } */
 
-    public function avancepresupuestalgrafica4()
+    /* public function avancepresupuestalgrafica4()
     {
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
         $base = BaseSiafWebRepositorio::suma_pim($array, 1);
-        /* foreach ($info as $key => $value) {
-            $value->name = $mes[$value->name - 1];
-        } */
         $info['categoria'] = $mes;
         $info['series'] = [null, null, null, null, null, null, null, null, null, null, null, null];
         foreach ($base as $key => $value) {
             $info['series'][$value->name - 1] = $value->y;
         }
         return response()->json(compact('info'));
-    }
+    } */
 
-    public function avancepresupuestalgrafica5()
+    /* public function avancepresupuestalgrafica5()
     {
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
@@ -163,9 +147,9 @@ class GobiernosRegionalesController extends Controller
             $value->color = ($value->y < 0 ? '#ef5350' : '#317eeb');
         }
         return response()->json(compact('info'));
-    }
+    } */
 
-    public function avancepresupuestalgrafica6()
+    /* public function avancepresupuestalgrafica6()
     {
         $mes = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
         $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
@@ -179,9 +163,9 @@ class GobiernosRegionalesController extends Controller
             $value->color = ($value->y < 0 ? '#ef5350' : '#317eeb');
         }
         return response()->json(compact('info'));
-    }
+    } */
 
-    public function avancepresupuestalgrafica7()
+    /* public function avancepresupuestalgrafica7()
     {
         $info['categoria'] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
         $array = BaseSiafWebRepositorio::baseids_fecha_max(date('Y'));
@@ -205,5 +189,5 @@ class GobiernosRegionalesController extends Controller
         $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%AVANCE CERT', 'tooltip' => ['valueSuffix' => ' %'], 'color' => '#317eeb', 'data' => $dx4];
         $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%EJECUCIÓN',  'tooltip' => ['valueSuffix' => ' %'], 'color' => '#ef5350', 'data' => $dx5];
         return response()->json(compact('info'));
-    }
+    } */
 }

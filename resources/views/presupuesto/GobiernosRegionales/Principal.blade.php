@@ -181,66 +181,6 @@
 
         function cargarcuadros() {
             /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 1
-             */
-            /* $.ajax({
-                url: "{{ route('basegastos.nivelgobiernos.grafica01') }}",
-                data: {
-                    'gobierno': $('#fgobierno').val(),
-                    'mes': $('#fmes').val(),
-                    'ue': $('#fue').val(),
-                },
-                type: "GET",
-                dataType: "JSON",
-                beforeSend: function() {
-                    $('#anal1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
-                },
-                success: function(data) {
-                    glineal(
-                        'anal1',
-                        data.puntos.categoria,
-                        data.puntos.series,
-                        '',
-                        data.puntos.subtitulo,
-                        'Año');
-                },
-                erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
-                    console.log(jqXHR);
-                },
-            }); */
-
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 2
-             */
-            /* $.ajax({
-                url: "{{ route('basegastos.nivelgobiernos.grafica02') }}",
-                data: {
-                    'gobierno': $('#fgobierno').val(),
-                    'sector': $('#fmes').val(),
-                    'ue': $('#fue').val(),
-                },
-                type: "GET",
-                dataType: "JSON",
-                beforeSend: function() {
-                    $('#anal2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
-                },
-                success: function(data) {
-                    glineal(
-                        'anal2',
-                        data.puntos.categoria,
-                        data.puntos.series,
-                        '',
-                        'Evolución del PIM del Sector Público de la región de Ucayali',
-                        'Año');
-                },
-                erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 1");
-                    console.log(jqXHR);
-                },
-            }); */
-
-            /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
              */
             $.ajax({
@@ -256,58 +196,16 @@
                 },
                 success: function(data) {
                     $('#vista1').html(data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                },
-            });
-
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
-             */
-            /* $.ajax({
-                url: "{{ route('basegastos.nivelgobiernos.tabla02') }}",
-                data: {
-                    'gobierno': $('#fgobierno').val(),
-                    'sector': $('#fsector').val(),
-                    'ue': $('#fue').val(),
-                },
-                type: "GET",
-                beforeSend: function() {
-                    $('#vista2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
-                },
-                success: function(data) {
-                    $('#vista2').html(data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                },
-            }); */
-        }
-
-        /* function cargarue() {
-            $.ajax({
-                url: "{{ route('basegastos.cargarue') }}",
-                data: {
-                    //'gobierno': $('#fgobierno').val(),
-                    'sector': $('#fsector').val(),
-                },
-                type: 'get',
-                success: function(data) {
-                    $('#fue option ').remove();
-                    var opt = '<option value="0">TODOS</option>';
-                    $.each(data.ues, function(index, value) {
-                        opt += '<option value="' + value.id + '">' + value.unidad_ejecutora +
-                            '</option>';
+                    $('#tabla1').DataTable({
+                        "language": table_language,
                     });
-                    $('#fue').append(opt);
-
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
+                    $('#vista1').html('Sin datos que Porcesar');
                     console.log(jqXHR);
                 },
             });
-        } */
+        }
 
         function cargarmes() {
             $.ajax({
@@ -317,7 +215,6 @@
                 },
                 type: 'get',
                 success: function(data) {
-                    console.log(data.info)
                     $('#fmes option ').remove();
                     var opt = ''; // '<option value="0">TODOS</option>';
                     $.each(data.info, function(index, value) {
