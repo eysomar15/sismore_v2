@@ -77,7 +77,7 @@ class ImporActividadesProyectosController extends Controller
                 foreach ($value as $key => $row) {
                     if ($key > 0) break;
                     $cadena =  $cadena .
-                        $row['departamento_inei'] .
+                        //$row['departamento_inei'] .
                         $row['cod_gob_reg'] .
                         $row['gobiernos_regionales'] .
                         $row['pia'] .
@@ -109,7 +109,7 @@ class ImporActividadesProyectosController extends Controller
                 foreach ($value as $row) {
                     $gastos = ImporActividadesProyectos::Create([
                         'importacion_id' => $importacion->id,
-                        'departamento_inei' => $row['departamento_inei'],
+                        //'departamento_inei' => $row['departamento_inei'],
                         'cod_gob_reg' => $row['cod_gob_reg'],
                         'gobiernos_regionales' => $row['gobiernos_regionales'],
                         'pia' => $row['pia'],

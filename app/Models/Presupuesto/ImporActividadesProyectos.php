@@ -13,7 +13,7 @@ class ImporActividadesProyectos extends Model
 
     protected $fillable = [
         'importacion_id',
-        'departamento_inei',
+        //'departamento_inei',
         'cod_gob_reg',
         'gobiernos_regionales',
         'pia',

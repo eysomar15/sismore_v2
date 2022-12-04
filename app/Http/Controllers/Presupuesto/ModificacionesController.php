@@ -37,7 +37,7 @@ class ModificacionesController extends Controller
         $opt5 = BaseModificacionDetalle::select(DB::raw('distinct dispositivo_legal'))
             ->where('dispositivo_legal', '!=', '')
             ->orderBy('dispositivo_legal', 'asc')->get();
-        $opt6 = TipoTransaccion::select('v2.id', DB::raw('concat(pres_tipotransaccion.codigo,".",v2.codigo,".",v2.nombre) as nombre'))
+        $opt6 = TipoTransaccion::select('v2.id', DB::raw('concat(pres_tipotransaccion.codigo,".",v2.codigo," ",v2.nombre) as nombre'))
             ->join('pres_generica_gastos as v2', 'v2.tipotransaccion_id', '=', 'pres_tipotransaccion.id')
             ->get();
         $mensaje = "";

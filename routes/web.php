@@ -671,6 +671,7 @@ Route::get('/SiafGastos/reportes1/tb2', [BaseSiafWebController::class, 'reporte1
 Route::get('/SiafGastos/reportes1/tb3', [BaseSiafWebController::class, 'reporte1tabla03'])->name('basesiafweb.tabla03');
 Route::get('/SiafGastos/reportes1/tb4', [BaseSiafWebController::class, 'reporte1tabla04'])->name('basesiafweb.tabla04');
 
+
 /**************************************** FIN PRESUPUESTO ***************************************************/
 
 

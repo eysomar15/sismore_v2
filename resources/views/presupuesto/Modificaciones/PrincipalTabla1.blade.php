@@ -5,8 +5,7 @@
             <th>Documento</th>
             <th>Fecha Aprobacion</th>
             <th>Justificacion</th>
-            <th>Actividades</th>
-            <th>fuente de Financiamiento</th>
+            <th>Fuente de Financiamiento</th>
             <th>Categoria Presupuestal</th>
             <th>Producto/Proyecto</th>
             <th>Anulacion</th>
@@ -16,7 +15,7 @@
     </thead>
     <tbody>
         @foreach ($body as $pos => $item)
-            <tr class="text-right">
+            <tr class="text-left">
                 <td class="text-center">{{ $item->unidad_ejecutora }}</td>
                 <td>{{ $item->documento }}</td>
                 <td>{{ $item->fecha_aprobacion }}</td>
@@ -24,8 +23,8 @@
                 <td>{{ $item->fuente_financiamiento }}</td>
                 <td>{{ $item->categoria_presupuestal }}</td>
                 <td>{{ $item->producto_proyecto }}</td>
-                <td>{{ $item->anulacion }}</td>
-                <td>{{ $item->credito }}</td>
+                <td class="text-right">{{ number_format($item->anulacion, 2) }}</td>
+                <td class="text-right">{{ number_format($item->credito, 2) }}</td>
             </tr>
         @endforeach
     </tbody>

@@ -110,7 +110,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Dispositivo Total </label>
+                                        <label class="col-form-label">Dispositivo Legal </label>
                                         <div class="">
                                             <select class="form-control" name="fdispositivototal" id="fdispositivototal"
                                                 onchange="cargarcuadros();">
@@ -240,9 +240,12 @@
                 },
                 success: function(data) {
                     $('#vista1').html(data);
-                    $('#tabla1').datatable();
+                    $('#tabla1').DataTable({
+                        "language": table_language,
+                    });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
+                    $('#vista1').html('No se encontraron Datos para Procesar');
                     console.log(jqXHR);
                 },
             });
