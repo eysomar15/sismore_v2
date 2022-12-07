@@ -4,15 +4,9 @@
             <th>Unidad Ejecutora</th>
             <th>Fecha Aprobacion</th>
             <th>Documento</th>
+            <th>Dispositivo Legal</th>
             <th>Justificacion</th>
-            <th>SecFun</th>
-            <th>CatPres</th>
-            <th>ProdProy</th>
-            <th>ActAccObra</th>
-            <th>Rb</th>
-            <th>Clasificador</th>
-            <th>Especifica Detalle</th>
-            <th>Anulacion</th>
+            <th>Fuente de Financiamiento</th>
             <th>Credito</th>
         </tr>
 
@@ -21,25 +15,18 @@
         @foreach ($body as $pos => $item)
             <tr class="text-left">
                 <td class="text-center">{{ $item->unidad_ejecutora }}</td>
-                <td>{{ $item->documento }}</td>
                 <td>{{ $item->fecha_aprobacion }}</td>
+                <td>{{ $item->documento }}</td>
+                <td>{{ $item->dispositivo_legal }}</td>
                 <td>{{ $item->justificacion }}</td>
-                <td>{{ $item->secfun }}</td>
-                <td>{{ $item->catpres }}</td>
-                <td>{{ $item->prod_proy }}</td>
-                <td>{{ $item->act_acc_obra }}</td>
-                <td>{{ $item->rb }}</td>
-                <td>{{ $item->clasificador }}</td>
-                <td>{{ $item->especifica_detalle }}</td>
-                <td class="text-right">{{ number_format($item->anulacion, 0) }}</td>
+                <td>{{ $item->fuente_financiamiento }}</td>
                 <td class="text-right">{{ number_format($item->credito, 0) }}</td>
             </tr>
         @endforeach
     </tbody>
     <tfoot>
         <tr class="text-right bg-primary text-white">
-            <th class="text-left" colspan="11">TOTAL</th>
-            <th>{{ number_format($foot['anulacion'], 0) }}</th>
+            <th class="text-left" colspan="6">TOTAL</th>
             <th>{{ number_format($foot['credito'], 0) }}</th>
         </tr>
     </tfoot>

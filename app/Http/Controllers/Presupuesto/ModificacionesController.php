@@ -29,7 +29,7 @@ class ModificacionesController extends Controller
     }
 
     /* nivel gobiernos */
-    public function principal()
+    public function principal_gasto()
     {
         $opt1 = ModificacionesRepositorio::anios();
         $opt3 = ProductoProyecto::all();
@@ -54,19 +54,30 @@ class ModificacionesController extends Controller
     public function principaltabla01(Request $rq)
     {
         $body = ModificacionesRepositorio::listar_modificaciones($rq->get('ano'), $rq->get('mes'), $rq->get('productoproyecto'), $rq->get('tipomodificacion'), $rq->get('dispositivototal'), $rq->get('generica'));
-        //return $body;
-        /* $foot = ['pia' => 0, 'pim' => 0, 'certificacion' => 0, 'compromiso' => 0, 'devengado' => 0, 'eje' => 0, 'saldo1' => 0, 'saldo2' => 0];
+        $foot = ['anulacion' => 0, 'credito' => 0];
         foreach ($body as $key => $value) {
-            $foot['pia'] += $value->pia;
-            $foot['pim'] += $value->pim;
-            $foot['certificacion'] += $value->certificacion;
-            $foot['compromiso'] += $value->compromiso_anual;
-            $foot['devengado'] += $value->devengado;
-            $foot['eje'] += $value->eje;
-            $foot['saldo1'] += $value->saldo1;
-            $foot['saldo2'] += $value->saldo2;
+            $foot['anulacion'] += $value->anulacion;
+            $foot['credito'] += $value->credito;
         }
-        $foot['eje'] = round(100 * $foot['devengado'] / $foot['pim'], 1); */
-        return view("Presupuesto.Modificaciones.PrincipalTabla1", compact('body'));
+        return view("Presupuesto.Modificaciones.PrincipalTabla1", compact('body', 'foot'));
+    }
+
+    public function principal_ingreso()
+    {
+        $opt1 = ModificacionesRepositorio::anios();
+        $opt4 = TipoModificacion::orderBy('codigo', 'asc')->get();
+        $mensaje = "";
+        return view('Presupuesto.Modificaciones.PrincipalIngresos', compact('mensaje', 'opt1', 'opt4'));
+    }
+
+    public function principalingresotabla01(Request $rq)
+    {
+        $body = ModificacionesRepositorio::listar_modificaciones_ingresos($rq->get('ano'), $rq->get('mes'), $rq->get('tipomodificacion'));
+        $foot = ['anulacion' => 0, 'credito' => 0];
+        foreach ($body as $key => $value) {
+            $foot['anulacion'] += $value->anulacion;
+            $foot['credito'] += $value->credito;
+        }
+        return view("Presupuesto.Modificaciones.PrincipalIngresosTabla1", compact('body', 'foot'));
     }
 }

@@ -661,9 +661,11 @@ Route::get('/GobsRegs/Principal', [GobiernosRegionalesController::class, 'princi
 Route::get('/GobsRegs/cargarmes', [GobiernosRegionalesController::class, 'cargarmes'])->name('gobsregs.cargarmes');
 Route::get('/GobsRegs/tabla01', [GobiernosRegionalesController::class, 'principaltabla01'])->name('gobsregs.tabla01');
 
-Route::get('/Modificaciones/Principal', [ModificacionesController::class, 'principal'])->name('modificaciones.principal');
+Route::get('/Modificaciones/Principal', [ModificacionesController::class, 'principal_gasto'])->name('modificaciones.principal.gastos');
 Route::get('/Modificaciones/cargarmes', [ModificacionesController::class, 'cargarmes'])->name('modificaciones.cargarmes');
 Route::get('/Modificaciones/tabla01', [ModificacionesController::class, 'principaltabla01'])->name('modificaciones.tabla01');
+Route::get('/Modificaciones/Principal/Ingresos', [ModificacionesController::class, 'principal_ingreso'])->name('modificaciones.principal.ingresos');
+Route::get('/Modificaciones/ingreso/tabla01', [ModificacionesController::class, 'principalingresotabla01'])->name('modificaciones.ingreso.tabla01');
 
 Route::get('/SiafGastos/reportes1', [BaseSiafWebController::class, 'reporte1'])->name('basesiafweb.reporte1');
 Route::get('/SiafGastos/reportes1/tb1', [BaseSiafWebController::class, 'reporte1tabla01'])->name('basesiafweb.tabla01');
