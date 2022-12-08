@@ -83,7 +83,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-4">
                                         <label class="col-form-label">Tipos de Modificaciones </label>
                                         <div class="">
                                             <select class="form-control" name="ftipomodificacion" id="ftipomodificacion"
@@ -92,6 +92,19 @@
                                                 @foreach ($opt4 as $item)
                                                     <option value="{{ $item->id }}">
                                                         {{ $item->codigo . ' ' . $item->nombre }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-form-label">Unidad Ejecutora </label>
+                                        <div class="">
+                                            <select class="form-control" name="fue" id="fue"
+                                                onchange="cargarcuadros();">
+                                                <option value="0">Todos</option>
+                                                @foreach ($opt6 as $item)
+                                                    <option value="{{ $item->id }}">
+                                                        {{ $item->nombre_ejecutora }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -190,10 +203,8 @@
                 data: {
                     'ano': $('#fano').val(),
                     'mes': $('#fmes').val(),
-                    'productoproyecto': $('#fproductoproyecto').val(),
                     'tipomodificacion': $('#ftipomodificacion').val(),
-                    'dispositivototal': $('#fdispositivototal').val(),
-                    'generica': $('#fgenerica').val(),
+                    'ue': $('#fue').val(),
                 },
                 type: "GET",
                 beforeSend: function() {

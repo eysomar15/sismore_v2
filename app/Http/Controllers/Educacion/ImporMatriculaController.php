@@ -59,6 +59,7 @@ class ImporMatriculaController extends Controller
 
     public function guardar(Request $request)
     {
+
         $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 8);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos prendientes de aprobar para la fecha de versión ingresada";
@@ -192,6 +193,7 @@ class ImporMatriculaController extends Controller
         $mensaje = "Archivo excel subido y Procesado correctamente .";
         $this->json_output(200, $mensaje, '');
     }
+
     public function ListarDTImportFuenteTodos(Request $rq)
     {
         $draw = intval($rq->draw);
@@ -282,7 +284,7 @@ class ImporMatriculaController extends Controller
     public function ListaImportada_DataTable($importacion_id)
     {
         $padronWebLista = ImporMatriculaRepositorio::Listar_Por_Importacion_id($importacion_id);
-        return  datatables()->of($padronWebLista)->toJson();;
+        return  datatables()->of($padronWebLista)->toJson();
     }
 
     public function aprobar($importacion_id)

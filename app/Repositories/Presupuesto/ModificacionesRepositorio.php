@@ -46,15 +46,19 @@ class ModificacionesRepositorio
                 ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')->first()->id;
         }
         $query = BaseModificacionDetalle::select(
-            'm4.unidad_ejecutora',
+            'm4.nombre_ejecutora as unidad_ejecutora',
             'pres_base_modificacion_detalle.fecha_aprobacion',
             'pres_base_modificacion_detalle.documento',
             'pres_base_modificacion_detalle.justificacion',
             'v5.sec_fun as secfun',
             'm1.codigo as catpres',
+            'm1.categoria_presupuestal as ncatpres',
             DB::raw('IF(pres_base_modificacion_detalle.productos_id is null,p2.codigo,p1.codigo) as prod_proy'),
-            DB::raw('IF(pres_base_modificacion_detalle.actividad_id is not null,pres_base_modificacion_detalle.actividad_id,IF(pres_base_modificacion_detalle.accion_id is not null,pres_base_modificacion_detalle.accion_id,pres_base_modificacion_detalle.obra_id)) as act_acc_obra'),
+            DB::raw('IF(pres_base_modificacion_detalle.productos_id is null,p2.nombre,p1.nombre) as nprod_proy'),
+            DB::raw('IF(pres_base_modificacion_detalle.actividad_id is not null,v6.codigo,IF(pres_base_modificacion_detalle.accion_id is not null,v7.codigo,v8.codigo)) as act_acc_obra'),
+            DB::raw('IF(pres_base_modificacion_detalle.actividad_id is not null,v6.nombre,IF(pres_base_modificacion_detalle.accion_id is not null,v7.nombre,v8.nombre)) as nact_acc_obra'),
             'm2.codigo as rb',
+            'm2.nombre as nrb',
             DB::raw('concat("2.",v4d.codigo,".",v4c.codigo,".",v4b.codigo,".",v4a.codigo,".",v4.codigo) as clasificador'),
             'v4.nombre as especifica_detalle',
             'pres_base_modificacion_detalle.anulacion',
@@ -69,7 +73,56 @@ class ModificacionesRepositorio
             ->join('pres_subgenericadetalle_gastos as v4b', 'v4b.id', '=', 'v4a.subgenericadetalle_id')
             ->join('pres_subgenerica_gastos        as v4c', 'v4c.id', '=', 'v4b.subgenerica_id')
             ->join('pres_generica_gastos           as v4d', 'v4d.id', '=', 'v4c.generica_id')
-            ->join('pres_meta as v5','v5.id','=','pres_base_modificacion_detalle.meta_id')
+            ->join('pres_meta as v5', 'v5.id', '=', 'pres_base_modificacion_detalle.meta_id')
+            ->join('pres_categoriapresupuestal as m1', 'm1.id', '=', 'pres_base_modificacion_detalle.categoriapresupuestal_id')
+            ->join('pres_rubro as m2', 'm2.id', '=', 'pres_base_modificacion_detalle.rubro_id')
+            ->join('pres_fuentefinanciamiento as m3', 'm3.id', '=', 'm2.fuentefinanciamiento_id')
+            ->join('pres_unidadejecutora as m4', 'm4.id', '=', 'pres_base_modificacion_detalle.unidadejecutora_id')
+
+            ->join('pres_actividades as v6', 'v6.id', '=', 'pres_base_modificacion_detalle.actividad_id', 'left')
+            ->join('pres_accion as v7', 'v7.id', '=', 'pres_base_modificacion_detalle.accion_id', 'left')
+            ->join('pres_obra as v8', 'v8.id', '=', 'pres_base_modificacion_detalle.obra_id', 'left')
+
+            ->join('pres_productos as p1', 'p1.id', '=', 'pres_base_modificacion_detalle.productos_id', 'left')
+            ->join('pres_proyectos as p2', 'p2.id', '=', 'pres_base_modificacion_detalle.proyectos_id', 'left')
+            ->where('w2.estado', 'PR')
+            ->where('pres_base_modificacion_detalle.tipo_presupuesto', 'GASTO')
+            ->where('w1.anio', $opt1);
+        if ($opt2 != 0) $query = $query->where('w1.id', $basemodificacion_id);
+        if ($opt3 != 0) {
+            if ($opt3 == 1) $query = $query->where('pres_base_modificacion_detalle.productos_id');
+            else $query = $query->where('pres_base_modificacion_detalle.proyectos_id');
+        }
+        if ($opt4 != 0) $query = $query->where('v2.id', $opt4);
+        if ($opt5 != "0") $query = $query->where('pres_base_modificacion_detalle.dispositivo_legal', $opt5);
+        if ($opt6 != 0) $query = $query->where('m4.id', $opt6);
+        $query = $query->get();
+        return $query;
+    }
+
+    public static function listar_modificaciones_foot($opt1, $opt2, $opt3, $opt4, $opt5, $opt6)
+    {
+        if ($opt2 != 0) {
+            $basemodificacion_id = BaseModificacion::select('pres_base_modificacion.*')
+                ->join('par_importacion as v2', 'v2.id', '=', 'pres_base_modificacion.importacion_id')
+                ->where('pres_base_modificacion.anio', $opt1)
+                ->where('v2.estado', 'PR')
+                ->where('pres_base_modificacion.mes', $opt2)
+                ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')->first()->id;
+        }
+        $query = BaseModificacionDetalle::select(
+            DB::raw('sum(pres_base_modificacion_detalle.anulacion) as anulacion'),
+            DB::raw('sum(pres_base_modificacion_detalle.credito) as credito')
+        )
+            ->join('pres_base_modificacion as w1', 'w1.id', '=', 'pres_base_modificacion_detalle.basemodificacion_id')
+            ->join('par_importacion        as w2', 'w2.id', '=', 'w1.importacion_id')
+            ->join('pres_tipomodificacion as v2', 'v2.id', '=', 'pres_base_modificacion_detalle.tipomodificacion_id')
+            ->join('pres_especificadetalle_gastos  as v4', 'v4.id', '=', 'pres_base_modificacion_detalle.especialidaddetalle_id')
+            ->join('pres_especifica_gastos         as v4a', 'v4a.id', '=', 'v4.especifica_id')
+            ->join('pres_subgenericadetalle_gastos as v4b', 'v4b.id', '=', 'v4a.subgenericadetalle_id')
+            ->join('pres_subgenerica_gastos        as v4c', 'v4c.id', '=', 'v4b.subgenerica_id')
+            ->join('pres_generica_gastos           as v4d', 'v4d.id', '=', 'v4c.generica_id')
+            ->join('pres_meta as v5', 'v5.id', '=', 'pres_base_modificacion_detalle.meta_id')
             ->join('pres_categoriapresupuestal as m1', 'm1.id', '=', 'pres_base_modificacion_detalle.categoriapresupuestal_id')
             ->join('pres_rubro as m2', 'm2.id', '=', 'pres_base_modificacion_detalle.rubro_id')
             ->join('pres_fuentefinanciamiento as m3', 'm3.id', '=', 'm2.fuentefinanciamiento_id')
@@ -86,12 +139,20 @@ class ModificacionesRepositorio
         }
         if ($opt4 != 0) $query = $query->where('v2.id', $opt4);
         if ($opt5 != "0") $query = $query->where('pres_base_modificacion_detalle.dispositivo_legal', $opt5);
-        if ($opt6 != 0) $query = $query->where('v4d.id', $opt6);
+        if ($opt6 != 0) $query = $query->where('m4.id', $opt6);
         $query = $query->get();
-        return $query;
+        if ($query)
+            return [
+                'anulacion' => number_format($query->first()->anulacion, 0),
+                'credito' => number_format($query->first()->credito, 0)
+            ];
+        else return [
+            'anulacion' => 0,
+            'credito' => 0
+        ];
     }
 
-    public static function listar_modificaciones_ingresos($opt1, $opt2, $opt4)
+    public static function listar_modificaciones_ingresos($opt1, $opt2, $opt4, $opt5)
     {
         if ($opt2 != 0) {
             $basemodificacion_id = BaseModificacion::select('pres_base_modificacion.*')
@@ -102,10 +163,11 @@ class ModificacionesRepositorio
                 ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')->first()->id;
         }
         $query = BaseModificacionDetalle::select(
-            'm4.unidad_ejecutora',
+            'm4.nombre_ejecutora as unidad_ejecutora',
             'pres_base_modificacion_detalle.fecha_aprobacion',
             'pres_base_modificacion_detalle.documento',
             'pres_base_modificacion_detalle.justificacion',
+            'pres_base_modificacion_detalle.dispositivo_legal',
             'm3.nombre as fuente_financiamiento',
             'pres_base_modificacion_detalle.anulacion',
             'pres_base_modificacion_detalle.credito'
@@ -121,6 +183,7 @@ class ModificacionesRepositorio
             ->where('w1.anio', $opt1);
         if ($opt2 != 0) $query = $query->where('w1.id', $basemodificacion_id);
         if ($opt4 != 0) $query = $query->where('v2.id', $opt4);
+        if ($opt5 != 0) $query = $query->where('m4.id', $opt5);
         $query = $query->get();
         return $query;
     }

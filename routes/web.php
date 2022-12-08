@@ -663,7 +663,10 @@ Route::get('/GobsRegs/tabla01', [GobiernosRegionalesController::class, 'principa
 
 Route::get('/Modificaciones/Principal', [ModificacionesController::class, 'principal_gasto'])->name('modificaciones.principal.gastos');
 Route::get('/Modificaciones/cargarmes', [ModificacionesController::class, 'cargarmes'])->name('modificaciones.cargarmes');
-Route::get('/Modificaciones/tabla01', [ModificacionesController::class, 'principaltabla01'])->name('modificaciones.tabla01');
+Route::get('/Modificaciones/tabla01', [ModificacionesController::class, 'principalgastotabla01'])->name('modificaciones.tabla01');
+Route::get('/Modificaciones/DT/tabla01', [ModificacionesController::class, 'principalgastotabla01_DT'])->name('modificaciones.dt.tabla01');
+Route::get('/Modificaciones/DT/tabla01/foot', [ModificacionesController::class, 'principalgastotabla01_foot'])->name('modificaciones.dt.tabla01.foot');
+
 Route::get('/Modificaciones/Principal/Ingresos', [ModificacionesController::class, 'principal_ingreso'])->name('modificaciones.principal.ingresos');
 Route::get('/Modificaciones/ingreso/tabla01', [ModificacionesController::class, 'principalingresotabla01'])->name('modificaciones.ingreso.tabla01');
 

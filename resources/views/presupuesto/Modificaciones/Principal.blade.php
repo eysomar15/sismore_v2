@@ -66,7 +66,7 @@
                                         <label class=" col-form-label">Año</label>
                                         <div class="">
                                             <select class="form-control" name="fano" id="fano"
-                                                onchange="cargarmes();cargarcuadros();">
+                                                onchange="cargarmes();cargarcuadros2();">
                                                 {{-- <option value="0">TODOS</option> --}}
                                                 @foreach ($opt1 as $item)
                                                     <option value="{{ $item->anio }}">{{ $item->anio }}</option>
@@ -78,7 +78,7 @@
                                         <label class="col-form-label">Mes</label>
                                         <div class="">
                                             <select class="form-control" name="fmes" id="fmes"
-                                                onchange="cargarcuadros();">
+                                                onchange="cargarcuadros2();">
                                                 {{-- <option value="0">TODOS</option> --}}
                                             </select>
                                         </div>
@@ -87,7 +87,7 @@
                                         <label class="col-form-label">Producto/Proyecto </label>
                                         <div class="">
                                             <select class="form-control" name="fproductoproyecto" id="fproductoproyecto"
-                                                onchange="cargarcuadros();">
+                                                onchange="cargarcuadros2();">
                                                 <option value="0">Todos</option>
                                                 @foreach ($opt3 as $item)
                                                     <option value="{{ $item->id }}">
@@ -100,7 +100,7 @@
                                         <label class="col-form-label">Tipos de Modificaciones </label>
                                         <div class="">
                                             <select class="form-control" name="ftipomodificacion" id="ftipomodificacion"
-                                                onchange="cargarcuadros();">
+                                                onchange="cargarcuadros2();">
                                                 <option value="0">Todos</option>
                                                 @foreach ($opt4 as $item)
                                                     <option value="{{ $item->id }}">
@@ -113,7 +113,7 @@
                                         <label class="col-form-label">Dispositivo Legal </label>
                                         <div class="">
                                             <select class="form-control" name="fdispositivototal" id="fdispositivototal"
-                                                onchange="cargarcuadros();">
+                                                onchange="cargarcuadros2();">
                                                 <option value="0">Todos</option>
                                                 @foreach ($opt5 as $item)
                                                     <option value="{{ $item->dispositivo_legal }}">
@@ -123,14 +123,14 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="col-form-label">Generica </label>
+                                        <label class="col-form-label">Unidad Ejecutora </label>
                                         <div class="">
                                             <select class="form-control" name="fgenerica" id="fgenerica"
-                                                onchange="cargarcuadros();">
+                                                onchange="cargarcuadros2();">
                                                 <option value="0">Todos</option>
                                                 @foreach ($opt6 as $item)
                                                     <option value="{{ $item->id }}">
-                                                        {{ $item->nombre }}</option>
+                                                        {{ $item->nombre_ejecutora }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -155,6 +155,49 @@
                     </div>
                     <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-12 principal">
+                <div class="card card-border">
+                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
+                        <h3 class="card-title"></h3>
+                    </div>
+                    <div class="card-body pb-0 pt-0">
+                        <div class="table-responsive">
+                            <table id="tabla1-dt" class="table table-striped table-bordered tablex"
+                                style="font-size:10px;">
+                                <thead>
+                                    <tr class="bg-primary text-white text-center">
+                                        <th>Unidad Ejecutora</th>
+                                        <th>Fecha Aprobacion</th>
+                                        <th>Documento</th>
+                                        <th>Justificacion</th>
+                                        {{-- <th>SecFun</th> --}}
+                                        <th>CatPres</th>
+                                        <th>ProdProy</th>
+                                        <th>ActAccObra</th>
+                                        <th>Rb</th>
+                                        <th>Especifica Detalle</th>
+                                        <th>Anulacion</th>
+                                        <th>Credito</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="text-right bg-primary text-white">
+                                        <th class="text-left" colspan="9">TOTAL</th>
+                                        <th> </th>
+                                        <th> </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -217,7 +260,8 @@
                 $(this).next().empty();
             });
             cargarmes();
-            cargarcuadros();
+            //cargarcuadros();
+            //cargarcuadros2();
         });
 
         function cargarcuadros() {
@@ -252,6 +296,107 @@
 
         }
 
+        function cargarcuadros2() {
+            table_principal = $('#tabla1-dt').DataTable({
+                    "processing": true,
+                    "serverSide": true,
+                    "responsive": false,
+                    "autoWidth": false,
+                    "ordered": true,
+                    "destroy": true,
+                    "language": table_language,
+                    "ajax": {
+                        "url": "{{ route('modificaciones.dt.tabla01') }}",
+                        "data": {
+                            'ano': $('#fano').val(),
+                            'mes': $('#fmes').val(),
+                            'productoproyecto': $('#fproductoproyecto').val(),
+                            'tipomodificacion': $('#ftipomodificacion').val(),
+                            'dispositivototal': $('#fdispositivototal').val(),
+                            'generica': $('#fgenerica').val(),
+                        },
+                        "type": "GET",
+                        "dataType": 'JSON',
+                    },
+                    "columns": [{
+                            data: 'unidad_ejecutora',
+                            name: 'unidad_ejecutora'
+                        },
+                        {
+                            data: 'fecha_aprobacion',
+                            name: 'fecha_aprobacion'
+                        },
+                        {
+                            data: 'documento',
+                            name: 'documento'
+                        },
+                        {
+                            data: 'justificacion',
+                            name: 'justificacion'
+                        },
+                        /* {
+                            data: 'secfun',
+                            name: 'secfun'
+                        }, */
+                        {
+                            data: 'catpres',
+                            name: 'catpres'
+                        },
+                        {
+                            data: 'prod_proy',
+                            name: 'prod_proy'
+                        },
+                        {
+                            data: 'act_acc_obra',
+                            name: 'act_acc_obra'
+                        },
+                        {
+                            data: 'rb',
+                            name: 'rb'
+                        },
+                        {
+                            data: 'especifica_detalle',
+                            name: 'especifica_detalle'
+                        },
+                        {
+                            data: 'anulacion',
+                            name: 'anulacion'
+                        },
+                        {
+                            data: 'credito',
+                            name: 'credito'
+                        },
+                    ],
+                    "footerCallback": function(tfoot, data, start, end, display) {
+                        var api = this.api();
+                        $.ajax({
+                            url: "{{ route('modificaciones.dt.tabla01.foot') }}",
+                            data: {
+                                'ano': $('#fano').val(),
+                                'mes': $('#fmes').val(),
+                                'productoproyecto': $('#fproductoproyecto').val(),
+                                'tipomodificacion': $('#ftipomodificacion').val(),
+                                'dispositivototal': $('#fdispositivototal').val(),
+                                'generica': $('#fgenerica').val(),
+                            },
+                            type: 'get',
+                            success: function(data) {
+                                console.log(data)
+                                $(api.column(9).footer()).html(data.foot.anulacion);
+                                $(api.column(10).footer()).html(data.foot.credito);
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.log(jqXHR);
+                            },
+                        });
+
+
+                    },
+                }
+
+            );
+        }
+
         function cargarmes() {
             $.ajax({
                 url: "{{ route('modificaciones.cargarmes') }}",
@@ -268,7 +413,7 @@
                             '</option>';
                     });
                     $('#fmes').append(opt);
-                    cargarcuadros();
+                    cargarcuadros2();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
