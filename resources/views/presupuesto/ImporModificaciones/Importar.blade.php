@@ -32,7 +32,7 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Datos de importación</h3>
+                        <h3 class="card-title">Datos de importación Modificaciones presupuestales</h3>
                     </div>
 
                     <div class="card-body">
@@ -41,7 +41,7 @@
                             <form class="cmxform form-horizontal tasi-form upload_file">
                                 @csrf
                                 <div class="col-md-12">
-                                    <div class="form-group row">
+                                    {{-- <div class="form-group row">
                                         <label class="col-md-2 col-form-label">Fuente de datos</label>
                                         <div class="col-md-4">
                                             <input type="text" class="form-control" readonly="readonly" value="SIAF WEB">
@@ -51,15 +51,22 @@
                                         <div class="col-md-4">
                                             <textarea class="form-control" placeholder="comentario opcional" id="ccomment" name="comentario"></textarea>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group row">
+                                        <label class="col-md-2 col-form-label">Fuente de datos</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" readonly="readonly"
+                                                value="{{ $fuente->nombre }}">
+                                        </div>
                                         <label class="col-md-2 col-form-label">Fecha Versión</label>
                                         <div class="col-md-4">
                                             <input type="date" class="form-control" name="fechaActualizacion"
                                                 placeholder="Ingrese fecha actualizacion" autofocus required>
                                         </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label class="col-md-2 col-form-label">Archivo</label>
-                                        <div class="col-md-4">
+                                        <div class="col-md-10">
                                             <input type="file" name="file" class="form-control" required>
                                         </div>
                                     </div>
@@ -140,10 +147,10 @@
                                             <tr>
                                                 <th>N°</th>
                                                 <th>Fecha Version</th>
-                                                <th>Fuente</th>
+                                                {{-- <th>Fuente</th> --}}
                                                 <th>Usuario</th>
                                                 <th>Registro</th>
-                                                <th>Comentario</th>
+                                                {{-- <th>Comentario</th> --}}
                                                 <th>Estado</th>
                                                 <th>Accion</th>
                                             </tr>

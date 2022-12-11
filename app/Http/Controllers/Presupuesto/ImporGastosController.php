@@ -7,6 +7,7 @@ use App\Imports\ImporGastosImport;
 use Illuminate\Http\Request;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\Importacion;
+use App\Models\Parametro\FuenteImportacion;
 use App\Models\Presupuesto\BaseGastos;
 use App\Models\Presupuesto\BaseGastosDetalle;
 use App\Models\Presupuesto\ImporGastos;
@@ -29,8 +30,9 @@ class ImporGastosController extends Controller
 
     public function importar()
     {
+        $fuente = FuenteImportacion::find($this->fuente);
         $mensaje = "";
-        return view('presupuesto.ImporGastos.Importar', compact('mensaje'));
+        return view('presupuesto.ImporGastos.Importar', compact('mensaje', 'fuente'));
     }
 
     function json_output($status = 200, $msg = 'OK!!', $data = null)
@@ -266,10 +268,10 @@ class ImporGastosController extends Controller
             $data[] = array(
                 $key + 1,
                 date("d/m/Y", strtotime($value->fechaActualizacion)),
-                $value->fuente . $value->id,
+                /* $value->fuente, */
                 $nom . ' ' . $ape,
                 date("d/m/Y", strtotime($value->created_at)),
-                $value->comentario,
+                /* $value->comentario, */
                 $value->estado == "PR" ? "PROCESADO" : ($value->estado == "PE" ? "PENDIENTE" : "ELIMINADO"),
                 $boton /* . '&nbsp;' . $boton2, */
             );
