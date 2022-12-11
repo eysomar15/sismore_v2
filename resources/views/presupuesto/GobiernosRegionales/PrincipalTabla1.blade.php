@@ -21,12 +21,12 @@
                 <td class="text-left"><a href="javascript:alert('En Creación')">{{ $item->corto }}</a></td>
                 <td>{{ number_format($item->pia, 0) }}</td>
                 <td>{{ number_format($item->pim, 0) }}</td>
-                <td>{{ number_format($item->certificacion, 2) }}</td>
+                <td>{{ number_format($item->certificacion, 0) }}</td>
                 {{-- <td>{{ number_format($item->compromiso_anual, 0) }}</td> --}}
-                <td>{{ number_format($item->devengado, 2) }}</td>
+                <td>{{ number_format($item->devengado, 0) }}</td>
                 <td class="text-center">{!! avance($item->eje) !!} </td>
-                <td>{{ number_format($item->saldo1, 2) }}</td>
-                <td>{{ number_format($item->saldo2, 2) }}</td>
+                <td>{{ number_format($item->saldo1, 0) }}</td>
+                <td>{{ number_format($item->saldo2, 0) }}</td>
             </tr>
         @endforeach
     </tbody>
@@ -35,12 +35,12 @@
             <th class="text-left" colspan="2">TOTAL</th>
             <th>{{ number_format($foot['pia'], 0) }}</th>
             <th>{{ number_format($foot['pim'], 0) }}</th>
-            <th>{{ number_format($foot['certificacion'], 2) }}</th>
+            <th>{{ number_format($foot['certificacion'], 0) }}</th>
             {{-- <th>{{ number_format($foot['compromiso'], 0) }}</th> --}}
-            <th>{{ number_format($foot['devengado'], 2) }}</th>
-            <th class="text-center">{{ number_format($foot['eje'], 1) }} %</th>
-            <th>{{ number_format($foot['saldo1'], 2) }}</th>
-            <th>{{ number_format($foot['saldo2'], 2) }}</th>
+            <th>{{ number_format($foot['devengado'], 0) }}</th>
+            <th class="text-center">{!! avance($foot['eje']) !!} %</th>
+            <th>{{ number_format($foot['saldo1'], 0) }}</th>
+            <th>{{ number_format($foot['saldo2'], 0) }}</th>
         </tr>
     </tfoot>
 </table>

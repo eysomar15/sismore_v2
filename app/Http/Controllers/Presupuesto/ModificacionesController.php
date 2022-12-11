@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Presupuesto;
 
 use App\Exports\BaseGastosExport;
+use App\Exports\ModificacionesGastoExport;
+use App\Exports\ModificacionesIngresoExport;
 use App\Http\Controllers\Controller;
 use App\Models\Educacion\Importacion;
 use App\Models\Presupuesto\BaseModificacionDetalle;
@@ -90,6 +92,14 @@ class ModificacionesController extends Controller
         return response()->json(compact('foot'));
     }
 
+    public function downloadgasto($ano, $mes, $articulo, $tipo, $dispositivo, $ue)
+    {
+        if ($ano) {
+            $name = 'Modificaciones_Gasto_' . date('Y-m-d') . '.xlsx';
+            return Excel::download(new ModificacionesGastoExport($ano, $mes, $articulo, $tipo, $dispositivo, $ue), $name);
+        }
+    }
+
     public function principal_ingreso()
     {
         $opt1 = ModificacionesRepositorio::anios();
@@ -113,5 +123,13 @@ class ModificacionesController extends Controller
             $foot['credito'] += $value->credito;
         }
         return view("Presupuesto.Modificaciones.PrincipalIngresosTabla1", compact('body', 'foot'));
+    }
+
+    public function downloadingreso($ano, $mes,  $tipo, $ue)
+    {
+        if ($ano) {
+            $name = 'Modificaciones_Gasto_' . date('Y-m-d') . '.xlsx';
+            return Excel::download(new ModificacionesIngresoExport($ano, $mes, $tipo, $ue), $name);
+        }
     }
 }

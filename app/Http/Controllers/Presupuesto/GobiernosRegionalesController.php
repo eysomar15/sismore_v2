@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Presupuesto;
 
 use App\Exports\BaseGastosExport;
+use App\Exports\GobiernosRegionalesExport;
 use App\Http\Controllers\Controller;
 use App\Models\Educacion\Importacion;
 use App\Models\Presupuesto\BaseProyectos;
@@ -53,6 +54,15 @@ class GobiernosRegionalesController extends Controller
         }
         $foot['eje'] = $foot['pim'] > 0 ? round(100 * $foot['devengado'] / $foot['pim'], 1) : 0;
         return view("Presupuesto.GobiernosRegionales.PrincipalTabla1", compact('body', 'foot'));
+    }
+
+    public function download($ano, $mes, $tipo)
+    {
+        if ($ano) {
+            $name = 'Gobiernos_Regionales_' . date('Y-m-d') . '.xlsx';
+            //return Excel::download(new GobiernosRegionalesExport(2022, 12, 1), $name);
+            return Excel::download(new GobiernosRegionalesExport($ano, $mes, $tipo), $name);
+        }
     }
 
     /* public function avancepresupuestalmapa1($importacion_id)

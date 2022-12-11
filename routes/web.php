@@ -660,15 +660,19 @@ Route::post('/IMPORMODS/ListaImportada/{importacion_id}', [ImporModificacionesCo
 Route::get('/GobsRegs/Principal', [GobiernosRegionalesController::class, 'principal'])->name('gobsregs.principal');
 Route::get('/GobsRegs/cargarmes', [GobiernosRegionalesController::class, 'cargarmes'])->name('gobsregs.cargarmes');
 Route::get('/GobsRegs/tabla01', [GobiernosRegionalesController::class, 'principaltabla01'])->name('gobsregs.tabla01');
+Route::get('/GobsRegs/Exportar/excel/principal01', [GobiernosRegionalesController::class, 'download'])->name('gobsregs.download.excel.principal01');
+Route::get('/GobsRegs/Exportar/excel/principal01/{ano}/{mes}/{tipo}', [GobiernosRegionalesController::class, 'download']);
 
 Route::get('/Modificaciones/Principal', [ModificacionesController::class, 'principal_gasto'])->name('modificaciones.principal.gastos');
 Route::get('/Modificaciones/cargarmes', [ModificacionesController::class, 'cargarmes'])->name('modificaciones.cargarmes');
 Route::get('/Modificaciones/tabla01', [ModificacionesController::class, 'principalgastotabla01'])->name('modificaciones.tabla01');
 Route::get('/Modificaciones/DT/tabla01', [ModificacionesController::class, 'principalgastotabla01_DT'])->name('modificaciones.dt.tabla01');
 Route::get('/Modificaciones/DT/tabla01/foot', [ModificacionesController::class, 'principalgastotabla01_foot'])->name('modificaciones.dt.tabla01.foot');
+Route::get('/Modificaciones/ExportarG/excel/tabla01/{ano}/{mes}/{articulo}/{tipo}/{dispositivo}/{ue}', [ModificacionesController::class, 'downloadgasto']);
 
 Route::get('/Modificaciones/Principal/Ingresos', [ModificacionesController::class, 'principal_ingreso'])->name('modificaciones.principal.ingresos');
 Route::get('/Modificaciones/ingreso/tabla01', [ModificacionesController::class, 'principalingresotabla01'])->name('modificaciones.ingreso.tabla01');
+Route::get('/Modificaciones/ExportarI/excel/tabla01/{ano}/{mes}/{tipo}/{ue}', [ModificacionesController::class, 'downloadingreso']);
 
 Route::get('/SiafGastos/reportes1', [BaseSiafWebController::class, 'reporte1'])->name('basesiafweb.reporte1');
 Route::get('/SiafGastos/reportes1/tb1', [BaseSiafWebController::class, 'reporte1tabla01'])->name('basesiafweb.tabla01');

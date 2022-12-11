@@ -109,8 +109,14 @@
         <div class="row">
             <div class="col-xl-12 principal">
                 <div class="card card-border">
-                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title"></h3>
+                    <div class="card-header border-primary">{{--  bg-transparent pb-0 mb-0 --}}
+                        <div class="card-widgets">
+                            <button type="button" class="btn btn-success btn-xs"
+                                onclick="descargar()"><i
+                                    class="fa fa-file-excel"></i>
+                                Excel</button>
+                        </div>
+                        <h3 class="card-title">&nbsp;</h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista1">
@@ -198,6 +204,9 @@
                     $('#vista1').html(data);
                     $('#tabla1').DataTable({
                         "language": table_language,
+                        paging: false,
+                        searching: false,
+                        //"aLengthMenu":[100]
                     });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -226,6 +235,18 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
+                },
+            });
+        }
+
+        function descargar() {
+            $.ajax({
+                url: "{{ url('/') }}/GobsRegs/Exportar/excel/principal01/null/null/null",
+                type: "GET",
+                success: function(data) {
+                    window.open("{{ url('/') }}/GobsRegs/Exportar/excel/principal01/" + $('#fano').val() +
+                        "/" + $('#fmes').val() + "/" + $('#ftipo').val());
+
                 },
             });
         }

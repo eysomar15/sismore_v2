@@ -27,6 +27,45 @@
         @foreach ($body as $item)
             <tr class="text-right">
                 <th class="text-center">{{ $item->ano }}</th>
+                <td>{{ $item->gnp }}</td>
+                <td>{{ $item->gnd }}</td>
+                <th>{{ $item->gnne }}</th>
+                <td>{{ $item->glp }}</td>
+                <td>{{ $item->gld }}</td>
+                <th>{{ $item->glne }}</th>
+                <td>{{ $item->grp }}</td>
+                <td>{{ $item->grd }}</td>
+                <th>{{ $item->grne }}</th>
+                <td>{{ $item->ttp }}</td>
+                <td>{{ $item->ttd }}</td>
+                <th>{{ $item->ttne }}</th>
+            </tr>
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr class="text-center bg-primary text-white">
+            <th class="text-left">TOTAL</th>
+            <th>{{ $foot['gnp'] }}</th>
+            <th>{{ $foot['gnd'] }}</th>
+            <th>{{ $foot['gnne'] }}</th>
+            <th>{{ $foot['glp'] }}</th>
+            <th>{{ $foot['gld'] }}</th>
+            <th>{{ $foot['glne'] }}</th>
+            <th>{{ $foot['grp'] }}</th>
+            <th>{{ $foot['grd'] }}</th>
+            <th>{{ $foot['grne'] }}</th>
+            <th>{{ $foot['ttp'] }}</th>
+            <th>{{ $foot['ttd'] }}</th>
+            <th>{{ $foot['ttne'] }}</th>
+        </tr>
+    </tfoot>
+</table>
+
+{{--
+    <tbody>
+        @foreach ($body as $item)
+            <tr class="text-right">
+                <th class="text-center">{{ $item->ano }}</th>
                 <td>{{ number_format($item->gnp, 0) }}</td>
                 <td>{{ number_format($item->gnd, 2) }}</td>
                 <th>{{ number_format($item->gnne, 2) }}</th>
@@ -59,7 +98,7 @@
             <th>{{ number_format($foot['ttne'], 2) }}</th>
         </tr>
     </tfoot>
-</table>
+    --}}
 
 
 

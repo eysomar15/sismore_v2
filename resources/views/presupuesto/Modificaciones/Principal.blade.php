@@ -147,7 +147,7 @@
         </div>
         <!-- End row -->
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-xl-12 principal">
                 <div class="card card-border">
                     <div class="card-header border-primary bg-transparent pb-0 mb-0">
@@ -159,13 +159,18 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         {{-- end  row --}}
 
         <div class="row">
             <div class="col-xl-12 principal">
                 <div class="card card-border">
-                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
+                    <div class="card-header border-primary">{{--  bg-transparent pb-0 mb-0 --}}
+                        <div class="card-widgets">
+                            <button type="button" class="btn btn-success btn-xs" onclick="descargar()"><i
+                                    class="fa fa-file-excel"></i>
+                                Excel</button>
+                        </div>
                         <h3 class="card-title"></h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
@@ -417,6 +422,19 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
+                },
+            });
+        }
+
+        function descargar() {
+            $.ajax({
+                url: "{{ url('/') }}/Modificaciones/ExportarG/excel/tabla01/null/null/null/null/null/null",
+                type: "GET",
+                success: function(data) {
+                    window.open("{{ url('/') }}/Modificaciones/ExportarG/excel/tabla01/" +
+                        $('#fano').val() + "/" + $('#fmes').val() + "/" +
+                        $('#fproductoproyecto').val() + "/" + $('#ftipomodificacion').val() + "/" +
+                        $('#fdispositivototal').val() + "/" + $('#fgenerica').val());
                 },
             });
         }
