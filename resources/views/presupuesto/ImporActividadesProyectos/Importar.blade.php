@@ -12,6 +12,12 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header">
+                        <div class="card-widgets">
+                            <button type="button" class="btn btn-primary btn-xs"
+                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgoz3dAniDPfSolChKM?e=QmDpFr','_blank');"><i
+                                    class="fa fa-file-excel"></i>
+                                Plantilla</button>
+                        </div>
                         <h3 class="card-title">Datos de importación de gastos de Actividad y proyectos</h3>
                     </div>
 
