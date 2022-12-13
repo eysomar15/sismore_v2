@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ''])
+@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ' '])
 
 @section('css')
     <!-- Table datatable css -->

@@ -1,4 +1,4 @@
-@extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - GASTO PRESUPUESTAL'])
+@extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - ' . $fuente->formato])
 @section('css')
     <!-- Table datatable css -->
     <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
@@ -38,7 +38,7 @@
                                     class="fa fa-file-excel"></i>
                                 Plantilla</button>
                         </div>
-                        <h3 class="card-title">Datos de importación Modificaciones presupuestales</h3>
+                        <h3 class="card-title">Datos de importación</h3>
                     </div>
 
                     <div class="card-body">

@@ -1,4 +1,6 @@
-@extends('layouts.main', ['titlePage' => 'Bienvenido al Sistema de Monitoreo Regional'])
+@extends('layouts.main', [
+    'titlePage' => session('sistema_id') == 5 ? 'Principal' : 'Bienvenido al Sistema de Monitoreo Regional',
+])
 
 @section('content')
     @if (session('sistema_id') == 1)

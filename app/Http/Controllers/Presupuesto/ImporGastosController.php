@@ -267,9 +267,11 @@ class ImporGastosController extends Controller
             $boton2 = '<button type="button" onclick="monitor(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
             $data[] = array(
                 $key + 1,
+                'GASTO',
                 date("d/m/Y", strtotime($value->fechaActualizacion)),
                 /* $value->fuente, */
                 $nom . ' ' . $ape,
+                '',
                 date("d/m/Y", strtotime($value->created_at)),
                 /* $value->comentario, */
                 $value->estado == "PR" ? "PROCESADO" : ($value->estado == "PE" ? "PENDIENTE" : "ELIMINADO"),

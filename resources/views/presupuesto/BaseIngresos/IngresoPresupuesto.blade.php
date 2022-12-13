@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ''])
+@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => 'Ingreso Presupuestal de la región Ucayali'])
 
 @section('css')
     <style>

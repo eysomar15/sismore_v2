@@ -1,4 +1,4 @@
-@extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - INGRESO PRESUPUESTAL'])
+@extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - ' . $fuente->formato])
 @section('css')
     <!-- Table datatable css -->
     <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"

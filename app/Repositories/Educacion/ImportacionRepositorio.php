@@ -231,7 +231,7 @@ class ImportacionRepositorio
             ->where('v1.fuenteImportacion_id', $fuenteImportacion_id)
             ->where('v1.estado', '!=', 'EL')
             ->orderBy('v1.fechaActualizacion', 'desc')
-            ->select('v1.*', 'v2.nombre as fuente', 'v3.nombre as cnombre', 'v3.apellidos as capellidos', 'v4.nombre as anombre', 'v4.apellidos as aapellidos')
+            ->select('v1.*', 'v2.nombre as fuente', 'v2.formato', 'v3.nombre as cnombre', 'v3.apellidos as capellidos', 'v4.nombre as anombre', 'v4.apellidos as aapellidos')
             ->get();
         return $query;
     }

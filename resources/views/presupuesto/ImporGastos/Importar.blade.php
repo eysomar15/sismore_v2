@@ -1,4 +1,4 @@
-@extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - GASTO PRESUPUESTAL'])
+@extends('layouts.main', ['titlePage' => 'IMPORTAR DATOS - ' . $fuente->formato])
 @section('css')
     <!-- Table datatable css -->
     <link href="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"
@@ -33,10 +33,14 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-widgets">
-                            <button type="button" class="btn btn-primary btn-xs"
+                            <button type="button" class="btn btn-success btn-xs"
                                 onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgoz3dAniDPfSolChKM?e=QmDpFr','_blank');"><i
                                     class="fa fa-file-excel"></i>
                                 Plantilla</button>
+                            <button type="button" class="btn btn-danger btn-xs"
+                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgoz3dAniDPfSolChKM?e=QmDpFr','_blank');"><i
+                                    class="mdi mdi-file-pdf-outline"></i>
+                                Manual</button>
                         </div>
                         <h3 class="card-title">Datos de importación</h3>
                     </div>
@@ -115,7 +119,7 @@
                                 <div class="form-group row mb-0">
                                     {{-- <div class="offset-lg-2 col-lg-10"> --}}
                                     <div class="col-12 d-flex justify-content-end">
-                                        <button class="btn btn-success waves-effect waves-light mr-1"
+                                        <button class="btn btn-primary waves-effect waves-light mr-1"
                                             type="submit">Importar</button>
                                         {{-- <button class="btn btn-secondary waves-effect" type="button">Cancelar</button> --}}
                                     </div>
@@ -145,11 +149,14 @@
                                     <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap"
                                         style="font-size: 12px">
                                         <thead class="text-primary">
-                                            <tr>
+                                            <tr class="bg-success-1 text-white">
                                                 <th>N°</th>
-                                                <th>Fecha Version</th>
+                                                <th>Tipo Presupuesto</th>
+                                                <th>Fecha Versión</th>
                                                 {{-- <th>Fuente</th> --}}
+
                                                 <th>Usuario</th>
+                                                <th>Área</th>
                                                 <th>Registro</th>
                                                 {{-- <th>Comentario</th> --}}
                                                 <th>Estado</th>

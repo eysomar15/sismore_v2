@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ''])
+@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ' '])
 
 @section('css')
     <!-- Table datatable css -->
@@ -97,6 +97,19 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
+                                        <label class="col-form-label">Unidad Ejecutora </label>
+                                        <div class="">
+                                            <select class="form-control" name="fgenerica" id="fgenerica"
+                                                onchange="cargarcuadros2();">
+                                                <option value="0">Todos</option>
+                                                @foreach ($opt6 as $item)
+                                                    <option value="{{ $item->id }}">
+                                                        {{ $item->nombre_ejecutora }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <label class="col-form-label">Tipos de Modificaciones </label>
                                         <div class="">
                                             <select class="form-control" name="ftipomodificacion" id="ftipomodificacion"
@@ -122,19 +135,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <label class="col-form-label">Unidad Ejecutora </label>
-                                        <div class="">
-                                            <select class="form-control" name="fgenerica" id="fgenerica"
-                                                onchange="cargarcuadros2();">
-                                                <option value="0">Todos</option>
-                                                @foreach ($opt6 as $item)
-                                                    <option value="{{ $item->id }}">
-                                                        {{ $item->nombre_ejecutora }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                         </form>
