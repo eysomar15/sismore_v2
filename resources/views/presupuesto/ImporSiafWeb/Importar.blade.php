@@ -13,10 +13,16 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-widgets">
-                            <button type="button" class="btn btn-primary btn-xs"
-                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgoz3dAniDPfSolChKM?e=QmDpFr','_blank');"><i
+                            <button type="button" class="btn btn-warning btn-xs" onclick="location.reload()"><i
+                                    class="fa fa-redo"></i> Actualizar</button>
+                            <button type="button" class="btn btn-success btn-xs"
+                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgo0ALwOvaxxoTl8N64?e=CJr9VE','_blank');"><i
                                     class="fa fa-file-excel"></i>
                                 Plantilla</button>
+                            <button type="button" class="btn btn-danger btn-xs"
+                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgo0ALwOvaxxoTl8N64?e=CJr9VE','_blank');"><i
+                                    class="mdi mdi-file-pdf-outline"></i>
+                                Manual</button>
                         </div>
                         <h3 class="card-title">Datos de importación</h3>
                     </div>
@@ -27,33 +33,26 @@
                             <form class="cmxform form-horizontal tasi-form upload_file">
                                 @csrf
                                 <div class="col-md-12">
-                                    {{-- <div class="form-group row">
-                                        <label class="col-md-2 col-form-label">Fuente de datos</label>
-                                        <div class="col-md-4">
-                                            <input type="text" class="form-control" readonly="readonly" value="{{ $fuente->nombre }}">
-                                        </div>
-
-                                        <label class="col-md-2 col-form-label">Comentario</label>
-                                        <div class="col-md-4">
-                                            <textarea class="form-control" placeholder="comentario opcional" id="ccomment" name="comentario"></textarea>
-                                        </div>
-                                    </div> --}}
                                     <div class="form-group row">
-                                        <label class="col-md-2 col-form-label">Fuente de datos</label>
-                                        <div class="col-md-4">
-                                            <input type="text" class="form-control" readonly="readonly"
-                                                value="{{ $fuente->nombre }}">
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Fuente de datos</label>
+                                            <div class="">
+                                                <input type="text" class="form-control" readonly="readonly"
+                                                    value="{{ $fuente->nombre }}">
+                                            </div>
                                         </div>
-                                        <label class="col-md-2 col-form-label">Fecha Versión</label>
-                                        <div class="col-md-4">
-                                            <input type="date" class="form-control" name="fechaActualizacion"
-                                                placeholder="Ingrese fecha actualizacion" autofocus required>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Fecha Versión</label>
+                                            <div class="">
+                                                <input type="date" class="form-control" name="fechaActualizacion"
+                                                    placeholder="Ingrese fecha actualizacion" autofocus required>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-2 col-form-label">Archivo</label>
-                                        <div class="col-md-10">
-                                            <input type="file" name="file" class="form-control" required>
+                                        <div class="col-md-6">
+                                            <label class="col-form-label">Archivo</label>
+                                            <div class="">
+                                                <input type="file" name="file" class="form-control" required>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -100,7 +99,7 @@
                                 <div class="form-group row mb-0">
                                     {{-- <div class="offset-lg-2 col-lg-10"> --}}
                                     <div class="col-12 d-flex justify-content-end">
-                                        <button class="btn btn-success waves-effect waves-light mr-1"
+                                        <button class="btn btn-primary waves-effect waves-light mr-1"
                                             type="submit">Importar</button>
                                         {{-- <button class="btn btn-secondary waves-effect" type="button">Cancelar</button> --}}
                                     </div>
@@ -132,9 +131,11 @@
                                         <thead class="text-primary">
                                             <tr>
                                                 <th>N°</th>
-                                                <th>Fecha Version</th>
+                                                <th>Tipo Presupuesto</th>
+                                                <th>Fecha Versión</th>
                                                 {{-- <th>Fuente</th> --}}
                                                 <th>Usuario</th>
+                                                <th>Área</th>
                                                 <th>Registro</th>
                                                 {{-- <th>Comentario</th> --}}
                                                 <th>Estado</th>

@@ -9,6 +9,7 @@ use App\Models\Educacion\Importacion;
 use App\Models\Parametro\FuenteImportacion;
 use App\Models\Presupuesto\BaseModificacion;
 use App\Models\Presupuesto\BaseModificacionDetalle;
+use App\Models\Presupuesto\Entidad;
 use App\Models\Presupuesto\ImporModificaciones;
 use App\Repositories\Educacion\ImportacionRepositorio;
 use Exception;
@@ -203,6 +204,7 @@ class ImporModificacionesController extends Controller
         $query = ImportacionRepositorio::Listar_FuenteTodos($this->fuente);
         $data = [];
         foreach ($query as $key => $value) {
+            $ent = Entidad::find($value->entidad);
             $nom = '';
             if (strlen($value->cnombre) > 0) {
                 $xx = explode(' ', $value->cnombre);
@@ -221,9 +223,11 @@ class ImporModificacionesController extends Controller
             $boton2 = '<button type="button" onclick="monitor(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
             $data[] = array(
                 $key + 1,
+                'MODIFICACIÓN',
                 date("d/m/Y", strtotime($value->fechaActualizacion)),
                 //$value->fuente . $value->id,
                 $nom . ' ' . $ape,
+                ($ent ? $ent->abreviado : ''),
                 date("d/m/Y", strtotime($value->created_at)),
                 //$value->comentario,
                 $value->estado == "PR" ? "PROCESADO" : ($value->estado == "PE" ? "PENDIENTE" : "ELIMINADO"),

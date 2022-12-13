@@ -33,12 +33,14 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="card-widgets">
+                            <button type="button" class="btn btn-warning btn-xs" onclick="location.reload()"><i
+                                    class="fa fa-redo"></i> Actualizar</button>
                             <button type="button" class="btn btn-success btn-xs"
-                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgoz3dAniDPfSolChKM?e=QmDpFr','_blank');"><i
+                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgo0AEnoULq3wbXGnu-?e=d81hlQ','_blank');"><i
                                     class="fa fa-file-excel"></i>
                                 Plantilla</button>
                             <button type="button" class="btn btn-danger btn-xs"
-                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgoz3dAniDPfSolChKM?e=QmDpFr','_blank');"><i
+                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgo0AEnoULq3wbXGnu-?e=d81hlQ','_blank');"><i
                                     class="mdi mdi-file-pdf-outline"></i>
                                 Manual</button>
                         </div>
@@ -58,21 +60,25 @@
                                         </div>
                                     </div> --}}
                                     <div class="form-group row">
-                                        <label class="col-md-2 col-form-label">Fuente de datos</label>
-                                        <div class="col-md-4">
-                                            <input type="text" class="form-control" readonly="readonly"
-                                                value="{{ $fuente->nombre }}">
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Fuente de datos</label>
+                                            <div class="">
+                                                <input type="text" class="form-control" readonly="readonly"
+                                                    value="{{ $fuente->nombre }}">
+                                            </div>
                                         </div>
-                                        <label class="col-md-2 col-form-label">Fecha Versión</label>
-                                        <div class="col-md-4">
-                                            <input type="date" class="form-control" name="fechaActualizacion"
-                                                placeholder="Ingrese fecha actualizacion" autofocus required>
+                                        <div class="col-md-3">
+                                            <label class="col-form-label">Fecha Versión</label>
+                                            <div class="">
+                                                <input type="date" class="form-control" name="fechaActualizacion"
+                                                    placeholder="Ingrese fecha actualizacion" autofocus required>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-md-2 col-form-label">Archivo</label>
-                                        <div class="col-md-10">
-                                            <input type="file" name="file" class="form-control" required>
+                                        <div class="col-md-6">
+                                            <label class="col-form-label">Archivo</label>
+                                            <div class="">
+                                                <input type="file" name="file" class="form-control" required>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -154,7 +160,6 @@
                                                 <th>Tipo Presupuesto</th>
                                                 <th>Fecha Versión</th>
                                                 {{-- <th>Fuente</th> --}}
-
                                                 <th>Usuario</th>
                                                 <th>Área</th>
                                                 <th>Registro</th>

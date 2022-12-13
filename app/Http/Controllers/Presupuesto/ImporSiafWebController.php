@@ -10,6 +10,7 @@ use App\Models\Educacion\Importacion;
 use App\Models\Parametro\FuenteImportacion;
 use App\Models\Presupuesto\BaseSiafWeb;
 use App\Models\Presupuesto\BaseSiafWebDetalle;
+use App\Models\Presupuesto\Entidad;
 use App\Models\Presupuesto\ImporGastos;
 use App\Models\Presupuesto\ImporSiafWeb;
 use App\Repositories\Educacion\ImporGastosRepositorio;
@@ -190,6 +191,7 @@ class ImporSiafWebController extends Controller
         $query = ImportacionRepositorio::Listar_FuenteTodos($this->fuente);
         $data = [];
         foreach ($query as $key => $value) {
+            $ent = Entidad::find($value->entidad);
             $nom = '';
             if (strlen($value->cnombre) > 0) {
                 $xx = explode(' ', $value->cnombre);
@@ -208,9 +210,11 @@ class ImporSiafWebController extends Controller
             $boton2 = '<button type="button" onclick="monitor(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
             $data[] = array(
                 $key + 1,
+                'GASTO',
                 date("d/m/Y", strtotime($value->fechaActualizacion)),
                 //$value->fuente . $value->id,
                 $nom . ' ' . $ape,
+                ($ent ? $ent->abreviado : ''),
                 date("d/m/Y", strtotime($value->created_at)),
                 //$value->comentario,
                 $value->estado == "PR" ? "PROCESADO" : ($value->estado == "PE" ? "PENDIENTE" : "ELIMINADO"),

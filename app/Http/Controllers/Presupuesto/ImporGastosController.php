@@ -10,6 +10,7 @@ use App\Models\Educacion\Importacion;
 use App\Models\Parametro\FuenteImportacion;
 use App\Models\Presupuesto\BaseGastos;
 use App\Models\Presupuesto\BaseGastosDetalle;
+use App\Models\Presupuesto\Entidad;
 use App\Models\Presupuesto\ImporGastos;
 use App\Repositories\Educacion\ImporGastosRepositorio;
 use App\Repositories\Educacion\ImportacionRepositorio;
@@ -249,6 +250,7 @@ class ImporGastosController extends Controller
         $query = ImportacionRepositorio::Listar_FuenteTodos($this->fuente);
         $data = [];
         foreach ($query as $key => $value) {
+            $ent = Entidad::find($value->entidad);
             $nom = '';
             if (strlen($value->cnombre) > 0) {
                 $xx = explode(' ', $value->cnombre);
@@ -271,7 +273,7 @@ class ImporGastosController extends Controller
                 date("d/m/Y", strtotime($value->fechaActualizacion)),
                 /* $value->fuente, */
                 $nom . ' ' . $ape,
-                '',
+                ($ent ? $ent->abreviado : ''),
                 date("d/m/Y", strtotime($value->created_at)),
                 /* $value->comentario, */
                 $value->estado == "PR" ? "PROCESADO" : ($value->estado == "PE" ? "PENDIENTE" : "ELIMINADO"),
