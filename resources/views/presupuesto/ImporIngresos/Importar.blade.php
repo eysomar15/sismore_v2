@@ -36,7 +36,7 @@
                             <button type="button" class="btn btn-warning btn-xs" onclick="location.reload()"><i
                                     class="fa fa-redo"></i> Actualizar</button>
                             <button type="button" class="btn btn-success btn-xs"
-                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgo0AEnoULq3wbXGnu-?e=d81hlQ','_blank');"><i
+                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgo0AM10bqga_FWGFnY?e=Tr9Cid','_blank');"><i
                                     class="fa fa-file-excel"></i>
                                 Plantilla</button>
                             <button type="button" class="btn btn-danger btn-xs"

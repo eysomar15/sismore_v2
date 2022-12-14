@@ -112,7 +112,7 @@ class BaseSiafWebRepositorio
     {
         $basesiafweb_id = BaseSiafWeb::select('pres_base_siafweb.*')
             ->join('par_importacion as v2', 'v2.id', '=', 'pres_base_siafweb.importacion_id')
-            ->where('pres_base_siafweb.anio', $anio)
+            ->where('pres_base_siafweb.anio', $anio)->where('v2.estado', 'PR')
             ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')->first()->id;
 
         $query = BaseSiafWebDetalle::where('w1.anio', $anio)->where('w2.estado', 'PR')->where('w1.id', $basesiafweb_id)
@@ -149,7 +149,7 @@ class BaseSiafWebRepositorio
     {
         $basesiafweb_id = BaseSiafWeb::select('pres_base_siafweb.*')
             ->join('par_importacion as v2', 'v2.id', '=', 'pres_base_siafweb.importacion_id')
-            ->where('pres_base_siafweb.anio', $anio)
+            ->where('pres_base_siafweb.anio', $anio)->where('v2.estado', 'PR')
             ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')->first()->id;
 
         $query = BaseSiafWebDetalle::where('w1.anio', $anio)->where('w2.estado', 'PR')->where('w1.id', $basesiafweb_id)
@@ -188,7 +188,7 @@ class BaseSiafWebRepositorio
     {
         $basesiafweb_id = BaseSiafWeb::select('pres_base_siafweb.*')
             ->join('par_importacion as v2', 'v2.id', '=', 'pres_base_siafweb.importacion_id')
-            ->where('pres_base_siafweb.anio', $anio)
+            ->where('pres_base_siafweb.anio', $anio)->where('v2.estado', 'PR')
             ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')->first()->id;
 
         $query = BaseSiafWebDetalle::where('w1.anio', $anio)->where('w2.estado', 'PR')->where('w1.id', $basesiafweb_id)
@@ -230,7 +230,7 @@ class BaseSiafWebRepositorio
     {
         $basesiafweb_id = BaseSiafWeb::select('pres_base_siafweb.*')
             ->join('par_importacion as v2', 'v2.id', '=', 'pres_base_siafweb.importacion_id')
-            ->where('pres_base_siafweb.anio', $anio)
+            ->where('pres_base_siafweb.anio', $anio)->where('v2.estado', 'PR')
             ->orderBy('anio', 'desc')->orderBy('mes', 'desc')->orderBy('dia', 'desc')->first()->id;
 
         $query = BaseSiafWebDetalle::where('w1.anio', $anio)->where('w2.estado', 'PR')->where('w1.id', $basesiafweb_id)

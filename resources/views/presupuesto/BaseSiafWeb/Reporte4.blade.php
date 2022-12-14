@@ -65,8 +65,8 @@
                                     <div class="col-md-3">
                                         <label class=" col-form-label">Año</label>
                                         <div class="">
-                                            <select class="form-control" name="fanio" id="fanio"
-                                                onchange="cargarcuadros();">
+                                            <select class="form-control" name="ganio" id="ganio"
+                                                onchange="cargarcuadros2();">
                                                 @foreach ($ano as $item)
                                                     <option value="{{ $item->anio }}">{{ $item->anio }}</option>
                                                 @endforeach
@@ -76,8 +76,8 @@
                                     <div class="col-md-3">
                                         <label class="col-form-label">Producto/Proyecto</label>
                                         <div class="">
-                                            <select class="form-control" name="farticulo" id="farticulo"
-                                                onchange="cargarcuadros();">
+                                            <select class="form-control" name="garticulo" id="garticulo"
+                                                onchange="cargarcuadros2();">
                                                 <option value="0">TODOS</option>
                                                 @foreach ($articulo as $item)
                                                     <option value="{{ $item->id }}">{{ $item->nombre }}</option>
@@ -86,13 +86,14 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3">
-                                        <label class="col-form-label">Función</label>
+                                        <label class="col-form-label">Unidad Ejecutora</label>
                                         <div class="">
-                                            <select class="form-control" name="ffuncion" id="ffuncion"
-                                                onchange="cargarcuadros();">
+                                            <select class="form-control" name="gue" id="gue"
+                                                onchange="cargarcuadros2();">
                                                 <option value="0">TODOS</option>
-                                                @foreach ($funcion as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                                @foreach ($ue as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->unidad_ejecutora }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -101,8 +102,8 @@
                                     <div class="col-md-3">
                                         <label class="col-form-label">Categoría de Gasto</label>
                                         <div class="">
-                                            <select class="form-control" name="fcategoria" id="fcategoria"
-                                                onchange="cargarcuadros();">
+                                            <select class="form-control" name="gcategoria" id="gcategoria"
+                                                onchange="cargarcuadros2();">
                                                 <option value="0">TODOS</option>
                                                 @foreach ($categoria as $item)
                                                     <option value="{{ $item->id }}">{{ $item->nombre }}</option>
@@ -126,17 +127,16 @@
             <div class="col-xl-12 principal">
                 <div class="card card-border">
                     <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">Ejecución de Gastos por Unidades Ejecutoras del Pliego</h3>
+                        <h3 class="card-title">Ejecución del Gasto según Función</h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
-                        <div class="table-responsive" id="vista1">
+                        <div class="table-responsive" id="vista4">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         {{-- end  row --}}
-
     </div>
 @endsection
 
@@ -192,34 +192,34 @@
                 $(this).next().empty();
             });
 
-            cargarcuadros();
+            cargarcuadros2();
         });
 
-        function cargarcuadros() {
+
+        function cargarcuadros2() {
             /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
              */
             $.ajax({
-                url: "{{ route('basesiafweb.tabla01') }}",
+                url: "{{ route('basesiafweb.rpt4.tabla01') }}",
                 data: {
-                    'anio': $('#fanio').val(),
-                    'articulo': $('#farticulo').val(),
-                    'funcion': $('#ffuncion').val(),
-                    'categoria': $('#fcategoria').val(),
+                    'anio': $('#ganio').val(),
+                    'articulo': $('#garticulo').val(),
+                    'ue': $('#gue').val(),
+                    'categoria': $('#gcategoria').val(),
                 },
                 type: "GET",
                 beforeSend: function() {
-                    $('#vista1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                    $('#vista4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    $('#vista1').html(data);
+                    $('#vista4').html(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
-                    $('#vista1').html('Sin Informacion Disponible');
+                    $('#vista4').html('Sin Informacion Disponible');
                 },
             });
-
         }
 
         function cargarue() {
