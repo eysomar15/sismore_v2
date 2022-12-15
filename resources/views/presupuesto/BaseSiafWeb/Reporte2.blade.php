@@ -85,28 +85,15 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
                                         <label class="col-form-label">Unidad Ejecutora</label>
                                         <div class="">
                                             <select class="form-control" name="gue" id="gue"
                                                 onchange="cargarcuadros2();">
                                                 <option value="0">TODOS</option>
                                                 @foreach ($ue as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->unidad_ejecutora }}
+                                                    <option value="{{ $item->id }}">{{ $item->nombre }}
                                                     </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label class="col-form-label">Categoría de Gasto</label>
-                                        <div class="">
-                                            <select class="form-control" name="gcategoria" id="gcategoria"
-                                                onchange="cargarcuadros2();">
-                                                <option value="0">TODOS</option>
-                                                @foreach ($categoria as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->nombre }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -123,44 +110,16 @@
         </div>
         <!-- End row -->
 
-
         <div class="row">
             <div class="col-xl-12 principal">
                 <div class="card card-border">
-                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">Ejecución de Gastos según Fuente de Financiamiento</h3>
-                    </div>
-                    <div class="card-body pb-0 pt-0">
-                        <div class="table-responsive" id="vista2">
+                    <div class="card-header border-primary">{{--  bg-transparent pb-0 mb-0 --}}
+                        <div class="card-widgets">
+                            <button type="button" class="btn btn-success btn-xs" onclick="descargar()"><i
+                                    class="fa fa-file-excel"></i>
+                                Excel</button>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- end  row --}}
-
-
-        <div class="row">
-            <div class="col-xl-12 principal">
-                <div class="card card-border">
-                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">Ejecución de Gastos según Genérica </h3>
-                    </div>
-                    <div class="card-body pb-0 pt-0">
-                        <div class="table-responsive" id="vista3">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{-- end  row --}}
-
-
-        <div class="row">
-            <div class="col-xl-12 principal">
-                <div class="card card-border">
-                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">Ejecución del Gasto según Función</h3>
+                        <h3 class="card-title">Ejecución de Gastos, según Categoría Presupuestal</h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista4">
@@ -230,8 +189,6 @@
 
 
         function cargarcuadros2() {
-
-
             /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
              */
@@ -241,57 +198,6 @@
                     'anio': $('#ganio').val(),
                     'articulo': $('#garticulo').val(),
                     'ue': $('#gue').val(),
-                    'categoria': $('#gcategoria').val(),
-                },
-                type: "GET",
-                beforeSend: function() {
-                    $('#vista2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
-                },
-                success: function(data) {
-                    $('#vista2').html(data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                    $('#vista2').html('Sin Informacion Disponible');
-                },
-            });
-
-
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
-             */
-            $.ajax({
-                url: "{{ route('basesiafweb.rpt2.tabla02') }}",
-                data: {
-                    'anio': $('#ganio').val(),
-                    'articulo': $('#garticulo').val(),
-                    'ue': $('#gue').val(),
-                    'categoria': $('#gcategoria').val(),
-                },
-                type: "GET",
-                beforeSend: function() {
-                    $('#vista3').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
-                },
-                success: function(data) {
-                    $('#vista3').html(data);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                    $('#vista3').html('Sin Informacion Disponible');
-                },
-            });
-
-
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
-             */
-            $.ajax({
-                url: "{{ route('basesiafweb.rpt2.tabla03') }}",
-                data: {
-                    'anio': $('#ganio').val(),
-                    'articulo': $('#garticulo').val(),
-                    'ue': $('#gue').val(),
-                    'categoria': $('#gcategoria').val(),
                 },
                 type: "GET",
                 beforeSend: function() {
@@ -299,6 +205,12 @@
                 },
                 success: function(data) {
                     $('#vista4').html(data);
+                    $('#tabla1').DataTable({
+                        "language": table_language,
+                        paging: false,
+                        searching: false,
+                        //"aLengthMenu":[100]
+                    });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -351,6 +263,18 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
+                },
+            });
+        }
+
+        function descargar() {
+            $.ajax({
+                url: "{{ url('/') }}/GobsRegs/Exportar/excel/principal01/null/null/null",
+                type: "GET",
+                success: function(data) {
+                    window.open("{{ url('/') }}/GobsRegs/Exportar/excel/principal01/" + $('#fano').val() +
+                        "/" + $('#fmes').val() + "/" + $('#ftipo').val());
+
                 },
             });
         }

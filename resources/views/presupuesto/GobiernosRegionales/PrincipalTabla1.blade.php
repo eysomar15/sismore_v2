@@ -38,7 +38,7 @@
             <th>{{ number_format($foot['certificacion'], 0) }}</th>
             {{-- <th>{{ number_format($foot['compromiso'], 0) }}</th> --}}
             <th>{{ number_format($foot['devengado'], 0) }}</th>
-            <th class="text-center">{!! avance($foot['eje']) !!} %</th>
+            <th class="text-center">{!! avance($foot['eje']) !!}</th>
             <th>{{ number_format($foot['saldo1'], 0) }}</th>
             <th>{{ number_format($foot['saldo2'], 0) }}</th>
         </tr>
@@ -51,11 +51,11 @@
     function avance($monto)
     {
         if ($monto < 51) {
-            return '<span class="badge badge-pill badge-danger" style="font-size:85%;">' . round($monto, 1) . '%</span>';
+            return '<span class="badge badge-pill badge-danger" style="font-size:85%;">' . round($monto, 1) . ' %</span>';
         } elseif ($monto < 75) {
-            return '<span class="badge badge-pill badge-warning" style="font-size:85%;background-color:#eb960d;">' . round($monto, 1) . '%</span>';
+            return '<span class="badge badge-pill badge-warning" style="font-size:85%;background-color:#eb960d;">' . round($monto, 1) . ' %</span>';
         } else {
-            return '<span class="badge badge-pill badge-success" style="font-size:85%;">' . round($monto, 1) . '%</span>';
+            return '<span class="badge badge-pill badge-success" style="font-size:85%;">' . round($monto, 1) . ' %</span>';
         }
     }
 @endphp

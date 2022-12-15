@@ -21,11 +21,11 @@
                 <td class="text-left">{{ $item->ue }}</td>
                 <td>{{ number_format($item->pia, 0) }}</td>
                 <td>{{ number_format($item->pim, 0) }}</td>
-                <td>{{ number_format($item->cert, 2) }}</td>
-                <td>{{ number_format($item->dev, 2) }}</td>
-                <td>{{ number_format($item->eje, 1) }} %</td>
-                <td>{{ number_format($item->saldo1, 2) }}</td>
-                <td>{{ number_format($item->saldo2, 2) }}</td>
+                <td>{{ number_format($item->cert, 0) }}</td>
+                <td>{{ number_format($item->dev, 0) }}</td>
+                <th class="text-center">{!! avance($item->eje) !!}</th>
+                <td>{{ number_format($item->saldo1, 0) }}</td>
+                <td>{{ number_format($item->saldo2, 0) }}</td>
             </tr>
         @endforeach
     </tbody>
@@ -36,7 +36,7 @@
             <th>{{ number_format($foot['pim'], 0) }}</th>
             <th>{{ number_format($foot['cert'], 0) }}</th>
             <th>{{ number_format($foot['dev'], 0) }}</th>
-            <th>{{ number_format($foot['eje'], 1) }} %</th>
+            <th class="text-center">{!! avance($foot['eje']) !!}</th>
             <th>{{ number_format($foot['saldo1'], 0) }}</th>
             <th>{{ number_format($foot['saldo2'], 0) }}</th>
         </tr>
@@ -46,14 +46,14 @@
 
 
 @php
-    /* function avance($monto)
-        {
-            if ($monto < 51) {
-                return '<span class="badge badge-pill badge-danger" style="font-size:90%;">' . round($monto, 1) . '%</span>';
-            } elseif ($monto < 100) {
-                return '<span class="badge badge-pill badge-warning" style="font-size:90%;">' . round($monto, 1) . '%</span>';
-            } else {
-                return '<span class="badge badge-pill badge-success" style="font-size:90%;">' . round($monto, 1) . '%</span>';
-            }
-        } */
+    function avance($monto)
+    {
+        if ($monto < 51) {
+            return '<span class="badge badge-pill badge-danger" style="font-size:85%;">' . round($monto, 1) . '%</span>';
+        } elseif ($monto < 75) {
+            return '<span class="badge badge-pill badge-warning" style="font-size:85%;background-color:#eb960d;">' . round($monto, 1) . '%</span>';
+        } else {
+            return '<span class="badge badge-pill badge-success" style="font-size:85%;">' . round($monto, 1) . '%</span>';
+        }
+    }
 @endphp

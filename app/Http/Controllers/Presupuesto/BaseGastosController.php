@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Educacion\Importacion;
 use App\Models\Presupuesto\BaseGastos;
 use App\Models\Presupuesto\Sector;
+use App\Models\Presupuesto\SubGenericaGasto;
 use App\Models\Presupuesto\TipoGobierno;
 use App\Models\Presupuesto\UnidadEjecutora;
 use App\Repositories\Presupuesto\BaseGastosRepositorio;
@@ -42,6 +43,12 @@ class BaseGastosController extends Controller
             ->where('v2.sector_id', $rq->get('sector'))
             ->get(); //BaseGastosRepositorio::cargarue($rq->get('gobierno'), $rq->get('sector'));
         return response()->json(compact('ues'));
+    }
+
+    public function cargarsubgenerica(Request $rq)
+    {
+        $sg = SubGenericaGasto::where('generica_id', $rq->get('generica'))->get();
+        return response()->json(compact('sg'));
     }
 
     public function nivelgobiernosgrafica01(Request $rq)

@@ -110,27 +110,25 @@
         </div>
         <!-- End row -->
 
-
         <div class="row">
             <div class="col-xl-12 principal">
                 <div class="card card-border">
-                    <div class="card-header border-primary">
+                    <div class="card-header border-primary">{{--  bg-transparent pb-0 mb-0 --}}
                         <div class="card-widgets">
                             <button type="button" class="btn btn-success btn-xs" onclick="descargar()"><i
                                     class="fa fa-file-excel"></i>
                                 Excel</button>
                         </div>
-                        <h3 class="card-title">Ejecución de Gastos, según Fuente de Financiamiento</h3>
+                        <h3 class="card-title">Ejecución de Gastos, según Producto y Proyecto</h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
-                        <div class="table-responsive" id="vista2">
+                        <div class="table-responsive" id="vista4">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         {{-- end  row --}}
-
     </div>
 @endsection
 
@@ -191,13 +189,11 @@
 
 
         function cargarcuadros2() {
-
-
             /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
              */
             $.ajax({
-                url: "{{ route('basesiafweb.rpt5.tabla01') }}",
+                url: "{{ route('basesiafweb.rpt3.tabla01') }}",
                 data: {
                     'anio': $('#ganio').val(),
                     'articulo': $('#garticulo').val(),
@@ -205,23 +201,22 @@
                 },
                 type: "GET",
                 beforeSend: function() {
-                    $('#vista2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                    $('#vista4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    $('#vista2').html(data);
+                    $('#vista4').html(data);
                     $('#tabla1').DataTable({
                         "language": table_language,
-                        paging: false,
-                        searching: false,
+                        /* paging: false,
+                        searching: false, */
                         //"aLengthMenu":[100]
                     });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
-                    $('#vista2').html('Sin Informacion Disponible');
+                    $('#vista4').html('Sin Informacion Disponible');
                 },
             });
-
         }
 
         function cargarue() {

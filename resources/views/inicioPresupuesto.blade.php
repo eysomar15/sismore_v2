@@ -53,8 +53,9 @@
         </div> --}}
             <!-- end row -->
 
-            <div class="row">
 
+
+            <div class="row">
                 <div class="col-md-6 col-xl-3">
                     <div class="card-box">
                         <div class="media">
@@ -144,8 +145,9 @@
                                 <span class="float-right">{{ number_format($card3['eje'], 1) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
-                                <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ $card3['eje'] }}"
-                                    aria-valuemin="0" aria-valuemax="100" style="width: {{ $card3['eje'] }}%">
+                                <div class="progress-bar bg-primary" role="progressbar"
+                                    aria-valuenow="{{ $card3['eje'] }}" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{ $card3['eje'] }}%">
                                     <span class="sr-only">{{ $card3['eje'] }}% Complete</span>
                                 </div>
                             </div>

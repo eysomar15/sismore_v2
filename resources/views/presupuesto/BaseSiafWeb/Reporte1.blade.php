@@ -62,7 +62,7 @@
                             @csrf
                             <div class="form">
                                 <div class="form-group row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <label class=" col-form-label">Año</label>
                                         <div class="">
                                             <select class="form-control" name="fanio" id="fanio"
@@ -73,7 +73,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <label class="col-form-label">Producto/Proyecto</label>
                                         <div class="">
                                             <select class="form-control" name="farticulo" id="farticulo"
@@ -85,20 +85,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <label class="col-form-label">Función</label>
-                                        <div class="">
-                                            <select class="form-control" name="ffuncion" id="ffuncion"
-                                                onchange="cargarcuadros();">
-                                                <option value="0">TODOS</option>
-                                                @foreach ($funcion as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->nombre }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <label class="col-form-label">Categoría de Gasto</label>
                                         <div class="">
                                             <select class="form-control" name="fcategoria" id="fcategoria"
@@ -125,8 +112,14 @@
         <div class="row">
             <div class="col-xl-12 principal">
                 <div class="card card-border">
-                    <div class="card-header border-primary bg-transparent pb-0 mb-0">
-                        <h3 class="card-title">Ejecución de Gastos por Unidades Ejecutoras del Pliego</h3>
+                    <div class="card-header border-primary">
+                        <div class="card-widgets">
+                            <button type="button" class="btn btn-success btn-xs"
+                                onclick="descargar()"><i
+                                    class="fa fa-file-excel"></i>
+                                Excel</button>
+                        </div>
+                        <h3 class="card-title">Ejecución de Gastos, según Unidades Ejecutoras </h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista1">
@@ -200,11 +193,10 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
              */
             $.ajax({
-                url: "{{ route('basesiafweb.tabla01') }}",
+                url: "{{ route('basesiafweb.rpt1.tabla01') }}",
                 data: {
                     'anio': $('#fanio').val(),
                     'articulo': $('#farticulo').val(),
-                    'funcion': $('#ffuncion').val(),
                     'categoria': $('#fcategoria').val(),
                 },
                 type: "GET",
@@ -213,6 +205,12 @@
                 },
                 success: function(data) {
                     $('#vista1').html(data);
+                    $('#tabla1').DataTable({
+                        "language": table_language,
+                        paging: false,
+                        searching: false,
+                        //"aLengthMenu":[100]
+                    });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
@@ -266,6 +264,18 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
+                },
+            });
+        }
+
+        function descargar() {
+            $.ajax({
+                url: "{{ url('/') }}/GobsRegs/Exportar/excel/principal01/null/null/null",
+                type: "GET",
+                success: function(data) {
+                    window.open("{{ url('/') }}/GobsRegs/Exportar/excel/principal01/" + $('#fano').val() +
+                        "/" + $('#fmes').val() + "/" + $('#ftipo').val());
+
                 },
             });
         }

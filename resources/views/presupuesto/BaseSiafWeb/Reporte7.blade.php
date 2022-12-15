@@ -62,7 +62,7 @@
                             @csrf
                             <div class="form">
                                 <div class="form-group row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <label class=" col-form-label">Año</label>
                                         <div class="">
                                             <select class="form-control" name="ganio" id="ganio"
@@ -73,7 +73,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <label class="col-form-label">Producto/Proyecto</label>
                                         <div class="">
                                             <select class="form-control" name="garticulo" id="garticulo"
@@ -85,7 +85,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label class="col-form-label">Unidad Ejecutora</label>
                                         <div class="">
                                             <select class="form-control" name="gue" id="gue"
@@ -95,6 +95,42 @@
                                                     <option value="{{ $item->id }}">{{ $item->nombre }}
                                                     </option>
                                                 @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-4">
+                                        <label class=" col-form-label">Fuente Financiamiento</label>
+                                        <div class="">
+                                            <select class="form-control" name="gff" id="gff"
+                                                onchange="cargarcuadros2();">
+                                                <option value="0">TODOS</option>
+                                                @foreach ($ff as $item)
+                                                    <option value="{{ $item->codigo }}">{{ $item->nombre }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-form-label">Genérica</label>
+                                        <div class="">
+                                            <select class="form-control" name="ggg" id="ggg"
+                                                onchange="cargarsubgenerica();cargarcuadros2();">
+                                                <option value="0">TODOS</option>
+                                                @foreach ($gg as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-form-label">Sub Genérica</label>
+                                        <div class="">
+                                            <select class="form-control" name="gsgg" id="gsgg"
+                                                onchange="cargarcuadros2();">
+                                                <option value="0">TODOS</option>
                                             </select>
                                         </div>
                                     </div>
@@ -110,27 +146,25 @@
         </div>
         <!-- End row -->
 
-
         <div class="row">
             <div class="col-xl-12 principal">
                 <div class="card card-border">
-                    <div class="card-header border-primary">
+                    <div class="card-header border-primary">{{--  bg-transparent pb-0 mb-0 --}}
                         <div class="card-widgets">
                             <button type="button" class="btn btn-success btn-xs" onclick="descargar()"><i
                                     class="fa fa-file-excel"></i>
                                 Excel</button>
                         </div>
-                        <h3 class="card-title">Ejecución de Gastos, según Fuente de Financiamiento</h3>
+                        <h3 class="card-title">Ejecución de Gastos, según Categoría Presupuestal</h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
-                        <div class="table-responsive" id="vista2">
+                        <div class="table-responsive" id="vista4">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         {{-- end  row --}}
-
     </div>
 @endsection
 
@@ -191,24 +225,25 @@
 
 
         function cargarcuadros2() {
-
-
             /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
              */
             $.ajax({
-                url: "{{ route('basesiafweb.rpt5.tabla01') }}",
+                url: "{{ route('basesiafweb.rpt2.tabla01') }}",
                 data: {
                     'anio': $('#ganio').val(),
                     'articulo': $('#garticulo').val(),
                     'ue': $('#gue').val(),
+                    'ff': $('#gff').val(),
+                    'generica': $('#ggg').val(),
+                    'sg': $('#gsgg').val(),
                 },
                 type: "GET",
                 beforeSend: function() {
-                    $('#vista2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                    $('#vista4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    $('#vista2').html(data);
+                    $('#vista4').html(data);
                     $('#tabla1').DataTable({
                         "language": table_language,
                         paging: false,
@@ -218,10 +253,9 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
-                    $('#vista2').html('Sin Informacion Disponible');
+                    $('#vista4').html('Sin Informacion Disponible');
                 },
             });
-
         }
 
         function cargarue() {
@@ -248,22 +282,22 @@
             });
         }
 
-        function cargarsector() {
+        function cargarsubgenerica() {
             $.ajax({
-                url: "{{ route('basegastos.cargarsector') }}",
+                url: "{{ route('basegastos.cargarsubgenerica') }}",
                 data: {
-                    'gobierno': $('#fgobierno').val(),
+                    'generica': $('#ggg').val(),
                 },
                 type: 'get',
                 success: function(data) {
                     console.log(data)
-                    $('#fsector option ').remove();
+                    $('#gsgg option ').remove();
                     var opt = '<option value="0">TODOS</option>';
-                    $.each(data.sectors, function(index, value) {
+                    $.each(data.sg, function(index, value) {
                         opt += '<option value="' + value.id + '">' + value.nombre +
                             '</option>';
                     });
-                    $('#fsector').append(opt);
+                    $('#gsgg').append(opt);
 
                 },
                 error: function(jqXHR, textStatus, errorThrown) {

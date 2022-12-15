@@ -615,6 +615,7 @@ Route::get('/PRES/Regiones/Importar', [ImporGastosController::class, 'importar']
 Route::get('/SiafGastos/NivelGobiernos', [BaseGastosController::class, 'nivelgobiernos'])->name('basegastos.nivelgobiernos');
 Route::get('/SiafGastos/ajax_sector', [BaseGastosController::class, 'cargarsector'])->name('basegastos.cargarsector');
 Route::get('/SiafGastos/ajax_unidadejecutora', [BaseGastosController::class, 'cargarue'])->name('basegastos.cargarue');
+Route::get('/SiafGastos/ajax_subgenerica', [BaseGastosController::class, 'cargarsubgenerica'])->name('basegastos.cargarsubgenerica');
 Route::get('/SiafGastos/grafico01', [BaseGastosController::class, 'nivelgobiernosgrafica01'])->name('basegastos.nivelgobiernos.grafica01');
 Route::get('/SiafGastos/grafico02', [BaseGastosController::class, 'nivelgobiernosgrafica02'])->name('basegastos.nivelgobiernos.grafica02');
 Route::get('/SiafGastos/tabla01', [BaseGastosController::class, 'nivelgobiernostabla01'])->name('basegastos.nivelgobiernos.tabla01');
@@ -675,14 +676,19 @@ Route::get('/Modificaciones/ingreso/tabla01', [ModificacionesController::class, 
 Route::get('/Modificaciones/ExportarI/excel/tabla01/{ano}/{mes}/{tipo}/{ue}', [ModificacionesController::class, 'downloadingreso']);
 
 Route::get('/SiafGastos/reportes1', [BaseSiafWebController::class, 'reporte1'])->name('basesiafweb.reporte1');
-Route::get('/SiafGastos/reportes1/tb1', [BaseSiafWebController::class, 'reporte1tabla01'])->name('basesiafweb.tabla01');
+Route::get('/SiafGastos/reportes1/tb1', [BaseSiafWebController::class, 'reporte1tabla01'])->name('basesiafweb.rpt1.tabla01');
 Route::get('/SiafGastos/reportes2', [BaseSiafWebController::class, 'reporte2'])->name('basesiafweb.reporte2');
+Route::get('/SiafGastos/reportes2/tb1', [BaseSiafWebController::class, 'reporte2tabla01'])->name('basesiafweb.rpt2.tabla01');
+Route::get('/SiafGastos/reportes3', [BaseSiafWebController::class, 'reporte3'])->name('basesiafweb.reporte3');
+Route::get('/SiafGastos/reportes3/tb1', [BaseSiafWebController::class, 'reporte3tabla01'])->name('basesiafweb.rpt3.tabla01');
 Route::get('/SiafGastos/reportes4', [BaseSiafWebController::class, 'reporte4'])->name('basesiafweb.reporte4');
 Route::get('/SiafGastos/reportes4/tb1', [BaseSiafWebController::class, 'reporte4tabla01'])->name('basesiafweb.rpt4.tabla01');
 Route::get('/SiafGastos/reportes5', [BaseSiafWebController::class, 'reporte5'])->name('basesiafweb.reporte5');
 Route::get('/SiafGastos/reportes5/tb1', [BaseSiafWebController::class, 'reporte5tabla01'])->name('basesiafweb.rpt5.tabla01');
 Route::get('/SiafGastos/reportes6', [BaseSiafWebController::class, 'reporte6'])->name('basesiafweb.reporte6');
 Route::get('/SiafGastos/reportes6/tb1', [BaseSiafWebController::class, 'reporte6tabla01'])->name('basesiafweb.rpt6.tabla01');
+Route::get('/SiafGastos/reportes7', [BaseSiafWebController::class, 'reporte7'])->name('basesiafweb.reporte7');
+Route::get('/SiafGastos/reportes7/tb1', [BaseSiafWebController::class, 'reporte7tabla01'])->name('basesiafweb.rpt7.tabla01');
 
 
 /**************************************** FIN PRESUPUESTO ***************************************************/

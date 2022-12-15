@@ -11,6 +11,7 @@ use App\Models\Presupuesto\BaseActividadesProyectos;
 use App\Models\Presupuesto\BaseGastos;
 use App\Models\Presupuesto\BaseIngresos;
 use App\Models\Presupuesto\BaseSiafWeb;
+use App\Models\Presupuesto\ProductoProyecto;
 use App\Models\Presupuesto\TipoGobierno;
 use App\Models\Vivienda\CentroPobladoDatass;
 use App\Repositories\Administracion\MenuRepositorio;
@@ -77,7 +78,8 @@ class HomeController extends Controller
 
     public function sistema_acceder($sistema_id)
     {
-        if($sistema_id){}else{
+        if ($sistema_id) {
+        } else {
             return 'hola';
         }
         // session()->forget('sistema_id');
@@ -139,6 +141,21 @@ class HomeController extends Controller
         $baseSW = BaseSiafWeb::where('importacion_id', $impSW->id)->first();
         $anio = $baseSW->anio;
         $opt1 = BaseSiafWebRepositorio::pia_pim_certificado_devengado($baseSW->id, 0);
+
+        /* $anos = DB::table(DB::raw("(select distinct year(fechaActualizacion) as anio  from par_importacion
+        inner join (
+            select distinct year(fechaActualizacion) as ano  from par_importacion where fuenteImportacion_id=24 and estado='PR'
+        ) as tb1 on tb1.ano=year(fechaActualizacion)
+        inner join (
+            select distinct year(fechaActualizacion) as ano  from par_importacion where fuenteImportacion_id=16 and estado='PR'
+        ) as tb2 on tb2.ano=year(fechaActualizacion)
+        inner join (
+            select distinct year(fechaActualizacion) as ano  from par_importacion where fuenteImportacion_id=25 and estado='PR'
+        ) as tb3 on tb3.ano=year(fechaActualizacion)
+        where fuenteImportacion_id in (24,16,25) and estado='PR' order by fuenteImportacion_id asc, anio desc) as v1"))
+            ->get();
+
+        $articulos = ProductoProyecto::all(); */
         //return $opt1;
         $card1['pim'] = $opt1->pia;
         $card1['eje'] = $opt1->eje_pia;
