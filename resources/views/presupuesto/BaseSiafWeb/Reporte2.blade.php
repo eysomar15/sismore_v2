@@ -219,61 +219,13 @@
             });
         }
 
-        function cargarue() {
-            $.ajax({
-                url: "{{ route('basegastos.cargarue') }}",
-                data: {
-                    //'gobierno': $('#fgobierno').val(),
-                    'sector': $('#fsector').val(),
-                },
-                type: 'get',
-                success: function(data) {
-                    $('#fue option ').remove();
-                    var opt = '<option value="0">TODOS</option>';
-                    $.each(data.ues, function(index, value) {
-                        opt += '<option value="' + value.id + '">' + value.unidad_ejecutora +
-                            '</option>';
-                    });
-                    $('#fue').append(opt);
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                },
-            });
-        }
-
-        function cargarsector() {
-            $.ajax({
-                url: "{{ route('basegastos.cargarsector') }}",
-                data: {
-                    'gobierno': $('#fgobierno').val(),
-                },
-                type: 'get',
-                success: function(data) {
-                    console.log(data)
-                    $('#fsector option ').remove();
-                    var opt = '<option value="0">TODOS</option>';
-                    $.each(data.sectors, function(index, value) {
-                        opt += '<option value="' + value.id + '">' + value.nombre +
-                            '</option>';
-                    });
-                    $('#fsector').append(opt);
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                },
-            });
-        }
-
         function descargar() {
             $.ajax({
-                url: "{{ url('/') }}/GobsRegs/Exportar/excel/principal01/null/null/null",
+                url: "{{ url('/') }}/SiafGastos/reportes2/Exportar/excel/null/null/null",
                 type: "GET",
                 success: function(data) {
-                    window.open("{{ url('/') }}/GobsRegs/Exportar/excel/principal01/" + $('#fano').val() +
-                        "/" + $('#fmes').val() + "/" + $('#ftipo').val());
+                    window.open("{{ url('/') }}/SiafGastos/reportes2/Exportar/excel/" +
+                        $('#ganio').val() + "/" + $('#garticulo').val() + "/" + $('#gue').val());
 
                 },
             });

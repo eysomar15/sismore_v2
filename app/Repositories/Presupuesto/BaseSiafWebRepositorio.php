@@ -347,7 +347,7 @@ class BaseSiafWebRepositorio
 
 
             ->select(
-                'v6.codigo as codigo',
+                DB::raw('concat("2.",v6d.codigo,".",v6c.codigo,".",v6b.codigo,".",v6a.codigo,".",v6.codigo) as codigo'),
                 'v6.nombre as especificadetalle',
                 DB::raw('sum(pres_base_siafweb_detalle.pia) as pia'),
                 DB::raw('sum(pres_base_siafweb_detalle.pim) as pim'),
@@ -384,8 +384,8 @@ class BaseSiafWebRepositorio
             ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
             ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_siafweb_detalle.unidadejecutora_id')
             ->join('pres_producto_proyecto as v4', 'v4.id', '=', 'pres_base_siafweb_detalle.productoproyecto_id')
-            ->join('pres_productos as v6', 'v6.id', '=', 'pres_base_siafweb_detalle.productos_id','left')
-            ->join('pres_proyectos as v7', 'v7.id', '=', 'pres_base_siafweb_detalle.proyectos_id','left')
+            ->join('pres_productos as v6', 'v6.id', '=', 'pres_base_siafweb_detalle.productos_id', 'left')
+            ->join('pres_proyectos as v7', 'v7.id', '=', 'pres_base_siafweb_detalle.proyectos_id', 'left')
             ->select(
                 DB::raw('if(v4.id=1,v7.codigo,v6.codigo) as codigo'),
                 DB::raw('if(v4.id=1,v7.nombre,v6.nombre) as producto_proyecto'),
@@ -401,7 +401,7 @@ class BaseSiafWebRepositorio
             $query = $query->where('v4.id', $articulo);
         if ($ue != 0)
             $query = $query->where('V2.id', $ue);
-        $query = $query->groupBy('codigo', 'producto_proyecto')->orderBy('codigo','asc')->get();
+        $query = $query->groupBy('codigo', 'producto_proyecto')->orderBy('codigo', 'asc')->get();
         return $query;
     }
 }

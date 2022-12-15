@@ -3,6 +3,13 @@
 namespace App\Http\Controllers\Presupuesto;
 
 use App\Exports\BaseGastosExport;
+use App\Exports\SiafWebRPT1Export;
+use App\Exports\SiafWebRPT2Export;
+use App\Exports\SiafWebRPT3Export;
+use App\Exports\SiafWebRPT4Export;
+use App\Exports\SiafWebRPT5Export;
+use App\Exports\SiafWebRPT6Export;
+use App\Exports\SiafWebRPT7Export;
 use App\Http\Controllers\Controller;
 use App\Models\Educacion\Importacion;
 use App\Models\Presupuesto\BaseSiafWeb;
@@ -53,6 +60,14 @@ class BaseSiafWebController extends Controller
         return view("Presupuesto.BaseSiafWeb.Reporte1Tabla1", compact('body', 'foot'));
     }
 
+    public function reporte1download($ano, $articulo, $categoria)
+    {
+        if ($ano > 0) {
+            $name = 'EJECUCIÓN DE GASTOS, SEGÚN UNIDADES EJECUTORAS ' . date('Y-m-d') . '.xlsx';
+            return Excel::download(new SiafWebRPT1Export($ano, $articulo, $categoria), $name);
+        }
+    }
+
     public function reporte2()
     {
         $ano = BaseSiafWeb::select(DB::raw('distinct anio'))
@@ -83,6 +98,14 @@ class BaseSiafWebController extends Controller
         }
         $foot['eje'] = $foot['pim'] > 0 ? number_format(100 * $foot['dev'] / $foot['pim'], 1) : 0;
         return view("Presupuesto.BaseSiafWeb.Reporte2Tabla1", compact('body', 'foot'));
+    }
+
+    public function reporte2download($ano, $articulo, $ue)
+    {
+        if ($ano > 0) {
+            $name = 'EJECUCIÓN DE GASTOS, SEGÚN CATEGORÍA PRESUPUESTAL ' . date('Y-m-d') . '.xlsx';
+            return Excel::download(new SiafWebRPT2Export($ano, $articulo, $ue), $name);
+        }
     }
 
     public function reporte3()
@@ -117,6 +140,14 @@ class BaseSiafWebController extends Controller
         return view("Presupuesto.BaseSiafWeb.Reporte3Tabla1", compact('body', 'foot'));
     }
 
+    public function reporte3download($ano, $articulo, $ue)
+    {
+        if ($ano > 0) {
+            $name = 'EJECUCIÓN DE GASTOS, SEGÚN PRODUCTO Y PROYECTO' . date('Y-m-d') . '.xlsx';
+            return Excel::download(new SiafWebRPT3Export($ano, $articulo, $ue), $name);
+        }
+    }
+
     public function reporte4()
     {
         $ano = BaseSiafWeb::select(DB::raw('distinct anio'))
@@ -149,6 +180,14 @@ class BaseSiafWebController extends Controller
         return view("Presupuesto.BaseSiafWeb.Reporte4Tabla1", compact('body', 'foot'));
     }
 
+    public function reporte4download($ano, $articulo, $ue)
+    {
+        if ($ano > 0) {
+            $name = 'EJECUCIÓN DE GASTOS, SEGÚN FUNCIÓN ' . date('Y-m-d') . '.xlsx';
+            return Excel::download(new SiafWebRPT4Export($ano, $articulo, $ue), $name);
+        }
+    }
+
     public function reporte5()
     {
         $ano = BaseSiafWeb::select(DB::raw('distinct anio'))
@@ -178,6 +217,14 @@ class BaseSiafWebController extends Controller
         }
         $foot['eje'] = $foot['pim'] > 0 ? number_format(100 * $foot['dev'] / $foot['pim'], 1) : 0;
         return view("Presupuesto.BaseSiafWeb.Reporte5Tabla1", compact('body', 'foot'));
+    }
+
+    public function reporte5download($ano, $articulo, $ue)
+    {
+        if ($ano > 0) {
+            $name = 'EJECUCIÓN DE GASTOS, SEGÚN FUENTE DE FINANCIAMIENTO ' . date('Y-m-d') . '.xlsx';
+            return Excel::download(new SiafWebRPT5Export($ano, $articulo, $ue), $name);
+        }
     }
 
     public function reporte6()
@@ -214,6 +261,14 @@ class BaseSiafWebController extends Controller
         return view("Presupuesto.BaseSiafWeb.Reporte6Tabla1", compact('head', 'body', 'foot'));
     }
 
+    public function reporte6download($ano, $articulo, $ue)
+    {
+        if ($ano > 0) {
+            $name = 'EJECUCIÓN DE GASTOS, SEGÚN GENÉRICA' . date('Y-m-d') . '.xlsx';
+            return Excel::download(new SiafWebRPT6Export($ano, $articulo, $ue), $name);
+        }
+    }
+
     public function reporte7()
     {
         $ano = BaseSiafWeb::select(DB::raw('distinct anio'))
@@ -234,7 +289,7 @@ class BaseSiafWebController extends Controller
 
     public function reporte7tabla01(Request $rq)
     {
-        $body = BaseSiafWebRepositorio::listar_subgenerica_anio_acticulo_ue_categoria($rq->get('anio'), $rq->get('articulo'), $rq->get('ue'),$rq->get('ff'), $rq->get('generica'), $rq->get('sg'));
+        $body = BaseSiafWebRepositorio::listar_subgenerica_anio_acticulo_ue_categoria($rq->get('anio'), $rq->get('articulo'), $rq->get('ue'), $rq->get('ff'), $rq->get('generica'), $rq->get('sg'));
         $foot = ['pia' => 0, 'pim' => 0, 'cert' => 0, 'dev' => 0, 'eje' => 0, 'saldo1' => 0, 'saldo2' => 0,];
         foreach ($body as $key => $value) {
             $foot['pia'] += $value->pia;
@@ -246,5 +301,13 @@ class BaseSiafWebController extends Controller
         }
         $foot['eje'] = $foot['pim'] > 0 ? number_format(100 * $foot['dev'] / $foot['pim'], 1) : 0;
         return view("Presupuesto.BaseSiafWeb.Reporte7Tabla1", compact('body', 'foot'));
+    }
+
+    public function reporte7download($ano, $articulo, $ue, $ff, $gg, $sg)
+    {
+        if ($ano > 0) {
+            $name = 'Ejecución de Gastos, según Especifica Detalle ' . date('Y-m-d') . '.xlsx';
+            return Excel::download(new SiafWebRPT7Export($ano, $articulo, $ue, $ff, $gg, $sg), $name);
+        }
     }
 }

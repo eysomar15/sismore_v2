@@ -114,8 +114,7 @@
                 <div class="card card-border">
                     <div class="card-header border-primary">
                         <div class="card-widgets">
-                            <button type="button" class="btn btn-success btn-xs"
-                                onclick="descargar()"><i
+                            <button type="button" class="btn btn-success btn-xs" onclick="descargar()"><i
                                     class="fa fa-file-excel"></i>
                                 Excel</button>
                         </div>
@@ -270,11 +269,12 @@
 
         function descargar() {
             $.ajax({
-                url: "{{ url('/') }}/GobsRegs/Exportar/excel/principal01/null/null/null",
+                url: "{{ url('/') }}/SiafGastos/reportes1/Exportar/excel/null/null/null",
                 type: "GET",
                 success: function(data) {
-                    window.open("{{ url('/') }}/GobsRegs/Exportar/excel/principal01/" + $('#fano').val() +
-                        "/" + $('#fmes').val() + "/" + $('#ftipo').val());
+                    window.open("{{ url('/') }}/SiafGastos/reportes1/Exportar/excel/" + $('#fanio')
+                    .val() +
+                        "/" + $('#farticulo').val() + "/" + $('#fcategoria').val());
 
                 },
             });

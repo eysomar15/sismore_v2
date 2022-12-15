@@ -155,7 +155,7 @@
                                     class="fa fa-file-excel"></i>
                                 Excel</button>
                         </div>
-                        <h3 class="card-title">Ejecución de Gastos, según Categoría Presupuestal</h3>
+                        <h3 class="card-title">Ejecución de Gastos, según Especifica Detalle</h3>
                     </div>
                     <div class="card-body pb-0 pt-0">
                         <div class="table-responsive" id="vista4">
@@ -229,7 +229,7 @@
              *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
              */
             $.ajax({
-                url: "{{ route('basesiafweb.rpt2.tabla01') }}",
+                url: "{{ route('basesiafweb.rpt7.tabla01') }}",
                 data: {
                     'anio': $('#ganio').val(),
                     'articulo': $('#garticulo').val(),
@@ -246,8 +246,8 @@
                     $('#vista4').html(data);
                     $('#tabla1').DataTable({
                         "language": table_language,
-                        paging: false,
-                        searching: false,
+                        /* paging: false,
+                        searching: false, */
                         //"aLengthMenu":[100]
                     });
                 },
@@ -258,61 +258,14 @@
             });
         }
 
-        function cargarue() {
-            $.ajax({
-                url: "{{ route('basegastos.cargarue') }}",
-                data: {
-                    //'gobierno': $('#fgobierno').val(),
-                    'sector': $('#fsector').val(),
-                },
-                type: 'get',
-                success: function(data) {
-                    $('#fue option ').remove();
-                    var opt = '<option value="0">TODOS</option>';
-                    $.each(data.ues, function(index, value) {
-                        opt += '<option value="' + value.id + '">' + value.unidad_ejecutora +
-                            '</option>';
-                    });
-                    $('#fue').append(opt);
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                },
-            });
-        }
-
-        function cargarsubgenerica() {
-            $.ajax({
-                url: "{{ route('basegastos.cargarsubgenerica') }}",
-                data: {
-                    'generica': $('#ggg').val(),
-                },
-                type: 'get',
-                success: function(data) {
-                    console.log(data)
-                    $('#gsgg option ').remove();
-                    var opt = '<option value="0">TODOS</option>';
-                    $.each(data.sg, function(index, value) {
-                        opt += '<option value="' + value.id + '">' + value.nombre +
-                            '</option>';
-                    });
-                    $('#gsgg').append(opt);
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR);
-                },
-            });
-        }
-
         function descargar() {
             $.ajax({
-                url: "{{ url('/') }}/GobsRegs/Exportar/excel/principal01/null/null/null",
+                url: "{{ url('/') }}/SiafGastos/reportes7/Exportar/excel/null/null/null/null/null/null",
                 type: "GET",
                 success: function(data) {
-                    window.open("{{ url('/') }}/GobsRegs/Exportar/excel/principal01/" + $('#fano').val() +
-                        "/" + $('#fmes').val() + "/" + $('#ftipo').val());
+                    window.open("{{ url('/') }}/SiafGastos/reportes7/Exportar/excel/" +
+                        $('#ganio').val() + "/" + $('#garticulo').val() + "/" + $('#gue').val() + '/' +
+                        $('#gff').val() + "/" + $('#ggg').val() + "/" + $('#gsgg').val());
 
                 },
             });
