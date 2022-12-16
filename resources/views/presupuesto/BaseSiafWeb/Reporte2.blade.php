@@ -141,7 +141,45 @@
             </div>
         </div>
         {{-- end  row --}}
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card card-border card-primary">
+                    <div class="card-header border-primary bg-transparent p-0">
+                        <h3 class="card-title anal1">Categoria Presupuestal</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="anal1"></div>{{-- style="min-width:100%;height:600px;margin:0 auto;" --}}
+                        {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- end  row --}}
+
     </div>
+
+    <!-- Bootstrap modal -->
+    <div id="modal_form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        style="overflow:auto">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="form_title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Bootstrap modal -->
 @endsection
 
 @section('js')
@@ -232,6 +270,41 @@
             });
         }
 
+        function graficar(id, nombre) {
+            $.ajax({
+                url: "{{ route('basesiafweb.rpt2.gra.1') }}",
+                data: {
+                    'anio': $('#ganio').val(),
+                    'articulo': $('#garticulo').val(),
+                    'ue': $('#gue').val(),
+                    'tipocategoria': $('#gtc').val(),
+                    'categoriapresupuestal': id,
+                },
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    $('.registros').removeClass('table-warning');
+                    $('#reg' + id).addClass('table-warning');
+                    $('.anal1').html(nombre);
+                    gAnidadaColumn('anal1',
+                        data.info.categoria,
+                        data.info.series,
+                        '',
+                        'PIM Y DEVENGADO ACUMULADO Y EJECUCIÓN MENSUAL');
+
+                    /* $('.modal-title').html(nombre);
+                    $('#modal_form').modal('show'); */
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 1");
+                    console.log(jqXHR);
+                },
+            });
+        }
+
         function descargar() {
             $.ajax({
                 url: "{{ url('/') }}/SiafGastos/reportes2/Exportar/excel/null/null/null",
@@ -245,10 +318,10 @@
         }
     </script>
     <script>
-        function glineal(div, categoria, series, titulo, subtitulo) {
+        function gAnidadaColumn(div, categoria, series, titulo, subtitulo) {
             Highcharts.chart(div, {
                 chart: {
-                    type: 'spline'
+                    zoomType: 'xy',
                 },
                 title: {
                     text: titulo, //'Browser market shares in January, 2018'
@@ -256,32 +329,90 @@
                 subtitle: {
                     text: subtitulo,
                 },
-                xAxis: {
-                    categories: categoria
-                },
-                yAxis: {
-                    title: {
-                        enabled: false,
-                        text: 'Number of Employees'
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
-
+                xAxis: [{
+                    categories: categoria,
+                    crosshair: true
+                }],
+                yAxis: [{ // Primary yAxis
+                        max: 2000000000,
+                        labels: {
+                            enabled: false,
+                        },
+                        title: {
+                            enabled: false,
+                        },
+                        /* labels: {
+                            format: '{value}°C',
+                            style: {
+                                color: Highcharts.getOptions().colors[2]
+                            }
+                        },
+                        title: {
+                            text: 'Temperature',
+                            style: {
+                                color: Highcharts.getOptions().colors[2]
+                            }
+                        }, */
+                        //opposite: true,
+                    }, { // Secondary yAxis
+                        gridLineWidth: 0,
+                        labels: {
+                            enabled: false,
+                        },
+                        title: {
+                            enabled: false,
+                        },
+                        /* title: {
+                            text: 'Rainfall',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        },
+                        labels: {
+                            format: '{value} mm',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        }, */
+                        min: -100,
+                        max: 150,
+                        opposite: true,
+                    },
+                    /* { // Tertiary yAxis
+                                       gridLineWidth: 0,
+                                       title: {
+                                           text: 'Sea-Level Pressure',
+                                           style: {
+                                               color: Highcharts.getOptions().colors[1]
+                                           }
+                                       },
+                                       labels: {
+                                           format: '{value} mb',
+                                           style: {
+                                               color: Highcharts.getOptions().colors[1]
+                                           }
+                                       },
+                                       opposite: true
+                                   } */
+                ],
+                series: series,
                 plotOptions: {
+                    /* columns: {
+                        stacking: 'normal'
+                    }, */
                     series: {
                         borderWidth: 0,
                         dataLabels: {
                             enabled: true,
                             //format: '{point.y:,.0f}',
+                            //format: '{point.y:.1f}%',
                             formatter: function() {
                                 if (this.y > 1000000) {
                                     return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
                                 } else if (this.y > 1000) {
                                     return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else if (this.y < 101) {
+                                    return this.y + "%";
                                 } else {
                                     return this.y;
                                 }
@@ -290,23 +421,21 @@
                                 fontWeight: 'normal',
                             }
                         },
-                    }
+                    },
                 },
-                series: series,
+                tooltip: {
+                    shared: true,
+                },
                 legend: {
-                    align: 'center', //right//left//center
-                    verticalAlign: 'bottom', //top//middle//bottom
-                    layout: 'horizontal', //horizontal//vertical//proximate
                     itemStyle: {
                         "color": "#333333",
                         "cursor": "pointer",
                         "fontSize": "10px",
-                        "fontWeight": "normal", //bold
+                        "fontWeight": "normal",
                         "textOverflow": "ellipsis"
                     },
                 },
                 credits: false,
-
             });
         }
     </script>

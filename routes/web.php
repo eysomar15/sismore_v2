@@ -678,10 +678,12 @@ Route::get('/Modificaciones/ExportarI/excel/tabla01/{ano}/{mes}/{tipo}/{ue}', [M
 Route::get('/SiafGastos/reportes1', [BaseSiafWebController::class, 'reporte1'])->name('basesiafweb.reporte1');
 Route::get('/SiafGastos/reportes1/tb1', [BaseSiafWebController::class, 'reporte1tabla01'])->name('basesiafweb.rpt1.tabla01');
 Route::get('/SiafGastos/reportes1/Exportar/excel/{ano}/{articulo}/{categoria}', [BaseSiafWebController::class, 'reporte1download']);
+Route::get('/SiafGastos/reportes1/gra1', [BaseSiafWebController::class, 'reporte1grafica1'])->name('basesiafweb.rpt1.gra.1');
 
 Route::get('/SiafGastos/reportes2', [BaseSiafWebController::class, 'reporte2'])->name('basesiafweb.reporte2');
 Route::get('/SiafGastos/reportes2/tb1', [BaseSiafWebController::class, 'reporte2tabla01'])->name('basesiafweb.rpt2.tabla01');
 Route::get('/SiafGastos/reportes2/Exportar/excel/{ano}/{articulo}/{ue}', [BaseSiafWebController::class, 'reporte2download']);
+Route::get('/SiafGastos/reportes2/gra1', [BaseSiafWebController::class, 'reporte2grafica1'])->name('basesiafweb.rpt2.gra.1');
 
 Route::get('/SiafGastos/reportes3', [BaseSiafWebController::class, 'reporte3'])->name('basesiafweb.reporte3');
 Route::get('/SiafGastos/reportes3/tb1', [BaseSiafWebController::class, 'reporte3tabla01'])->name('basesiafweb.rpt3.tabla01');

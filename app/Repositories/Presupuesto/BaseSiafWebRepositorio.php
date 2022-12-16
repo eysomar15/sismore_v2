@@ -108,6 +108,44 @@ class BaseSiafWebRepositorio
         return $query;
     }
 
+    public static function rpt1_pim_devengado_acumulado_ejecucion_mensual($reg, $articulo, $categoria, $ue) //base detallee
+    {
+        $query = BaseSiafWebDetalle::whereIn('pres_base_siafweb_detalle.basesiafweb_id', $reg)
+            ->join('pres_base_siafweb as v2', 'v2.id', '=', 'pres_base_siafweb_detalle.basesiafweb_id')
+            ->select(
+                'v2.mes as name',
+                DB::raw('sum(pres_base_siafweb_detalle.pim) as pim'),
+                DB::raw('round(sum(pres_base_siafweb_detalle.devengado),2) as devengado'),
+                DB::raw('round(100*sum(pres_base_siafweb_detalle.devengado)/sum(pres_base_siafweb_detalle.pim),1) as ejecucion'),
+            )
+            ->groupBy('name');
+        if ($articulo > 0) $query = $query->where('pres_base_siafweb_detalle.productoproyecto_id', $articulo);
+        if ($categoria > 0) $query = $query->where('pres_base_siafweb_detalle.categoriagasto_id', $categoria);
+        if ($ue > 0) $query = $query->where('pres_base_siafweb_detalle.unidadejecutora_id', $ue);
+        $query = $query->get();
+        return $query;
+    }
+
+    public static function rpt2_pim_devengado_acumulado_ejecucion_mensual($reg, $articulo, $ue, $tipocategoria, $categoriapresupuestal) //base detallee
+    {
+        $query = BaseSiafWebDetalle::whereIn('pres_base_siafweb_detalle.basesiafweb_id', $reg)
+            ->join('pres_base_siafweb as v2', 'v2.id', '=', 'pres_base_siafweb_detalle.basesiafweb_id')
+            ->join('pres_categoriapresupuestal as v3', 'v3.id', '=', 'pres_base_siafweb_detalle.categoriapresupuestal_id')
+            ->select(
+                'v2.mes as name',
+                DB::raw('sum(pres_base_siafweb_detalle.pim) as pim'),
+                DB::raw('round(sum(pres_base_siafweb_detalle.devengado),2) as devengado'),
+                DB::raw('round(100*sum(pres_base_siafweb_detalle.devengado)/sum(pres_base_siafweb_detalle.pim),1) as ejecucion'),
+            )
+            ->groupBy('name');
+        if ($articulo > 0) $query = $query->where('pres_base_siafweb_detalle.productoproyecto_id', $articulo);
+        if ($ue > 0) $query = $query->where('pres_base_siafweb_detalle.unidadejecutora_id', $ue);
+        if ($tipocategoria > 0) $query = $query->where('v3.tipo_categoria_presupuestal', $tipocategoria);
+        if ($categoriapresupuestal > 0) $query = $query->where('pres_base_siafweb_detalle.categoriagasto_id', $categoriapresupuestal);
+        $query = $query->get();
+        return $query;
+    }
+
     public static function listar_unidadejecutora_anio_acticulo_funcion_categoria($anio, $articulo,  $categoria) //base detallee
     {
         $basesiafweb_id = BaseSiafWeb::select('pres_base_siafweb.*')
@@ -125,6 +163,7 @@ class BaseSiafWebRepositorio
             ->join('pres_divisionfuncional as v5a', 'v5a.id', '=', 'v5.divisionfuncional_id')
             ->join('pres_funcion as v5b', 'v5b.id', '=', 'v5a.funcion_id')
             ->select(
+                'v2.id as id',
                 'v2.codigo_ue as codigo',
                 'v2.nombre_ejecutora as ue',
                 DB::raw('sum(pres_base_siafweb_detalle.pia) as pia'),
@@ -139,7 +178,7 @@ class BaseSiafWebRepositorio
             $query = $query->where('v4.id', $articulo);
         if ($categoria != 0)
             $query = $query->where('v3.id', $categoria);
-        $query = $query->groupBy('codigo', 'ue')->get();
+        $query = $query->groupBy('id', 'codigo', 'ue')->get();
         return $query;
     }
 
@@ -286,7 +325,7 @@ class BaseSiafWebRepositorio
         return $query;
     }
 
-    public static function listar_categoria_anio_acticulo_ue_categoria($anio, $articulo, $ue,$tc) //base detallee
+    public static function listar_categoria_anio_acticulo_ue_categoria($anio, $articulo, $ue, $tc) //base detallee
     {
         $basesiafweb_id = BaseSiafWeb::select('pres_base_siafweb.*')
             ->join('par_importacion as v2', 'v2.id', '=', 'pres_base_siafweb.importacion_id')
@@ -297,13 +336,10 @@ class BaseSiafWebRepositorio
             ->join('pres_base_siafweb as w1', 'w1.id', '=', 'pres_base_siafweb_detalle.basesiafweb_id')
             ->join('par_importacion as w2', 'w2.id', '=', 'w1.importacion_id')
             ->join('pres_unidadejecutora as v2', 'v2.id', '=', 'pres_base_siafweb_detalle.unidadejecutora_id')
-            //->join('pres_categoriagasto as v3', 'v3.id', '=', 'pres_base_siafweb_detalle.categoriagasto_id')
             ->join('pres_producto_proyecto as v4', 'v4.id', '=', 'pres_base_siafweb_detalle.productoproyecto_id')
-            //->join('pres_grupofuncional as v5', 'v5.id', '=', 'pres_base_siafweb_detalle.grupofuncional_id')
-            //->join('pres_divisionfuncional as v5a', 'v5a.id', '=', 'v5.divisionfuncional_id')
-            //->join('pres_funcion as v5b', 'v5b.id', '=', 'v5a.funcion_id')
             ->join('pres_categoriapresupuestal as v6', 'v6.id', '=', 'pres_base_siafweb_detalle.categoriapresupuestal_id')
             ->select(
+                'v6.id as id',
                 'v6.codigo as codigo',
                 'v6.categoria_presupuestal as categoria',
                 DB::raw('sum(pres_base_siafweb_detalle.pia) as pia'),
@@ -318,9 +354,9 @@ class BaseSiafWebRepositorio
             $query = $query->where('v4.id', $articulo);
         if ($ue != 0)
             $query = $query->where('V2.id', $ue);
-            if ($tc != 0)
+        if ($tc != 0)
             $query = $query->where('V6.tipo_categoria_presupuestal', $tc);
-        $query = $query->groupBy('codigo', 'categoria')->get();
+        $query = $query->groupBy('id', 'codigo', 'categoria')->get();
         return $query;
     }
 

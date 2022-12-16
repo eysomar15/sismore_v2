@@ -16,10 +16,13 @@
     </thead>
     <tbody>
         @foreach ($body as $pos => $item)
-            <tr class="text-right">
+            <tr class="registros text-right" id="reg{{ $item->id }}">
                 <td class="text-center">{{ $pos + 1 }}</td>
                 <td class="text-center">{{ $item->codigo }}</td>
-                <td class="text-left"><a href="#">{{ $item->categoria }}</a></td>
+                <td class="text-left">
+                    <a href="#anal1"
+                        onclick="graficar({{ $item->id }},`{{ $item->categoria }}`)">{{ $item->categoria }}</a>
+                </td>
                 <td>{{ number_format($item->pia, 0) }}</td>
                 <td>{{ number_format($item->pim, 0) }}</td>
                 <td>{{ number_format($item->cert, 0) }}</td>

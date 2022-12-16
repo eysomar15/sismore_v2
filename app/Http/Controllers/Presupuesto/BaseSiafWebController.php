@@ -68,6 +68,27 @@ class BaseSiafWebController extends Controller
         }
     }
 
+    public function reporte1grafica1(Request $rq)
+    {
+        //$info['categoria'] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        $info['categoria'] = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+        $array = BaseSiafWebRepositorio::baseids_fecha_max($rq->get('anio'));
+        $query = BaseSiafWebRepositorio::rpt1_pim_devengado_acumulado_ejecucion_mensual($array, $rq->get('articulo'), $rq->get('categoria'), $rq->get('ue'));
+        $info['series'] = [];
+        $dx1 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        $dx2 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        $dx3 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        foreach ($query as $key => $value) {
+            $dx1[$key] = $value->pim; //pim
+            $dx2[$key] = $value->devengado; //devengado
+            $dx3[$key] = $value->ejecucion; //ejecucion
+        }
+        $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'PIM', 'color' => '#317eeb', 'data' => $dx1];
+        $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx2];
+        $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%EJECUCIÓN',  'tooltip' => ['valueSuffix' => ' %'], 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('info'));
+    }
+
     public function reporte2()
     {
         $ano = BaseSiafWeb::select(DB::raw('distinct anio'))
@@ -106,6 +127,33 @@ class BaseSiafWebController extends Controller
             $name = 'EJECUCIÓN DE GASTOS, SEGÚN CATEGORÍA PRESUPUESTAL ' . date('Y-m-d') . '.xlsx';
             return Excel::download(new SiafWebRPT2Export($ano, $articulo, $ue), $name);
         }
+    }
+
+    public function reporte2grafica1(Request $rq)
+    {
+        //$info['categoria'] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        $info['categoria'] = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'];
+        $array = BaseSiafWebRepositorio::baseids_fecha_max($rq->get('anio'));
+        $query = BaseSiafWebRepositorio::rpt2_pim_devengado_acumulado_ejecucion_mensual(
+            $array,
+            $rq->get('articulo'),
+            $rq->get('ue'),
+            $rq->get('tipocategoria'),
+            $rq->get('categoriapresupuestal')
+        );
+        $info['series'] = [];
+        $dx1 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        $dx2 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        $dx3 = [null, null, null, null, null, null, null, null, null, null, null, null];
+        foreach ($query as $key => $value) {
+            $dx1[$key] = $value->pim; //pim
+            $dx2[$key] = $value->devengado; //devengado
+            $dx3[$key] = $value->ejecucion; //ejecucion
+        }
+        $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'PIM', 'color' => '#317eeb', 'data' => $dx1];
+        $info['series'][] = ['type' => 'column', 'yAxis' => 0, 'name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx2];
+        $info['series'][] = ['type' => 'spline', 'yAxis' => 1, 'name' => '%EJECUCIÓN',  'tooltip' => ['valueSuffix' => ' %'], 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('info'));
     }
 
     public function reporte3()
