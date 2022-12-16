@@ -286,7 +286,7 @@ class BaseSiafWebRepositorio
         return $query;
     }
 
-    public static function listar_categoria_anio_acticulo_ue_categoria($anio, $articulo, $ue) //base detallee
+    public static function listar_categoria_anio_acticulo_ue_categoria($anio, $articulo, $ue,$tc) //base detallee
     {
         $basesiafweb_id = BaseSiafWeb::select('pres_base_siafweb.*')
             ->join('par_importacion as v2', 'v2.id', '=', 'pres_base_siafweb.importacion_id')
@@ -318,6 +318,8 @@ class BaseSiafWebRepositorio
             $query = $query->where('v4.id', $articulo);
         if ($ue != 0)
             $query = $query->where('V2.id', $ue);
+            if ($tc != 0)
+            $query = $query->where('V6.tipo_categoria_presupuestal', $tc);
         $query = $query->groupBy('codigo', 'categoria')->get();
         return $query;
     }

@@ -85,7 +85,7 @@
                                                         $mes = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
                                                     @endphp
                                                     Actualizado al
-                                                    {{ date('d') . ' de ' . $mes[date('m') - 1] . ' del ' . date('Y') }}
+                                                    {{ (date('d')-1) . ' de ' . $mes[date('m') - 1] . ' del ' . date('Y') }}
                                                     {{-- @if (isset($impG))
                                                         @php
                                                             $mes = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];

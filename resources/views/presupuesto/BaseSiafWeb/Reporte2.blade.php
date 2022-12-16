@@ -85,7 +85,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label class="col-form-label">Unidad Ejecutora</label>
                                         <div class="">
                                             <select class="form-control" name="gue" id="gue"
@@ -95,6 +95,18 @@
                                                     <option value="{{ $item->id }}">{{ $item->nombre }}
                                                     </option>
                                                 @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="col-form-label">Tipo Categoria</label>
+                                        <div class="">
+                                            <select class="form-control" name="gtc" id="gtc"
+                                                onchange="cargarcuadros2();">
+                                                <option value="0">TODOS</option>
+                                                <option value="ACCIONES CENTRALES">ACCIONES CENTRALES</option>
+                                                <option value="APNOP">APNOP</option>
+                                                <option value="PROGRAMA PRESUPUESTAL">PROGRAMA PRESUPUESTAL</option>
                                             </select>
                                         </div>
                                     </div>
@@ -198,6 +210,7 @@
                     'anio': $('#ganio').val(),
                     'articulo': $('#garticulo').val(),
                     'ue': $('#gue').val(),
+                    'tc': $('#gtc').val(),
                 },
                 type: "GET",
                 beforeSend: function() {

@@ -14,7 +14,7 @@
     </thead>
     <tbody>
         @foreach ($head as $item)
-            <tr class="text-right bg-warning font-weight-bold">
+            <tr class="text-right font-weight-bold">
                 <td class="text-left">{{ $item->categoria }}</td>
                 <td>{{ number_format($item->pia, 0) }}</td>
                 <td>{{ number_format($item->pim, 0) }}</td>

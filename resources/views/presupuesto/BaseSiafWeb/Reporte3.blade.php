@@ -209,7 +209,7 @@
                         "language": table_language,
                         /* paging: false,
                         searching: false, */
-                        //"aLengthMenu":[100]
+                        "aLengthMenu":[25]
                     });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {

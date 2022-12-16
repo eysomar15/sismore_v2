@@ -1,15 +1,15 @@
 <table id="tabla1" class="table table-striped table-bordered tablex" style="font-size:11px;">
     <thead>
         <tr class="bg-primary text-white text-center">
-            <th>Código</th>
-            <th>Especifico detalle</th>
+            <th>CLASIFICADOR</th>
+            <th>ESPECIFICO DETALLE</th>
             <th>PIA</th>
             <th>PIM</th>
             <th>CERTIFICADO</th>
             <th>DEVENGADO</th>
             <th>% ejecución</th>
-            <th>Saldo CERT.</th>
-            <th>Saldo DEV.</th>
+            <th>SALDO CERT.</th>
+            <th>SALDO DEV.</th>
         </tr>
 
     </thead>

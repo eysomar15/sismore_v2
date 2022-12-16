@@ -115,11 +115,11 @@ class SiafWebRPT3Export implements FromView, ShouldAutoSize, WithEvents
         ];
         $opt = [AfterSheet::class => function (AfterSheet $event) use ($head, $foot, $body, $bodya, $bodyb, $border) {
             $event->sheet->getStyle('A1:I1')->applyFromArray($head);
-            $event->sheet->getStyle('A28:I28')->applyFromArray($foot);
+            //$event->sheet->getStyle('A28:I28')->applyFromArray($foot);
             $event->sheet->getStyle('B2:I27')->applyFromArray($body);
             $event->sheet->getStyle('A2:A27')->applyFromArray($bodya);
             $event->sheet->getStyle('B2:B27')->applyFromArray($bodyb);
-            $event->sheet->getStyle('A1:I28')->applyFromArray($border);
+            //$event->sheet->getStyle('A1:I28')->applyFromArray($border);
         }];
 
         return $opt;

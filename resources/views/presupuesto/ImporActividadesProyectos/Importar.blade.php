@@ -20,7 +20,7 @@
                                     class="fa fa-file-excel"></i>
                                 Plantilla</button>
                             <button type="button" class="btn btn-danger btn-xs"
-                                onclick="javascript:window.open('https://1drv.ms/x/s!AgffhPHh-Qgo0AAnDYUxeuBxQsZL?e=YWNbx3','_blank');"><i
+                                onclick="javascript:window.open('https://1drv.ms/b/s!AgffhPHh-Qgo0AxVx8xL4T1lZi5G?e=ZhzOG6','_blank');"><i
                                     class="mdi mdi-file-pdf-outline"></i>
                                 Manual</button>
                         </div>
