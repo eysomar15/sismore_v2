@@ -1,24 +1,26 @@
 <table id="tabla1" class="table table-striped table-bordered tablex" style="font-size:11px;">
     <thead>
-        <tr class="bg-primary text-white text-center">
+        <tr class="bg-success-1 text-white text-center">
+            <th>#</th>
             <th>CLASIFICADOR</th>
             <th>ESPECIFICO DETALLE</th>
             <th>PIA</th>
             <th>PIM</th>
             <th>CERTIFICADO</th>
             <th>DEVENGADO</th>
-            <th>% ejecución</th>
+            <th>% EJECUCIÓN</th>
             <th>SALDO CERT.</th>
             <th>SALDO DEV.</th>
         </tr>
 
     </thead>
     <tbody>
-        @foreach ($body as $item)
+        @foreach ($body as $pos => $item)
             <tr class="text-right">
                 {{-- <td class="text-left">{{ $item->cod.' '.$item->ff }}</td> --}}
-                <td class="text-left">{{ $item->codigo }}</td>
-                <td class="text-left">{{ $item->especificadetalle }}</td>
+                <td class="text-center">{{ $pos + 1 }}</td>
+                <td class="text-center">{{ $item->codigo }}</td>
+                <td class="text-left"><a href="#">{{ $item->especificadetalle }}</a></td>
                 <td>{{ number_format($item->pia, 0) }}</td>
                 <td>{{ number_format($item->pim, 0) }}</td>
                 <td>{{ number_format($item->cert, 0) }}</td>
@@ -30,8 +32,8 @@
         @endforeach
     </tbody>
     <tfoot>
-        <tr class="text-center bg-primary text-white">
-            <th class="text-left" colspan="2">TOTAL</th>
+        <tr class="text-center bg-success-1 text-white">
+            <th class="text-left" colspan="3">TOTAL</th>
             <th>{{ number_format($foot['pia'], 0) }}</th>
             <th>{{ number_format($foot['pim'], 0) }}</th>
             <th>{{ number_format($foot['cert'], 0) }}</th>

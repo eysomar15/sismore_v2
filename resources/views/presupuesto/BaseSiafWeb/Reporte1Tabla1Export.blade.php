@@ -1,15 +1,15 @@
 <table id="tabla1" class="table table-striped table-bordered tablex" style="font-size:11px;">
     <thead>
-        <tr class="bg-primary text-white text-center">
-            <th>Código</th>
-            <th>Unidades Ejecutoras</th>
+        <tr class="bg-success-1 text-white text-center">
+            <th>CÓDIGO</th>
+            <th>UNIDADES EJECUTORAS</th>
             <th>PIA</th>
             <th>PIM</th>
             <th>CERTIFICADO</th>
             <th>DEVENGADO</th>
-            <th>% ejecución</th>
-            <th>Saldo CERT.</th>
-            <th>Saldo DEV.</th>
+            <th>% EJECUCIÓN</th>
+            <th>SALDO CERT.</th>
+            <th>SALDO DEV.</th>
         </tr>
 
     </thead>

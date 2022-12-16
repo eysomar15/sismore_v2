@@ -1,14 +1,14 @@
 <table id="tabla1" class="table table-striped table-bordered tablex" style="font-size:11px;">
     <thead>
-        <tr class="bg-primary text-white text-center">
-            <th>Generica_Gasto</th>
+        <tr class="bg-success-1 text-white text-center">
+            <th>GENERICA_GASTO</th>
             <th>PIA</th>
             <th>PIM</th>
             <th>CERTIFICADO</th>
             <th>DEVENGADO</th>
-            <th>% ejecución</th>
-            <th>Saldo CERT.</th>
-            <th>Saldo DEV.</th>
+            <th>% EJECUCIÓN</th>
+            <th>SALDO CERT.</th>
+            <th>SALDO DEV.</th>
         </tr>
 
     </thead>
@@ -27,7 +27,7 @@
             @foreach ($body as $item2)
                 @if ($item->categoria == $item2->categoria)
                     <tr class="text-right">
-                        <td class="text-left">{{ '2.' . $item2->codigo . ' ' . $item2->generica }}</td>
+                        <td class="text-left"><a href="#">{{ '2.' . $item2->codigo . ' ' . $item2->generica }}</a></td>
                         <td>{{ number_format($item2->pia, 0) }}</td>
                         <td>{{ number_format($item2->pim, 0) }}</td>
                         <td>{{ number_format($item2->cert, 0) }}</td>
@@ -42,7 +42,7 @@
 
     </tbody>
     <tfoot>
-        <tr class="text-center bg-primary text-white">
+        <tr class="text-center bg-success-1 text-white">
             <th class="text-left" colspan="1">TOTAL</th>
             <th>{{ number_format($foot['pia'], 0) }}</th>
             <th>{{ number_format($foot['pim'], 0) }}</th>

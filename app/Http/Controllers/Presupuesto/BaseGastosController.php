@@ -6,6 +6,7 @@ use App\Exports\BaseGastosExport;
 use App\Http\Controllers\Controller;
 use App\Models\Educacion\Importacion;
 use App\Models\Presupuesto\BaseGastos;
+use App\Models\Presupuesto\GenericaGasto;
 use App\Models\Presupuesto\Sector;
 use App\Models\Presupuesto\SubGenericaGasto;
 use App\Models\Presupuesto\TipoGobierno;
@@ -47,7 +48,16 @@ class BaseGastosController extends Controller
 
     public function cargarsubgenerica(Request $rq)
     {
-        $sg = SubGenericaGasto::where('generica_id', $rq->get('generica'))->get();
+        if ($rq->get('generica') > 0) {
+            $sg = SubGenericaGasto::where('generica_id', $rq->get('generica'))->get();
+        } else {
+            $sg = SubGenericaGasto::all();
+        }
+
+        foreach ($sg as $key => $vv) {
+            $gg = GenericaGasto::find($vv->generica_id);
+            $vv->codigo = '2.' . $gg->codigo . '.' . $vv->codigo;
+        }
         return response()->json(compact('sg'));
     }
 

@@ -1,6 +1,6 @@
 <table id="tabla1" class="table table-striped table-bordered tablex" style="font-size:11px;">
     <thead>
-        <tr class="bg-primary text-white text-center">
+        <tr class="bg-success-1 text-white text-center">
             <th>#</th>
             <th>CÓDIGO</th>
             <th>UNIDADES EJECUTORAS</th>

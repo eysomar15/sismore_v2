@@ -120,7 +120,8 @@
                                                 onchange="cargarsubgenerica();cargarcuadros2();">
                                                 <option value="0">TODOS</option>
                                                 @foreach ($gg as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->nombre }}</option>
+                                                    <option value="{{ $item->id }}">
+                                                        {{ '2.' . $item->codigo . ' ' . $item->nombre }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -221,6 +222,7 @@
             });
 
             cargarcuadros2();
+            cargarsubgenerica();
         });
 
 
@@ -254,6 +256,30 @@
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log(jqXHR);
                     $('#vista4').html('Sin Informacion Disponible');
+                },
+            });
+        }
+
+        function cargarsubgenerica() {
+            $.ajax({
+                url: "{{ route('basegastos.cargarsubgenerica') }}",
+                data: {
+                    'generica': $('#ggg').val(),
+                },
+                type: 'get',
+                success: function(data) {
+                    console.log(data)
+                    $('#gsgg option ').remove();
+                    var opt = '<option value="0">TODOS</option>';
+                    $.each(data.sg, function(index, value) {
+                        opt += '<option value="' + value.id + '">' + value.codigo + ' ' + value.nombre +
+                            '</option>';
+                    });
+                    $('#gsgg').append(opt);
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
                 },
             });
         }
