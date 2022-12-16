@@ -19,7 +19,7 @@
             <tr class="text-right">
                 <td class="text-left">{{ $pos + 1 }}</td>
                 <td class="text-left">{{ $item->codigo }}</td>
-                <td class="text-left">{{ $item->producto_proyecto }}</td>
+                <td class="text-left"><a href="#">{{ $item->producto_proyecto }}</a></td>
                 <td>{{ number_format($item->pia, 0) }}</td>
                 <td>{{ number_format($item->pim, 0) }}</td>
                 <td>{{ number_format($item->cert, 0) }}</td>

@@ -17,9 +17,9 @@
     <tbody>
         @foreach ($body as $pos => $item)
             <tr class="text-right">
-                <td class="text-center">{{ $pos+1 }}</td>
+                <td class="text-center">{{ $pos + 1 }}</td>
                 <td class="text-center">{{ $item->codigo }}</td>
-                <td class="text-left">{{ $item->ue }}</td>
+                <td class="text-left"><a href="#">{{ $item->ue }}</a></td>
                 <td>{{ number_format($item->pia, 0) }}</td>
                 <td>{{ number_format($item->pim, 0) }}</td>
                 <td>{{ number_format($item->cert, 0) }}</td>
