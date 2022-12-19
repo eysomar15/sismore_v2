@@ -141,7 +141,7 @@ class BaseSiafWebRepositorio
         if ($articulo > 0) $query = $query->where('pres_base_siafweb_detalle.productoproyecto_id', $articulo);
         if ($ue > 0) $query = $query->where('pres_base_siafweb_detalle.unidadejecutora_id', $ue);
         if ($tipocategoria > 0) $query = $query->where('v3.tipo_categoria_presupuestal', $tipocategoria);
-        if ($categoriapresupuestal > 0) $query = $query->where('pres_base_siafweb_detalle.categoriagasto_id', $categoriapresupuestal);
+        $query = $query->where('pres_base_siafweb_detalle.categoriagasto_id', $categoriapresupuestal);
         $query = $query->get();
         return $query;
     }
@@ -350,13 +350,11 @@ class BaseSiafWebRepositorio
                 DB::raw('sum(pres_base_siafweb_detalle.pim-pres_base_siafweb_detalle.certificado) as saldo1'),
                 DB::raw('sum(pres_base_siafweb_detalle.pim-pres_base_siafweb_detalle.devengado) as saldo2')
             );
-        if ($articulo != 0)
-            $query = $query->where('v4.id', $articulo);
-        if ($ue != 0)
-            $query = $query->where('V2.id', $ue);
-        if ($tc != 0)
-            $query = $query->where('V6.tipo_categoria_presupuestal', $tc);
-        $query = $query->groupBy('id', 'codigo', 'categoria')->get();
+        if ($articulo != 0) $query = $query->where('v4.id', $articulo);
+        if ($ue != 0) $query = $query->where('v2.id', $ue);
+        if ($tc != '0') $query = $query->where('v6.tipo_categoria_presupuestal', $tc);
+        //$query = $query->where('v6.tipo_categoria_presupuestal', 'APNOP');
+        $query = $query->groupBy('id', 'codigo', 'categoria')->orderBy('codigo', 'asc')->get();
         return $query;
     }
 
