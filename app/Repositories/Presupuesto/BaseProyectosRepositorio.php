@@ -16,7 +16,7 @@ class BaseProyectosRepositorio
                 DB::raw('v2.corto as name'),
                 DB::raw('"#317eeb" as color'),
                 DB::raw('v2.codigo'),
-                DB::raw('round(100*pres_base_proyectos_detalle.devengado/pres_base_proyectos_detalle.pim,1) as y'),
+                DB::raw('round(100*pres_base_proyectos_detalle.devengado/pres_base_proyectos_detalle.pim,5) as y'),
             )
             ->orderBy('y', 'desc')
             ->get();
