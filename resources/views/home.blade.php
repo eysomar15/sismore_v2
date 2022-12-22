@@ -1,4 +1,4 @@
-@extends('layouts.main',['titlePage'=>'Bienvenido al Sistema de Monitoreo Regional'])
+@extends('layouts.main',['titlePage'=>''])
 
 @section('content')
 

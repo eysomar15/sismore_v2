@@ -31,6 +31,8 @@ use App\Repositories\Vivienda\CentroPobladoDatassRepositorio;
 use App\Repositories\Vivienda\CentroPobladoRepositotio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\Vivienda\DatassRepositorio;
+use App\Utilities\Utilitario;
 
 class HomeController extends Controller
 {
@@ -327,35 +329,104 @@ class HomeController extends Controller
         return view("presupuesto.inicioPresupuestohometabla1", compact('body', 'foot'));
     }
 
+    public function vivienda2($sistema_id)
+    {
+        $datos = DatassRepositorio::datos_PorDepartamento(516, 1);
 
+        $suma1 = 0;
+        $suma2 = 0;
+        $puntos = [];        
+
+        //->sortByDesc('hombres') solo para dar una variacion a los colores del grafico
+        foreach ($datos as $key => $item) {
+            $suma1 += $item->INDICADOR_SI_porcentaje;;
+            $suma2 += $item->INDICADOR_NO_porcentaje;;
+        }
+
+        $puntos[] = ['name' => 'SI', 'y' => floatval($suma1)];
+        $puntos[] = ['name' => 'NO', 'y' => floatval($suma2)];
+
+        $contenedor = 'Grafico_IndicadorRegional'; //nombre del contenedor para el grafico
+        $titulo_grafico = 'Grafico_IndicadorRegional';
+
+  
+        return view('home',
+            ["dataCircular" => json_encode($puntos)],
+            compact( 'contenedor', 'titulo_grafico')
+        );
+    }
 
     public function vivienda($sistema_id)
     {
-        //$imp = Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', '7')->where('estado', 'PR')->first();
-        $importacion_id = ImportacionRepositorio::Max_porfuente('7');
-        if ($importacion_id) {
-            $data[] = ['name' => 'Centros Poblados - CP', 'y' => CentroPobladoDatassRepositorio::listar_centroPoblado($importacion_id)->conteo];
-            $data[] = ['name' => 'CP. Con Sistema de agua', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 20, $importacion_id)['indicador'][0]->y];
-            $data[] = ['name' => 'CP. Con Disposicion Escretas', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 23, $importacion_id)['indicador2'][0]->y];
-            $data[] = ['name' => 'CP. Con Sistema Cloración', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 21, $importacion_id)['indicador2'][0]->y];
+             
+        $vUrl = "https://datastudio.google.com/embed/reporting/6c73c567-559b-4dd6-8608-64a0b502c85c/page/XXx8C";
+        // $imp = Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', '7')->where('estado', 'PR')->first();
+        $importacion = ImportacionRepositorio::ImpportacionMax_porfuente('7');
 
-            $sumas = CentroPobladoDatassRepositorio::sumas_dashboard($importacion_id);
-            $data2[] = ['name' => 'Población Ambito Rural', 'y' => $sumas->poblacion];/* total_poblacion */
-            $data2[] = ['name' => 'Con Cobertura de Agua', 'y' => $sumas->con_agua];/* poblacion_con_servicio_agua */
-            $data2[] = ['name' => 'Viviendas', 'y' => $sumas->con_conexion];/* total_viviendas */
-            $data2[] = ['name' => 'Con Servicio de Agua', 'y' => $sumas->con_conexion];/* viviendas_con_conexion */
+        $importacion_id = $importacion->id;
 
-            $grafica[] = CentroPobladoRepositotio::listarporprovincias($importacion_id);/* total de centro poblado por provincia */
-            $grafica[] = CentroPobladoRepositotio::listarporprovinciasconsistemaagua($importacion_id);/* total de centro poblado con servicio de agua(sistema_agua) */
-
-            $grafica2[] = CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 20, $importacion_id)['indicador'];
-            $grafica2[] = CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 23, $importacion_id)['indicador2'];
-
-            return view('home', compact('sistema_id', 'importacion_id', 'data', 'data2', 'grafica', 'grafica2'));
-        } else {
-            return view('home', compact('sistema_id', 'importacion_id'));
-        }
+        $fechaVersion = Utilitario::fecha_formato_texto_completo($importacion->fechaActualizacion) ;
+        return view('home', compact('sistema_id', 'importacion_id','vUrl','fechaVersion'));
     }
+
+    // public function vivienda3($sistema_id)
+    // {
+
+    //     $datos = DatassRepositorio::datos_PorProvincia(516,1);   
+
+    //     $categoria1 = [];
+    //     $categoria2 = [];
+    //     $categoria_nombres = [];
+
+    //     // array_merge concatena los valores del arreglo, mientras recorre el foreach
+    //     foreach ($datos as $key => $lista) {
+    //         $categoria1 = array_merge($categoria1, [intval($lista->INDICADOR_SI_porcentaje)]);
+    //         $categoria2 = array_merge($categoria2, [intval($lista->INDICADOR_NO_porcentaje)]);           
+    //         $categoria_nombres[] = $lista->Provincia;
+    //     }
+
+    //     $name_Y1 = "Chrome";
+    //     $name_Y2 = "Safari";
+    //     $titulo_grafico = 'Grafico_IndicadorRegional';
+
+       
+
+    //     $puntos[] = ['name' => $name_Y1, 'y' => floatval(61),'drilldown' => 'Chrome'];
+    //     $puntos[] = ['name' => $name_Y2, 'y' => floatval(33),'drilldown' => 'Safari'];
+
+
+    //     $puntosHijos[] = ['name' => 'hijo 1', 'y' => floatval(88) ];
+    //     $puntosHijos[] = ['name' => 'hijo 2', 'y' => floatval(66) ];
+
+
+        
+    //     $imp = Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', '7')->where('estado', 'PR')->first();
+    //     $importacion_id = ImportacionRepositorio::Max_porfuente('7');
+    //     if ($importacion_id) {
+    //         $data[] = ['name' => 'Centros Poblados - CP', 'y' => CentroPobladoDatassRepositorio::listar_centroPoblado($importacion_id)->conteo];
+    //         $data[] = ['name' => 'CP. Con Sistema de agua', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 20, $importacion_id)['indicador'][0]->y];
+    //         $data[] = ['name' => 'CP. Con Disposicion Escretas', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 23, $importacion_id)['indicador2'][0]->y];
+    //         $data[] = ['name' => 'CP. Con Sistema Cloración', 'y' => CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 21, $importacion_id)['indicador2'][0]->y];
+
+    //         $sumas = CentroPobladoDatassRepositorio::sumas_dashboard($importacion_id);
+    //         $data2[] = ['name' => 'Población Ambito Rural', 'y' => $sumas->poblacion];/* total_poblacion */
+    //         $data2[] = ['name' => 'Con Cobertura de Agua', 'y' => $sumas->con_agua];/* poblacion_con_servicio_agua */
+    //         $data2[] = ['name' => 'Viviendas', 'y' => $sumas->con_conexion];/* total_viviendas */
+    //         $data2[] = ['name' => 'Con Servicio de Agua', 'y' => $sumas->con_conexion];/* viviendas_con_conexion */
+
+    //         $grafica[] = CentroPobladoRepositotio::listarporprovincias($importacion_id);/* total de centro poblado por provincia */
+    //         $grafica[] = CentroPobladoRepositotio::listarporprovinciasconsistemaagua($importacion_id);/* total de centro poblado con servicio de agua(sistema_agua) */
+
+    //         $grafica2[] = CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 20, $importacion_id)['indicador'];
+    //         $grafica2[] = CentroPobladoRepositotio::ListarSINO_porIndicador(0, 0, 23, $importacion_id)['indicador2'];
+
+    //         return view('home',
+    //         ["dataGrafico" => json_encode($puntos),"dataGraficoHijo" => json_encode($puntosHijos)],
+    //          compact('sistema_id', 'importacion_id', 'data', 'data2', 'grafica', 'grafica2'));
+    //     } else {
+    //         return view('home', compact('sistema_id', 'importacion_id'));
+    //     }
+    // }
 
 
     public function educacion($sistema_id)

@@ -401,6 +401,13 @@ Route::get('/Datass/ListaImportada_DataTable/{importacion_id}', [DatassControlle
 Route::get('/Datass/Aprobar/{importacion_id}', [DatassController::class, 'aprobar'])->name('Datass.aprobar');
 Route::post('/Datass/Aprobar/procesar/{importacion_id}', [DatassController::class, 'procesar'])->name('Datass.procesar');
 
+Route::post('/Datass/Grafico_IndicadorRegional/{id}/{importacion_id}', [DatassController::class, 'Grafico_IndicadorRegional'])->name('Datass.Grafico_IndicadorRegional');
+Route::post('/Datass/Grafico_IndicadorRegional_Periodos/{id}', [DatassController::class, 'Grafico_IndicadorRegional_Periodos'])->name('Datass.Grafico_IndicadorRegional_Periodos');
+Route::post('/Datass/Grafico_IndicadorProvincial/{id}/{importacion_id}', [DatassController::class, 'Grafico_IndicadorProvincial'])->name('Datass.Grafico_IndicadorProvincial');
+Route::post('/Datass/Grafico_IndicadorProvincial_masDistrital/{id}/{importacion_id}', [DatassController::class, 'Grafico_IndicadorProvincial_masDistrital'])->name('Datass.Grafico_IndicadorProvincial_masDistrital');
+Route::post('/Datass/mapa_basico/{id}', [DatassController::class, 'mapa_basico'])->name('Datass.mapa_basico');
+
+
 Route::get('/PEmapacopsa/Importar', [PadronEmapacopsaController::class, 'importar'])->name('pemapacopsa.importar');
 Route::post('/PEmapacopsa/Importar', [PadronEmapacopsaController::class, 'importarGuardar'])->name('pemapacopsa.guardar');
 Route::get('/PEmapacopsa/Listado/{importacion_id}', [PadronEmapacopsaController::class, 'importarListado'])->name('pemapacopsa.listado');
@@ -425,6 +432,11 @@ Route::post('/CentroPobladoDatass/calidadservicio/datos', [CentroPobladoDatassCo
 
 Route::get('/CentroPobladoDatass/listarDT', [CentroPobladoDatassController::class, 'listarDT'])->name('centropobladodatass.listarDT');
 
+
+Route::post('/CentroPobladoDatass/Grafico_PorRegion_segunColumna/{columnaBD}', [CentroPobladoDatassController::class,'Grafico_PorRegion_segunColumna'])->name('centropobladodatass.Grafico_PorRegion_segunColumna');
+Route::post('/CentroPobladoDatass/Grafico_PorRegion_CP_Periodos', [CentroPobladoDatassController::class,'Grafico_PorRegion_CP_Periodos'])->name('centropobladodatass.Grafico_PorRegion_CP_Periodos');
+Route::post('/CentroPobladoDatass/Grafico_tipo_organizacion_comunal/{id}', [CentroPobladoDatassController::class,'Grafico_tipo_organizacion_comunal'])->name('centropobladodatass.Grafico_tipo_organizacion_comunal');
+Route::post('/CentroPobladoDatass/Grafico_Asociados_organizacion_comunal/{id}', [CentroPobladoDatassController::class,'Grafico_Asociados_organizacion_comunal'])->name('centropobladodatass.Grafico_Asociados_organizacion_comunal');
 /**************************************** FIN VIVIENDA ************************************************/
 
 /**************************************** ADMINISTRADOR ************************************************/

@@ -1,6 +1,23 @@
+
+
  <!-- Topbar Start -->
  <div class="navbar-custom">
+    
      <ul class="list-unstyled topnav-menu float-right mb-0">
+
+            <li class="dropdown notification-list">
+                <!-- Mobile menu toggle-->
+                <a class="navbar-toggle nav-link">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+                <!-- End mobile menu toggle-->
+            </li>
+  
+        
 
          <li class="dropdown notification-list d-none d-md-inline-block">
              <a href="#" id="btn-fullscreen" class="nav-link waves-effect waves-light">
@@ -97,34 +114,9 @@
         <strong style="color:white ;">SISTEMA DE MONITOREO REGIONAL</strong> 
     </div>
     
-     <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
 
-       
-         <li>
-             <button class="button-menu-mobile waves-effect waves-light">
-                 <i class="mdi mdi-menu"></i>
-             </button>
-         </li>
 
-         {{-- <br> --}}
-         {{-- <p style="color: white"> <font SIZE=4>SISTEMA DE MONITOREO REGIONAL - SISMORE</font></p> --}}
-
-         {{-- BUSQUEDA --}}
-         {{-- <li class="d-none d-sm-block">
-            <form class="app-search">
-                <div class="app-search-box">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <div class="input-group-append">
-                            <button class="btn" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </li> --}}
-     </ul>
+   
 
 
     <!-- <div>
@@ -134,3 +126,7 @@
      <!-- LOGO -->
  </div>
  <!-- end Topbar -->
+
+
+
+

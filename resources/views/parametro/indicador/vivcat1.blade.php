@@ -7,7 +7,7 @@
     <div class="content">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card card-fill bg-primary">
+                <div class="card card-fill" style="background: #43beac">
                     <div class="card-header bg-transparent">
                         <h3 class="card-title text-white">{{$title}}</h3>
                     </div>
@@ -190,8 +190,8 @@
                     <div class="col-12">
                         <div class="table-responsive">
                             <table class="table mb-0">
-                                <thead>
-                                    <tr>
+                                <thead >
+                                    <tr >
                                         <th rowspan="2">PROVINCIA</th>
                                         <th rowspan="2">TOTAL HOGARES</th>
                                         <th colspan="2"><CENTER>CON COBERTURA DE AGUA</CENTER></th>
@@ -274,7 +274,7 @@
                     <div class="col-12">
                         <div class="table-responsive">
                             <table class="table mb-0">
-                                <thead>
+                                <thead >
                                     <tr>
                                         <th rowspan="2">PROVINCIA</th>
                                         <th rowspan="2">TOTAL HOGARES</th>
@@ -319,7 +319,7 @@
                         <div class="col-xl-12">
                             <div class="table-responsive">
                                 <table id="datatable1" class="table table-striped table-bordered" style="width:100%">
-                                    <thead class="cabecera-dataTable">                                    
+                                    <thead style="background: #43beac; color:white" class="cabecera-dataTable">                                    
                                         <th >PROVINCIA</th>
                                         <th >DISTRITO</th>
                                         <th >CENTRO POBLADO</th>

@@ -29,223 +29,21 @@
     <link rel="stylesheet" href="{{ asset('/') }}public/assets/css/otros/personalizado.css" type='text/css'>
 </head>
 
-
-<body data-layout="horizontal">
+<body>
 
     <!-- Begin page -->
     <div id="wrapper">
+
         @auth()
-        <!-- Navigation Bar-->
-        <header id="topnav">
-                <!-- Topbar Start -->
-                <div class="navbar-custom">
+            @include('layouts.navbars.navs.auth')
+            @include('layouts.navbars.sidebar')
+            {{-- @include('layouts.navbars.sidebarRight') --}}
+            <!-- start page title -->
+
+            <div class="content-page">
+                <div class="content">
                     <div class="container-fluid">
-                        <ul class="list-unstyled topnav-menu float-right mb-0">
-
-                            <li class="dropdown notification-list">
-                                <!-- Mobile menu toggle-->
-                                <a class="navbar-toggle nav-link">
-                                    <div class="lines">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </div>
-                                </a>
-                                <!-- End mobile menu toggle-->
-                            </li>
-
-           
-                            
-
-                            <li class="dropdown notification-list d-none d-md-inline-block">
-                                <a href="#" id="btn-fullscreen" class="nav-link waves-effect waves-light">
-                                    <i class="mdi mdi-crop-free noti-icon"></i>
-                                </a>
-                            </li>
-                            <li class="dropdown notification-list">
-                                <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#"
-                                    role="button" aria-haspopup="false" aria-expanded="false">
-                                    <img src="{{ asset('/') }}public/assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
-                                    {{ Auth::user()->nombre }}
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                                    <!-- item-->
-                                    {{-- <div class="dropdown-header noti-title">
-                                        <h6 class="text-overflow m-0">Bienvenido</h6>
-                                    </div> --}}
-                   
-                                    <!-- item-->
-                                    <a href="#" class="dropdown-item notify-item" onclick="editPerfilUsuario('{{ Auth::user()->id }}')">
-                                        <i class="mdi mdi-face-profile"></i>
-                                        <span>Perfil</span>
-                                    </a>
-                   
-                                    <div class="dropdown-divider"></div>
-                                    <!-- item-->
-                                    @if (session()->get('total_sistema') > 1)
-                                        <a href="{{ route('home') }}" class="dropdown-item notify-item">
-                                            <i class="mdi mdi-settings-outline noti-icon"></i>
-                                            <span>Cambiar Sistemas</span>
-                                        </a>
-                                    @endif
-                   
-                                    <!-- item-->
-                                    <a href="{{ route('logout') }}" class="dropdown-item notify-item"
-                                        onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
-                                        <i class="mdi mdi-power-settings"></i>
-                                        <span>Cerrar Sesión</span>
-                                    </a>
-                   
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                   
-                                </div>
-                            </li>
-
-
-                        </ul>
-            
-                
-                
-                        <!-- LOGO -->
-                         <div class="logo-box">
-                            <a href="index.html" class="logo text-center logo-dark">
-                                <span class="logo-lg">
-                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="16">
-                                    <!-- <span class="logo-lg-text-dark">Moltran</span> -->
-                                </span>
-                                <span class="logo-sm">
-                                    <!-- <span class="logo-lg-text-dark">M</span> -->
-                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="25">
-                                </span>
-                            </a>
-
-                            <a href="#" class="logo text-center logo-light">
-                                <span class="logo-lg">
-                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="50">
-                                      {{-- <span class="logo-lg-text-dark">SISMORE</span>  --}}
-                                    
-                                </span>
-                                <span class="logo-sm">
-                                     
-                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="30">
-                                    {{-- <span class="logo-lg-text-dark">SISMORE</span>   --}}
-                                </span>
-                            </a>
-                        </div>
-
-
-                        <div class="logo-box2">                                                
-                            <strong style="color:white; font-size: xx-large;">S I S M O R E</strong> 
-                            <br>
-                            <strong style="color:white ;">SISTEMA DE MONITOREO REGIONAL</strong> 
-                        </div>
-
-
-                        <!-- LOGO -->
-
-                        {{-- <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
-
-                            <li class="d-none d-sm-block">
-                                <h1>SISTEMA DE MONITOREO REGIONAL</h1>
-                            </li>
-                        </ul> --}}
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-                <!-- end Topbar -->
-
-                <div class="topbar-menu">
-                    <div class="container-fluid">
-                        <div id="navigation">
-                            <!-- Navigation Menu-->
-                            {{-- <ul class="navigation-menu">
-
-                                <li class="has-submenu">
-                                    <a href="index.html">
-                                        <i class="mdi mdi-home"></i>Dashboard
-                                    </a>
-                                </li>
-
-                                <li class="has-submenu">
-                                    <a href="#"> <i class="mdi mdi-palette"></i> Elements </a>
-                                    <ul class="submenu">
-                                        <li><a href="ui-typography.html">Typography</a></li>
-                                        <li><a href="ui-buttons.html">Buttons</a></li>
-                                        <li><a href="ui-cards.html">Cards</a></li>
-                                        <li><a href="ui-checkbox-radio.html">Checkboxs-Radios</a></li>
-                                        <li><a href="ui-tabs-accordions.html">Tabs &amp; Accordions</a></li>
-                                        <li><a href="ui-modals.html">Modals</a></li>
-                                        <li><a href="ui-bootstrap.html">BS Elements</a></li>
-                                        <li><a href="ui-progressbars.html">Progress Bars</a></li>
-                                        <li><a href="ui-notification.html">Notification</a></li>
-                                        <li><a href="ui-sweet-alert2.html">Sweet-Alert2</a></li>
-                                    </ul>
-                                </li>
-                             
-                            </ul>
-                             --}}
-                            
-                            <ul class="navigation-menu">                  
-
-                                @foreach (session('menuNivel01') as $key => $menu)  
-            
-                                    <li class="has-submenu">
-                                        @if ($menu->url=='')            
-                                            {{-- <a href="javascript: void(0);" class="waves-effect"> --}}
-                                            <a href="#" class="waves-effect">
-                                                <i style="color:white" class="{{$menu->icono}}"></i>
-                                                <span style="color:white"> {{$menu->nombre}} </span>
-                                                <span class="menu-arrow"></span>
-                                            </a>            
-                                        <ul class="submenu" >
-                                            
-                                            @foreach (session('menuNivel02') as $key => $subMenu)
-                                                @if($menu->id==$subMenu->dependencia)
-                                                <li><a href="{{route($subMenu->url)}}">{{$subMenu->nombre}}</a></li>                                
-                                                @endif
-                                            @endforeach 
-                    
-                                        </ul>
-            
-                                        @else
-                                            <a href="{{route($menu->url,$menu->parametro)}}" class="waves-effect">
-                                                <i style="color:white" class="{{$menu->icono}}"></i>
-                                                <span style="color:white"> {{$menu->nombre}}</span>
-                                            </a>
-                                            
-                                        @endif
-                                        
-                                    </li> 
-                                    
-                                @endforeach             
-                
-                            </ul>   
-
-                           <!-- End navigation menu -->
-
-                            <div class="clearfix"></div>
-                        </div>
-                        <!-- end #navigation -->
-                    </div>
-                    <!-- end container -->
-                </div>
-                <!-- end navbar-custom -->
-            </header>
-            <!-- End Navigation Bar-->
-
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
-
-        <div class="content-page">
-            <div class="content">
-
-                <!-- Start Content-->
-                <div class="container-fluid">
-
-                    @if (session('sistema_id') != 5)
+                        @if (session('sistema_id') != 5)
                             <div class="row">
                                 <div class="col-12">
                                     @if ($titlePage != '')
@@ -302,33 +100,13 @@
                             </div>
                         @endif
 
-
                         @yield('content')
-
-                </div>
-                <!-- end container-fluid -->
-
-            </div>
-            <!-- end content -->
-
-            
-
-            <!-- Footer Start -->
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                      <script>
-                        document.write(new Date().getFullYear())
-                    </script>
-                     Derechos Reservados - Gobierno Regional de Ucayali
+                        
                     </div>
                 </div>
-              </footer>
-            <!-- end Footer -->
+            </div>
 
-                  
-
-        </div>
+            @include('layouts.footers.auth')
 
         @endauth
 
@@ -337,14 +115,19 @@
         @endguest
 
         <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+        {{-- <div class="content-page">
+        </div> --}}
+        <!-- ============================================================== -->
         <!-- End Page content -->
         <!-- ============================================================== -->
 
     </div>
     <!-- END wrapper -->
 
-    
-     <!-- Bootstrap modal -->
+    <!-- Bootstrap modal -->
+    {{-- <div id="modal_form" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;"> --}}
     <div id="modal_perfil_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         style="overflow:auto">
         <div class="modal-dialog modal-lg">
@@ -484,41 +267,44 @@
     <!-- End Bootstrap modal -->
 
 
-    <!-- Right bar overlay-->
-    <div class="rightbar-overlay"></div>
 
-
+    {{-- <script src="{{ asset('/') }}public/assets/jquery-ui/external/jquery/jquery.js"></script> --}}
     <!-- Vendor js -->
     <script src="{{ asset('/') }}public/assets/js/vendor.min.js"></script>
 
     <script src="{{ asset('/') }}public/assets/libs/moment/moment.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/jquery-scrollto/jquery.scrollTo.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.js"></script>
-    
+
     <!-- Chat app -->
-    <script src="{{ asset('/') }}public/assets/js/pages/jquery.chat.js"></script>
+    {{-- <script src="{{ asset('/') }}public/assets/js/pages/jquery.chat.js"></script> --}}
 
     <!-- Todo app -->
-    <script src="{{ asset('/') }}public/assets/js/pages/jquery.todo.js"></script>
+    {{-- <script src="{{ asset('/') }}public/assets/js/pages/jquery.todo.js"></script> --}}
+
+    <script src="{{ asset('/') }}public/assets/libs/toastr/toastr.min.js"></script>
+    <script src="{{ asset('/') }}public/assets/js/bootbox.js"></script>
+
 
     <!-- flot chart -->
-    <script src="{{ asset('/') }}public/assets/libs/flot-charts/jquery.flot.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/flot-charts/jquery.flot.time.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/flot-charts/jquery.flot.tooltip.min.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/flot-charts/jquery.flot.resize.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/flot-charts/jquery.flot.pie.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/flot-charts/jquery.flot.selection.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/flot-charts/jquery.flot.stack.js"></script>
-    <script src="{{ asset('/') }}public/assets/libs/flot-charts/jquery.flot.crosshair.js"></script>
+    {{-- <script src="assets/libs/flot-charts/jquery.flot.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.time.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.tooltip.min.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.resize.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.pie.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.selection.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.stack.js"></script>
+        <script src="assets/libs/flot-charts/jquery.flot.crosshair.js"></script> --}}
 
     <!-- Dashboard init JS -->
-    <script src="{{ asset('/') }}public/assets/js/pages/dashboard.init.js"></script>
+    {{-- <script src="assets/js/pages/dashboard.init.js"></script> --}}
 
     <!-- App js -->
     <script src="{{ asset('/') }}public/assets/js/app.min.js"></script>
-
     <script>
-     
+        /* var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263',
+                        '#6AF9C4'
+                    ]; */
         var paleta_colores = ['#317eeb', '#ef5350', '#33b86c', '#33b86c', '#33b86c', '#6c757d', '#ec407a', '#7e57c2',
             '#ffd740'
         ];

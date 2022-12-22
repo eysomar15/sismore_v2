@@ -18,7 +18,7 @@
                         <div class="card-body">                                
                             <div class="table-responsive">
                                 <table id="importaciones" class="table table-striped table-bordered" style="width:100%">
-                                    <thead class="cabecera-dataTable">                                    
+                                    <thead style="background: #43beac ; color:white" class="cabecera-dataTable">                                    
                                         <!-- <th>Codigo</th> -->
                                         <th>Fuente</th>
                                         <th>Formato</th> 
