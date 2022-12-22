@@ -287,6 +287,16 @@ class ImportacionRepositorio
         //return Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', $fuente)->where('estado', 'PR')->first()->maximo;
     }
 
+    public static function ImpportacionMax_porfuente($fuente)
+    {
+        $query = Importacion::select('id', 'fechaActualizacion')
+            ->where('fuenteimportacion_id', $fuente)
+            ->where('estado', 'PR')
+            ->orderBy('fechaActualizacion', 'desc')->get();
+        return  $query->first()  ;
+        //return Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', $fuente)->where('estado', 'PR')->first()->maximo;
+    }
+
     public static function Max_yearSiagieMatricula()
     {
         $query =  DB::table('par_importacion as v1')

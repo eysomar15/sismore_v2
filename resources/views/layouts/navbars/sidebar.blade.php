@@ -31,7 +31,7 @@
             </div>
             <!--- fin user-box -->
               
-            <ul class="metismenu" id="side-menu">                  
+            <ul class="navigation-menu">                  
 
                     @foreach (session('menuNivel01') as $key => $menu)  
 

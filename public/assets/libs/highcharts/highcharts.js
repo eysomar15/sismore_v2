@@ -449,9 +449,11 @@
         ("");
         return b;
     });
+    // cambio..
     M(a, "Core/Color/Palette.js", [], function () {
         return {
-            colors: "#7cb5ec #434348 #90ed7d #f7a35c #8085e9 #f15c80 #e4d354 #2b908f #f45b5b #91e8e1".split(" "),
+            // colors: "#7cb5ec #434348 #90ed7d #f7a35c #8085e9 #f15c80 #e4d354 #2b908f #f45b5b #91e8e1".split(" "),
+            colors: "#43beac #f8b72c #f04c27 #dfdde5 #8085e9 #f15c80 #e4d354 #2b908f #f45b5b #91e8e1".split(" "),
             backgroundColor: "#ffffff",
             neutralColor100: "#000000",
             neutralColor80: "#333333",
@@ -813,10 +815,13 @@
                     resetZoomTitle: "Reset zoom level 1:1",
                     thousandsSep: " ",
                 },
+             
                 global: {},
                 time: { Date: void 0, getTimezoneOffset: void 0, timezone: void 0, timezoneOffset: 0, useUTC: !0 },
                 chart: a,
-                title: { text: "Chart title", align: "center", margin: 15, widthAdjust: -44 },
+                // cambio gamb
+                title: { text: "Chart title", align: "center", margin: 15, widthAdjust: -44 ,style: { fontWeight: "bold", color:"#585858"} },
+      
                 subtitle: { text: "", align: "center", widthAdjust: -44 },
                 caption: { margin: 15, text: "", align: "left", verticalAlign: "bottom" },
                 plotOptions: {},

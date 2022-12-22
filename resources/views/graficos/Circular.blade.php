@@ -13,6 +13,9 @@
         title: {
             text: '{{$titulo_grafico}}'
         },
+        subtitle: {
+            text: '{{$subtitulo_grafico}}'
+        },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
         },

@@ -69,8 +69,9 @@ body {
 	width: 100%
 }
 
+/* cambio */
 .content-page {
-	margin-left: 240px;
+	margin-left: 150px;
 	overflow: hidden;
 	padding: 0 15px 65px 15px;
 	min-height: 80vh;
@@ -550,7 +551,11 @@ body.enlarged {
 
 .logo-box {
 	height: 70px;
+<<<<<<< HEAD
+	width: 40px;
+=======
 	width: 230px;
+>>>>>>> d067d8f76abb7d088f6fc7e02c6760569d41b87d
 	float: left;
 
 }
@@ -567,9 +572,15 @@ body.enlarged {
 	background-color: #43beac;
 	padding: 0 10px 0 0;
 	position: fixed;
+<<<<<<< HEAD
+	left: 0;
+	right: 0;
+	height: 75px;
+=======
 	left: 0px;
 	right: 0px;
 	height: 70px;
+>>>>>>> d067d8f76abb7d088f6fc7e02c6760569d41b87d
 	z-index: 100
 }
 
@@ -1176,14 +1187,17 @@ body[data-layout=horizontal].enlarged {
 	padding: 130px 12px 0 12px
 }
 
+
+/*cambio menu*/
 #topnav {
-	background: #fff;
+	background: #f04c27;
 	position: fixed;
 	left: 0;
 	right: 0;
 	z-index: 1001;
 	border-bottom: 1px solid #e9e9e9;
-	padding: 0 12px
+	padding: 0 12px;	
+
 }
 
 #topnav .arrow-down {
@@ -1270,7 +1284,8 @@ body[data-layout=horizontal].enlarged {
 }
 
 #topnav .topbar-menu {
-	margin-top: 70px
+	margin-top: 70px;
+
 }
 
 .navigation-menu {

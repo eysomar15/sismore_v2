@@ -105,7 +105,7 @@
             <div class="col-lg-12">
                 <div class="card card-fill bg-success">
                     <div class="card-header bg-transparent">
-                        <h3 class="card-title text-white">Porcentaje de Centros Poblados Rurales con Sistema de excretas
+                        <h3 class="card-title text-white">Porcentajedddddddddddd de Centros Poblados Rurales con Sistema de excretas
                         </h3>
                     </div>
                 </div>
