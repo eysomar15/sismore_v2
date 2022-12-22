@@ -5,6 +5,7 @@ namespace App\Repositories\Educacion;
 use App\Models\Educacion\Area;
 use App\Models\Educacion\Importacion;
 use App\Models\Educacion\NivelModalidad;
+use App\Models\Educacion\PadronRER;
 use App\Models\Educacion\PLaza;
 use Illuminate\Support\Facades\DB;
 
@@ -1198,5 +1199,21 @@ class PlazaRepositorio
         $foot = $foot->get()->first();
         $dt['table'] = view('educacion.Plaza.DocentesPrincipalTabla4', compact('heads', 'bodys', 'foot'))->render();
         return $dt;
+    }
+
+    public static function conteo_docentes_rer()
+    {
+        $imp = PLaza::where('v2.estado', 'PR')
+            ->join('par_importacion as v2', 'v2.id', '=', 'edu_plaza.importacion_id')
+            ->select(DB::raw('distinct edu_plaza.importacion_id'))
+            ->orderBy('v2.id', 'desc')
+            ->limit(1)
+            ->first()->importacion_id;
+        $query = PadronRER::where('v2.importacion_id', $imp)->where('v3.id', '!=', '16')->where('v3.dependencia', 1)
+            ->join('edu_plaza as v2', 'v2.institucioneducativa_id', '=', 'edu_padron_rer.institucioneducativa_id')
+            ->join('edu_tipotrabajador as v3', 'v3.id', '=', 'v2.tipoTrabajador_id')
+            ->select(DB::raw('count(distinct(v2.documento_identidad)) as conteo'))
+            ->first()->conteo;
+        return $query;
     }
 }

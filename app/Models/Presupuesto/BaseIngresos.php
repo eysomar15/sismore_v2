@@ -13,15 +13,8 @@ class BaseIngresos extends Model
 
     protected $fillable = [
         'importacion_id',
-        'anio_id',
-        'meses_id',
-        'pliego_id',
-        'ubigeo_id',
-        'sector_id',
-        'recursosingreso_id',
-        'especificadetalle_id',
-        'pia',
-        'pim',
-        'recaudado',
+        'anio',
+        'mes',
+        'dia',
     ];
 }

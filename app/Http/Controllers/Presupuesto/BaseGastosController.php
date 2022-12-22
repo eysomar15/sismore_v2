@@ -4,8 +4,15 @@ namespace App\Http\Controllers\Presupuesto;
 
 use App\Exports\BaseGastosExport;
 use App\Http\Controllers\Controller;
+use App\Models\Educacion\Importacion;
+use App\Models\Presupuesto\BaseGastos;
+use App\Models\Presupuesto\GenericaGasto;
+use App\Models\Presupuesto\Sector;
+use App\Models\Presupuesto\SubGenericaGasto;
 use App\Models\Presupuesto\TipoGobierno;
+use App\Models\Presupuesto\UnidadEjecutora;
 use App\Repositories\Presupuesto\BaseGastosRepositorio;
+use App\Repositories\Presupuesto\BaseSiafWebRepositorio;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -26,14 +33,32 @@ class BaseGastosController extends Controller
 
     public function cargarsector(Request $rq)
     {
-        $sectors = BaseGastosRepositorio::cargarsector($rq->get('gobierno'));
+        $sectors = Sector::where('tipogobierno_id', $rq->get('gobierno'))->get(); //BaseGastosRepositorio::cargarsector($rq->get('gobierno'));
         return response()->json(compact('sectors'));
     }
 
     public function cargarue(Request $rq)
     {
-        $ues = BaseGastosRepositorio::cargarue($rq->get('gobierno'), $rq->get('sector'));
+        $ues = UnidadEjecutora::select('pres_unidadejecutora.*')
+            ->join('pres_pliego as v2', 'v2.id', '=', 'pres_unidadejecutora.pliego_id')
+            ->where('v2.sector_id', $rq->get('sector'))
+            ->get(); //BaseGastosRepositorio::cargarue($rq->get('gobierno'), $rq->get('sector'));
         return response()->json(compact('ues'));
+    }
+
+    public function cargarsubgenerica(Request $rq)
+    {
+        if ($rq->get('generica') > 0) {
+            $sg = SubGenericaGasto::where('generica_id', $rq->get('generica'))->get();
+        } else {
+            $sg = SubGenericaGasto::all();
+        }
+
+        foreach ($sg as $key => $vv) {
+            $gg = GenericaGasto::find($vv->generica_id);
+            $vv->codigo = '2.' . $gg->codigo . '.' . $vv->codigo;
+        }
+        return response()->json(compact('sg'));
     }
 
     public function nivelgobiernosgrafica01(Request $rq)
@@ -123,7 +148,172 @@ class BaseGastosController extends Controller
         }
         return view("Presupuesto.BaseGastos.NivelGobiernosTabla2", compact('body', 'foot'));
     }
+
+
     /* fin nivel gobiernos */
+
+    /* niveles de gobiernos */
+    public function nivelesgobiernos()
+    {
+        $impG = Importacion::where('fuenteimportacion_id', '13')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
+        $bgs = BaseGastos::where('importacion_id', $impG->id)->first();
+        $impI = Importacion::where('fuenteimportacion_id', '15')->where('estado', 'PR')->orderBy('fechaActualizacion', 'desc')->first();
+
+        $opt1 = BaseGastosRepositorio::total_pim($bgs->id);
+        $card1['pim'] = $opt1->pim;
+        $card1['eje'] = $opt1->eje;
+
+        $opt1 = BaseGastosRepositorio::pim_tipogobierno($bgs->id);
+        $card2['pim'] = $opt1[1]->pim;
+        $card2['eje'] = $opt1[1]->eje;
+        $card3['pim'] = $opt1[2]->pim;
+        $card3['eje'] = $opt1[2]->eje;
+        $card4['pim'] = $opt1[0]->pim;
+        $card4['eje'] = $opt1[0]->eje;
+
+        return view('Presupuesto.BaseGastos.NivelesGobiernos', compact('card1', 'card2', 'card3', 'card4', 'impG', 'impI', 'bgs'));
+    }
+
+    public function nivelesgobiernosgrafica1(Request $rq)
+    {
+        $info = BaseGastosRepositorio::pim_tipogobierno2($rq->basegastos_id);
+        $color = ['#7e57c2', '#317eeb', '#ef5350'];
+        foreach ($info as $key => $value) {
+            $value->color = $color[$key];
+        }
+        return response()->json(compact('info'));
+    }
+
+    public function nivelesgobiernosgrafica2(Request $rq)
+    {
+        $info = BaseGastosRepositorio::inversiones_pim_tipogobierno($rq->basegastos_id);
+        return response()->json(compact('info'));
+    }
+
+    public function nivelesgobiernosgrafica4()
+    {
+        $base = BaseGastosRepositorio::pim_anios_tipogobierno();
+        //return $base;
+        $data['categoria'] = [];
+        $data['series'] = [];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
+        foreach ($base as $key => $ba) {
+            $data['categoria'][] = $ba->ano;
+            $dx1[] = $ba->pim1;
+            $dx2[] = $ba->pim2;
+            $dx3[] = $ba->pim3;
+        }
+        $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#7e57c2',  'data' => $dx1];
+        $data['series'][] = ['name' => 'GOBIERNOS REGIONALES', 'color' => '#317eeb',  'data' => $dx2];
+        $data['series'][] = ['name' => 'GOBIERNOS LOCALES', 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('data'));
+    }
+
+    public function nivelesgobiernosgrafica7()
+    {
+        $base = BaseGastosRepositorio::activades_pim_anios_tipogobierno();
+        $data['categoria'] = [];
+        $data['series'] = [];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
+        foreach ($base as $key => $ba) {
+            $data['categoria'][] = $ba->ano;
+            $dx1[] = $ba->pim1;
+            $dx2[] = $ba->pim2;
+            $dx3[] = $ba->pim3;
+        }
+        $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#7e57c2',  'data' => $dx1];
+        $data['series'][] = ['name' => 'GOBIERNOS REGIONALES', 'color' => '#317eeb',  'data' => $dx2];
+        $data['series'][] = ['name' => 'GOBIERNOS LOCALES', 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('data'));
+    }
+
+    public function nivelesgobiernosgrafica5()
+    {
+        $base = BaseGastosRepositorio::inversion_pim_anios_tipogobierno();
+        $data['categoria'] = [];
+        $data['series'] = [];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
+        foreach ($base as $key => $ba) {
+            if ($ba->tipo == 'GOBIERNO NACIONAL') {
+                $data['categoria'][] = $ba->ano;
+                $dx1[] = $ba->pim1;
+            }
+            if ($ba->tipo == 'GOBIERNOS REGIONALES')
+                $dx2[] = $ba->pim2;
+            if ($ba->tipo == 'GOBIERNOS LOCALES')
+                $dx3[] = $ba->pim3;
+        }
+        $data['series'][] = ['name' => 'GOBIERNO NACIONAL', 'color' => '#7e57c2',  'data' => $dx1];
+        $data['series'][] = ['name' => 'GOBIERNOS REGIONALES', 'color' => '#317eeb',  'data' => $dx2];
+        $data['series'][] = ['name' => 'GOBIERNOS LOCALES', 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('data'));
+    }
+
+    public function nivelesgobiernosgrafica8(Request $rq)
+    {
+        $info = BaseGastosRepositorio::pim_pia_devengado_tipogobierno($rq->basegastos_id);
+        $data['categoria'] = ['GOBIERNO NACIONAL', 'GOBIERNOS REGIONALES', 'GOBIERNOS LOCALES'];
+        $data['series'] = [];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
+        foreach ($info as $key => $value) {
+            //$dx1[] = $value->y1; //pia
+            $dx2[] = $value->y2; //pim
+            $dx3[] = round($value->y3, 2); //devengado
+        }
+        //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
+        $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb', 'data' => $dx2];
+        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('data'));
+    }
+
+    public function nivelesgobiernosgrafica9(Request $rq)
+    {
+        $info = BaseGastosRepositorio::inversion_pim_pia_devengado_tipogobierno($rq->basegastos_id);
+        $data['categoria'] = ['GOBIERNO NACIONAL', 'GOBIERNOS REGIONALES', 'GOBIERNOS LOCALES'];
+        $data['series'] = [];
+        $dx1 = [];
+        $dx2 = [];
+        $dx3 = [];
+        foreach ($info as $key => $value) {
+            $dx1[] = $value->y1; //pia
+            $dx2[] = $value->y2; //pim
+            $dx3[] = round($value->y3, 2); //devengado
+        }
+        //$data['series'][] = ['name' => 'PIA', 'color' => '#7C7D7D', 'data' => $dx1];
+        $data['series'][] = ['name' => 'PIM', 'color' => '#317eeb', 'data' => $dx2];
+        $data['series'][] = ['name' => 'DEVENGADO', 'color' => '#ef5350', 'data' => $dx3];
+        return response()->json(compact('data'));
+    }
+
+    public function nivelesgobiernosgrafica0()
+    {
+        $body = BaseGastosRepositorio::pim_ejecutado_noejecutado_tipogobierno();
+        $foot = ['gnp' => 0, 'gnd' => 0, 'gnne' => 0, 'glp' => 0, 'gld' => 0, 'glne' => 0, 'grp' => 0, 'grd' => 0, 'grne' => 0, 'ttp' => 0, 'ttd' => 0, 'ttne' => 0];
+        foreach ($body as $key => $value) {
+            $foot['gnp'] += $value->gnp;
+            $foot['gnd'] += $value->gnd;
+            $foot['gnne'] += $value->gnne;
+            $foot['glp'] += $value->glp;
+            $foot['gld'] += $value->gld;
+            $foot['glne'] += $value->glne;
+            $foot['grp'] += $value->grp;
+            $foot['grd'] += $value->grd;
+            $foot['grne'] += $value->grne;
+            $foot['ttp'] += $value->ttp;
+            $foot['ttd'] += $value->ttd;
+            $foot['ttne'] += $value->ttne;
+        }
+        return view("presupuesto.inicioPresupuestohometabla1", compact('body', 'foot'));
+    }
+    /* fin niveles de gobiernos */
 
 
     public function download()

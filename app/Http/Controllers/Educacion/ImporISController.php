@@ -192,10 +192,10 @@ class ImporISController extends Controller
                 foreach ($value as $celda => $row) {
                     if ($celda > 0) break;
                     $cadena =
-                        $row['cod_mod'] .
-                        $row['cod_local'] .
+                        $row['codigo_modular'] .
+                        $row['codigo_local'] .
                         $row['instituto_superior'] .
-                        $row['cod_carrera'] .
+                        $row['codigo_carrera'] .
                         $row['carrera_especialidad'] .
                         $row['tipo_matricula'] .
                         $row['semestre'] .
@@ -210,7 +210,28 @@ class ImporISController extends Controller
                         $row['fecha_nacimiento'] .
                         $row['nacionalidad'] .
                         $row['raza_etnia'] .
-                        $row['con_discapacidad'];
+                        $row['discapacidad'];
+                        /*
+                            $row['cod_mod'] .
+                            $row['cod_local'] .
+                            $row['instituto_superior'] .
+                            $row['cod_carrera'] .
+                            $row['carrera_especialidad'] .
+                            $row['tipo_matricula'] .
+                            $row['semestre'] .
+                            $row['ciclo'] .
+                            $row['turno'] .
+                            $row['seccion'] .
+                            $row['codigo_estudiante'] .
+                            $row['apellido_paterno'] .
+                            $row['apellido_materno'] .
+                            $row['nombres'] .
+                            $row['genero'] .
+                            $row['fecha_nacimiento'] .
+                            $row['nacionalidad'] .
+                            $row['raza_etnia'] .
+                            $row['con_discapacidad'];
+                        */
                 }
             }
         } catch (Exception $e) {
@@ -232,10 +253,10 @@ class ImporISController extends Controller
                 foreach ($value as $row) {
                     $padronWeb = ImporISMatricula::Create([
                         'importacion_id' => $importacion->id,
-                        'cod_mod' => $row['cod_mod'],
-                        'cod_local' => $row['cod_local'],
+                        'cod_mod' => $row['codigo_modular'],
+                        'cod_local' => $row['codigo_local'],
                         'instituto_superior' => $row['instituto_superior'],
-                        'cod_carrera' => $row['cod_carrera'],
+                        'cod_carrera' => $row['codigo_carrera'],
                         'carrera_especialidad' => $row['carrera_especialidad'],
                         'tipo_matricula' => $row['tipo_matricula'],
                         'semestre' => $row['semestre'],
@@ -250,7 +271,7 @@ class ImporISController extends Controller
                         'fecha_nacimiento' => $row['fecha_nacimiento'],
                         'nacionalidad' => $row['nacionalidad'],
                         'raza_etnia' => $row['raza_etnia'],
-                        'con_discapacidad' => $row['con_discapacidad'],
+                        'con_discapacidad' => $row['discapacidad'],
                     ]);
                 }
             }

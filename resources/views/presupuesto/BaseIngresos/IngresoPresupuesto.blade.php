@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ''])
+@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => 'Ingreso Presupuestal de la región Ucayali'])
 
 @section('css')
     <style>
@@ -41,16 +41,16 @@
                         <div class="text-right">
                             <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card1['pim'], 0) }}">
                                 <span data-plugin="counterup">
-                                    {{ number_format($card1['pim'] / 1000000, 0) }}
-                                </span> M
+                                    {{ number_format($card1['pim'] , 0) }}
+                                </span>
                             </h4>
                             <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Presupuesto Ucayali</p>
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
+                {{-- <div class="mt-4">
                     <h6 class="">Ejecución
-                        <span class="float-right">{{ number_format($card1['eje'], 2) }}%</span>
+                        <span class="float-right">{{ number_format($card1['eje'], 1) }}%</span>
                     </h6>
                     <div class="progress progress-sm m-0">
                         <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{ $card1['eje'] }}"
@@ -58,7 +58,7 @@
                             <span class="sr-only">{{ number_format($card1['eje'], 2) }}% Complete</span>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
         <!--FIN CARD-->
@@ -73,16 +73,16 @@
                         <div class="text-right">
                             <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card2['pim'], 0) }}">
                                 <span data-plugin="counterup">
-                                    {{ number_format($card2['pim'] / 1000000, 0) }}
-                                </span> M
+                                    {{ number_format($card2['pim'] , 0) }}
+                                </span>
                             </h4>
                             <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobierno Nacional</p>
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
+                {{-- <div class="mt-4">
                     <h6 class="">Ejecución
-                        <span class="float-right">{{ number_format($card2['eje'], 2) }}%</span>
+                        <span class="float-right">{{ number_format($card2['eje'], 1) }}%</span>
                     </h6>
                     <div class="progress progress-sm m-0">
                         <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="{{ $card2['eje'] }}"
@@ -90,7 +90,7 @@
                             <span class="sr-only">{{ $card2['eje'] }}% Complete</span>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
         <!--FIN CARD-->
@@ -105,16 +105,16 @@
                         <div class="text-right">
                             <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card3['pim'], 0) }}">
                                 <span data-plugin="counterup">
-                                    {{ number_format($card3['pim'] / 1000000, 0) }}
-                                </span> M
+                                    {{ number_format($card3['pim'] , 0) }}
+                                </span>
                             </h4>
                             <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobierno Regional</p>
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
+                {{-- <div class="mt-4">
                     <h6 class="">Ejecución
-                        <span class="float-right">{{ number_format($card3['eje'], 2) }}%</span>
+                        <span class="float-right">{{ number_format($card3['eje'], 1) }}%</span>
                     </h6>
                     <div class="progress progress-sm m-0">
                         <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ $card3['eje'] }}"
@@ -122,7 +122,7 @@
                             <span class="sr-only">{{ $card3['eje'] }}% Complete</span>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
         <!--FIN CARD-->
@@ -137,16 +137,16 @@
                         <div class="text-right">
                             <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card4['pim'], 0) }}">
                                 <span data-plugin="counterup">
-                                    {{ number_format($card4['pim'] / 1000000, 0) }}
-                                </span> M
+                                    {{ number_format($card4['pim'] , 0) }}
+                                </span>
                             </h4>
                             <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobiernos Locales</p>
                         </div>
                     </div>
                 </div>
-                <div class="mt-4">
+                {{-- <div class="mt-4">
                     <h6 class="">Ejecución
-                        <span class="float-right">{{ number_format($card4['eje'], 2) }}%</span>
+                        <span class="float-right">{{ number_format($card4['eje'], 1) }}%</span>
                     </h6>
                     <div class="progress progress-sm m-0">
                         <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ $card4['eje'] }}"
@@ -154,7 +154,7 @@
                             <span class="sr-only">{{ $card4['eje'] }}% Complete</span>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
         <!--FIN CARD-->
@@ -195,6 +195,20 @@
                 </div>
                 <div class="card-body p-0">
                     <div id="anal3"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- end  row --}}
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card card-border card-primary">
+                <div class="card-header border-primary bg-transparent p-0">
+                    <h3 class="card-title text-primary "></h3>
+                </div>
+                <div class="card-body p-0">
+                    <div id="anal4"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                 </div>
             </div>
         </div>
@@ -301,6 +315,32 @@
                 success: function(data) {
                     glineal(
                         'anal3',
+                        data.data.categoria,
+                        data.data.series,
+                        '',
+                        'Pim De Ingresos Según Tipo De Gobierno'
+                    );
+                },
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 2");
+                    console.log(jqXHR);
+                },
+            });
+
+
+            /*
+             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 2
+             */
+             $.ajax({
+                url: "{{ route('baseingresos.ingresopresupuestal.grafica04') }}",
+                type: "GET",
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#anal4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                },
+                success: function(data) {
+                    glineal(
+                        'anal4',
                         data.data.categoria,
                         data.data.series,
                         '',

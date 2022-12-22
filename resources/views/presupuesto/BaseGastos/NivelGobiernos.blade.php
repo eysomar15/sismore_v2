@@ -1,4 +1,4 @@
-@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ''])
+@extends('layouts.main', ['activePage' => 'usuarios', 'titlePage' => ' '])
 
 @section('css')
     <!-- Table datatable css -->
@@ -329,7 +329,7 @@
             $.ajax({
                 url: "{{ route('basegastos.cargarue') }}",
                 data: {
-                    'gobierno': $('#fgobierno').val(),
+                    //'gobierno': $('#fgobierno').val(),
                     'sector': $('#fsector').val(),
                 },
                 type: 'get',

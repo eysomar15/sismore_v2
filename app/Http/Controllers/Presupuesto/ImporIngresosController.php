@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\Importacion;
+use App\Models\Parametro\FuenteImportacion;
+use App\Models\Presupuesto\BaseIngresos;
+use App\Models\Presupuesto\BaseIngresosDetalle;
+use App\Models\Presupuesto\Entidad;
 use App\Models\Presupuesto\ImporIngresos;
 use App\Repositories\Educacion\ImporGastosRepositorio;
 use App\Repositories\Educacion\ImportacionRepositorio;
@@ -18,7 +22,7 @@ use Yajra\DataTables\DataTables;
 
 class ImporIngresosController extends Controller
 {
-
+    public $fuente = 15;
     public function __construct()
     {
         $this->middleware('auth');
@@ -26,8 +30,9 @@ class ImporIngresosController extends Controller
 
     public function importar()
     {
+        $fuente = FuenteImportacion::find($this->fuente);
         $mensaje = "";
-        return view('presupuesto.ImporIngresos.Importar', compact('mensaje'));
+        return view('presupuesto.ImporIngresos.Importar', compact('mensaje', 'fuente'));
     }
 
     function json_output($status = 200, $msg = 'OK!!', $data = null)
@@ -78,8 +83,8 @@ class ImporIngresosController extends Controller
                     $cadena =  $cadena .
                         $row['anio'] .
                         $row['mes'] .
-                        $row['cod_tipo_gob'] .
-                        $row['tipo_gobierno'] .
+                        $row['cod_niv_gob'] .
+                        $row['nivel_gobierno'] .
                         $row['cod_sector'] .
                         $row['sector'] .
                         $row['cod_pliego'] .
@@ -131,8 +136,8 @@ class ImporIngresosController extends Controller
                         'importacion_id' => $importacion->id,
                         'anio' => $row['anio'],
                         'mes' => $row['mes'],
-                        'cod_tipo_gob' => $row['cod_tipo_gob'],
-                        'tipo_gobierno' => $row['tipo_gobierno'],
+                        'cod_tipo_gob' => $row['cod_niv_gob'],
+                        'tipo_gobierno' => $row['nivel_gobierno'],
                         'cod_sector' => $row['cod_sector'],
                         'sector' => $row['sector'],
                         'cod_pliego' => $row['cod_pliego'],
@@ -172,15 +177,15 @@ class ImporIngresosController extends Controller
             $this->json_output(400, $mensaje);
         }
 
-        /* try {
-            $procesar = DB::select('call edu_pa_procesarImporMatricula(?,?)', [$importacion->id, $importacion->usuarioId_Crea]);
+        try {
+            $procesar = DB::select('call pres_pa_procesarImporIngresos(?,?)', [$importacion->id, $importacion->usuarioId_Crea]);
         } catch (Exception $e) {
             $importacion->estado = 'EL';
             $importacion->save();
 
             $mensaje = "Error al procesar la normalizacion de datos." . $e->getMessage();
             $this->json_output(400, $mensaje);
-        } */
+        }
 
         $mensaje = "Archivo excel subido y Procesado correctamente .";
         $this->json_output(200, $mensaje, '');
@@ -196,6 +201,7 @@ class ImporIngresosController extends Controller
         $query = ImportacionRepositorio::Listar_FuenteTodos('15');
         $data = [];
         foreach ($query as $key => $value) {
+            $ent = Entidad::find($value->entidad);
             $nom = '';
             if (strlen($value->cnombre) > 0) {
                 $xx = explode(' ', $value->cnombre);
@@ -208,17 +214,19 @@ class ImporIngresosController extends Controller
             }
 
             if (date('Y-m-d', strtotime($value->created_at)) == date('Y-m-d') || session('perfil_id') == 3 || session('perfil_id') == 8 || session('perfil_id') == 9 || session('perfil_id') == 10 || session('perfil_id') == 11)
-                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" id="eliminar' . $value->id . '" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
             else
                 $boton = '';
             $boton2 = '<button type="button" onclick="monitor(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
             $data[] = array(
                 $key + 1,
+                'INGRESO',
                 date("d/m/Y", strtotime($value->fechaActualizacion)),
-                $value->fuente . $value->id,
+                /* $value->fuente . $value->id, */
                 $nom . ' ' . $ape,
+                ($ent ? $ent->abreviado : ''),
                 date("d/m/Y", strtotime($value->created_at)),
-                $value->comentario,
+                /* $value->comentario, */
                 $value->estado == "PR" ? "PROCESADO" : ($value->estado == "PE" ? "PENDIENTE" : "ELIMINADO"),
                 $boton /* . '&nbsp;' . $boton2, */
             );
@@ -240,9 +248,17 @@ class ImporIngresosController extends Controller
 
     public function eliminar($id)
     {
-        $entidad = Importacion::find($id);
+        /* $entidad = Importacion::find($id);
         $entidad->estado = 'EL';
-        $entidad->save();
+        $entidad->save(); */
+
+        $bi = BaseIngresos::where('importacion_id', $id)->first();
+        ImporIngresos::where('importacion_id', $id)->delete();
+        if ($bi) {
+            BaseIngresosDetalle::where('baseingresos_id', $bi->id)->delete();
+            BaseIngresos::find($bi->id)->delete();
+        }
+        Importacion::find($id)->delete();
 
         return response()->json(array('status' => true));
     }

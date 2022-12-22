@@ -34,53 +34,6 @@
             font-size: 10px;
             font-weight: bold;
         }
-
-        /* .highcharts-figure,
-                        .highcharts-data-table table {
-                            min-width: 310px;
-                            max-width: 800px;
-                            margin: 1em auto;
-                        }
-
-                        #anal7 {
-                            height: 400px;
-                        }
-
-                        .highcharts-data-table table {
-                            font-family: Verdana, sans-serif;
-                            border-collapse: collapse;
-                            border: 1px solid #ebebeb;
-                            margin: 10px auto;
-                            text-align: center;
-                            width: 100%;
-                            max-width: 500px;
-                        }
-
-                        .highcharts-data-table caption {
-                            padding: 1em 0;
-                            font-size: 1.2em;
-                            color: #555;
-                        }
-
-                        .highcharts-data-table th {
-                            font-weight: 600;
-                            padding: 0.5em;
-                        }
-
-                        .highcharts-data-table td,
-                        .highcharts-data-table th,
-                        .highcharts-data-table caption {
-                            padding: 0.5em;
-                        }
-
-                        .highcharts-data-table thead tr,
-                        .highcharts-data-table tr:nth-child(even) {
-                            background: #f8f8f8;
-                        }
-
-                        .highcharts-data-table tr:hover {
-                            background: #f1f7ff;
-                        } */
     </style>
 @endsection
 {{-- <div>
@@ -100,8 +53,9 @@
         </div> --}}
             <!-- end row -->
 
-            <div class="row">
 
+
+            <div class="row">
                 <div class="col-md-6 col-xl-3">
                     <div class="card-box">
                         <div class="media">
@@ -112,21 +66,21 @@
                                 <div class="text-right">
                                     <h4 class="font-20 my-0 font-weight-bold" title="{{ number_format($card1['pim'], 0) }}">
                                         <span data-plugin="counterup">
-                                            {{ number_format($card1['pim'] / 1000000, 0) }}
-                                        </span> M
+                                            {{ number_format($card1['pim'], 0) }}
+                                        </span>
                                     </h4>
-                                    <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Presupuesto Ucayali</p>
+                                    <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">PIA {{ $anio }}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <h6 class="">Ejecución
-                                <span class="float-right">{{ number_format($card1['eje'], 2) }}%</span>
+                            <h6 class="">Ejecución(<span style="font-weight: normal">DEV/PIA</span>)
+                                <span class="float-right">{{ number_format($card1['eje'], 1) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
                                 <div class="progress-bar bg-success" role="progressbar" aria-valuenow="{{ $card1['eje'] }}"
                                     aria-valuemin="0" aria-valuemax="100" style="width: {{ $card1['eje'] }}%">
-                                    <span class="sr-only">{{ number_format($card1['eje'], 2) }}% Complete</span>
+                                    <span class="sr-only">{{ number_format($card1['eje'], 1) }}% Complete</span>
                                 </div>
                             </div>
                         </div>
@@ -145,16 +99,16 @@
                                     <h4 class="font-20 my-0 font-weight-bold"
                                         title="{{ number_format($card2['pim'], 0) }}">
                                         <span data-plugin="counterup">
-                                            {{ number_format($card2['pim'] / 1000000, 0) }}
-                                        </span> M
+                                            {{ number_format($card2['pim'], 0) }}
+                                        </span>
                                     </h4>
-                                    <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobierno Nacional</p>
+                                    <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">PIM {{ $anio }}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <h6 class="">Ejecución
-                                <span class="float-right">{{ number_format($card2['eje'], 2) }}%</span>
+                            <h6 class="">Ejecución(<span style="font-weight: normal">DEV/PIM</span>)
+                                <span class="float-right">{{ number_format($card2['eje'], 1) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
                                 <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="{{ $card2['eje'] }}"
@@ -178,20 +132,22 @@
                                     <h4 class="font-20 my-0 font-weight-bold"
                                         title="{{ number_format($card3['pim'], 0) }}">
                                         <span data-plugin="counterup">
-                                            {{ number_format($card3['pim'] / 1000000, 0) }}
-                                        </span> M
+                                            {{ number_format($card3['pim'], 0) }}
+                                        </span>
                                     </h4>
-                                    <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobierno Regional</p>
+                                    <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">CERTIFICADO
+                                        {{ $anio }}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <h6 class="">Ejecución
-                                <span class="float-right">{{ number_format($card3['eje'], 2) }}%</span>
+                            <h6 class="">Ejecución(<span style="font-weight: normal">CERT/PIM</span>)
+                                <span class="float-right">{{ number_format($card3['eje'], 1) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
-                                <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ $card3['eje'] }}"
-                                    aria-valuemin="0" aria-valuemax="100" style="width: {{ $card3['eje'] }}%">
+                                <div class="progress-bar bg-primary" role="progressbar"
+                                    aria-valuenow="{{ $card3['eje'] }}" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{ $card3['eje'] }}%">
                                     <span class="sr-only">{{ $card3['eje'] }}% Complete</span>
                                 </div>
                             </div>
@@ -211,16 +167,17 @@
                                     <h4 class="font-20 my-0 font-weight-bold"
                                         title="{{ number_format($card4['pim'], 0) }}">
                                         <span data-plugin="counterup">
-                                            {{ number_format($card4['pim'] / 1000000, 0) }}
-                                        </span> M
+                                            {{ number_format($card4['pim'], 0) }}
+                                        </span>
                                     </h4>
-                                    <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">Gobiernos Locales</p>
+                                    <p class="mb-0 mt-1 text-truncate" style="font-size: 14px">DEVENGADO
+                                        {{ $anio }}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <h6 class="">Ejecución
-                                <span class="float-right">{{ number_format($card4['eje'], 2) }}%</span>
+                            <h6 class="">Ejecución(<span style="font-weight: normal">DEV/CERT</span>)
+                                <span class="float-right">{{ number_format($card4['eje'], 1) }}%</span>
                             </h6>
                             <div class="progress progress-sm m-0">
                                 <div class="progress-bar bg-danger" role="progressbar"
@@ -245,7 +202,8 @@
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
-                            <div id="anal1"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                            <div id="anal1" style="min-width:100%;height:600px;margin:0 auto;"></div>
+                            {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -255,7 +213,8 @@
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
-                            <div id="anal4"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                            <div id="anal2" style="min-width:100%;height:600px;margin:0 auto;"></div>
+                            {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -264,37 +223,40 @@
 
             <div class="row">
                 <div class="col-xl-6">
-
-                    <div class="card card-border card-primary">
-                        <div class="card-header border-primary bg-transparent p-0">
-                            <h3 class="card-title text-primary "></h3>
-                        </div>
-                        <div class="card-body p-0">
-                            <div id="anal2"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-6">
-                    <div class="card card-border card-primary">
-                        <div class="card-header border-primary bg-transparent p-0">
-                            <h3 class="card-title text-primary "></h3>
-                        </div>
-                        <div class="card-body p-0">
-                            <div id="anal5"></div>{{-- style="min-width:400px;height:300px;margin:0 auto;" --}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- end  row --}}
-
-            {{-- <div class="row">
-                <div class="col-xl-6">
                     <div class="card card-border card-primary">
                         <div class="card-header border-primary bg-transparent p-0">
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
                             <div id="anal3"></div>
+                            {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="anal4"></div>
+                            {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- end  row --}}
+
+
+            <div class="row">
+                <div class="col-xl-6">
+                    <div class="card card-border card-primary">
+                        <div class="card-header border-primary bg-transparent p-0">
+                            <h3 class="card-title text-primary "></h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div id="anal5"></div>
+                            {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -305,20 +267,7 @@
                         </div>
                         <div class="card-body p-0">
                             <div id="anal6"></div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-            {{-- end  row --}}
-
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card card-border card-primary">
-                        <div class="card-header border-primary bg-transparent p-0">
-                            <h3 class="card-title text-primary "></h3>
-                        </div>
-                        <div class="card-body p-0">
-                            <div id="anal7"></div>{{-- style="min-width:400px;height:300px;margin:0 auto;" --}}
+                            {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
@@ -332,47 +281,12 @@
                             <h3 class="card-title text-primary "></h3>
                         </div>
                         <div class="card-body p-0">
-                            <div id="anal9"></div>
+                            <div id="anal7"></div>
+                            {{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
                         </div>
                     </div>
                 </div>
-            </div>
-            {{-- end  row --}}
 
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card card-border card-primary">
-                        <div class="card-header border-primary bg-transparent p-0">
-                            <h3 class="card-title text-primary "></h3>
-                        </div>
-                        <div class="card-body p-0">
-                            <div id="anal8"></div>{{--  style="min-width:400px;height:300px;margin:0 auto;" --}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- end  row --}}
-
-
-
-            <div class="row">
-                <div class="col-xl-12 principal">
-                    <div class="card card-border">{{--  bg-transparent pb-0 mb-0 --}}
-                        <div class="card-header border-primary">
-                            <div class="card-widgets">{{-- impormatricula.download --}}
-                                <button type="button" class="btn btn-success btn-xs"
-                                    onclick="javascript:location=`{{ route('basegastos.download.excel.principal01') }}`"><i
-                                        class="fa fa-file-excel"></i>
-                                    Excel</button>
-                            </div>
-                            <h3 class="card-title"></h3>
-                        </div>
-                        <div class="card-body pb-0 pt-0">
-                            <div class="table-responsive" id="vista1">
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             {{-- end  row --}}
 
@@ -382,16 +296,21 @@
 
 
 @section('js')
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/mapdata/countries/pe/pe-all.js"></script>
     {{-- highcharts --}}
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/data.js"></script>
-    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+    {{-- <script src="https://code.highcharts.com/modules/drilldown.js"></script> --}}
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
+
+
     <!-- third party js -->
-    <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
+    {{-- <script src="{{ asset('/') }}public/assets/libs/datatables/jquery.dataTables.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
 
     <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.responsive.min.js"></script>
@@ -410,12 +329,20 @@
     <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.fixedHeader.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.keyTable.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/datatables/dataTables.scroller.min.js"></script>
+ --}}
+
 
 
 
     <script type="text/javascript">
         $(document).ready(function() {
             Highcharts.setOptions({
+                colors: paleta_colores,
+                lang: {
+                    thousandsSep: ","
+                }
+            });
+            /* Highcharts.setOptions({
                 colors: Highcharts.map(paleta_colores, function(color) {
                     return {
                         radialGradient: {
@@ -432,24 +359,28 @@
                 lang: {
                     thousandsSep: ","
                 }
-            });
+            }); */
 
             /*
              *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 1
              */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra1/{{ $impG->id }}",
+                url: "{{ url('/') }}/Home/Presupuesto/gra2/{{ $baseAP->id }}",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
-                    $('#anal1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                    $('#anal2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    //console.log(data)
-                    gPie('anal1', data.info,
+                    maps01('anal1',
+                        data.data,
                         '',
-                        'Distribución del Presupuesto  de la Región Ucayali', /* <br><b class="fuentex">Fuente: SIAF-MEF</b> */
-                        '');
+                        'Rankin de la ejecución de gastos por gobiernos regionales');
+                    gbar('anal2', [],
+                        data.info,
+                        '',
+                        'Porcentaje de ejecución de gastos por gobiernos regionales',
+                    );
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 1");
@@ -457,177 +388,80 @@
                 },
             });
 
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 2
-             */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra2/{{ $impG->id }}",
-                type: "GET",
-                dataType: "JSON",
-                beforeSend: function() {
-                    $('#anal2').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
-                },
-                success: function(data) {
-                    //console.log(data)
-                    gPie('anal2', data.info,
-                        '',
-                        'Distribución del Presupuesto en Inversiones.',
-                        '');
-                },
-                erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 2");
-                    console.log(jqXHR);
-                },
-            });
-
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 3
-             */
-            /* $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra3/{{ $impI->id }}",
+                url: "{{ url('/') }}/Home/Presupuesto/gra3",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
                     $('#anal3').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    //console.log(data)
-                    gPie('anal3', data.info,
+                    //console.log(data.info.categoria);
+                    /* gSimpleColumn(
+                        'anal3',
+                        data.info,
                         '',
-                        'Ingreso Presupuestal de la Region Ucayali',
-                        '');
+                        'RANKIN(PUESTOS) MENSUAL DE LA EJECUCIÓN DE GASTOS',
+                        ''); */
+                    gLineaBasica(
+                        'anal3',
+
+                        data.info.categoria,
+                        data.info.series,
+                        'Puesto',
+                        '',
+                        'Rankin Mensual De La Ejecución De Gastos Del Gru', '');
+                    /* glineal(div, categoria, series, titulo, subtitulo) */
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 3");
                     console.log(jqXHR);
                 },
-            }); */
-
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 4
-             */
-            $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra4/{{ $impI->id }}",
-                type: "GET",
-                dataType: "JSON",
-                beforeSend: function() {
-                    $('#anal7').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
-                },
-                success: function(data) {
-                    glineal(
-                        'anal7',
-                        data.data['categoria'],
-                        data.data['series'],
-                        '',
-                        'Evolución del PIM del Sector Público de la región de Ucayali',
-                        'Año');
-                },
-                erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 7");
-                    console.log(jqXHR);
-                },
             });
 
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 5
-             */
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/gra5/{{ $impI->id }}",
-                type: "GET",
-                dataType: "JSON",
-                beforeSend: function() {
-                    $('#anal8').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
-                },
-                success: function(data) {
-                    console.log(data)
-                    /* gSimpleColumn('anal8', data.base,
-                        '',
-                        'Evaluación Del Presupuesto En Inversión Pública En La Región De Ucayali',
-                        ''); */
-                    glineal(
-                        'anal8',
-                        data.data['categoria'],
-                        data.data['series'],
-                        '',
-                        'Evolución del PIM en Inversión Pública de la región de Ucayali',
-                        'Año');
-                },
-                erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 8");
-                    console.log(jqXHR);
-                },
-            });
-
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA GRAFICA 9
-             */
-            $.ajax({
-                url: "{{ route('graficas.home.presupuesto.7') }}",
-                type: "GET",
-                dataType: "JSON",
-                beforeSend: function() {
-                    $('#anal9').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
-                },
-                success: function(data) {
-                    glineal(
-                        'anal9',
-                        data.data['categoria'],
-                        data.data['series'],
-                        '',
-                        'Evolución del PIM en Actividades Pública de la región de Ucayali',
-                        'Año');
-                },
-                erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 9");
-                    console.log(jqXHR);
-                },
-            });
-
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
-             */
-            $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/tabla1/{{ $impG->id }}",
+                url: "{{ url('/') }}/Home/Presupuesto/gra4",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
                     $('#anal4').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    //console.log(data.data['categoria'])
-                    gAnidadaColumn(
-                        'anal4',
-                        data.data['categoria'],
-                        data.data['series'],
+                    /* gSimpleColumn('anal4',
+                        data.info,
                         '',
-                        'Ejecución Presupuestal Según Tipo De Gobierno'
-                    );
+                        'ACUMULADO MENSUAL DEL PIM A TODA FUENTE DE FINANCIAMIENTO',
+                        ''); */
+                    gLineaBasica(
+                        'anal4',
+
+                        data.info.categoria,
+                        data.info.series,
+                        'PIM',
+                        '',
+                        'Acumulado Mensual Del Pim A Nivel Pliego', '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
-                    console.log("ERROR GRAFICA 4");
+                    console.log("ERROR GRAFICA 3");
                     console.log(jqXHR);
                 },
             });
 
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 2
-             */
+
             $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/tabla2/{{ $impG->id }}",
+                url: "{{ url('/') }}/Home/Presupuesto/gra5",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
                     $('#anal5').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    //console.log(data.data['categoria'])
-                    gAnidadaColumn(
+                    gSimpleColumn(
                         'anal5',
-                        data.data['categoria'],
-                        data.data['series'],
+                        data.info,
                         '',
-                        'Ejecución Presupuestal en Inversiones Según Tipo De Gobierno'
-                    );
+                        'CERTIFICADO MENSUAL A TODA FUENTE DE FINANCIAMIENTO ',
+                        '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 5");
@@ -635,48 +469,51 @@
                 },
             });
 
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 3
-             */
-            /* $.ajax({
-                url: "{{ url('/') }}/Home/Presupuesto/tabla3/{{ $impI->id }}",
+            $.ajax({
+                url: "{{ url('/') }}/Home/Presupuesto/gra6",
                 type: "GET",
                 dataType: "JSON",
                 beforeSend: function() {
                     $('#anal6').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    //console.log(data)
-                    gAnidadaColumn(
+                    gSimpleColumn(
                         'anal6',
-                        data.data['categoria'],
-                        data.data['series'],
+                        data.info,
                         '',
-                        'Recaudación De Ingresos Según Tipo De Gobierno'
-                    );
+                        'DEVENGADO MENSUAL A TODA FUENTE DE FINANCIAMIENTO',
+                        '');
                 },
                 erro: function(jqXHR, textStatus, errorThrown) {
                     console.log("ERROR GRAFICA 6");
                     console.log(jqXHR);
                 },
-            }); */
+            });
 
-            /*
-             *AJAX PARA LA PRESENTACION DE LA PRIMERA tabla 1
-             */
             $.ajax({
-                url: "{{ route('tabla.home.presupuesto') }}",
+                url: "{{ url('/') }}/Home/Presupuesto/gra7",
                 type: "GET",
+                dataType: "JSON",
                 beforeSend: function() {
-                    $('#vista1').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
+                    $('#anal7').html('<span><i class="fa fa-spinner fa-spin"></i></span>');
                 },
                 success: function(data) {
-                    $('#vista1').html(data);
+                    console.log(data)
+                    //gSimpleColumn('anal6', data.info, '', '', '');
+                    gAnidadaColumn('anal7',
+                        data.info.categoria,
+                        data.info.series,
+                        '',
+                        'CERTIFICADO Y DEVENGADO ACUMULADO Y EJECUCIÓN MENSUAL');
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                erro: function(jqXHR, textStatus, errorThrown) {
+                    console.log("ERROR GRAFICA 7");
                     console.log(jqXHR);
                 },
             });
+
+
+
         });
     </script>
 
@@ -882,7 +719,7 @@
                     type: 'column',
                 },
                 title: {
-                    enabled: false,
+                    enabled: true,
                     text: titulo,
                 },
                 subtitle: {
@@ -892,7 +729,8 @@
                     type: 'category',
                 },
                 yAxis: {
-                    /* max: 100, */
+                    //max: 1600000000,
+                    //min:100000,
                     title: {
                         enabled: false,
                         text: 'Porcentaje',
@@ -909,7 +747,8 @@
 
                 }],
                 tooltip: {
-                    pointFormat: '<span style="color:{point.color}">\u25CF</span> Hay: <b>{point.y}%</b><br/>',
+                    //pointFormat: '<span style="color:{point.color}">\u25CF</span> Hay: <b>{point.y}%</b><br/>',
+                    pointFormat: '<span style="color:{point.color}">\u25CF</span> Hay: <b>{point.y}</b><br/>',
                     shared: true
                 },
                 plotOptions: {
@@ -917,7 +756,22 @@
                         borderWidth: 0,
                         dataLabels: {
                             enabled: true,
-                            format: '{point.y}%',
+                            //format: '{point.y}%',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else if (this.y < -1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                            style: {
+                                fontSize: '10px',
+                                fontWeight: 'normal',
+                            }
                         },
                         point: {
                             cursor: 'pointer',
@@ -1078,6 +932,127 @@
         function gAnidadaColumn(div, categoria, series, titulo, subtitulo) {
             Highcharts.chart(div, {
                 chart: {
+                    zoomType: 'xy',
+                },
+                title: {
+                    text: titulo, //'Browser market shares in January, 2018'
+                },
+                subtitle: {
+                    text: subtitulo,
+                },
+                xAxis: [{
+                    categories: categoria,
+                    crosshair: true
+                }],
+                yAxis: [{ // Primary yAxis
+                        max: 2000000000,
+                        labels: {
+                            enabled: false,
+                        },
+                        title: {
+                            enabled: false,
+                        },
+                        /* labels: {
+                            format: '{value}°C',
+                            style: {
+                                color: Highcharts.getOptions().colors[2]
+                            }
+                        },
+                        title: {
+                            text: 'Temperature',
+                            style: {
+                                color: Highcharts.getOptions().colors[2]
+                            }
+                        }, */
+                        //opposite: true,
+                    }, { // Secondary yAxis
+                        gridLineWidth: 0,
+                        labels: {
+                            enabled: false,
+                        },
+                        title: {
+                            enabled: false,
+                        },
+                        /* title: {
+                            text: 'Rainfall',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        },
+                        labels: {
+                            format: '{value} mm',
+                            style: {
+                                color: Highcharts.getOptions().colors[0]
+                            }
+                        }, */
+                        min: -100,
+                        max: 150,
+                        opposite: true,
+                    },
+                    /* { // Tertiary yAxis
+                                       gridLineWidth: 0,
+                                       title: {
+                                           text: 'Sea-Level Pressure',
+                                           style: {
+                                               color: Highcharts.getOptions().colors[1]
+                                           }
+                                       },
+                                       labels: {
+                                           format: '{value} mb',
+                                           style: {
+                                               color: Highcharts.getOptions().colors[1]
+                                           }
+                                       },
+                                       opposite: true
+                                   } */
+                ],
+                series: series,
+                plotOptions: {
+                    /* columns: {
+                        stacking: 'normal'
+                    }, */
+                    series: {
+                        borderWidth: 0,
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:,.0f}',
+                            //format: '{point.y:.1f}%',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else if (this.y < 101) {
+                                    return this.y + "%";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                            style: {
+                                fontWeight: 'normal',
+                            }
+                        },
+                    },
+                },
+                tooltip: {
+                    shared: true,
+                },
+                legend: {
+                    itemStyle: {
+                        "color": "#333333",
+                        "cursor": "pointer",
+                        "fontSize": "10px",
+                        "fontWeight": "normal",
+                        "textOverflow": "ellipsis"
+                    },
+                },
+                credits: false,
+            });
+        }
+
+        function gAnidadaColumn_(div, categoria, series, titulo, subtitulo) {
+            Highcharts.chart(div, {
+                chart: {
                     type: 'column',
                 },
                 title: {
@@ -1086,17 +1061,71 @@
                 subtitle: {
                     text: subtitulo,
                 },
-                xAxis: {
-                    categories: categoria
-                },
-                yAxis: {
+                xAxis: [{
+                    categories: categoria,
+                    crosshair: true
+                }],
+                /* yAxis: [{
                     allowDecimals: false,
                     min: 0,
                     title: {
                         enabled: false,
                         text: 'Porcentaje',
                     }
-                },
+                }, {
+                    allowDecimals: false,
+                    min: 0,
+                    title: {
+                        enabled: false,
+                        text: 'Porcentaje',
+                    }
+                }], */
+                yAxis: [{ // Primary yAxis
+                    labels: {
+                        format: '{value}°C',
+                        style: {
+                            color: Highcharts.getOptions().colors[2]
+                        }
+                    },
+                    title: {
+                        text: 'Temperature',
+                        style: {
+                            color: Highcharts.getOptions().colors[2]
+                        }
+                    },
+                    opposite: true
+
+                }, { // Secondary yAxis
+                    gridLineWidth: 0,
+                    title: {
+                        text: 'Rainfall',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    },
+                    labels: {
+                        format: '{value} mm',
+                        style: {
+                            color: Highcharts.getOptions().colors[0]
+                        }
+                    }
+
+                }, { // Tertiary yAxis
+                    gridLineWidth: 0,
+                    title: {
+                        text: 'Sea-Level Pressure',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    labels: {
+                        format: '{value} mb',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    opposite: true
+                }],
                 series: series,
                 plotOptions: {
                     columns: {
@@ -1221,7 +1250,7 @@
                     text: subtitulo,
                 },
                 xAxis: {
-                    categories: categoria
+                    categories: categoria,
                     /* accessibility: {
                         rangeDescription: 'Range: 2015 to 2025'
                     } */
@@ -1342,5 +1371,321 @@
 
             });
         }
+
+        function gLineaBasica(div, categoria, series, nameserie, titulo, subtitulo, titulovetical) {
+            Highcharts.chart(div, {
+                title: {
+                    text: titulo
+                },
+                subtitle: {
+                    text: subtitulo
+                },
+                yAxis: {
+                    title: {
+                        text: titulovetical
+                    },
+                    //min: 0,
+                },
+                xAxis: {
+                    categories: categoria,
+                    /* accessibility: {
+                        rangeDescription: 'Range: 2010 to 2017'
+                    } */
+                },
+                /* legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                }, */
+                plotOptions: {
+                    series: {
+                        dataLabels: {
+                            enabled: true,
+                            //format: '{point.y:,.0f}',
+                            formatter: function() {
+                                if (this.y > 1000000) {
+                                    return Highcharts.numberFormat(this.y / 1000000, 0) + "M";
+                                } else if (this.y > 1000) {
+                                    return Highcharts.numberFormat(this.y / 1000, 0) + "K";
+                                } else {
+                                    return this.y;
+                                }
+                            },
+                            style: {
+                                fontWeight: 'normal',
+                            }
+                        },
+                        /* label: {
+                            connectorAllowed: false
+                        },
+                        pointStart: 2010 */
+                    }
+                },
+                series: [{
+                    name: nameserie,
+                    showInLegend: false,
+                    data: series
+                }],
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom'
+                            }
+                        }
+                    }]
+                },
+                credits: false,
+
+            });
+        }
+
+        function gbar(div, categoria, series, titulo, subtitulo) {
+            Highcharts.chart(div, {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: titulo, // 'Historic World Population by Region'
+                },
+                subtitle: {
+                    text: subtitulo,
+                    /*  'Source: <a ' +
+                                            'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
+                                            'target="_blank">Wikipedia.org</a>' */
+                },
+                xAxis: {
+                    //categories:categoria,// ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+                    type: "category",
+                    title: {
+                        text: '', // null
+                    },
+                    enabled: false,
+                },
+                yAxis: {
+                    //min: 0,
+                    title: {
+                        text: '', // 'Population (millions)',
+                        align: 'high'
+                    },
+                    /* labels: {
+                        overflow: 'justify'
+                    } */
+                },
+                tooltip: {
+                    valueSuffix: ' %'
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.y} %'
+                        }
+                    }
+                },
+                legend: {
+                    enabled: false, //
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    shadow: true
+                },
+
+                //series: series,
+                /*  [{
+                                    name: 'Year 1990',
+                                    data: [631, 727, 3202, 721, 26]
+                                }, {
+                                    name: 'Year 2000',
+                                    data: [814, 841, 3714, 726, 31]
+                                }, {
+                                    name: 'Year 2010',
+                                    data: [1044, 944, 4170, 735, 40]
+                                }, {
+                                    name: 'Year 2018',
+                                    data: [1276, 1007, 4561, 746, 42]
+                                }] */
+                /* showInLegend: tituloserie != '',
+                        name: tituloserie,
+                        label: {
+                            enabled: false
+                        },
+                        colorByPoint: false, */
+                series: [{
+                    name: 'Ejecución',
+                    showInLegend: false,
+                    label: {
+                        enabled: false
+                    },
+                    data: series,
+                    /* [{
+                                                name: "Chrome",
+                                                y: 63.06,
+                                            },
+                                            {
+                                                name: "Safari",
+                                                y: 19.84,
+                                            },
+                                            {
+                                                name: "Firefox",
+                                                y: 4.18,
+                                            },
+                                            {
+                                                name: "Edge",
+                                                y: 4.12,
+                                            },
+                                            {
+                                                name: "Opera",
+                                                y: 2.33,
+                                            },
+                                            {
+                                                name: "Internet Explorer",
+                                                y: 0.45,
+                                            },
+                                            {
+                                                name: "Other",
+                                                y: 1.582,
+                                            }
+                                        ] */
+                }],
+                credits: {
+                    enabled: false
+                },
+            });
+        }
     </script>
+
+    <script>
+        function maps01(div, data, titulo, subtitulo) {
+            Highcharts.mapChart(div, {
+                chart: {
+                    map: 'countries/pe/pe-all'
+                },
+
+                title: {
+                    text: titulo, //'Reportes de Mapa'
+                },
+
+                subtitle: {
+                    text: subtitulo, //'Un descripción de reportes'
+                },
+
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'top'
+                    }
+                },
+
+                colorAxis: {
+                    min: 0,
+                    max: 30,
+                    //tickPixelInterval: 100,
+                    maxColor: "#e6ebf5",
+                    minColor: "#003399",
+                    /*maxColor: '#F1EEF6',
+                    minColor: '#900037'*/
+                },
+
+                series: [{
+                    data: data,
+                    name: 'Puesto', //Población
+                    states: {
+                        hover: {
+                            color: '#BADA55'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.value}°'
+                    }
+                }],
+                credits: {
+                    enabled: false
+                },
+            });
+        }
+        /* var data = [
+            ['pe-ic', 10],
+            ['pe-cs', 11],
+            ['pe-uc', 12],
+            ['pe-md', 13],
+            ['pe-sm', 14],
+            ['pe-am', 15],
+            ['pe-lo', 16],
+            ['pe-ay', 17],
+            ['pe-145', 18],
+            ['pe-hv', 19],
+            ['pe-ju', 20],
+            ['pe-lr', 21],
+            ['pe-lb', 22],
+            ['pe-tu', 23],
+            ['pe-ap', 24],
+            ['pe-ar', 25],
+            ['pe-cl', 26],
+            ['pe-mq', 27],
+            ['pe-ta', 28],
+            ['pe-an', 29],
+            ['pe-cj', 30],
+            ['pe-hc', 31],
+            ['pe-3341', 32],
+            ['pe-ll', 33],
+            ['pe-pa', 34],
+            ['pe-pi', 35]
+        ];
+        // Create the chart
+        Highcharts.mapChart('anal1', {
+            chart: {
+                map: 'countries/pe/pe-all'
+            },
+            title: {
+                text: 'Reportes de Mapa'
+            },
+            subtitle: {
+                text: 'Un descripción de reportes'
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'top'
+                }
+            },
+            colorAxis: {
+                min: 0
+            },
+            series: [{
+                data: data,
+                name: 'Población',
+                states: {
+                    hover: {
+                        color: '#BADA55'
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }]
+        }); */
+    </script>
+
+    {{--  --}}
+    {{-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> --}}
+    {{-- <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/map.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/data.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/accessibility.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> --}}
 @endsection

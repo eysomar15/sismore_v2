@@ -52,13 +52,13 @@ class CuadroAsigPersonalController extends Controller
 
     public function guardar(Request $request)
     {
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 2);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, $this->fuente);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos prendientes de aprobar para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);
         }
 
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 2);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, $this->fuente);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos procesados para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);
@@ -83,57 +83,60 @@ class CuadroAsigPersonalController extends Controller
                         $row['ugel'] .
                         $row['provincia'] .
                         $row['distrito'] .
-                        $row['tipo_ie'] . //
-
+                        $row['tipo_ie'] .
                         $row['gestion'] .
                         $row['zona'] .
                         $row['codmod_ie'] .
                         $row['codigo_local'] .
                         $row['clave8'] .
-
                         $row['nivel_educativo'] .
                         $row['institucion_educativa'] .
+                        $row['jec'] .
                         $row['codigo_plaza'] .
                         $row['tipo_trabajador'] .
                         $row['sub_tipo_trabajador'] .
-
                         $row['cargo'] .
                         $row['situacion_laboral'] .
                         $row['motivo_vacante'] .
+                        $row['categoria_remunerativa'] .
+                        $row['descripcion_escala'] .
+                        $row['jornada_laboral'] .
+                        $row['estado'] .
+                        $row['fecha_inicio'] .
+                        $row['fecha_termino'] .
+                        $row['tipo_registro'] .
+                        $row['ley'] .
+                        $row['fecha_ingreso_nomb'] .
                         $row['documento'] .
-                        $row['sexo'] .
-
                         $row['codmod_docente'] .
                         $row['apellido_paterno'] .
                         $row['apellido_materno'] .
                         $row['nombres'] .
-                        $row['fecha_ingreso'] .
-
-                        $row['categoria_remunerativa'] .
-                        $row['jornada_laboral'] .
-                        $row['estado'] .
                         $row['fecha_nacimiento'] .
-                        $row['fecha_inicio'] .
-
-                        $row['fecha_termino'] .
-                        $row['tipo_registro'] .
-                        $row['ley'] .
-                        $row['preventiva'] .
-                        $row['especialidad'] .
-
+                        $row['sexo'] .
+                        $row['regimen_pensionario'] .
+                        $row['fecha_afiliacion_rp'] .
+                        $row['codigo_essalud'] .
+                        $row['afp'] .
+                        $row['codigo_afp'] .
+                        $row['fecha_afiliacion_afp'] .
+                        $row['fecha_devengue_afp'] .
+                        $row['mencion'] .
+                        $row['centro_estudios'] .
                         $row['tipo_estudios'] .
                         $row['estado_estudios'] .
-                        $row['grado'] .
-                        $row['mencion'] .
                         $row['especialidad_profesional'] .
-
-                        $row['fecha_resolucion'] .
-                        $row['numero_resolucion'] .
-                        $row['centro_estudios'] .
+                        $row['grado'] .
                         $row['celular'] .
                         $row['email'] .
-
-                        $row['desc_superior'];
+                        $row['especialidad'] .
+                        $row['fecha_resolucion'] .
+                        $row['numero_resolucion'] .
+                        $row['desc_superior'] .
+                        $row['numero_contrato_cas'] .
+                        $row['numero_adenda_cas'] .
+                        $row['preventiva'] .
+                        $row['referencia_preventiva'];
                 }
             }
         } catch (Exception $e) {
@@ -143,7 +146,7 @@ class CuadroAsigPersonalController extends Controller
 
         try {
             $importacion = Importacion::Create([
-                'fuenteImportacion_id' => 2, // valor predeterminado
+                'fuenteImportacion_id' => $this->fuente, // valor predeterminado
                 'usuarioId_Crea' => auth()->user()->id,
                 'usuarioId_Aprueba' => null,
                 'fechaActualizacion' => $request->fechaActualizacion,
@@ -155,9 +158,9 @@ class CuadroAsigPersonalController extends Controller
                 foreach ($value as $row) {
                     if ($row['unidad_ejecutora'] != NULL) {
                         $CuadroAsigPersonal = CuadroAsigPersonal::Create([
-                            'importacion_id' => $importacion->id, //'region' => 'UCAYALI',
+                            'importacion_id' => $importacion->id,
                             'unidad_ejecutora' => $row['unidad_ejecutora'],
-                            'organo_intermedio' => $row['ugel'], // se va cambiar de nombre
+                            'organo_intermedio' => $row['ugel'],
                             'provincia' => $row['provincia'],
                             'distrito' => $row['distrito'],
                             'tipo_ie' => $row['tipo_ie'],
@@ -168,41 +171,52 @@ class CuadroAsigPersonalController extends Controller
                             'clave8' => $row['clave8'],
                             'nivel_educativo' => $row['nivel_educativo'],
                             'institucion_educativa' => $row['institucion_educativa'],
+                            'jec' => $row['jec'],
                             'codigo_plaza' => $row['codigo_plaza'],
                             'tipo_trabajador' => $row['tipo_trabajador'],
                             'sub_tipo_trabajador' => $row['sub_tipo_trabajador'],
                             'cargo' => $row['cargo'],
                             'situacion_laboral' => $row['situacion_laboral'],
                             'motivo_vacante' => $row['motivo_vacante'],
-                            'documento_identidad' => $row['documento'],
-                            'sexo' => $row['sexo'],
-                            'codigo_modular' => $row['codmod_docente'],
-                            'apellido_paterno' => $row['apellido_paterno'],
-                            'apellido_materno' => $row['apellido_materno'],
-                            'nombres' => $row['nombres'],
-                            'fecha_ingreso' => $row['fecha_ingreso'],
                             'categoria_remunerativa' => $row['categoria_remunerativa'],
+                            'descripcion_escala' => $row['descripcion_escala'],
                             'jornada_laboral' => $row['jornada_laboral'],
                             'estado' => $row['estado'],
-                            'fecha_nacimiento' => $row['fecha_nacimiento'],
                             'fecha_inicio' => $row['fecha_inicio'],
                             'fecha_termino' => $row['fecha_termino'],
                             'tipo_registro' => $row['tipo_registro'],
                             'ley' => $row['ley'],
-                            'preventiva' => $row['preventiva'], // 'referencia_preventiva'=>$row['referencia_preventiva'],
-                            'especialidad' => $row['especialidad'],
+                            'fecha_ingreso' => $row['fecha_ingreso_nomb'],
+                            'documento_identidad' => $row['documento'],
+                            'codigo_modular' => $row['codmod_docente'],
+                            'apellido_paterno' => $row['apellido_paterno'],
+                            'apellido_materno' => $row['apellido_materno'],
+                            'nombres' => $row['nombres'],
+                            'fecha_nacimiento' => $row['fecha_nacimiento'],
+                            'sexo' => $row['sexo'],
+                            'regimen_pensionario' => $row['regimen_pensionario'],
+                            'fecha_afiliacion_rp' => $row['fecha_afiliacion_rp'],
+                            'codigo_essalud' => $row['codigo_essalud'],
+                            'afp' => $row['afp'],
+                            'codigo_afp' => $row['codigo_afp'],
+                            'fecha_afiliacion_afp' => $row['fecha_afiliacion_afp'],
+                            'fecha_devengue_afp' => $row['fecha_devengue_afp'],
+                            'mencion' => $row['mencion'],
+                            'centro_estudios' => $row['centro_estudios'],
                             'tipo_estudios' => $row['tipo_estudios'],
                             'estado_estudios' => $row['estado_estudios'],
-                            'grado' => $row['grado'],
-                            'mencion' => '' . trim($row['mencion']),
                             'especialidad_profesional' => $row['especialidad_profesional'],
-                            'fecha_resolucion' => $row['fecha_resolucion'],
-                            'numero_resolucion' => $row['numero_resolucion'],
-                            'centro_estudios' => $row['centro_estudios'],
+                            'grado' => $row['grado'],
                             'celular' => $row['celular'],
                             'email' => $row['email'],
+                            'especialidad' => $row['especialidad'],
+                            'fecha_resolucion' => $row['fecha_resolucion'],
+                            'numero_resolucion' => $row['numero_resolucion'],
                             'desc_superior' => $row['desc_superior'],
-
+                            'numero_contrato_cas' => $row['numero_contrato_cas'],
+                            'numero_adenda_cas' => $row['numero_adenda_cas'],
+                            'preventiva' => $row['preventiva'],
+                            'referencia_preventiva' => $row['referencia_preventiva'],
                         ]);
                     }
                 }
@@ -234,7 +248,7 @@ class CuadroAsigPersonalController extends Controller
         $start = intval($rq->start);
         $length = intval($rq->length);
 
-        $query = ImportacionRepositorio::Listar_FuenteTodos('2');
+        $query = ImportacionRepositorio::Listar_FuenteTodos($this->fuente);
         $data = [];
         foreach ($query as $key => $value) {
             $nom = '';

@@ -7,6 +7,10 @@ use App\Imports\ImporGastosImport;
 use Illuminate\Http\Request;
 use App\Imports\tablaXImport;
 use App\Models\Educacion\Importacion;
+use App\Models\Parametro\FuenteImportacion;
+use App\Models\Presupuesto\BaseGastos;
+use App\Models\Presupuesto\BaseGastosDetalle;
+use App\Models\Presupuesto\Entidad;
 use App\Models\Presupuesto\ImporGastos;
 use App\Repositories\Educacion\ImporGastosRepositorio;
 use App\Repositories\Educacion\ImportacionRepositorio;
@@ -19,7 +23,7 @@ use Yajra\DataTables\DataTables;
 
 class ImporGastosController extends Controller
 {
-
+    public $fuente = 13;
     public function __construct()
     {
         $this->middleware('auth');
@@ -27,8 +31,9 @@ class ImporGastosController extends Controller
 
     public function importar()
     {
+        $fuente = FuenteImportacion::find($this->fuente);
         $mensaje = "";
-        return view('presupuesto.ImporGastos.Importar', compact('mensaje'));
+        return view('presupuesto.ImporGastos.Importar', compact('mensaje', 'fuente'));
     }
 
     function json_output($status = 200, $msg = 'OK!!', $data = null)
@@ -50,15 +55,15 @@ class ImporGastosController extends Controller
         $archivo = $request->file('file');
         $array = (new tablaXImport)->toArray($archivo); */
 
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, 13);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PE($request->fechaActualizacion, $this->fuente);
         if ($existeMismaFecha != null) {
             $mensaje = "Error, Ya existe archivos prendientes de aprobar para la fecha de versión ingresada";
             $this->json_output(400, $mensaje);
         }
 
-        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, 13);
+        $existeMismaFecha = ImportacionRepositorio::Importacion_PR($request->fechaActualizacion, $this->fuente);
         if ($existeMismaFecha != null) {
-            $mensaje = "Error, Ya existe archivos procesados para la fecha de versión ingresada";
+            $mensaje = "El Archivo ya se encuentra cargado con la misma fecha";
             $this->json_output(400, $mensaje);
         }
 
@@ -79,8 +84,8 @@ class ImporGastosController extends Controller
                     $cadena =  $cadena .
                         $row['anio'] .
                         $row['mes'] .
-                        $row['cod_tipo_gob'] .
-                        $row['tipo_gobierno'] .
+                        $row['cod_niv_gob'] .
+                        $row['nivel_gobierno'] .
                         $row['cod_sector'] .
                         $row['sector'] .
                         $row['cod_pliego'] .
@@ -142,7 +147,7 @@ class ImporGastosController extends Controller
 
         try {
             $importacion = Importacion::Create([
-                'fuenteImportacion_id' => 13, // valor predeterminado
+                'fuenteImportacion_id' => $this->fuente, // valor predeterminado
                 'usuarioId_Crea' => auth()->user()->id,
                 'usuarioId_Aprueba' => null,
                 'fechaActualizacion' => $request['fechaActualizacion'],
@@ -156,8 +161,8 @@ class ImporGastosController extends Controller
                         'importacion_id' => $importacion->id,
                         'anio' => $row['anio'],
                         'mes' => $row['mes'],
-                        'cod_tipo_gob' => $row['cod_tipo_gob'],
-                        'tipo_gobierno' => $row['tipo_gobierno'],
+                        'cod_niv_gob' => $row['cod_niv_gob'],
+                        'nivel_gobierno' => $row['nivel_gobierno'],
                         'cod_sector' => $row['cod_sector'],
                         'sector' => $row['sector'],
                         'cod_pliego' => $row['cod_pliego'],
@@ -221,15 +226,15 @@ class ImporGastosController extends Controller
             $this->json_output(400, $mensaje);
         }
 
-        /* try {
-            $procesar = DB::select('call edu_pa_procesarImporMatricula(?,?)', [$importacion->id, $importacion->usuarioId_Crea]);
+        try {
+            $procesar = DB::select('call pres_pa_procesarImporGastos(?,?)', [$importacion->id, $importacion->usuarioId_Crea]);
         } catch (Exception $e) {
             $importacion->estado = 'EL';
             $importacion->save();
 
             $mensaje = "Error al procesar la normalizacion de datos." . $e->getMessage();
             $this->json_output(400, $mensaje);
-        } */
+        }
 
         $mensaje = "Archivo excel subido y Procesado correctamente .";
         $this->json_output(200, $mensaje, '');
@@ -242,9 +247,10 @@ class ImporGastosController extends Controller
         $start = intval($rq->start);
         $length = intval($rq->length);
 
-        $query = ImportacionRepositorio::Listar_FuenteTodos('13');
+        $query = ImportacionRepositorio::Listar_FuenteTodos($this->fuente);
         $data = [];
         foreach ($query as $key => $value) {
+            $ent = Entidad::find($value->entidad);
             $nom = '';
             if (strlen($value->cnombre) > 0) {
                 $xx = explode(' ', $value->cnombre);
@@ -257,17 +263,19 @@ class ImporGastosController extends Controller
             }
 
             if (date('Y-m-d', strtotime($value->created_at)) == date('Y-m-d') || session('perfil_id') == 3 || session('perfil_id') == 8 || session('perfil_id') == 9 || session('perfil_id') == 10 || session('perfil_id') == 11)
-                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
+                $boton = '<button type="button" onclick="geteliminar(' . $value->id . ')" id="eliminar' . $value->id . '" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </button>';
             else
                 $boton = '';
             $boton2 = '<button type="button" onclick="monitor(' . $value->id . ')" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i> </button>';
             $data[] = array(
                 $key + 1,
+                'GASTO',
                 date("d/m/Y", strtotime($value->fechaActualizacion)),
-                $value->fuente . $value->id,
+                /* $value->fuente, */
                 $nom . ' ' . $ape,
+                ($ent ? $ent->abreviado : ''),
                 date("d/m/Y", strtotime($value->created_at)),
-                $value->comentario,
+                /* $value->comentario, */
                 $value->estado == "PR" ? "PROCESADO" : ($value->estado == "PE" ? "PENDIENTE" : "ELIMINADO"),
                 $boton /* . '&nbsp;' . $boton2, */
             );
@@ -289,9 +297,17 @@ class ImporGastosController extends Controller
 
     public function eliminar($id)
     {
-        $entidad = Importacion::find($id);
-        $entidad->estado = 'EL';
-        $entidad->save();
+        /*  $imp = Importacion::find($id);
+        $imp->estado = 'EL';
+        $imp->save(); */
+
+        $bg = BaseGastos::where('importacion_id', $id)->first();
+        ImporGastos::where('importacion_id', $id)->delete();
+        if ($bg) {
+            BaseGastosDetalle::where('basegastos_id', $bg->id)->delete();
+            BaseGastos::find($bg->id)->delete();
+        }
+        Importacion::find($id)->delete();
 
         return response()->json(array('status' => true));
     }

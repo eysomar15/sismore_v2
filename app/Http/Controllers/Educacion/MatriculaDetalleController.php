@@ -3136,7 +3136,14 @@ class MatriculaDetalleController extends Controller
         $imp = Importacion::select('id', 'fechaActualizacion as fecha')->where('estado', 'PR')->where('fuenteImportacion_id', '8')->orderBy('fecha', 'desc')->take(1)->get();
         $importacion_id = $imp->first()->id;
         $fecha = date('d/m/Y', strtotime($imp->first()->fecha));
-        return view("educacion.MatriculaDetalle.InterculturalBilingue", compact('anios', 'gestions', 'areas', 'ugels', 'importacion_id', 'fecha'));
+
+        $data['rer'] = 781;
+        $data['pres'] = 607;
+        $data['iiee'] = 0;
+        $data['alumnos'] = 36331;
+        $data['docentes'] = 2453;
+
+        return view("educacion.MatriculaDetalle.InterculturalBilingue", compact('anios', 'gestions', 'areas', 'ugels', 'importacion_id', 'fecha','data'));
     }
 
     public function cargarEIBgrafica1(Request $rq)
@@ -3623,5 +3630,32 @@ class MatriculaDetalleController extends Controller
     {
         return view("educacion.MatriculaDetalle.presupuestoview2");
     }
+
+    public function cargarpresupuestoview3()
+    {
+        return view("educacion.MatriculaDetalle.presupuestoview3");
+    }
+
+    public function cargarpresupuestoview11()
+    {
+        return view("educacion.MatriculaDetalle.presupuestoview11");
+    }
+    public function cargarpresupuestoview12()
+    {
+        return view("educacion.MatriculaDetalle.presupuestoview12");
+    }
+    public function cargarpresupuestoview13()
+    {
+        return view("educacion.MatriculaDetalle.presupuestoview13");
+    }
+    public function cargarpresupuestoview14()
+    {
+        return view("educacion.MatriculaDetalle.presupuestoview14");
+    }
+    public function cargarpresupuestoview15()
+    {
+        return view("educacion.MatriculaDetalle.presupuestoview15");
+    }
+
 
 }
