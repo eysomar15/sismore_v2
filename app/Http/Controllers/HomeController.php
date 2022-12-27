@@ -565,7 +565,6 @@ class HomeController extends Controller
         return view("presupuesto.inicioPresupuestohometabla1", compact('body', 'foot'));
     }
 
-<<<<<<< HEAD
     public function vivienda2($sistema_id)
     {
         $datos = DatassRepositorio::datos_PorDepartamento(516, 1);
@@ -593,8 +592,6 @@ class HomeController extends Controller
         );
     }
 
-=======
->>>>>>> d067d8f76abb7d088f6fc7e02c6760569d41b87d
     public function vivienda($sistema_id)
     {
              
@@ -608,7 +605,6 @@ class HomeController extends Controller
         return view('home', compact('sistema_id', 'importacion_id','vUrl','fechaVersion'));
     }
 
-<<<<<<< HEAD
     // public function vivienda3($sistema_id)
     // {
 
@@ -669,8 +665,6 @@ class HomeController extends Controller
     // }
 
 
-=======
->>>>>>> d067d8f76abb7d088f6fc7e02c6760569d41b87d
     public function educacion($sistema_id)
     {
         $imp = ImportacionRepositorio::Max_yearPadronWeb(); //padron web
