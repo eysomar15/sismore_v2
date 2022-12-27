@@ -21,6 +21,7 @@
         id="bootstrap-stylesheet" />
     <link href="{{ asset('/') }}public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
+    <link href="{{ as
     <link href="{{ asset('/') }}public/assets/css/app.min.css" rel="stylesheet" type="text/css"
         id="app-stylesheet" />
 
@@ -284,16 +285,10 @@
                                 <div class="col-12">
                                     @if ($titlePage != '')
                                         <div class="page-title-box">
-                                            {{-- <h4 class="page-title">Ejecución Presupuestal De La Región Ucayali</h4> --}}
-                                            <h4 class="page-title">{{ $titlePage }}</h4>
+                                            <h4 class="page-title">Ejecución Presupuestal De La Región Ucayali</h4>
                                             <div class="page-title-right">
                                                 <ol class="breadcrumb p-0 m-0">
-                                                    @php
-                                                        $mes = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
-                                                    @endphp
-                                                    Actualizado al
-                                                    {{ date('d') - 1 . ' de ' . $mes[date('m') - 1] . ' del ' . date('Y') }}
-                                                    {{-- @if (isset($impG))
+                                                    @if (isset($impG))
                                                         @php
                                                             $mes = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
                                                         @endphp
@@ -301,7 +296,7 @@
                                                         {{ date('d', strtotime($impG->fechaActualizacion)); }} de
                                                         {{ $mes[date('m', strtotime($impG->fechaActualizacion)) - 1]; }} del
                                                         {{ date('Y', strtotime($impG->fechaActualizacion));}}
-                                                    @endif --}}
+                                                    @endif
                                                 </ol>
                                             </div>
                                             <div class="clearfix"></div>
@@ -529,33 +524,8 @@
     <script src="{{ asset('/') }}public/assets/js/app.min.js"></script>
 
     <script>
-        << << << < HEAD
 
-            ===
-            === =
-            /* var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263',
-                                        '#6AF9C4'
-                                    ]; */
-            >>>
-            >>> > d067d8f76abb7d088f6fc7e02c6760569d41b87d
-        var paleta_colores = ['#317eeb', '#ef5350', '#33b86c', '#33b86c', '#33b86c', '#6c757d', '#ec407a', '#7e57c2',
-            '#ffd740'
-        ];
-        var table_language = {
-            "lengthMenu": "Mostrar " +
-                `<select class="custom-select custom-select-sm form-control form-control-sm">
-                        <option value = '10'> 10</option>
-                        <option value = '25'> 25</option>
-                        <option value = '50'> 50</option>
-                        <option value = '100'>100</option>
-                        <option value = '-1'>Todos</option>
-                        </select>` + " registros por página",
-            "info": "Mostrando la página _PAGE_ de _PAGES_",
-            "infoEmpty": "No records available",
-            "infoFiltered": "(Filtrado de _MAX_ registros totales)",
-            "emptyTable": "No hay datos disponibles en la tabla.",
-            "info": "Del _START_ al _END_ de _TOTAL_ registros ",
-            "infoEmpty": "Mostrando 0 registros de un total de 0. registros",
+,
             "infoFiltered": "(filtrados de un total de _MAX_ )",
             "infoPostFix": "",
             "loadingRecords": "Cargando...",

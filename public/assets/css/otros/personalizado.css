@@ -1,4 +1,4 @@
-/*
+/* 
 mis estilos XD
 */
 
@@ -26,17 +26,7 @@ mis estilos XD
     border-color: #ef5350;
     box-shadow: none !important;
 }
-
-.has-error .checkbox,
-.has-error .checkbox-inline,
-.has-error .control-label,
-.has-error .help-block,
-.has-error .radio,
-.has-error .radio-inline,
-.has-error.checkbox label,
-.has-error.checkbox-inline label,
-.has-error.radio label,
-.has-error.radio-inline label {
+.has-error .checkbox,.has-error .checkbox-inline,.has-error .control-label,.has-error .help-block,.has-error .radio,.has-error .radio-inline,.has-error.checkbox label,.has-error.checkbox-inline label,.has-error.radio label,.has-error.radio-inline label  {
     color: #a94442
 }
 
@@ -44,11 +34,5 @@ mis estilos XD
     color: #a94442
 }
 
-/*  */
 .bg-blue {
-    background-color: #0a2dc9 !important;
-}
-
-.bg-success-1 {
-    background-color: #43beac !important;
-}
+    background-color: #0a2dc9 !important; }

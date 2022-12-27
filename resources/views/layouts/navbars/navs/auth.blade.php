@@ -4,6 +4,10 @@
  <div class="navbar-custom">
 
      <ul class="list-unstyled topnav-menu float-right mb-0">
+<<<<<<< HEAD
+
+=======
+>>>>>>> 35fe3f126b6eccca61bdec622b2dce0465518f4e
 
             <li class="dropdown notification-list">
                 <!-- Mobile menu toggle-->
@@ -18,7 +22,10 @@
             </li>
 
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 35fe3f126b6eccca61bdec622b2dce0465518f4e
          <li class="dropdown notification-list d-none d-md-inline-block">
              <a href="#" id="btn-fullscreen" class="nav-link waves-effect waves-light">
                  <i class="mdi mdi-crop-free noti-icon"></i>
