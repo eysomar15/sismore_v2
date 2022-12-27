@@ -21,7 +21,6 @@
         id="bootstrap-stylesheet" />
     <link href="{{ asset('/') }}public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
-    <link href="{{ as
     <link href="{{ asset('/') }}public/assets/css/app.min.css" rel="stylesheet" type="text/css"
         id="app-stylesheet" />
 
@@ -293,9 +292,10 @@
                                                             $mes = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
                                                         @endphp
                                                         Actualizado al
-                                                        {{ date('d', strtotime($impG->fechaActualizacion)); }} de
-                                                        {{ $mes[date('m', strtotime($impG->fechaActualizacion)) - 1]; }} del
-                                                        {{ date('Y', strtotime($impG->fechaActualizacion));}}
+                                                        {{ date('d', strtotime($impG->fechaActualizacion)) }} de
+                                                        {{ $mes[date('m', strtotime($impG->fechaActualizacion)) - 1] }}
+                                                        del
+                                                        {{ date('Y', strtotime($impG->fechaActualizacion)) }}
                                                     @endif
                                                 </ol>
                                             </div>
@@ -524,19 +524,18 @@
     <script src="{{ asset('/') }}public/assets/js/app.min.js"></script>
 
     <script>
-
-,
-            "infoFiltered": "(filtrados de un total de _MAX_ )",
-            "infoPostFix": "",
-            "loadingRecords": "Cargando...",
-            "processing": "Procesando...",
-            "search": "Buscar:",
-            "searchPlaceholder": "Dato para buscar",
-            "zeroRecords": "No se han encontrado coincidencias.",
-            "paginate": {
-                "next": "siguiente",
-                "previous": "anterior"
-            }
+        ,
+        "infoFiltered": "(filtrados de un total de _MAX_ )",
+        "infoPostFix": "",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "searchPlaceholder": "Dato para buscar",
+        "zeroRecords": "No se han encontrado coincidencias.",
+        "paginate": {
+            "next": "siguiente",
+            "previous": "anterior"
+        }
         };
         $(document).ready(function() {
             /* $('#modal_password_usuario').modal('show'); */
