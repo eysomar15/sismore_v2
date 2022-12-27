@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 {{-- @extends('layouts.main',['titlePage'=>'']) --}}
 
@@ -5,6 +6,11 @@
     'titlePage' => session('sistema_id') == 5 ? 'Principal' : 'Bienvenido al Sistema de Monitoreo Regional',
 ])
 
+=======
+@extends('layouts.main', [
+    'titlePage' => session('sistema_id') == 5 ? 'Principal' : 'Bienvenido al Sistema de Monitoreo Regional',
+])
+>>>>>>> 35fe3f126b6eccca61bdec622b2dce0465518f4e
 
 @section('content')
     @if (session('sistema_id') == 1)
