@@ -35,8 +35,8 @@
     <!-- Begin page -->
     <div id="wrapper">
         @auth()
-        <!-- Navigation Bar-->
-        <header id="topnav">
+            <!-- Navigation Bar-->
+            <header id="topnav">
                 <!-- Topbar Start -->
                 <div class="navbar-custom">
                     <div class="container-fluid">
@@ -54,8 +54,8 @@
                                 <!-- End mobile menu toggle-->
                             </li>
 
-           
-                            
+
+
 
                             <li class="dropdown notification-list d-none d-md-inline-block">
                                 <a href="#" id="btn-fullscreen" class="nav-link waves-effect waves-light">
@@ -63,9 +63,11 @@
                                 </a>
                             </li>
                             <li class="dropdown notification-list">
-                                <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#"
-                                    role="button" aria-haspopup="false" aria-expanded="false">
-                                    <img src="{{ asset('/') }}public/assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
+                                <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light"
+                                    data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
+                                    aria-expanded="false">
+                                    <img src="{{ asset('/') }}public/assets/images/users/avatar-1.jpg" alt="user-image"
+                                        class="rounded-circle">
                                     {{ Auth::user()->nombre }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
@@ -73,13 +75,14 @@
                                     {{-- <div class="dropdown-header noti-title">
                                         <h6 class="text-overflow m-0">Bienvenido</h6>
                                     </div> --}}
-                   
+
                                     <!-- item-->
-                                    <a href="#" class="dropdown-item notify-item" onclick="editPerfilUsuario('{{ Auth::user()->id }}')">
+                                    <a href="#" class="dropdown-item notify-item"
+                                        onclick="editPerfilUsuario('{{ Auth::user()->id }}')">
                                         <i class="mdi mdi-face-profile"></i>
                                         <span>Perfil</span>
                                     </a>
-                   
+
                                     <div class="dropdown-divider"></div>
                                     <!-- item-->
                                     @if (session()->get('total_sistema') > 1)
@@ -88,58 +91,62 @@
                                             <span>Cambiar Sistemas</span>
                                         </a>
                                     @endif
-                   
+
                                     <!-- item-->
                                     <a href="{{ route('logout') }}" class="dropdown-item notify-item"
                                         onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
                                         <i class="mdi mdi-power-settings"></i>
                                         <span>Cerrar Sesión</span>
                                     </a>
-                   
+
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
-                   
+
                                 </div>
                             </li>
 
 
                         </ul>
-            
-                
-                
+
+
+
                         <!-- LOGO -->
-                         <div class="logo-box">
+                        <div class="logo-box">
                             <a href="index.html" class="logo text-center logo-dark">
                                 <span class="logo-lg">
-                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="16">
+                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt=""
+                                        height="16">
                                     <!-- <span class="logo-lg-text-dark">Moltran</span> -->
                                 </span>
                                 <span class="logo-sm">
                                     <!-- <span class="logo-lg-text-dark">M</span> -->
-                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="25">
+                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt=""
+                                        height="25">
                                 </span>
                             </a>
 
                             <a href="#" class="logo text-center logo-light">
                                 <span class="logo-lg">
-                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="50">
-                                      {{-- <span class="logo-lg-text-dark">SISMORE</span>  --}}
-                                    
+                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt=""
+                                        height="50">
+                                    {{-- <span class="logo-lg-text-dark">SISMORE</span>  --}}
+
                                 </span>
                                 <span class="logo-sm">
-                                     
-                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt="" height="30">
+
+                                    <img src="{{ asset('/') }}public/assets/images/logo-sm-blanco.png" alt=""
+                                        height="30">
                                     {{-- <span class="logo-lg-text-dark">SISMORE</span>   --}}
                                 </span>
                             </a>
                         </div>
 
 
-                        <div class="logo-box2">                                                
-                            <strong style="color:white; font-size: xx-large;">S I S M O R E</strong> 
+                        <div class="logo-box2">
+                            <strong style="color:white; font-size: xx-large;">S I S M O R E</strong>
                             <br>
-                            <strong style="color:white ;">SISTEMA DE MONITOREO REGIONAL</strong> 
+                            <strong style="color:white ;">SISTEMA DE MONITOREO REGIONAL</strong>
                         </div>
 
 
@@ -183,47 +190,45 @@
                                         <li><a href="ui-sweet-alert2.html">Sweet-Alert2</a></li>
                                     </ul>
                                 </li>
-                             
+
                             </ul>
                              --}}
-                            
-                            <ul class="navigation-menu">                  
 
-                                @foreach (session('menuNivel01') as $key => $menu)  
-            
+                            <ul class="navigation-menu">
+
+                                @foreach (session('menuNivel01') as $key => $menu)
                                     <li class="has-submenu">
-                                        @if ($menu->url=='')            
+                                        @if ($menu->url == '')
                                             {{-- <a href="javascript: void(0);" class="waves-effect"> --}}
                                             <a href="#" class="waves-effect">
-                                                <i style="color:white" class="{{$menu->icono}}"></i>
-                                                <span style="color:white"> {{$menu->nombre}} </span>
+                                                <i style="color:white" class="{{ $menu->icono }}"></i>
+                                                <span style="color:white"> {{ $menu->nombre }} </span>
                                                 <span class="menu-arrow"></span>
-                                            </a>            
-                                        <ul class="submenu" >
-                                            
-                                            @foreach (session('menuNivel02') as $key => $subMenu)
-                                                @if($menu->id==$subMenu->dependencia)
-                                                <li><a href="{{route($subMenu->url)}}">{{$subMenu->nombre}}</a></li>                                
-                                                @endif
-                                            @endforeach 
-                    
-                                        </ul>
-            
-                                        @else
-                                            <a href="{{route($menu->url,$menu->parametro)}}" class="waves-effect">
-                                                <i style="color:white" class="{{$menu->icono}}"></i>
-                                                <span style="color:white"> {{$menu->nombre}}</span>
                                             </a>
-                                            
-                                        @endif
-                                        
-                                    </li> 
-                                    
-                                @endforeach             
-                
-                            </ul>   
+                                            <ul class="submenu">
 
-                           <!-- End navigation menu -->
+                                                @foreach (session('menuNivel02') as $key => $subMenu)
+                                                    @if ($menu->id == $subMenu->dependencia)
+                                                        <li><a
+                                                                href="{{ route($subMenu->url) }}">{{ $subMenu->nombre }}</a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+
+                                            </ul>
+                                        @else
+                                            <a href="{{ route($menu->url, $menu->parametro) }}" class="waves-effect">
+                                                <i style="color:white" class="{{ $menu->icono }}"></i>
+                                                <span style="color:white"> {{ $menu->nombre }}</span>
+                                            </a>
+                                        @endif
+
+                                    </li>
+                                @endforeach
+
+                            </ul>
+
+                            <!-- End navigation menu -->
 
                             <div class="clearfix"></div>
                         </div>
@@ -235,17 +240,17 @@
             </header>
             <!-- End Navigation Bar-->
 
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
 
-        <div class="content-page">
-            <div class="content">
+            <div class="content-page">
+                <div class="content">
 
-                <!-- Start Content-->
-                <div class="container-fluid">
+                    <!-- Start Content-->
+                    <div class="container-fluid">
 
-                    @if (session('sistema_id') != 5)
+                        @if (session('sistema_id') != 5)
                             <div class="row">
                                 <div class="col-12">
                                     @if ($titlePage != '')
@@ -287,7 +292,7 @@
                                                         $mes = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
                                                     @endphp
                                                     Actualizado al
-                                                    {{ (date('d')-1) . ' de ' . $mes[date('m') - 1] . ' del ' . date('Y') }}
+                                                    {{ date('d') - 1 . ' de ' . $mes[date('m') - 1] . ' del ' . date('Y') }}
                                                     {{-- @if (isset($impG))
                                                         @php
                                                             $mes = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
@@ -311,30 +316,30 @@
 
                         @yield('content')
 
+                    </div>
+                    <!-- end container-fluid -->
+
                 </div>
-                <!-- end container-fluid -->
+                <!-- end content -->
+
+
+
+                <!-- Footer Start -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script>
+                            Derechos Reservados - Gobierno Regional de Ucayali
+                        </div>
+                    </div>
+                </footer>
+                <!-- end Footer -->
+
+
 
             </div>
-            <!-- end content -->
-
-            
-
-            <!-- Footer Start -->
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                      <script>
-                        document.write(new Date().getFullYear())
-                    </script>
-                     Derechos Reservados - Gobierno Regional de Ucayali
-                    </div>
-                </div>
-              </footer>
-            <!-- end Footer -->
-
-                  
-
-        </div>
 
         @endauth
 
@@ -349,8 +354,8 @@
     </div>
     <!-- END wrapper -->
 
-    
-     <!-- Bootstrap modal -->
+
+    <!-- Bootstrap modal -->
     <div id="modal_perfil_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         style="overflow:auto">
         <div class="modal-dialog modal-lg">
@@ -500,7 +505,7 @@
     <script src="{{ asset('/') }}public/assets/libs/moment/moment.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/jquery-scrollto/jquery.scrollTo.min.js"></script>
     <script src="{{ asset('/') }}public/assets/libs/sweetalert2/sweetalert2.min.js"></script>
-    
+
     <!-- Chat app -->
     <script src="{{ asset('/') }}public/assets/js/pages/jquery.chat.js"></script>
 
@@ -524,13 +529,15 @@
     <script src="{{ asset('/') }}public/assets/js/app.min.js"></script>
 
     <script>
-<<<<<<< HEAD
-     
-=======
-        /* var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263',
-                                    '#6AF9C4'
-                                ]; */
->>>>>>> d067d8f76abb7d088f6fc7e02c6760569d41b87d
+        << << << < HEAD
+
+            ===
+            === =
+            /* var paleta_colores = ['#058DC7', '#50B432', '#9D561B', '#DDDF00', '#24CBE5', '#64E572', '#9F9655', '#FFF263',
+                                        '#6AF9C4'
+                                    ]; */
+            >>>
+            >>> > d067d8f76abb7d088f6fc7e02c6760569d41b87d
         var paleta_colores = ['#317eeb', '#ef5350', '#33b86c', '#33b86c', '#33b86c', '#6c757d', '#ec407a', '#7e57c2',
             '#ffd740'
         ];
