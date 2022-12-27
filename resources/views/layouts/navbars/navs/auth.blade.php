@@ -2,9 +2,8 @@
 
  <!-- Topbar Start -->
  <div class="navbar-custom">
-    
+
      <ul class="list-unstyled topnav-menu float-right mb-0">
-<<<<<<< HEAD
 
             <li class="dropdown notification-list">
                 <!-- Mobile menu toggle-->
@@ -17,11 +16,9 @@
                 </a>
                 <!-- End mobile menu toggle-->
             </li>
-  
-        
 
-=======
->>>>>>> d067d8f76abb7d088f6fc7e02c6760569d41b87d
+
+
          <li class="dropdown notification-list d-none d-md-inline-block">
              <a href="#" id="btn-fullscreen" class="nav-link waves-effect waves-light">
                  <i class="mdi mdi-crop-free noti-icon"></i>
@@ -113,26 +110,12 @@
 
      {{-- <strong style="color:white; font-size: xx-large;">S I S M O R E</strong>
         <br>
-<<<<<<< HEAD
-        <strong style="color:white ;">SISTEMA DE MONITOREO REGIONAL</strong> 
+        <strong style="color:white ;">SISTEMA DE MONITOREO REGIONAL</strong>
     </div>
-    
-
-=======
-        <strong style="color:white ;">SISTEMA DE MONITOREO REGIONAL</strong> --}}
-     {{-- </div> --}}
-
-     <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
 
 
-         <li>
-             <button class="button-menu-mobile waves-effect waves-light">
-                 <i class="mdi mdi-menu"></i>
-             </button>
-         </li>
->>>>>>> d067d8f76abb7d088f6fc7e02c6760569d41b87d
 
-   
+
 
 
      <!-- <div>

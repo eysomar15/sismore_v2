@@ -565,14 +565,13 @@ class HomeController extends Controller
         return view("presupuesto.inicioPresupuestohometabla1", compact('body', 'foot'));
     }
 
-<<<<<<< HEAD
     public function vivienda2($sistema_id)
     {
         $datos = DatassRepositorio::datos_PorDepartamento(516, 1);
 
         $suma1 = 0;
         $suma2 = 0;
-        $puntos = [];        
+        $puntos = [];
 
         //->sortByDesc('hombres') solo para dar una variacion a los colores del grafico
         foreach ($datos as $key => $item) {
@@ -586,33 +585,31 @@ class HomeController extends Controller
         $contenedor = 'Grafico_IndicadorRegional'; //nombre del contenedor para el grafico
         $titulo_grafico = 'Grafico_IndicadorRegional';
 
-  
-        return view('home',
+
+        return view(
+            'home',
             ["dataCircular" => json_encode($puntos)],
-            compact( 'contenedor', 'titulo_grafico')
+            compact('contenedor', 'titulo_grafico')
         );
     }
 
-=======
->>>>>>> d067d8f76abb7d088f6fc7e02c6760569d41b87d
     public function vivienda($sistema_id)
     {
-             
+
         $vUrl = "https://datastudio.google.com/embed/reporting/6c73c567-559b-4dd6-8608-64a0b502c85c/page/XXx8C";
         // $imp = Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', '7')->where('estado', 'PR')->first();
         $importacion = ImportacionRepositorio::ImpportacionMax_porfuente('7');
 
         $importacion_id = $importacion->id;
 
-        $fechaVersion = Utilitario::fecha_formato_texto_completo($importacion->fechaActualizacion) ;
-        return view('home', compact('sistema_id', 'importacion_id','vUrl','fechaVersion'));
+        $fechaVersion = Utilitario::fecha_formato_texto_completo($importacion->fechaActualizacion);
+        return view('home', compact('sistema_id', 'importacion_id', 'vUrl', 'fechaVersion'));
     }
 
-<<<<<<< HEAD
     // public function vivienda3($sistema_id)
     // {
 
-    //     $datos = DatassRepositorio::datos_PorProvincia(516,1);   
+    //     $datos = DatassRepositorio::datos_PorProvincia(516,1);
 
     //     $categoria1 = [];
     //     $categoria2 = [];
@@ -621,7 +618,7 @@ class HomeController extends Controller
     //     // array_merge concatena los valores del arreglo, mientras recorre el foreach
     //     foreach ($datos as $key => $lista) {
     //         $categoria1 = array_merge($categoria1, [intval($lista->INDICADOR_SI_porcentaje)]);
-    //         $categoria2 = array_merge($categoria2, [intval($lista->INDICADOR_NO_porcentaje)]);           
+    //         $categoria2 = array_merge($categoria2, [intval($lista->INDICADOR_NO_porcentaje)]);
     //         $categoria_nombres[] = $lista->Provincia;
     //     }
 
@@ -629,7 +626,7 @@ class HomeController extends Controller
     //     $name_Y2 = "Safari";
     //     $titulo_grafico = 'Grafico_IndicadorRegional';
 
-       
+
 
     //     $puntos[] = ['name' => $name_Y1, 'y' => floatval(61),'drilldown' => 'Chrome'];
     //     $puntos[] = ['name' => $name_Y2, 'y' => floatval(33),'drilldown' => 'Safari'];
@@ -639,7 +636,7 @@ class HomeController extends Controller
     //     $puntosHijos[] = ['name' => 'hijo 2', 'y' => floatval(66) ];
 
 
-        
+
     //     $imp = Importacion::select(DB::raw('max(id) as maximo'))->where('fuenteimportacion_id', '7')->where('estado', 'PR')->first();
     //     $importacion_id = ImportacionRepositorio::Max_porfuente('7');
     //     if ($importacion_id) {
@@ -669,8 +666,6 @@ class HomeController extends Controller
     // }
 
 
-=======
->>>>>>> d067d8f76abb7d088f6fc7e02c6760569d41b87d
     public function educacion($sistema_id)
     {
         $imp = ImportacionRepositorio::Max_yearPadronWeb(); //padron web
